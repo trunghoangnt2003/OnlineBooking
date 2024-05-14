@@ -1,0 +1,14 @@
+package org.frog.utility;
+
+public class StatusEnum {
+    public static final int PROCESSING = 1;
+    public static final int REJECT = 2;
+    public static final int DONE = 3;
+    public static final int CREATE = 4;
+    public static final int EDIT = 5;
+    public static final int BAN = 6;
+    public static final int ACTIVE = 7;
+    public static final int INACTIVE = 8;
+    public static final int BOOKED = 9;
+    public static final int FREE = 10;
+}

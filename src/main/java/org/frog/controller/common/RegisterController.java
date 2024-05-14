@@ -3,9 +3,7 @@ package org.frog.controller.common;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
-import org.frog.DAO.AccountDAO;
 import org.frog.model.Account;
-import org.frog.utility.Email;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -26,10 +24,7 @@ public class RegisterController extends HttpServlet {
         String phone = req.getParameter("phone");
         UUID uuid = UUID.randomUUID();
         String id = uuid.toString();
-        System.out.println(id);
-        Account account = new Account(id,null,userName,passWord,null,phone,email,null);
-        AccountDAO accountDAO = new AccountDAO();
-        accountDAO.save(account);
+
         req.getRequestDispatcher("view/public/login.jsp").forward(req,res);
 
     }

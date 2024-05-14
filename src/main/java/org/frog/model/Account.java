@@ -2,27 +2,34 @@ package org.frog.model;
 
 import javax.persistence.*;
 import java.sql.Date;
-@Entity(name = "Account")
+
 public class Account {
-    @Id
+
     private String id;
 
-    @Column(name = "name")
     private String name;
-    @Column(name="username")
+
     private String userName;
-    @Column()
+
     private String password;
-    @Column()
+
     private Date dob;
-    @Column()
+
     private String phone;
-    @Column(name = "mail")
+
     private String email;
-    @Column
+
     private String address;
 
-    public Account(String id, String name, String userName, String password, Date dob, String phone, String email, String address) {
+    private String gender;
+
+    private Wallet wallet;
+
+    private Status status;
+
+    private Role role;
+
+    public Account(String id, String name, String userName, String password, Date dob, String phone, String email, String gender, String address, Wallet wallet, Status status, Role role) {
         this.id = id;
         this.name = name;
         this.userName = userName;
@@ -30,12 +37,14 @@ public class Account {
         this.dob = dob;
         this.phone = phone;
         this.email = email;
+        this.gender = gender;
         this.address = address;
+        this.wallet = wallet;
+        this.status = status;
+        this.role = role;
     }
 
-    public Account() {
-
-    }
+    public Account() {}
 
     public String getId() {
         return id;
@@ -85,6 +94,14 @@ public class Account {
         this.phone = phone;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -93,11 +110,35 @@ public class Account {
         this.email = email;
     }
 
-    public String getAddress() {
-        return address;
+    public String getGender() {
+        return gender;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Wallet getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

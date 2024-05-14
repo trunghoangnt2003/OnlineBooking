@@ -29,7 +29,7 @@
 <body>
     <div class="login-box">
         <h2>Login</h2>
-        <form>
+        <form action="login" method="post">
             <div class="user-box">
 
                 <input type="text" name="userName" required="required"/>
@@ -61,9 +61,11 @@
         <div class="text-center flex">
             <p>Not a member? <a href="register">Register</a></p>
             <p class="d-inline">or sign up with:</p>
-            <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1 d-inline">
-                <i class="fab fa-facebook-f"></i>
-            </button>
+
+                <a href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8080/Frog/google&response_type=code
+                                &client_id=640660647139-t1brdm7075p7dpeabkoqsiols7shf6cr.apps.googleusercontent.com&approval_prompt=force"><i class="fab fa-google"></i></a>
+
+
         </div>
 
     </div>
