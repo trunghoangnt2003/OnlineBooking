@@ -11,6 +11,9 @@ public class Status {
         this.type = type;
     }
 
+    public Status() {
+    }
+
     public int getId() {
         return id;
     }

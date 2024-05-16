@@ -33,7 +33,6 @@ public class LoginGoogleController extends HttpServlet {
             String accessToken = GoogleUnits.getToken(code);
             GoogleUser googleUser = GoogleUnits.getUserInfo(accessToken);
             String email = googleUser.getEmail();
-            response.getWriter().print(email);
             Account user = null;
             AccountDAO accountDAO = new AccountDAO();
             user = accountDAO.getLoginGoogle(email);
