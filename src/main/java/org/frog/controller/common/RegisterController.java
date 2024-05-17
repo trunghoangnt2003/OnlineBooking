@@ -11,6 +11,7 @@ import org.frog.utility.SHA1;
 import org.frog.utility.StatusEnum;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -51,6 +52,8 @@ public class RegisterController extends HttpServlet {
         String passWord = req.getParameter("passWord");
         passWord = SHA1.toSHA1(passWord);
         String email = req.getParameter("email");
+        int role = Integer.parseInt(req.getParameter("role"));
+        System.out.println(role);
         String warningRegister;
         AccountDAO accountDAO = new AccountDAO();
         Account account = accountDAO.getLoginGoogle(email);
@@ -61,10 +64,11 @@ public class RegisterController extends HttpServlet {
         }
         UUID uuid = UUID.randomUUID();
         String id = uuid.toString();
-        accountDAO.register(id,email,passWord,1);
+        accountDAO.register(id,email,passWord,role);
         warningRegister = "Please check your mail to activate your account.";
+        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort()
-                + req.getContextPath() + "/activate?token=" + SHA1.toSHA1(email+email);
+                + req.getContextPath() + "/activate?token=" + SHA1.toSHA1(email+formatter.format(new Date()));
         sendEmail(url,email);
         req.setAttribute("warningRegister", warningRegister);
         req.getRequestDispatcher("view/public/login.jsp").forward(req,res);

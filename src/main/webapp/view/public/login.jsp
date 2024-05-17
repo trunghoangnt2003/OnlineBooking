@@ -18,7 +18,18 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css" >
 </head>
 <style>
+    .button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #eaeaea;
+        border: none;
+        cursor: pointer;
+    }
 
+    .button.selected {
+        background-color: #07ad90;
+        color: #ffffff;
+    }
 </style>
 <body>
 <ul class="nav">
@@ -106,9 +117,13 @@
                         <input type="password"  placeholder="password" autocomplete="new-password" REQUIRED>
                         <label>re-enter password</label>
                     </div>
+                    <br>
+                    <button class="button" type="button" onclick="selectButton(1)" value="1">Mentee</button>
+                    <button class="button" type="button" onclick="selectButton(2)" value="2">Mentor</button>
+                    <input type="hidden" id="selectedButton" name="role" value="1">
                     <p style="color: red;font-size: 10px">${requestScope.warningRegister}</p>
                     <div class="field-wrapper">
-                        <input type="submit">
+                        <input type="submit" onclick="submitForm()">
                     </div>
                     <span class="singin" onclick="showLogin()">Already a user? Sign in</span>
                 </form>
@@ -146,7 +161,26 @@
     </div>
 </div>
 <script src="${pageContext.request.contextPath}/js/login.js">
+</script>
+<script>
+    function selectButton(buttonNumber) {
+        var buttons = document.getElementsByClassName("button");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("selected");
+        }
+        buttons[buttonNumber - 1].classList.add("selected");
+        selectedButtonValue = buttons[buttonNumber - 1].value;
+        document.getElementById("selectedButton").value = selectedButtonValue;
+    }
+    function submitForm() {
+        if (selectedButtonValue === "") {
+            alert("Please select a button.");
+            return;
+        }
 
+        var form = document.getElementById("myForm");
+        form.submit();
+    }
 </script>
 </body>
 </html>

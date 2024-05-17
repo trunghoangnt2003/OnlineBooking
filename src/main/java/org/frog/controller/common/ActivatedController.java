@@ -11,7 +11,10 @@ import org.frog.utility.SHA1;
 import org.frog.utility.StatusEnum;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 @WebServlet("/activate")
 public class ActivatedController extends HttpServlet {
@@ -20,16 +23,26 @@ public class ActivatedController extends HttpServlet {
         String email = req.getParameter("token");
         AccountDAO accountDAO = new AccountDAO();
         ArrayList<Account> accounts = accountDAO.selectAll();
+        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        String account_email = "";
+        boolean check = true;
         for(Account account:accounts){
 
-            if(SHA1.toSHA1(account.getEmail()+account.getUserName()).equals(email)){
+            if(SHA1.toSHA1(account.getEmail()+formatter.format(new Date())).equals(email)){
                 if (account.getStatus().getId()==StatusEnum.INACTIVE){
-                    resp.getWriter().println("account activated :"+account.getEmail());
-                    accountDAO.updateStatus(account.getEmail(), StatusEnum.ACTIVE);
+                    account_email = account.getEmail();
+                    check=false;
+                    break;
                 }else {
                     resp.getWriter().println("<h2>Your account has been activated</2>");
                 }
             }
+        }
+        if(check) {
+            resp.getWriter().println("Sorry, the link you provided has expired");
+        }else{
+            resp.getWriter().println("account activated :" + account_email );
+            accountDAO.updateStatus(account_email, StatusEnum.ACTIVE);
         }
 
     }
