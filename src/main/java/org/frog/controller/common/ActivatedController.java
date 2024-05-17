@@ -24,7 +24,7 @@ public class ActivatedController extends HttpServlet {
 
             if(SHA1.toSHA1(account.getEmail()+account.getUserName()).equals(email)){
                 if (account.getStatus().getId()==StatusEnum.INACTIVE){
-                    resp.getWriter().println("<h3>account activated :"+account.getEmail() + " "+ StatusEnum.ACTIVE+"</h3>");
+                    resp.getWriter().println("account activated :"+account.getEmail());
                     accountDAO.updateStatus(account.getEmail(), StatusEnum.ACTIVE);
                 }else {
                     resp.getWriter().println("<h2>Your account has been activated</2>");

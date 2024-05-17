@@ -39,7 +39,10 @@ public class LoginGoogleController extends HttpServlet {
 
             if (user == null) {
                 //register if email don't have in database
-
+                String url = "view/public/login.jsp";
+                String warningLogin = "an account that does not exist in the system";
+                request.setAttribute("warningLogin", warningLogin);
+                request.getRequestDispatcher(url).forward(request, response);
             } else {
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);

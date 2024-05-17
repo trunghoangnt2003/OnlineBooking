@@ -11,7 +11,7 @@ import org.frog.utility.Email;
 import org.frog.utility.SHA1;
 
 import java.io.IOException;
-
+import java.util.Date;
 
 
 /**
@@ -22,13 +22,15 @@ import java.io.IOException;
 public class ResetPassWordController extends HttpServlet{
     private void sendEmail(String link,String email){
         String tile = "Reset your password";
-        String content = "Hello,"+email+" \n"
-                + "You have requested to reset your password.\n"
-                + "Click the link below to change your password:"
-                +  "<a href=\""+link+"\">Click me</a> \n"
-                + "\n"
-                + "Ignore this email if you do remember your password, "
-                + "or you have not made the request";
+        java.util.Date date = new Date();
+        String content = "<i>Hello,"+email+" </i><br>"
+                + "You have requested to reset your password.<br>"
+                + "Click the link below to change your password:<br>"
+                +  "<a href=\""+link+"\">Click me</a> <br>"
+                + "<br>"
+                + "Ignore this email if you do remember your password,"
+                + "or you have not made the request<br>"
+        + date;
         Email send = new Email();
         send.sendEmail(tile, content, email);
 

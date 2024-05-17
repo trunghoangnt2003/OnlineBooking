@@ -23,7 +23,7 @@ public class ChangePassWordController extends HttpServlet{
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String email = req.getParameter("token");
+        String email = req.getParameter("email");
         String passWord = req.getParameter("password1");
         AccountDAO accountDAO = new AccountDAO();
         ArrayList<Account> accounts = accountDAO.selectAll();

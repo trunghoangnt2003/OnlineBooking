@@ -188,23 +188,31 @@ public class AccountDAO {
     public void updatePassWord(String email, String newPass) {
         try {
             Connection connection = JDBC.getConnection();
-            String sql = "update [account]"
-                    + "set password=?"
-                    + "where mail=?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, newPass);
-            preparedStatement.setString(2, email);
-            preparedStatement.executeUpdate();
-            JDBC.closeConnection(connection);
+            String sql = "update [account]\n" +
+                    "set [password]=?\n" +
+                    "where [mail]=?";
+            PreparedStatement preparedStatement = null;
+            if (connection != null) {
+                preparedStatement = connection.prepareStatement(sql);
+                System.out.println("pass 1");
+                preparedStatement.setString(1, newPass);
+                preparedStatement.setString(2, email);
+                System.out.println("pass 2");
+                preparedStatement.executeUpdate();
+                System.out.println("pass 3");
+                JDBC.closeConnection(connection);
+            }
+
         } catch (SQLException ignored) {
+            System.out.println(ignored.getMessage());
         }
     }
     public void updateStatus(String email,int status) {
         try {
             Connection connection = JDBC.getConnection();
-            String sql = "update [account]"
-                    + "set status= ? "
-                    + "where mail= ? ";
+            String sql = "update [account]\n"
+                    + "set status= ?\n"
+                    + "where mail= ?\n";
             PreparedStatement preparedStatement = null;
             if (connection != null) {
                 System.out.println("update status 1 ");

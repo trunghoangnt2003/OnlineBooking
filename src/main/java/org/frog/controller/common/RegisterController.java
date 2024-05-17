@@ -11,17 +11,18 @@ import org.frog.utility.SHA1;
 import org.frog.utility.StatusEnum;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 @WebServlet("/register")
 public class RegisterController extends HttpServlet {
 
     private void sendEmail(String link,String email){
+        java.util.Date date = new Date();
         String tile = "Activate Your Account Now!";
-        String content = "<h3>Dear "+email+"</h3><br>" +
+        String content = "<h4>Dear "+email+"</h4><br>" +
                 "<br>" +
                 "Congratulations on creating your account with us! To activate your account and get started right away, simply click on the following link: " +
                 "<a href = \""+link+"\" >[Activation]</a><br>" +
@@ -32,7 +33,8 @@ public class RegisterController extends HttpServlet {
                 "<br>" +
                 "Thank you for choosing our platform. We look forward to serving you!<br>" +
                 "<br>" +
-                "Best regards";
+                "Best regards<br>"
+                +date;
         Email send = new Email();
         send.sendEmail(tile, content, email);
 

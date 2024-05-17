@@ -20,7 +20,7 @@
     <div class="row">
         <div class="col-sm-6 col-sm-offset-3">
             <p class="text-center">Use the form below to change your password. Your password cannot be the same as your username.</p>
-            <form method="post" id="passwordForm" action="changePass">
+            <form method="post" id="passwordForm" action="change-pass">
                 <input type="hidden" name="email" value="${param.token}">
                 <input type="password" class="input-lg form-control" name="password1" id="password1" placeholder="New Password" autocomplete="off">
                 <div class="row">
