@@ -31,7 +31,6 @@
         <h2>Register</h2>
         <form action="register" method="post">
             <div class="user-box">
-
                 <input type="text" name="userName" required="required"/>
                 <label>Username</label>
             </div>
