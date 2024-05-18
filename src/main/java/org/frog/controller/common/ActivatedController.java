@@ -23,12 +23,10 @@ public class ActivatedController extends HttpServlet {
         String email = req.getParameter("token");
         AccountDAO accountDAO = new AccountDAO();
         ArrayList<Account> accounts = accountDAO.selectAll();
-        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         String account_email = "";
         boolean check = true;
         for(Account account:accounts){
-
-            if(SHA1.toSHA1(account.getEmail()+formatter.format(new Date())).equals(email)){
+            if(SHA1.toSHA1(account.getEmail()+account.getUserName()).equals(email)){
                 if (account.getStatus().getId()==StatusEnum.INACTIVE){
                     account_email = account.getEmail();
                     check=false;
