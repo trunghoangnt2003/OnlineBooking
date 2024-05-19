@@ -45,7 +45,7 @@ public class LoginGoogleController extends HttpServlet {
                 request.getRequestDispatcher(url).forward(request, response);
             } else {
                 HttpSession session = request.getSession();
-                session.setAttribute("user", user);
+                session.setAttribute("account", user);
                 Cookie c_username = new Cookie("email", email);
                 c_username.setMaxAge(3600 * 24 * 7);
 

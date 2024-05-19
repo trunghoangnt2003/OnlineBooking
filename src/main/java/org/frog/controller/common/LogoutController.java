@@ -2,6 +2,7 @@ package org.frog.controller.common;
 
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,8 +12,9 @@ import java.io.IOException;
 
 /**
  *
- * @author trung
+ * @author trungs
  */
+@WebServlet("/logout")
 public class LogoutController extends HttpServlet {
 
     @Override
