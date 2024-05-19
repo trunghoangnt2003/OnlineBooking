@@ -15,17 +15,17 @@
 /*side*/
 .side{
     width: 25%;
-    height: 800px;
     padding: 10px;
-    border: 1px solid black;
+    /*border: 1px solid black;*/
 }
 
 
 
-.filter{
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
-    border-radius: 20px ;
-    height: 400px;
+.btn-filter{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
 }
 /*side*/
 
@@ -50,9 +50,33 @@
     margin-left: 20px;
 }
 
+.order-content{
+    display: flex;
+    align-items: flex-end;
+    margin-right: 30px;
+    margin-bottom: 5px;
+}
+
+.order-content select{
+    padding: .25em;
+    border: 0;
+    font-size: 14px;
+    border-bottom: 2px solid currentcolor;
+    border-radius: 0;
+    background-color: rgb(246, 255, 253);
+    border-bottom-color: #07ad90;
+    &:focus, &:active {
+        outline: 0;
+    }
+}
+.mentee{
+    display: flex;
+    align-items: flex-end;
+    margin-right: 30px;
+}
+
 .content_body{
     display: flex;
-
     align-items: center;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -97,5 +121,33 @@
 .rating{
     height: 25px;
     display: flex;
+}
+
+.stars-outer {
+    position: relative;
+    display: inline-block;
+}
+
+.stars-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 0;
+}
+
+.stars-outer::before {
+    content: "\f005 \f005 \f005 \f005 \f005";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    color: #ccc;
+}
+
+.stars-inner::before {
+    content: "\f005 \f005 \f005 \f005 \f005";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    color: #f8ce0b;
 }
 /*content*/
