@@ -25,7 +25,7 @@ public class MenteeDAO {
                 account.setName(resultSet.getString("name"));
                 account.setDob(resultSet.getDate("dob"));
                 account.setPhone(resultSet.getString("phone"));
-                account.setGender(resultSet.getString("gender"));
+                account.setGender(resultSet.getInt("gender"));
                 account.setAddress(resultSet.getString("address"));
                 account.setEmail(resultSet.getString("mail"));
                 account.setAvatar(resultSet.getString("avatar"));
@@ -85,23 +85,32 @@ public class MenteeDAO {
                     "    [address] = ?,\n" +
                     "    [mail] = ?\n" +
                     "WHERE [id] = ?;";
+
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            System.out.println("update mentee 1");
             preparedStatement.setString(1, mentee.getAccount().getName());
             preparedStatement.setDate(2, (mentee.getAccount().getDob())); // Corrected here
             preparedStatement.setString(3, mentee.getAccount().getPhone());
-            preparedStatement.setString(4, mentee.getAccount().getGender());
+            preparedStatement.setInt(4, mentee.getAccount().getGender());
             preparedStatement.setString(5, mentee.getAccount().getAddress());
             preparedStatement.setString(6, mentee.getAccount().getEmail());
             preparedStatement.setString(7, mentee.getAccount().getId());
-            preparedStatement.executeUpdate();
+            System.out.println(mentee.getAccount().getId());
+            System.out.println("update 2");
+            int res =  preparedStatement.executeUpdate();
+            System.out.println(res + " rows updated");
+            System.out.println("update 3");
+            JDBC.closeConnection(connection);
         } catch (SQLException e) {
             e.printStackTrace();  // Log the stack trace
         }
     }
+
+
     public static void main(String[] args) {
         Account a = new Account();
         a.setName("Doan Manh Gioi");
-        a.setGender("");
+     //   a.setGender("");
         Mentee m = new Mentee();
 
     }

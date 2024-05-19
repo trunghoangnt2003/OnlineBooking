@@ -1,5 +1,6 @@
 package org.frog.model;
 
+import javax.persistence.*;
 import java.sql.Date;
 
 public class Account {
@@ -20,7 +21,7 @@ public class Account {
 
     private String address;
 
-    private String gender;
+    private int gender;
 
     private Wallet wallet;
 
@@ -30,7 +31,7 @@ public class Account {
 
     private Role role;
 
-    public Account(String id, String name, String userName, String password, Date dob, String phone, String email, String gender, String address,String avatar, Wallet wallet, Status status, Role role) {
+    public Account(String id, String name, String userName, String password, Date dob, String phone, String email, int gender, String address, Wallet wallet, Status status, Role role) {
         this.id = id;
         this.name = name;
         this.userName = userName;
@@ -43,7 +44,6 @@ public class Account {
         this.wallet = wallet;
         this.status = status;
         this.role = role;
-        this.avatar = avatar;
     }
 
     public Account() {}
@@ -112,11 +112,11 @@ public class Account {
         this.email = email;
     }
 
-    public String getGender() {
+    public int getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(int gender) {
         this.gender = gender;
     }
 

@@ -19,7 +19,6 @@
          <div class="main-content">
              <div class= "main-content-profile">
                 <div class="content-profile-left">
-
                     <div class="avatar-infor">
                         <div style="margin-right: 30px" class="avatar">avatar</div>
                         <div class="all-infor" style="font-size: 30px">
@@ -59,18 +58,18 @@
                     </div>
 
                     <div class="function">
-                        <div style="margin-right: 10px" class="function-box">My Profile</div>
-                        <div style="margin-right: 10px" class="function-box"><a href="/Prog/update">update profile</a></div>
+                        <div style="margin-right: 10px" class="function-box"><a href="/Prog/mentee/profile"> My Profile</a></div>
+                        <div style="margin-right: 10px" class="function-box"><a href="/Prog/mentee/update">update profile</a></div>
                         <div style="margin-right: 10px" class="function-box">View Request</div>
                         <div style="margin-right: 10px" class="function-box">Wallet</div>
                     </div>
                 </div>
                  <div class="content-profile-right">
-
+                     <div><a>View Wish List</a></div>
+                     <div><a>Chat</a></div>
                  </div>
              </div>
              <div class="main-content-table">
-
              </div>
          </div>
         <!-- end main-content-->

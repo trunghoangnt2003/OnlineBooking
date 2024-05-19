@@ -33,14 +33,16 @@ public class LoginGoogleController extends HttpServlet {
             String accessToken = GoogleUnits.getToken(code);
             GoogleUser googleUser = GoogleUnits.getUserInfo(accessToken);
             String email = googleUser.getEmail();
-            response.getWriter().print(email);
             Account user = null;
             AccountDAO accountDAO = new AccountDAO();
             user = accountDAO.getLoginGoogle(email);
 
             if (user == null) {
                 //register if email don't have in database
-
+                String url = "view/public/login.jsp";
+                String warningLogin = "an account that does not exist in the system";
+                request.setAttribute("warningLogin", warningLogin);
+                request.getRequestDispatcher(url).forward(request, response);
             } else {
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);

@@ -39,7 +39,7 @@ public class Email {
                     InternetAddress.parse(email)
             );
             message.setSubject(titile,"UTF-8");
-            message.setText(string,"UTF-8" );
+            message.setContent(string,"text/html" );
 
             Transport.send(message);
 

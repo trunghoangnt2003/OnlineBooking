@@ -6,21 +6,27 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.frog.DAO.MenteeDAO;
+import org.frog.controller.auth.AuthenticationServlet;
+import org.frog.model.Account;
 import org.frog.model.Mentee;
 
 import java.io.IOException;
 
-@WebServlet("/profile")
-public class MenteeController extends HttpServlet {
+@WebServlet("/mentee/profile")
+public class MenteeController extends AuthenticationServlet {
 
-    public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
         MenteeDAO menteeDAO = new MenteeDAO();
-        Mentee mentee = menteeDAO.getMenteeById("e8fd47ed-dec2-49bf-829c-b182230ea49d");
+        Mentee mentee = menteeDAO.getMenteeById(account.getId());
         req.setAttribute("mentee", mentee);
-        req.getRequestDispatcher("mentee/profile/profile.jsp").forward(req, res);
+        req.getRequestDispatcher("../view/mentee/profile/profile.jsp").forward(req, resp);
     }
 
-    public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        doGet(req, res);
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+
     }
 }
