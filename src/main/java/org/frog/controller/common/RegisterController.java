@@ -68,7 +68,7 @@ public class RegisterController extends HttpServlet {
         warningRegister = "Please check your mail to activate your account.";
         DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort()
-                + req.getContextPath() + "/activate?token=" + SHA1.toSHA1(account.getEmail()+account.getUserName());
+                + req.getContextPath() + "/activate?token=" + SHA1.toSHA1(email+email);
         sendEmail(url,email);
         req.setAttribute("warningRegister", warningRegister);
         req.getRequestDispatcher("view/public/login.jsp").forward(req,res);
