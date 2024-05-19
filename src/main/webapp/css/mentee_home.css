@@ -150,4 +150,16 @@
     font-weight: 900;
     color: #f8ce0b;
 }
+
+.btn-action{
+    display: flex;
+}
+
+.booking{
+    width: 40%;
+}
+
+.follow{
+    width: 40%;
+}
 /*content*/
