@@ -17,6 +17,8 @@ public class Mentor {
 
     private float rating;
 
+    private int totalBookings;
+
     private ArrayList<Skill> skills;
     public Mentor() {
 
@@ -86,5 +88,13 @@ public class Mentor {
 
     public void setSkills(ArrayList<Skill> skills) {
         this.skills = skills;
+    }
+
+    public int getTotalBookings() {
+        return totalBookings;
+    }
+
+    public void setTotalBookings(int totalBookings) {
+        this.totalBookings = totalBookings;
     }
 }

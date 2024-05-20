@@ -13,6 +13,8 @@ public class Account {
 
     private String password;
 
+    private String avatar;
+
     private Date dob;
 
     private String phone;
@@ -76,6 +78,14 @@ public class Account {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public Date getDob() {
