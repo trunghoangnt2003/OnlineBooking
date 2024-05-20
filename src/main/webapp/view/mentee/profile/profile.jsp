@@ -20,7 +20,9 @@
              <div class= "main-content-profile">
                 <div class="content-profile-left">
                     <div class="avatar-infor">
-                        <div style="margin-right: 30px" class="avatar">avatar</div>
+                        <div class="avatar" style="width: 200px; height: 200px; margin-right: 20px ">
+                            <img style="width: 100%; height: 100%" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Maxwell Admin">
+                        </div>
                         <div class="all-infor" style="font-size: 30px">
                             <div class="name" >
                                 <div style="margin-right: 10px"><svg width="38" height="33" viewBox="0 0 38 33" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -58,18 +60,15 @@
                     </div>
 
                     <div class="function">
-                        <div style="margin-right: 10px" class="function-box"><a href="/Prog/mentee/profile"> My Profile</a></div>
-                        <div style="margin-right: 10px" class="function-box"><a href="/Prog/mentee/update">update profile</a></div>
+                        <div style="margin-right: 10px" class="function-box"><a href="/Prog/mentee/update">Update Profile</a></div>
                         <div style="margin-right: 10px" class="function-box">View Request</div>
                         <div style="margin-right: 10px" class="function-box">Wallet</div>
+                        <div style="margin-right: 10px" class="function-box">Chat</div>
                     </div>
                 </div>
-                 <div class="content-profile-right">
-                     <div><a>View Wish List</a></div>
-                     <div><a>Chat</a></div>
-                 </div>
              </div>
              <div class="main-content-table">
+
              </div>
          </div>
         <!-- end main-content-->

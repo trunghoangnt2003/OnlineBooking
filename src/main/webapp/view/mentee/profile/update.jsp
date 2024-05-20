@@ -28,7 +28,6 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/update.css">
 </head>
 <body>
-
         <div class="container">
             <div class="row gutters">
                 <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
@@ -38,6 +37,9 @@
                                 <div class="user-profile d-flex justify-content-center">
                                     <div class="user-avatar" style="width: 200px; height: 200px ">
                                         <img style="width: 100%; height: 100%" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Maxwell Admin">
+                                        <div style="margin-bottom: 10px; margin-top: 10px">
+                                                <span>${requestScope.mentee.account.email}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -52,9 +54,16 @@
                                     <div class="information-detail">
                                         <div>
                                             <h6 class="mb-3 text-primary">Personal Details</h6>
+
                                         </div>
                                         <div>
                                             <input type="hidden" name="id" value="${requestScope.mentee.account.id}">
+                                        </div>
+                                        <div style="margin-bottom: 10px">
+                                            <div class="form-outline" data-mdb-input-init>
+                                                <input type="text"  class="form-control"  id="username" name="username" value="${requestScope.mentee.account.userName}" required  />
+                                                <label class="form-label" for="username">User Name</label>
+                                            </div>
                                         </div>
                                         <div style="margin-bottom: 10px">
                                             <div class="form-outline" data-mdb-input-init >
@@ -80,12 +89,7 @@
                                                 <label class="form-label" for="Street">Address</label>
                                             </div>
                                         </div>
-                                        <div style="margin-bottom: 10px">
-                                            <div class="form-outline" data-mdb-input-init>
-                                                <input type="text"  class="form-control"  id="eMail" name="email" value="${requestScope.mentee.account.email}" required  />
-                                                <label class="form-label" for="eMail">Email</label>
-                                            </div>
-                                        </div>
+
                                         <div style="margin-bottom: 10px">
                                             <div class="form-group d-flex justify-content-around" >
                                                 <div class="form-check">
@@ -103,7 +107,7 @@
                                 <div class="row gutters">
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                         <div class="text-right">
-                                            <button type="button" name="cancel" class="btn btn-secondary">Cancel</button>
+                                            <button type="button" name="cancel" class="btn btn-secondary"><a href="profile">Cancel</a></button>
                                             <button type="submit" name="submit" class="btn btn-primary">Update</button>
                                         </div>
                                     </div>

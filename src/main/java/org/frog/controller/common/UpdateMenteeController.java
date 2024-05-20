@@ -34,6 +34,7 @@ public class UpdateMenteeController extends AuthenticationServlet {
         String email = req.getParameter("email");
         String phone = req.getParameter("phone");
         String address = req.getParameter("address");
+        String username = req.getParameter("username");
         String gender = req.getParameter("gender");
         System.out.println(id + " " + name + " " + email + " " + phone + " " + address + " " + gender);
 
@@ -41,7 +42,7 @@ public class UpdateMenteeController extends AuthenticationServlet {
         a.setId(id);
         a.setName(name);
         a.setDob(Date.valueOf((dob)));
-        a.setEmail(email);
+        a.setUserName(username);
         a.setPhone(phone);
         a.setAddress(address);
         a.setGender(Integer.parseInt(gender));

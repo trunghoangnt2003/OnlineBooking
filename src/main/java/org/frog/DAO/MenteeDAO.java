@@ -27,6 +27,7 @@ public class MenteeDAO {
                 account.setPhone(resultSet.getString("phone"));
                 account.setGender(resultSet.getInt("gender"));
                 account.setAddress(resultSet.getString("address"));
+                account.setUserName(resultSet.getString("username"));
                 account.setEmail(resultSet.getString("mail"));
                 account.setAvatar(resultSet.getString("avatar"));
 
@@ -77,29 +78,26 @@ public class MenteeDAO {
         try {
             Connection connection = JDBC.getConnection();
             String sql = "UPDATE [dbo].[Account]\n" +
-                    "SET \n" +
-                    "    [name] =?,\n" +
-                    "    [dob] = ?,  \n" +
-                    "    [phone] = ?,\n" +
-                    "    [gender] = ?,\n" +
-                    "    [address] = ?,\n" +
-                    "    [mail] = ?\n" +
-                    "WHERE [id] = ?;";
+                    "   SET \n" +
+                    "     [username] = ?\n" +
+                    "      ,[name] = ?\n" +
+                    "      ,[dob] = ?\n" +
+                    "      ,[phone] = ?\n" +
+                    "      ,[gender] = ?\n" +
+                    "      ,[address] = ?\n" +
+                    "      ,[avatar] = null\n" +
+                    " WHERE Account.id = ?";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             System.out.println("update mentee 1");
-            preparedStatement.setString(1, mentee.getAccount().getName());
-            preparedStatement.setDate(2, (mentee.getAccount().getDob())); // Corrected here
-            preparedStatement.setString(3, mentee.getAccount().getPhone());
-            preparedStatement.setInt(4, mentee.getAccount().getGender());
-            preparedStatement.setString(5, mentee.getAccount().getAddress());
-            preparedStatement.setString(6, mentee.getAccount().getEmail());
+            preparedStatement.setString(1, mentee.getAccount().getUserName());
+            preparedStatement.setString(2, mentee.getAccount().getName());
+            preparedStatement.setDate(3, mentee.getAccount().getDob());
+            preparedStatement.setString(4, mentee.getAccount().getPhone());
+            preparedStatement.setInt(5, mentee.getAccount().getGender());
+            preparedStatement.setString(6, mentee.getAccount().getAddress());
             preparedStatement.setString(7, mentee.getAccount().getId());
-            System.out.println(mentee.getAccount().getId());
-            System.out.println("update 2");
-            int res =  preparedStatement.executeUpdate();
-            System.out.println(res + " rows updated");
-            System.out.println("update 3");
+            preparedStatement.executeUpdate();
             JDBC.closeConnection(connection);
         } catch (SQLException e) {
             e.printStackTrace();  // Log the stack trace

@@ -10,6 +10,11 @@ html{
 }
 .avatar-infor{
     display: flex;
+    justify-content: center;
+
+}
+.user-avatar {
+    margin: 0 0 1rem 0;
 }
 .all-infor{
     margin-top: 20px;
@@ -49,9 +54,11 @@ html{
 .main-content-profile{
     display: flex;
     justify-content: space-between;
+    margin-bottom: 30px;
 }
 .function{
     display: flex;
+    margin-bottom: 20px;
 }
 .function-box{
     display: flex;
@@ -80,8 +87,13 @@ a {
 }
 .main-content-table{
     display: flex;
-    justify-content: center;
     width: 100%; /* Width in pixels */
     height: 100%; /* Height in pixels */
     background-color: #D9D9D9; /* Background color */
+}
+.item-right{
+    display: flex;
+}
+.table-items{
+    margin-top: 20px;
 }
