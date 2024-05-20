@@ -13,12 +13,19 @@ public class Mentor {
 
     private String education;
 
-    public Mentor(Account account, String profileDetail, float price, String experience, String education) {
+    private float rating;
+
+    public Mentor(Account account, String profileDetail, float price, String experience, String education, float rating) {
         this.account = account;
         this.profileDetail = profileDetail;
         this.price = price;
         this.experience = experience;
         this.education = education;
+        this.rating = rating;
+    }
+
+    public Mentor() {
+
     }
 
     public Account getAccount() {
@@ -59,5 +66,13 @@ public class Mentor {
 
     public void setEducation(String education) {
         this.education = education;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
     }
 }

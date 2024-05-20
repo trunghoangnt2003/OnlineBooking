@@ -23,13 +23,15 @@ public class Account {
 
     private String gender;
 
+    private String avatar;
+
     private Wallet wallet;
 
     private Status status;
 
     private Role role;
 
-    public Account(String id, String name, String userName, String password, Date dob, String phone, String email, String gender, String address, Wallet wallet, Status status, Role role) {
+    public Account(String id, String name, String userName, String password, Date dob, String phone, String email, String gender, String avatar, String address, Wallet wallet, Status status, Role role) {
         this.id = id;
         this.name = name;
         this.userName = userName;
@@ -38,6 +40,7 @@ public class Account {
         this.phone = phone;
         this.email = email;
         this.gender = gender;
+        this.avatar = avatar;
         this.address = address;
         this.wallet = wallet;
         this.status = status;
@@ -117,6 +120,10 @@ public class Account {
     public void setGender(String gender) {
         this.gender = gender;
     }
+
+    public String getAvatar() {return avatar;}
+
+    public void setAvatar(String avatar) {this.avatar = avatar;}
 
     public Status getStatus() {
         return status;

@@ -1,100 +1,49 @@
-
-.control {
-    background: black;
-    width: auto;
-    height: 40px;
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #85fff8;
 }
 
-.author {
-    text-align: end;
+.sidebar {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    padding-top: 20px;
+}
+
+.sidebar a {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 18px;
     color: white;
-    font-size: 20px;
-    margin-right: 10px;
+    display: block;
 }
 
-.bell {
-    height: 20px;
-    width: 20px;
-    margin-right: 10px;
+.sidebar h2 {
+    color: aqua;
 }
 
-.author button {
-    background: white;
-    color: black;
-    border-radius: 20%;
-    font-size: 15px;
-    margin-right: 10px;
-    height: 35px;
-
-}
-.image.profile {
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-    padding: 20px;
-    background: aliceblue;
-}
-
-.image.profile img {
-    max-width: 180px;
-    height: auto;
-    border-radius: 10%;
-}
-
-.image1 {
-    background: #03e9f4;
-    border-radius: 5px;
-    box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
-}
-
-.text-infor {
-    color: black;
-    font-family: sans-serif;
-    font-size: 20px;
-    font-weight: bold;
-
-}
-.active {
-    background-color: #141e30 !important;
-    color: white !important;
-}
-.text-infor, .price {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-.text-infor > div, .price > div {
-    margin-bottom: 6px; /* Khoảng cách giữa các dòng thông tin */
+.sidebar a:hover {
+    background-color: #575757;
 }
 
 .symbol {
     margin: 10px;
 }
-.price {
-    background-color: #1dc7ff; /* Màu nền nhạt để làm nổi bật khối thông tin */
-    border: 1px solid #ddd; /* Viền nhạt */
-    border-radius: 8px; /* Bo góc cho khối */
-    padding: 20px; /* Khoảng cách bên trong khối */
-    max-width: 300px; /* Giới hạn chiều rộng tối đa */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Tạo bóng cho khối */
-    height: 170px;
-    margin-left: 700px;
+
+.content {
+    margin-left: 200px;
+    padding: 20px;
 }
 
-.price div {
-    margin-bottom: 6px; /* Khoảng cách giữa các dòng thông tin */
-    font-size: 20px; /* Kích thước chữ */
-    color: #333; /* Màu chữ */
+.sidebar a.active {
+    background-color: #ddd; /* Adjust this color as needed */
+    color: #000; /* Adjust this color as needed */
 }
-
-.price div:last-child {
-    margin-bottom: 0; /* Xóa khoảng cách dưới cùng của dòng cuối */
+.sidebar a:hover, .sidebar a.active {
+    background-color: #bbb; /* Adjust this color as needed */
+    color: #fff; /* Adjust this color as needed */
 }
-
-.detail {
-    margin: 5px;
-}
-.btn-light {
-    margin: 5px;
-}
-
