@@ -6,11 +6,11 @@ public class Schedule {
     private int id;
     private Date dateStart;
     private Date dateEnd;
-    private int status;
+    private Status status;
     private Account account;
     private Booking booking;
 
-    public Schedule(int id, Date dateStart, Date dateEnd, int status, Account account, Booking booking) {
+    public Schedule(int id, Date dateStart, Date dateEnd, Status status, Account account, Booking booking) {
         this.id = id;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
@@ -46,11 +46,11 @@ public class Schedule {
         this.dateEnd = dateEnd;
     }
 
-    public int getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
