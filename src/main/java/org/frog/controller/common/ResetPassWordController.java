@@ -58,12 +58,12 @@ public class ResetPassWordController extends HttpServlet{
             req.setAttribute("warningRP", warningRP);
         }
 
-        req.getRequestDispatcher("view/public/login.jsp").forward(req, resp);
+        req.getRequestDispatcher("view/public/resetPass.jsp").forward(req, resp);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("view/public/login.jsp").forward(req, resp);
+        req.getRequestDispatcher("view/public/resetPass.jsp").forward(req, resp);
     }
 
 }

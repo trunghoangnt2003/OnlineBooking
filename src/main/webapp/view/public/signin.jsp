@@ -25,8 +25,27 @@
             <input type="password" id="password" placeholder="Enter your password" name = "password">
             <i id="pass-toggle-btn" class="fa-solid fa-eye pass-toggle-btn"></i>
         </div>
+    <div class="d-flex justify-content-between align-items-center">
+        <!-- Checkbox -->
+        <div class="form-check mb-0">
+            <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
+            <label class="form-check-label" for="form2Example3">
+                Remember me
+            </label>
+        </div>
+        <a href="reset-pass" class="text-body">Forgot password?</a>
+    </div>
     <div class="form-group submit-btn">
         <input type="submit" value="Submit">
+    </div>
+    <div class="text-center flex">
+        <p>Not a member? <a href="register">Register</a></p>
+        <p class="d-inline">or sign up with:</p>
+
+        <a href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8080/Frog/google&response_type=code
+                                &client_id=640660647139-t1brdm7075p7dpeabkoqsiols7shf6cr.apps.googleusercontent.com&approval_prompt=force"><i class="fab fa-google"></i></a>
+
+
     </div>
 </form>
 
