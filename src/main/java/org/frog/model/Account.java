@@ -21,7 +21,7 @@ public class Account {
 
     private String address;
 
-    private String gender;
+    private boolean gender;
 
     private String avatar;
 
@@ -31,7 +31,7 @@ public class Account {
 
     private Role role;
 
-    public Account(String id, String name, String userName, String password, Date dob, String phone, String email, String gender, String avatar, String address, Wallet wallet, Status status, Role role) {
+    public Account(String id, String name, String userName, String password, Date dob, String phone, String email, boolean gender, String address, String avatar, Wallet wallet, Status status, Role role) {
         this.id = id;
         this.name = name;
         this.userName = userName;
@@ -40,8 +40,8 @@ public class Account {
         this.phone = phone;
         this.email = email;
         this.gender = gender;
-        this.avatar = avatar;
         this.address = address;
+        this.avatar = avatar;
         this.wallet = wallet;
         this.status = status;
         this.role = role;
@@ -105,6 +105,14 @@ public class Account {
         this.address = address;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -113,17 +121,13 @@ public class Account {
         this.email = email;
     }
 
-    public String getGender() {
+    public boolean getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(boolean gender) {
         this.gender = gender;
     }
-
-    public String getAvatar() {return avatar;}
-
-    public void setAvatar(String avatar) {this.avatar = avatar;}
 
     public Status getStatus() {
         return status;

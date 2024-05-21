@@ -16,7 +16,7 @@ public class GoogleUnits{
                         .add("client_secret", Container.GOOGLE_CLIENT_SECRET)
                         .add("redirect_uri", Container.GOOGLE_REDIRECT_URI).add("code", code)
                         .add("grant_type", Container.GOOGLE_GRANT_TYPE).build())
-                .execute().returnContent().toString();
+                .execute().returnContent().asString();
         JsonObject jobj = new Gson().fromJson(response, JsonObject.class);
         return jobj.get("access_token").toString().replaceAll("\"", "");
     }
