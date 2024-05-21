@@ -1,30 +1,21 @@
-.container {
+.main {
     display: flex;
-    padding-top: 20px;
+    padding: 50px;
+    background: rgb(246, 255, 253);
 }
 
-.avatar-detail {
-    border-radius: 10%;
+.box-image {
+    width:65%;
+    height: 500px;
+    margin-right: 20px;
+    border-radius: 10px;
+    background: rgb(176, 237, 215);
 }
 
-.avatar {
-    height: 300px;
-    width: 300px;
-}
-
-.profile-detail {
-    border-radius: 10%;
-    background: azure;
-    width: 300px;
-    height: 300px;
+.box-detail {
+    width: 40%;
+    height: 500px;
     margin-left: 20px;
-    padding-left: 20px;
-}
-
-.profile-detail-header {
-    color: aqua;
-    font-size: 20px;
-    text-align: center;
-    font-weight: bold;
-
+    border-radius: 10px;
+    background: rgb(176, 237, 215);
 }

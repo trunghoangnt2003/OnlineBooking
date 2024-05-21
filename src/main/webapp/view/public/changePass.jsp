@@ -40,7 +40,7 @@
                     </div>
                 </div>
                 <input type="submit" class="col-xs-12 btn btn-primary btn-load btn-lg" data-loading-text="Changing Password..." value="Change Password">
-            </form
+            </form>
             <a href="login"> Back to login </a>
         </div><!--/col-sm-6-->
     </div><!--/row-->

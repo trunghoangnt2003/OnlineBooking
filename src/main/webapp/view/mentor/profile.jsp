@@ -2,41 +2,57 @@
   Created by IntelliJ IDEA.
   User: kttan
   Date: 5/21/2024
-  Time: 7:51 AM
+  Time: 10:08 AM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Profile</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mentor/profile.css">
+        <!-- Font Awesome -->
+        <link
+                rel="stylesheet"
+                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+
+        />
+        <!-- Google Fonts -->
+        <link
+                href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+                rel="stylesheet"
+        />
+        <!-- MDB -->
+        <link
+                href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.min.css"
+                rel="stylesheet"
+        />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+        <script>
+            import { Dropdown, Ripple, initMDB } from "mdb-ui-kit";
+
+            initMDB({Dropdown, Ripple});
+        </script>
 </head>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css//mentor/profile.css">
 <body>
 <jsp:include page="../common/header.jsp"></jsp:include>
 
-    <div class="container">
-        <div class="avatar">
-            <img class="avatar-detail" style="width: 100%; height: 100%" src="${pageContext.request.contextPath}/image/profile.jpg">
+    <div class="main">
+        <div class="box-image" style="border: 1px solid black">
+            <div>
+                image
+            </div>
 
-            <div class="infor">
-                <div>Name: ${requestScope.mentor.account.name}</div>
-                <div>Dob: ${requestScope.mentor.account.dob}</div>
-                <div>Gender: ${requestScope.mentor.account.gender ? "Male" : "Female"}</div>
-                <div>Email: ${requestScope.mentor.account.email}</div>
-                <div>Phone: ${requestScope.mentor.account.phone}</div>
-                <div>Address: ${requestScope.mentor.account.address}</div>
+            <div>
+                detaillll
             </div>
         </div>
 
-        <div class="detail">
-            <div class="profile-detail">Detail</div>
-            <div>Level of Education: ${requestScope.mentor.education}</div>
-            <div>Number of year of experience: ${requestScope.mentor.experience} year</div>
-            <div>Price: ${requestScope.mentor.price}</div>
+        <div class="box-detail" style="border: 1px solid black">
+            aboutttt jdschkjasnkj
         </div>
-
-
     </div>
-
 </body>
 </html>

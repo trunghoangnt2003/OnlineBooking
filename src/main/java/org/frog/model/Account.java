@@ -13,6 +13,8 @@ public class Account {
 
     private String password;
 
+    private String avatar;
+
     private Date dob;
 
     private String phone;
@@ -23,7 +25,6 @@ public class Account {
 
     private boolean gender;
 
-    private String avatar;
 
     private Wallet wallet;
 
