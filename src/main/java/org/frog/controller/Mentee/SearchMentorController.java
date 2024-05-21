@@ -4,7 +4,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import org.frog.DAO.CategoryDAO;
-import org.frog.DAO.MenterDAO;
+import org.frog.DAO.MentorDAO;
 import org.frog.DAO.SkillsDAO;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.Account;
@@ -30,13 +30,13 @@ public class SearchMentorController extends AuthenticationServlet {
 
         CategoryDAO categoryDAO = new CategoryDAO();
         SkillsDAO skillsDAO = new SkillsDAO();
-        MenterDAO menterDAO = new MenterDAO();
+        MentorDAO mentorDAO = new MentorDAO();
 
         ArrayList<Category> list_cate = categoryDAO.selectAll();
         ArrayList<Skill> list_skill = skillsDAO.getAll();
-        ArrayList<Mentor> list_mentor = menterDAO.getMentorAndPaging(page);
-        int end_page = menterDAO.totalMentor() / 3;
-        if (menterDAO.totalMentor() % 3 != 0) {
+        ArrayList<Mentor> list_mentor = mentorDAO.getMentorAndPaging(page);
+        int end_page = mentorDAO.totalMentor() / 6;
+        if (mentorDAO.totalMentor() % 6 != 0) {
             end_page++;
         }
 

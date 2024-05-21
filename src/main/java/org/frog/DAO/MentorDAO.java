@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class MenterDAO {
+public class MentorDAO {
 
     public ArrayList<Mentor> selectAll() {
 
@@ -58,9 +58,9 @@ public class MenterDAO {
             String sql = "Select a.id,a.username,a.name,a.dob,a.avatar,m.experience,m.price,m.rating\n" +
                     "From Account a JOIN Mentor m on a.id = m.account_id\n" +
                     "ORDER BY a.id\n" +
-                    "OFFSET ? ROWS FETCH NEXT 3 ROWS ONLY;";
+                    "OFFSET ? ROWS FETCH NEXT 6 ROWS ONLY;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, (page - 1) * 3);
+            preparedStatement.setInt(1, (page - 1) * 6);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Account account = new Account();

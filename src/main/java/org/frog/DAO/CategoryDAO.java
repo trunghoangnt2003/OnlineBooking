@@ -14,7 +14,8 @@ public class CategoryDAO {
         ArrayList<Category> list = new ArrayList<>();
         try {
             Connection connection = JDBC.getConnection();
-            String sql = "select * from [Skill_Category]";
+            String sql = "select * from [Skill_Category]\n" +
+                            "order by name asc";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
 
