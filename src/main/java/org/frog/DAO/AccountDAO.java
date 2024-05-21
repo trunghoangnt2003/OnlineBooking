@@ -65,17 +65,63 @@ public class AccountDAO {
         Account user = null;
         try {
             Connection connection = JDBC.getConnection();
-            String sql = "select * from [Account]"
+            String sql = "select * from [Account] \n"
                     + "where [mail]=?";
             PreparedStatement preparedStatement = connection.prepareCall(sql);
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
+                System.out.println(resultSet.getString("mail"));
+                String id = resultSet.getString("id");
+                String name = resultSet.getString("name");
+                //String avatar = resultSet.getString("avatar");
+                int gender = resultSet.getInt("gender");
                 String passWord = resultSet.getString("password");
                 String userName = resultSet.getNString("username");
                 user = new Account();
                 user.setUserName(userName);
                 user.setPassword(passWord);
+                user.setEmail(email);
+                user.setGender(gender);
+                user.setId(id);
+                user.setName(name);
+                //user.setAvatar(avatar);
+                System.out.println(user.getPassword());
+            }
+            JDBC.closeConnection(connection);
+        } catch (SQLException ignored) {
+        }
+        return user;
+    }
+    public Account getAccountByUserName(String username) {
+        Account user = null;
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "select * from [Account] \n"
+                    + "where [username]=?";
+            PreparedStatement preparedStatement = connection.prepareCall(sql);
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                user = new Account();
+                user.setUserName(username);
+            }
+            JDBC.closeConnection(connection);
+        } catch (SQLException ignored) {
+        }
+        return user;
+    }
+    public Account getAccountByEmail (String email) {
+        Account user = null;
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "select * from [Account] \n"
+                    + "where [mail]=?";
+            PreparedStatement preparedStatement = connection.prepareCall(sql);
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                user = new Account();
                 user.setEmail(email);
             }
             JDBC.closeConnection(connection);
@@ -133,12 +179,10 @@ public class AccountDAO {
                     "           ,[mail]\n" +
                     "           ,[username]\n" +
                     "           ,[password]\n" +
-                    "           ,[wallet_id]\n" +
                     "           ,[status]\n" +
                     "           ,[role_id])\n" +
                     "     VALUES\n" +
                     "           (?\n" +
-                    "           ,?\n" +
                     "           ,?\n" +
                     "           ,?\n" +
                     "           ,?\n" +
@@ -159,9 +203,8 @@ public class AccountDAO {
             preparedStatement.setString(7,account.getEmail());
             preparedStatement.setString(8,account.getUserName());
             preparedStatement.setString(9,account.getPassword());
-            preparedStatement.setInt(10,account.getWallet().getId());
-            preparedStatement.setInt(11,account.getStatus().getId());
-            preparedStatement.setInt(12,account.getRole().getId());
+            preparedStatement.setInt(10,account.getStatus().getId());
+            preparedStatement.setInt(11,account.getRole().getId());
             kq = preparedStatement.executeUpdate();
 
             JDBC.closeConnection(connection);

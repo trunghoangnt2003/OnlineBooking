@@ -32,7 +32,7 @@ public class ActivatedController extends HttpServlet {
                     check=false;
                     break;
                 }else {
-                    resp.getWriter().println("<h2>Your account has been activated</2>");
+                    resp.getWriter().println("Your account has been activated");
                 }
             }
         }

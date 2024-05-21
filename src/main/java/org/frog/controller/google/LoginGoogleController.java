@@ -54,9 +54,9 @@ public class LoginGoogleController extends HttpServlet {
 
                 response.addCookie(c_username);
                 response.addCookie(c_password);
-                //request.getRequestDispatcher("home").forward(request, response);
-                //response.sendRedirect("home");
-                response.getWriter().println(user.getUserName()+" "+user.getPassword());
+                request.getRequestDispatcher("home").forward(request, response);
+                response.sendRedirect("home");
+//                response.getWriter().println(user.getUserName()+" "+user.getPassword());
             }
         }
     }
