@@ -25,7 +25,7 @@ public class MenteeDAO {
                 account.setName(resultSet.getString("name"));
                 account.setDob(resultSet.getDate("dob"));
                 account.setPhone(resultSet.getString("phone"));
-                account.setGender(resultSet.getInt("gender"));
+                account.setGender(resultSet.getBoolean("gender"));
                 account.setAddress(resultSet.getString("address"));
                 account.setUserName(resultSet.getString("username"));
                 account.setEmail(resultSet.getString("mail"));
@@ -85,18 +85,20 @@ public class MenteeDAO {
                     "      ,[phone] = ?\n" +
                     "      ,[gender] = ?\n" +
                     "      ,[address] = ?\n" +
-                    "      ,[avatar] = null\n" +
+                    "      ,[avatar] = ?\n" +
                     " WHERE Account.id = ?";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            System.out.println("update mentee 1");
             preparedStatement.setString(1, mentee.getAccount().getUserName());
             preparedStatement.setString(2, mentee.getAccount().getName());
             preparedStatement.setDate(3, mentee.getAccount().getDob());
             preparedStatement.setString(4, mentee.getAccount().getPhone());
-            preparedStatement.setInt(5, mentee.getAccount().getGender());
+            preparedStatement.setBoolean(5, mentee.getAccount().getGender());
+            System.out.println(mentee.getAccount().getGender()+"sssss");
             preparedStatement.setString(6, mentee.getAccount().getAddress());
-            preparedStatement.setString(7, mentee.getAccount().getId());
+            preparedStatement.setString(7, mentee.getAccount().getAvatar());
+            System.out.println(mentee.getAccount().getAvatar());
+            preparedStatement.setString(8, mentee.getAccount().getId());
             preparedStatement.executeUpdate();
             JDBC.closeConnection(connection);
         } catch (SQLException e) {

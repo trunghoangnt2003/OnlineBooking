@@ -5,13 +5,32 @@ body{margin-top:20px;
 .information{
     display: block;
 }
-
+.main-container{
+    padding: 50px 150px;
+}
 .information-detail{
     width: 50%;
 }
 
 .information-detail div div input{
     color: black;
+}
+.upload{
+    position: relative;
+}
+.round{
+    position: absolute;
+    bottom: 30px;
+    left: 50px
+}
+.camera{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    background: #0CA4F6;
+    border-radius: 50%;
 }
 .account-settings .user-profile {
     margin: 0 0 1rem 0;
@@ -22,8 +41,8 @@ body{margin-top:20px;
     margin: 0 0 1rem 0;
 }
 .account-settings .user-profile .user-avatar img {
-    width: 90px;
-    height: 90px;
+    width: 150px;
+    height: 150px;
     -webkit-border-radius: 100px;
     -moz-border-radius: 100px;
     border-radius: 100px;
@@ -49,6 +68,27 @@ body{margin-top:20px;
     border-radius: 5px;
     border: 0;
     margin-bottom: 1rem;
+}
+#file-input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+}
+
+/* Style the camera icon */
+.camera-icon {
+    display: inline-block;
+    cursor: pointer;
+    font-size: 24px; /* Adjust size as needed */
+    color: #000; /* Adjust color as needed */
+}
+
+/* Optional: Style the round div if needed */
+.round {
+    position: relative;
+    display: inline-block;
 }
 .form-control {
     border: 1px solid #596280;

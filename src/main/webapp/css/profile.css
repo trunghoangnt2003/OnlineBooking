@@ -1,64 +1,23 @@
-html{
-    height: 100%;
-}
-.header1{
+.main {
     display: flex;
-    width: 1920px;
-    height: 77px;
-    background: #464646;
-    margin-bottom: 20px;
+    padding: 50px;
+    background: white;
 }
-.avatar-infor{
-    display: flex;
-    justify-content: center;
+/* Hide the file input */
 
-}
-.user-avatar {
-    margin: 0 0 1rem 0;
-}
-.all-infor{
-    margin-top: 20px;
-}
-.infor{
-    margin-bottom: 20px;
-    font-size: 30px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 800;
-    color: #000000;
-}
-.avatar{
+.box-image {
+    width:65%;
+    height: 500px;
+    margin-right: 20px;
+    border-radius: 10px;
+    background: rgb(246, 255, 253);
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    font-weight: bold;
-    color: red;
-    width: 250px;
-    height: 250px;
-    background-color: #D9D9D9;
-    border-radius: 30px;
-}
-.content-profile-right{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    font-weight: bold;
-    color: black;
-    width: 300px;
-    height: 330px;
-    background-color: #D9D9D9;
-    border-radius: 30px;
-    margin-bottom: 20px;
-}
-.main-content-profile{
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 30px;
+    box-shadow: 0 0 20px rgba(0,0,0, 0.25);
 }
 .function{
     display: flex;
     margin-bottom: 20px;
+    color: white;
 }
 .function-box{
     display: flex;
@@ -75,25 +34,62 @@ html{
     font-weight: 700;
     color: #000000;
 }
-a {
-    text-decoration: none;
-    color: inherit; /* Inherits the color from the parent .function-box */
-    font-size: inherit; /* Inherits the font size from the parent .function-box */
-    font-family: inherit; /* Inherits the font family from the parent .function-box */
-    font-weight: inherit; /* Inherits the font weight from the parent .function-box */
+.btn-warning{
+    position: relative;
+    padding: 11px 16px;
+    font-size: 15px;
 }
-.name{
-    display: flex;
+.btn-warning input[type="file"] {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
 }
-.main-content-table{
-    display: flex;
-    width: 100%; /* Width in pixels */
-    height: 100%; /* Height in pixels */
-    background-color: #D9D9D9; /* Background color */
+
+.box-detail {
+    width: 40%;
+    height: 500px;
+    margin-left: 20px;
+    box-shadow: 0 0 20px rgba(0,0,0, 0.25);
+    border-radius: 10px;
 }
-.item-right{
-    display: flex;
+.function{
+    margin-left: 20px;
 }
-.table-items{
+.function-box a {
+    text-decoration: none; /* Loại bỏ gạch chân */
+    color: inherit; /* Sử dụng màu chữ của thẻ cha */
+    display: block; /* Chuyển đổi thẻ a thành khối */
+}
+
+.avatar{
+    margin-left: 20px;
     margin-top: 20px;
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
 }
+
+
+.name {
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    font-style: italic;
+    padding-left: 20px;
+    font-size: 20px;
+}
+
+.infor-basic div{
+    margin-top: 7px;
+    padding-left: 20px;
+}
+
+.infor-basic h3 {
+    text-align: center;
+    color: black;
+    padding-top: 10px;
+}
+
+
+

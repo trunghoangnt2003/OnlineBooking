@@ -21,7 +21,7 @@ public class Account {
 
     private String address;
 
-    private int gender;
+    private boolean gender;
 
     private Wallet wallet;
 
@@ -31,7 +31,7 @@ public class Account {
 
     private Role role;
 
-    public Account(String id, String name, String userName, String password, Date dob, String phone, String email, int gender, String address, Wallet wallet, Status status, Role role) {
+    public Account(String id, String name, String userName, String password, Date dob, String phone, String email, boolean gender, String address, Wallet wallet, Status status, Role role) {
         this.id = id;
         this.name = name;
         this.userName = userName;
@@ -112,11 +112,11 @@ public class Account {
         this.email = email;
     }
 
-    public int getGender() {
+    public boolean getGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(boolean gender) {
         this.gender = gender;
     }
 

@@ -156,7 +156,7 @@ public class AccountDAO {
             preparedStatement.setString(2,account.getName());
             preparedStatement.setDate(3,account.getDob());
             preparedStatement.setString(4,account.getPhone());
-            preparedStatement.setInt(5,account.getGender());
+            preparedStatement.setBoolean(5,account.getGender());
             preparedStatement.setString(6,account.getAddress());
             preparedStatement.setString(7,account.getEmail());
             preparedStatement.setString(8,account.getUserName());
