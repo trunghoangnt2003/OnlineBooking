@@ -1,8 +1,7 @@
-package org.frog.controller.common;
+package org.frog.controller.mentee;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.frog.DAO.MenteeDAO;
