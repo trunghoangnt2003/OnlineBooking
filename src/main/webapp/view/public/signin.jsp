@@ -25,11 +25,11 @@
             <input type="password" id="password" placeholder="Enter your password" name = "password">
             <i id="pass-toggle-btn" class="fa-solid fa-eye pass-toggle-btn"></i>
         </div>
-    <div class="d-flex justify-content-between align-items-center">
+    <div class="d-flex justify-content-between align-items-center text-success">
         <!-- Checkbox -->
         <div class="form-check mb-0">
-            <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
-            <label class="form-check-label" for="form2Example3">
+            <input class="form-check-input" type="checkbox" value="" name="remember"/>
+            <label class="form-check-label" style="margin-top:5px;margin-left: 5px ">
                 Remember me
             </label>
         </div>
@@ -38,7 +38,7 @@
     <div class="form-group submit-btn">
         <input type="submit" value="Submit">
     </div>
-    <div class="text-center flex">
+    <div class="text-center flex text-success">
         <p>Not a member? <a href="register">Register</a></p>
         <p class="d-inline">or sign up with:</p>
 

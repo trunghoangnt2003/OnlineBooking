@@ -209,6 +209,7 @@ public class AccountDAO {
 
             JDBC.closeConnection(connection);
         } catch (SQLException ignored) {
+            System.out.println(ignored.getMessage());
         }
         return kq;
     }

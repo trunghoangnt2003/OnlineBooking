@@ -20,14 +20,21 @@
 </head>
 <body>
 <form action="reset-pass" method="post">
-    <h2>Sign In</h2>
+    <h2>Reset Password</h2>
     <div class="form-group email">
         <label for="email">Email</label>
-        <input type="email" id="email" placeholder="Enter your user name" name="email">
+        <input type="email" id="email" placeholder="Enter your email" name="email">
+    </div>
+    <div class="form-group email">
+        <label for="username">User Name</label>
+        <input type="text" id="username" placeholder="Enter your user name" name="username">
     </div>
 
     <div class="form-group submit-btn">
         <input type="submit" value="Submit">
+    </div>
+    <div class="form-group text-center text-success">
+        <p>Back to <a href="login">Login</a></p>
     </div>
 </form>
 <script src="${pageContext.request.contextPath}/js/resetPassword.js"></script>

@@ -28,13 +28,13 @@ public class LoginController extends HttpServlet {
         Account account = accountDAO.getLogin(userName, passWord);
 
         if(account == null){
-            url = "view/public/login.jsp";
-            warningLogin = "email or password incorrect";
+            url = "view/public/signin.jsp";
+            warningLogin = "username or password incorrect";
             req.setAttribute("warningLogin", warningLogin);
             req.getRequestDispatcher(url).forward(req, res);
         }else {
             if(account.getStatus().getId()== StatusEnum.INACTIVE){
-                url = "view/public/login.jsp";
+                url = "view/public/signin.jsp";
                 warningLogin = "Account need to be activated";
                 req.setAttribute("warningLogin", warningLogin);
                 req.getRequestDispatcher(url).forward(req, res);

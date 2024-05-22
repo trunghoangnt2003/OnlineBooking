@@ -34,7 +34,8 @@ public class RegisterController extends HttpServlet {
                 "<br>" +
                 "<b>Address : "+account.getAddress()+"</b>"+
                 "<br>" +
-                "<b>Gender : "+(account.getRole().getId() == 1?"Male":"Female")+"</b>"+
+                "<b>Gender : "+(account.getGender() == 1?"Male":"Female")+"</b>"+
+                "<b>Role : "+(account.getRole().getId()==1?"Mentee":"Mentor")+"</b>"+
                 "<br>" +
                 "Once you click on the link, you will be directed to the activation page where you can provide any necessary information and complete the activation process.<br>" +
                 "<br>" +
@@ -97,7 +98,7 @@ public class RegisterController extends HttpServlet {
                 accountDAO.insertUser(accountRegister);
                 String done;
                 done = "Please check your mail to activate your account.";
-                DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+
                 String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort()
                         + req.getContextPath() + "/activate?token=" + SHA1.toSHA1(email+email);
                 sendEmail(url,email,accountRegister);

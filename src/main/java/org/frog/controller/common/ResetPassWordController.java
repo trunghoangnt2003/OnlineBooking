@@ -41,6 +41,7 @@ public class ResetPassWordController extends HttpServlet{
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String email = req.getParameter("email");
+        String userName = req.getParameter("username");
         String warningRP = "";
         String done;
         AccountDAO accountDAO = new AccountDAO();
@@ -48,11 +49,17 @@ public class ResetPassWordController extends HttpServlet{
         DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         String date = formatter.format(new Date());
         if(account!=null) {
-            done = "Check your mail!";
-            req.setAttribute("done", done);
-            String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort()
-                    + req.getContextPath() + "/change-pass?token=" + SHA1.toSHA1(account.getEmail()+date);
-            sendEmail(url, email);
+            Account checkUserName = accountDAO.getAccountByUserName(userName);
+            if(checkUserName==null) {
+                warningRP = "Username don't incorrect";
+                req.setAttribute("warningRP", warningRP);
+            }else {
+                done = "Check your mail!";
+                req.setAttribute("done", done);
+                String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort()
+                        + req.getContextPath() + "/change-pass?token=" + SHA1.toSHA1(account.getEmail() + date);
+                sendEmail(url, email);
+            }dd
         }else {
             warningRP = "Email don't incorrect";
             req.setAttribute("warningRP", warningRP);

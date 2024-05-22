@@ -72,14 +72,18 @@
           <label for="role">Role</label>
           <select id="role" name="role">
             <option value="" selected disabled>Select your role</option>
-            <option value="0">Mentee</option>
-            <option value="1">Mentor</option>
+            <option value="1">Mentee</option>
+            <option value="2">Mentor</option>
           </select>
         </div>
       </div>
       <div class="form-group submit-btn">
         <input type="submit" value="Submit">
       </div>
+      <div class="form-group text-center text-success">
+        <p>You have account? <a href="login">Login</a></p>
+      </div>
+
     </form>
 
 
