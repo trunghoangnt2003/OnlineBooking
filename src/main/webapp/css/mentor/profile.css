@@ -5,7 +5,6 @@
 }
 
 .box-left {
-    border: 1px solid;
     border-radius: 10px;
     width: 60%;
     height: 500px;
@@ -25,7 +24,6 @@
 }
 
 .small-box-on {
-    border: 1px solid;
     border-radius: 10px;
     height: 36%;
     margin-bottom: 10px;
@@ -34,7 +32,6 @@
 }
 
 .small-box-under {
-    border: 1px solid;
     border-radius: 10px;
     height: 60%;
     margin-top: 10px;
