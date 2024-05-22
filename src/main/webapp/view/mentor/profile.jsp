@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: kttan
@@ -9,6 +10,10 @@
 <html>
 <head>
     <title>Profile</title>
+        <!-- Fontawesome CDN Link -->
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
         <!-- Font Awesome -->
         <link
                 rel="stylesheet"
@@ -40,19 +45,73 @@
 <jsp:include page="../common/header.jsp"></jsp:include>
 
     <div class="main">
-        <div class="box-image" style="border: 1px solid black">
-            <div>
-                image
-            </div>
+        <div class="box-left">
+            <div class="bio">
+                <div class="bio-image">
+                    <div><img class="avatar" src="${pageContext.request.contextPath}/img/profile.jpg"></div>
+                    <div class="name">${requestScope.mentor.account.name}</div>
+                </div>
 
-            <div>
-                detaillll
+                <div class="bio-detail">
+                    <div><h3>Biography</h3></div>
+                    <div class="detail"><i class="fa-solid fa-envelope" style="color: #74C0FC;"></i> ${requestScope.mentor.account.email}</div>
+                    <div class="detail"><i class="fa-solid fa-phone" style="color: #74C0FC;"></i> ${requestScope.mentor.account.phone}</div>
+                    <div class="detail"><i class="fa-solid fa-location-dot" style="color: #74C0FC;"></i> ${requestScope.mentor.account.address}</div>
+                    <div class="detail"><i class="fa-solid fa-calendar-days" style="color: #74C0FC;"></i> ${requestScope.mentor.account.dob}</div>
+                    <div class="detail"><i class="fa-solid fa-venus-mars" style="color: #74C0FC;"></i> ${requestScope.mentor.account.gender ? "Male" : "Female"}</div>
+                </div>
+
+                <div class="price">
+                    <div>Price: ${requestScope.mentor.price} $/hour</div>
+                </div>
+            </div>
+            <hr class="line">
+            <%-- =================================            --%>
+            <div class="profile-detail">
+                <div>Education: ${requestScope.mentor.education}</div>
+                <div>Year of Experience: ${requestScope.mentor.experience} year</div>
             </div>
         </div>
 
-        <div class="box-detail" style="border: 1px solid black">
-            aboutttt jdschkjasnkj
+        <%-- ==========================================================================       --%>
+        <div class="box-right">
+            <div class="small-box-on">
+                <h3>About Me</h3>
+                <div>Hi, I'm ${requestScope.mentor.account.name}, here some thing about me:</div>
+                <div>${requestScope.mentor.profileDetail}</div>
+            </div>
+
+            <div class="small-box-under">
+                <h3>My Skill</h3>
+                <div>
+                    <c:forEach items="${requestScope.mentor.skills}" var="skill">
+                        <div>${skill.name}</div>
+                    </c:forEach>
+                </div>
+            </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const starsTotal = 5;
+
+            // Get all star rating elements
+            const starContainers = document.querySelectorAll('.stars-inner');
+
+            starContainers.forEach(starsInner => {
+                // Get the rating from the data-rating attribute
+                const rating = parseFloat(starsInner.getAttribute('data-rating'));
+                console.log(starsInner.getAttribute('data-rating'));
+                // Calculate the percentage of stars to fill
+                const starPercentage = (rating / starsTotal) * 100;
+
+                // Set the width of the stars-inner to the calculated percentage
+                starsInner.style.width = starPercentage + '%';
+            });
+        })
+    </script>
+
 </body>
+
 </html>

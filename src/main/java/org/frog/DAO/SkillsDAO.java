@@ -60,14 +60,4 @@ public class SkillsDAO {
         return list;
 
     }
-
-
-    public static void main(String[] args) {
-
-        SkillsDAO skillsDAO = new SkillsDAO();
-        ArrayList<Skill> list = skillsDAO.getByMentorId("1525cfd4-fbb9-4667-9d00-2a54582a2f28");
-        for (Skill skill : list) {
-            System.out.println(skill);
-        }
-    }
 }

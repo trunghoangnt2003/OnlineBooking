@@ -152,7 +152,6 @@ public class MentorDAO {
 //                System.out.println(mentor.getPrice());
 //                System.out.println(mentor.getExperience());
 //                System.out.println(mentor.getEducation());
-//                System.out.println(mentor.getRating());
 
                 return mentor;
             }

@@ -1,21 +1,161 @@
 .main {
     display: flex;
-    padding: 50px;
-    background: rgb(246, 255, 253);
+    justify-content: space-around;
+    padding: 20px;
 }
 
-.box-image {
-    width:65%;
-    height: 500px;
-    margin-right: 20px;
+.box-left {
+    border: 1px solid;
     border-radius: 10px;
-    background: rgb(176, 237, 215);
+    width: 60%;
+    height: 500px;
+    background: rgb(246, 255, 253);
+    box-shadow: 0 0 20px rgba(0,0,0, 0.25);
+    display: flex;
+    flex-direction: column;
 }
 
-.box-detail {
-    width: 40%;
+.box-right {
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    width: 35%;
     height: 500px;
+    background: white;
+}
+
+.small-box-on {
+    border: 1px solid;
+    border-radius: 10px;
+    height: 36%;
+    margin-bottom: 10px;
+    background: rgb(246, 255, 253);
+    box-shadow: 0 0 20px rgba(0,0,0, 0.25);
+}
+
+.small-box-under {
+    border: 1px solid;
+    border-radius: 10px;
+    height: 60%;
+    margin-top: 10px;
+    background: rgb(246, 255, 253);
+    box-shadow: 0 0 20px rgba(0,0,0, 0.25);
+}
+
+.avatar {
+    width: 70%;
+    position: relative;
+    margin-top: 20px;
     margin-left: 20px;
     border-radius: 10px;
-    background: rgb(176, 237, 215);
 }
+
+.avatar img {
+    position: absolute;
+    top: 20px; /* Top margin */
+    left: 20px; /* Left margin */
+    width: calc(100% - 20px); /* Adjust width to account for margin */
+    height: calc(100% - 20px); /* Adjust height to account for margin */
+    object-fit: cover; /* Ensure image covers the container and stays square */
+}
+
+.name {
+    position: absolute;
+    margin-top: 10px;
+    margin-left: 20px;
+    font-size: 1.3vw;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.line {
+    margin-top: 60px;
+    margin-left: 20px;
+    margin-right: 20px;
+    font-size: 1.3vw;
+    border: 3px solid black; /* Thêm 'solid' để xác định kiểu đường viền */
+    height: 5px;
+    color: black;
+}
+
+.profile-detail {
+    padding-top: 10px;
+    padding-left: 20px;
+    font-size: 1.3vw;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.bio {
+    display: flex;
+}
+
+.bio-image {
+    position: relative;
+    width: 30%;
+}
+
+.bio-detail h3 {
+    text-align: center;
+    font-style: italic;
+    color: #038edc;
+}
+
+.bio-detail {
+    margin-left: 10px;
+    margin-top: 10px;
+    font-size: 1.3vw;
+}
+
+.detail {
+    margin-left: 10px;
+    margin-top: 10px;
+    font-size: 1.3vw;
+}
+
+.bio-detail i {
+    margin-left: 0.5vw;
+    margin-right: 0.5vw;
+}
+
+.small-box-on h3 {
+    text-align: center;
+    font-style: italic;
+    color: #038edc;
+}
+
+.small-box-on div {
+    margin-left: 10px;
+    margin-top: 10px;
+    font-size: 1.3vw;
+}
+
+.small-box-under h3 {
+    text-align: center;
+    font-style: italic;
+    color: #038edc;
+}
+
+.small-box-under div {
+    margin-left: 10px;
+    margin-top: 10px;
+    font-size: 1.3vw;
+}
+
+.price {
+    margin-left: 30px;
+    margin-top: 90px;
+    font-size: 1.3vw;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.price div {
+    background: oldlace;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0, 0.7);
+}
+
+
+
