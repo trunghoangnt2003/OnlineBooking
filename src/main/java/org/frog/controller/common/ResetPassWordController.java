@@ -59,7 +59,7 @@ public class ResetPassWordController extends HttpServlet{
                 String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort()
                         + req.getContextPath() + "/change-pass?token=" + SHA1.toSHA1(account.getEmail() + date);
                 sendEmail(url, email);
-            }dd
+            }
         }else {
             warningRP = "Email don't incorrect";
             req.setAttribute("warningRP", warningRP);
