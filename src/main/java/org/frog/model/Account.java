@@ -31,22 +31,24 @@ public class Account {
 
     private Role role;
 
-    public Account(String id, String name, String userName, String password, Date dob, String phone, String email, int gender, String address, Wallet wallet, Status status, Role role) {
+    public Account(String id, String avatar, String name, String userName, String password, Date dob, String phone, String email, String address, int gender, Wallet wallet, Status status, Role role) {
         this.id = id;
+        this.avatar = avatar;
         this.name = name;
         this.userName = userName;
         this.password = password;
         this.dob = dob;
         this.phone = phone;
         this.email = email;
-        this.gender = gender;
         this.address = address;
+        this.gender = gender;
         this.wallet = wallet;
         this.status = status;
         this.role = role;
     }
 
     public Account() {}
+
 
     public String getId() {
         return id;

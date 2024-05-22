@@ -13,28 +13,30 @@ import java.io.IOException;
 public class LoginController extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse res){
         try {
-            req.getRequestDispatcher("view/public/login.jsp").forward(req,res);
+            req.getRequestDispatcher("view/public/signin.jsp").forward(req,res);
         } catch (ServletException | IOException e) {
             throw new RuntimeException(e);
         }
     }
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-        String userName = req.getParameter("userName");
-        String passWord = req.getParameter("passWord");
+        String userName = req.getParameter("username");
+        String passWord = req.getParameter("password");
+        System.out.println(userName + " " + passWord);
         passWord = SHA1.toSHA1(passWord);
+        System.out.println("sha1: " + passWord);
         String warningLogin;
         String url;
         AccountDAO accountDAO = new AccountDAO();
         Account account = accountDAO.getLogin(userName, passWord);
 
         if(account == null){
-            url = "view/public/login.jsp";
-            warningLogin = "email or password incorrect";
+            url = "view/public/signin.jsp";
+            warningLogin = "username or password incorrect";
             req.setAttribute("warningLogin", warningLogin);
             req.getRequestDispatcher(url).forward(req, res);
         }else {
             if(account.getStatus().getId()== StatusEnum.INACTIVE){
-                url = "view/public/login.jsp";
+                url = "view/public/signin.jsp";
                 warningLogin = "Account need to be activated";
                 req.setAttribute("warningLogin", warningLogin);
                 req.getRequestDispatcher(url).forward(req, res);

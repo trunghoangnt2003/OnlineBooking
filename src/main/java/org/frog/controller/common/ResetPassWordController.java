@@ -11,6 +11,8 @@ import org.frog.utility.Email;
 import org.frog.utility.SHA1;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -39,25 +41,36 @@ public class ResetPassWordController extends HttpServlet{
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String email = req.getParameter("email");
+        String userName = req.getParameter("username");
         String warningRP = "";
-
+        String done;
         AccountDAO accountDAO = new AccountDAO();
         Account account = accountDAO.getLoginGoogle(email);
+        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        String date = formatter.format(new Date());
         if(account!=null) {
-            warningRP = "Check your mail!";
-            String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort()
-                    + req.getContextPath() + "/change-pass?token=" + SHA1.toSHA1(account.getEmail()+account.getUserName());
-            sendEmail(url, email);
+            Account checkUserName = accountDAO.getAccountByUserName(userName);
+            if(checkUserName==null) {
+                warningRP = "Username don't incorrect";
+                req.setAttribute("warningRP", warningRP);
+            }else {
+                done = "Check your mail!";
+                req.setAttribute("done", done);
+                String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort()
+                        + req.getContextPath() + "/change-pass?token=" + SHA1.toSHA1(account.getEmail() + date);
+                sendEmail(url, email);
+            }
         }else {
             warningRP = "Email don't incorrect";
+            req.setAttribute("warningRP", warningRP);
         }
-        req.setAttribute("warningRP", warningRP);
-        req.getRequestDispatcher("view/public/login.jsp").forward(req, resp);
+
+        req.getRequestDispatcher("view/public/resetPass.jsp").forward(req, resp);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("view/public/login.jsp").forward(req, resp);
+        req.getRequestDispatcher("view/public/resetPass.jsp").forward(req, resp);
     }
 
 }
