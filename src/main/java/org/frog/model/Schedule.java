@@ -1,16 +1,19 @@
 package org.frog.model;
 
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Schedule {
     private int id;
-    private Date dateStart;
-    private Date dateEnd;
-    private Status status;
+    private Timestamp dateStart;
+    private Timestamp dateEnd;
+    private boolean status;
     private Account account;
     private Booking booking;
 
-    public Schedule(int id, Date dateStart, Date dateEnd, Status status, Account account, Booking booking) {
+    public Schedule(int id, Timestamp dateStart, Timestamp dateEnd, boolean status, Account account, Booking booking) {
         this.id = id;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
@@ -30,27 +33,27 @@ public class Schedule {
         this.id = id;
     }
 
-    public Date getDateStart() {
+    public Timestamp getDateStart() {
         return dateStart;
     }
 
-    public void setDateStart(Date dateStart) {
+    public void setDateStart(Timestamp dateStart) {
         this.dateStart = dateStart;
     }
 
-    public Date getDateEnd() {
+    public Timestamp getDateEnd() {
         return dateEnd;
     }
 
-    public void setDateEnd(Date dateEnd) {
+    public void setDateEnd(Timestamp dateEnd) {
         this.dateEnd = dateEnd;
     }
 
-    public Status getStatus() {
+    public boolean getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 
@@ -68,5 +71,27 @@ public class Schedule {
 
     public void setBooking(Booking booking) {
         this.booking = booking;
+    }
+    public int getDateStartHour() {
+        LocalDateTime localDateTime = dateStart.toLocalDateTime();
+        return localDateTime.getHour();
+    }
+
+    public int getDateEndtHour() {
+        LocalDateTime localDateTime = dateEnd.toLocalDateTime();
+        if(localDateTime.getMinute()>0) {
+            return localDateTime.getHour()+1;
+        }
+        else{
+            return localDateTime.getHour();
+        }
+    }
+    public  String convertTimestampToString(Timestamp timestamp) {
+        if (timestamp == null) {
+            return ""; // hoặc giá trị mặc định bạn muốn trả về khi timestamp là null
+        }
+        LocalDateTime localDateTime = timestamp.toLocalDateTime();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return localDateTime.format(formatter);
     }
 }

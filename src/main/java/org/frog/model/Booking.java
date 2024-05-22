@@ -1,6 +1,7 @@
 package org.frog.model;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Booking {
     private int id;
@@ -9,10 +10,10 @@ public class Booking {
     private Date date;
     private Mentor mentor;
     private Mentee mentee;
-    private Date startDate;
-    private Date endDate;
+    private Timestamp startDate;
+    private Timestamp endDate;
 
-    public Booking(int id, Status status, float amount, Date date, Mentor mentor, Mentee mentee, Date startDate, Date endDate) {
+    public Booking(int id, Status status, float amount, Date date, Mentor mentor, Mentee mentee, Timestamp startDate, Timestamp endDate) {
         this.id = id;
         this.status = status;
         this.amount = amount;
@@ -26,19 +27,19 @@ public class Booking {
     public Booking() {
     }
 
-    public Date getStartDate() {
+    public Timestamp getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(Timestamp startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public Timestamp getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(Timestamp endDate) {
         this.endDate = endDate;
     }
 

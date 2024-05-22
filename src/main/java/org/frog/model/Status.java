@@ -6,8 +6,7 @@ public class Status {
 
     private String type;
 
-    public Status() {
-    }
+
     public Status(int id, String type) {
         this.id = id;
         this.type = type;
