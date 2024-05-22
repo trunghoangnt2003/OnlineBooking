@@ -60,7 +60,6 @@
                     <div class="detail"><i class="fa-solid fa-calendar-days" style="color: #74C0FC;"></i> ${requestScope.mentor.account.dob}</div>
                     <div class="detail"><i class="fa-solid fa-venus-mars" style="color: #74C0FC;"></i> ${requestScope.mentor.account.gender ? "Male" : "Female"}</div>
                 </div>
-
                 <div class="price">
                     <div>Price: ${requestScope.mentor.price} $/hour</div>
                 </div>
