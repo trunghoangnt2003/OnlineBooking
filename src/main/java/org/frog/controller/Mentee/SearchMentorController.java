@@ -30,13 +30,13 @@ public class SearchMentorController extends AuthenticationServlet {
 
         CategoryDAO categoryDAO = new CategoryDAO();
         SkillsDAO skillsDAO = new SkillsDAO();
-        MentorDAO menterDAO = new MentorDAO();
+        MentorDAO mentorDAO = new MentorDAO();
 
         ArrayList<Category> list_cate = categoryDAO.selectAll();
         ArrayList<Skill> list_skill = skillsDAO.getAll();
-        ArrayList<Mentor> list_mentor = menterDAO.getMentorAndPaging(page);
-        int end_page = menterDAO.totalMentor() / 3;
-        if (menterDAO.totalMentor() % 3 != 0) {
+        ArrayList<Mentor> list_mentor = mentorDAO.getMentorAndPaging(page);
+        int end_page = mentorDAO.totalMentor() / 6;
+        if (mentorDAO.totalMentor() % 6 != 0) {
             end_page++;
         }
 

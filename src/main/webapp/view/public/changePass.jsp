@@ -13,7 +13,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-12 text-center">
             <h1>Change Password</h1>
         </div>
     </div>

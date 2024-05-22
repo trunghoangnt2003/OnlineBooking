@@ -58,9 +58,9 @@ public class MentorDAO {
             String sql = "Select a.id,a.username,a.name,a.dob,a.avatar,m.experience,m.price,m.rating\n" +
                     "From Account a JOIN Mentor m on a.id = m.account_id\n" +
                     "ORDER BY a.id\n" +
-                    "OFFSET ? ROWS FETCH NEXT 3 ROWS ONLY;";
+                    "OFFSET ? ROWS FETCH NEXT 6 ROWS ONLY;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, (page - 1) * 3);
+            preparedStatement.setInt(1, (page - 1) * 6);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Account account = new Account();
@@ -128,7 +128,7 @@ public class MentorDAO {
                 account.setName(resultSet.getString("name"));
                 account.setDob(resultSet.getDate("dob"));
                 account.setPhone(resultSet.getString("phone"));
-                account.setGender(resultSet.getBoolean("gender"));
+                account.setGender(resultSet.getInt("gender"));
                 account.setAddress(resultSet.getString("address"));
                 account.setEmail(resultSet.getString("mail"));
                 account.setAvatar(resultSet.getString("avatar"));

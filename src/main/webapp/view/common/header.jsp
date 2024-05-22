@@ -46,9 +46,9 @@
     String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
             + request.getContextPath();
 %>
-<div class="        " style="position: sticky; top: 0; z-index: 999;">
-    <header class="border-bottom" >
-        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgb(246, 255, 253)">
+<div class="        " style="position: sticky; top:0; z-index: 999">
+    <header class="border-bottom">
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgb(176, 237, 215)">
             <!-- Container wrapper -->
             <div class="container">
                 <!-- Navbar brand -->
