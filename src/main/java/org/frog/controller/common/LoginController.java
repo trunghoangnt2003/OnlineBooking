@@ -21,13 +21,11 @@ public class LoginController extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         String userName = req.getParameter("username");
         String passWord = req.getParameter("password");
-        System.out.println(userName + " " + passWord);
-        passWord = SHA1.toSHA1(passWord);
-        System.out.println("sha1: " + passWord);
+        String sha1PassWord = SHA1.toSHA1(passWord);
         String warningLogin;
         String url;
         AccountDAO accountDAO = new AccountDAO();
-        Account account = accountDAO.getLogin(userName, passWord);
+        Account account = accountDAO.getLogin(userName, sha1PassWord);
 
         if(account == null){
             url = "view/public/signin.jsp";
@@ -35,7 +33,7 @@ public class LoginController extends HttpServlet {
             req.setAttribute("warningLogin", warningLogin);
             req.getRequestDispatcher(url).forward(req, res);
         }else {
-            if(account.getStatus().getId()== StatusEnum.INACTIVE){
+            if (account.getStatus().getId() == StatusEnum.INACTIVE) {
                 url = "view/public/signin.jsp";
                 warningLogin = "Account need to be activated";
                 req.setAttribute("warningLogin", warningLogin);
@@ -47,12 +45,33 @@ public class LoginController extends HttpServlet {
             Cookie c_username = new Cookie("userName", userName);
             c_username.setMaxAge(3600 * 24 * 7);
 
-            Cookie c_password = new Cookie("passWord", passWord);
+            Cookie c_password = new Cookie("passWord", sha1PassWord);
             c_password.setMaxAge(3600 * 24 * 7);
+            String remember = req.getParameter("remember");
+            System.out.println(remember);
+            if (remember != null) {
+                Cookie c_username_rm = new Cookie("usernameRM", userName);
+                c_username_rm.setMaxAge(3600 * 24 * 7);
+
+                Cookie c_password_rm = new Cookie("passwordRM", passWord);
+                c_password_rm.setMaxAge(3600 * 24 * 7);
+                res.addCookie(c_username_rm);
+                res.addCookie(c_password_rm);
+            }else {
+                System.out.println("here");
+                Cookie c_username_rm = new Cookie("usernameRM", "");
+                c_username_rm.setMaxAge(-1);
+
+                Cookie c_password_rm = new Cookie("passwordRM", "");
+                c_password_rm.setMaxAge(-1);
+
+                res.addCookie(c_username_rm);
+                res.addCookie(c_password_rm);
+            }
 
             res.addCookie(c_username);
             res.addCookie(c_password);
-            res.sendRedirect("Home");
+            res.sendRedirect("home");
         }
     }
 
