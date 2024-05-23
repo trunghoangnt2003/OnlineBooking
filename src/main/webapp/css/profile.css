@@ -73,6 +73,7 @@
 
 
 .name {
+    margin-top: 20px;
     color: rgb(0, 0, 0);
     font-weight: bold;
     font-style: italic;
@@ -86,9 +87,37 @@
 }
 
 .infor-basic h3 {
+    margin-right: 32px;
+    margin-top: 6px;
     text-align: center;
     color: black;
     padding-top: 10px;
+}
+.function{
+    display: flex;
+    margin-bottom: 20px;
+}
+.function-box{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    width: 150px;
+    height: 50px;
+    background-color: #F4E0B9;
+    border-radius: 10px;
+    margin-top: 20px;
+    font-size: 20px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    color: #000000;
+}
+a {
+    text-decoration: none;
+    color: inherit; /* Inherits the color from the parent .function-box */
+    font-size: inherit; /* Inherits the font size from the parent .function-box */
+    font-family: inherit; /* Inherits the font family from the parent .function-box */
+    font-weight: inherit; /* Inherits the font weight from the parent .function-box */
 }
 
 

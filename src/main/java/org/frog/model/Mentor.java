@@ -21,6 +21,14 @@ public class Mentor {
         this.education = education;
     }
 
+    public Mentor() {
+
+    }
+
+    public Mentor(Account account) {
+        this.account = account;
+    }
+
     public Account getAccount() {
         return account;
     }
