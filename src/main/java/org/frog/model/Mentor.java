@@ -19,7 +19,8 @@ public class Mentor {
 
     private int totalBookings;
 
-    private ArrayList<Skill> skills;
+    private ArrayList<Level_Skills> level_skills;
+
     public Mentor() {
 
     }
@@ -82,19 +83,19 @@ public class Mentor {
         this.rating = rating;
     }
 
-    public ArrayList<Skill> getSkills() {
-        return skills;
-    }
-
-    public void setSkills(ArrayList<Skill> skills) {
-        this.skills = skills;
-    }
-
     public int getTotalBookings() {
         return totalBookings;
     }
 
     public void setTotalBookings(int totalBookings) {
         this.totalBookings = totalBookings;
+    }
+
+    public ArrayList<Level_Skills> getLevel_skills() {
+        return level_skills;
+    }
+
+    public void setLevel_skills(ArrayList<Level_Skills> level_skills) {
+        this.level_skills = level_skills;
     }
 }

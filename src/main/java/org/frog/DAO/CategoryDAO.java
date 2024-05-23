@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class CategoryDAO {
 
-    public ArrayList<Category> selectAll() {
+    public ArrayList<Category> getAll() {
         ArrayList<Category> list = new ArrayList<>();
         try {
             Connection connection = JDBC.getConnection();

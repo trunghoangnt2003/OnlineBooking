@@ -28,12 +28,12 @@ public class SearchMentorController extends AuthenticationServlet {
         }
         System.out.println(page);
 
-        CategoryDAO categoryDAO = new CategoryDAO();
-        SkillsDAO skillsDAO = new SkillsDAO();
+//        CategoryDAO categoryDAO = new CategoryDAO();
+//        SkillsDAO skillsDAO = new SkillsDAO();
         MentorDAO mentorDAO = new MentorDAO();
 
-        ArrayList<Category> list_cate = categoryDAO.selectAll();
-        ArrayList<Skill> list_skill = skillsDAO.getAll();
+//        ArrayList<Category> list_cate = categoryDAO.selectAll();
+//        ArrayList<Skill> list_skill = skillsDAO.getAll();
         ArrayList<Mentor> list_mentor = mentorDAO.getMentorAndPaging(page);
         int end_page = mentorDAO.totalMentor() / 6;
         if (mentorDAO.totalMentor() % 6 != 0) {
@@ -44,8 +44,8 @@ public class SearchMentorController extends AuthenticationServlet {
         request.setAttribute("end_page", end_page);
         request.setAttribute("page", page);
         request.setAttribute("list_mentor", list_mentor);
-        request.setAttribute("list_cate", list_cate);
-        request.setAttribute("list_skill", list_skill);
+//        request.setAttribute("list_cate", list_cate);
+//        request.setAttribute("list_skill", list_skill);
         request.getRequestDispatcher("view/mentee/search_mentor.jsp").forward(request, response);
     }
 

@@ -36,7 +36,7 @@ public class MentorDAO {
                 mentor.setRating(resultSet.getFloat("rating"));
 
                 SkillsDAO skillsDAO = new SkillsDAO();
-                mentor.setSkills(  skillsDAO.getByMentorId(account.getId()));
+//                mentor.setSkills(  skillsDAO.getByMentorId(account.getId()));
 
                 BookingDAO bookingDAO = new BookingDAO();
 
@@ -76,7 +76,7 @@ public class MentorDAO {
                 mentor.setRating(resultSet.getFloat("rating"));
 
                 SkillsDAO skillsDAO = new SkillsDAO();
-                mentor.setSkills(  skillsDAO.getByMentorId(account.getId()));
+//                mentor.setSkills(  skillsDAO.getByMentorId(account.getId()));
 
                 BookingDAO bookingDAO = new BookingDAO();
                 mentor.setTotalBookings(bookingDAO.CalcBookByMentor(account.getId()));
