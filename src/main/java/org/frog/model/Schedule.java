@@ -94,4 +94,12 @@ public class Schedule {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return localDateTime.format(formatter);
     }
+    public  String convertTimestampToStringHMS(Timestamp timestamp) {
+        if (timestamp == null) {
+            return ""; // hoặc giá trị mặc định bạn muốn trả về khi timestamp là null
+        }
+        LocalDateTime localDateTime = timestamp.toLocalDateTime();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        return localDateTime.format(formatter);
+    }
 }

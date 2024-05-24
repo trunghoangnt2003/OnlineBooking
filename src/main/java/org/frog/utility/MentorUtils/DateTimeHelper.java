@@ -1,5 +1,6 @@
 package org.frog.utility.MentorUtils;
 
+import org.frog.model.Schedule;
 import org.frog.model.Week;
 
 import java.sql.Timestamp;
@@ -7,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.temporal.TemporalAdjusters;
@@ -49,5 +51,26 @@ public class DateTimeHelper {
         }
 
         return timestamp;
+    }
+    public static boolean compareTimeMenteeBook(ArrayList<Schedule> list, java.sql.Timestamp start, java.sql.Timestamp end) {
+        for (Schedule s : list) {
+            if (start.compareTo(s.getDateEnd()) > 0 || end.compareTo(s.getDateStart()) < 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static Timestamp converDayIDtoStartDate(String dayID) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate givenDate = LocalDate.parse(dayID, formatter);
+        LocalDateTime startOfDay = givenDate.atStartOfDay();
+        return Timestamp.valueOf(startOfDay);
+    }
+
+    public static Timestamp converDayIDtoEndDate(String dayID) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate givenDate = LocalDate.parse(dayID, formatter);
+        LocalDateTime endOfDay = givenDate.atTime(23, 59, 59);
+        return Timestamp.valueOf(endOfDay);
     }
 }

@@ -7,10 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.frog.DAO.Mentor.MentorDAO;
 import org.frog.controller.auth.AuthenticationServlet;
-import org.frog.model.Account;
-import org.frog.model.Booking;
-import org.frog.model.Schedule;
-import org.frog.model.Week;
+import org.frog.model.*;
 import org.frog.utility.MentorUtils.DateTimeHelper;
 
 import java.io.IOException;
@@ -32,7 +29,7 @@ public class ViewScheduleController extends AuthenticationServlet {
             String to = req.getParameter("to");
             MentorDAO mentorDAO = new MentorDAO();
             mentorDAO.updateFreeTimeOfMentor(DateTimeHelper.convertToTimestamp(setDate, from), DateTimeHelper.convertToTimestamp(setDate, to), "87928f9e-c513-4eea-9c29-0c403c57b537");
-            resp.sendRedirect("/prog/mentor/schedule?today="+setDate);
+            resp.sendRedirect("/Frog/mentor/schedule?today="+setDate);
 
         }
         catch (Exception e){
@@ -56,13 +53,22 @@ public class ViewScheduleController extends AuthenticationServlet {
             List<Week> weeks = DateTimeHelper.getWeekDates(day);
             req.setAttribute("weeks", weeks);
         }
+        String dayID = req.getParameter("dayID");
 
         MentorDAO mentorDAO = new MentorDAO();
-        ArrayList<Booking> bookings = mentorDAO.getBookingbyMentorID("87928f9e-c513-4eea-9c29-0c403c57b537");
+        if(dayID==null){
+
+        }else{
+            ArrayList<BookingSchedule> menteeInfo = new ArrayList<>();
+            menteeInfo = mentorDAO.getInfoByDayID("87928f9e-c513-4eea-9c29-0c403c57b537",DateTimeHelper.converDayIDtoStartDate(dayID),DateTimeHelper.converDayIDtoEndDate(dayID));
+            req.setAttribute("menteeInfo", menteeInfo);
+        }
+        ArrayList<BookingSchedule> bookings = mentorDAO.getBookingbyMentorID("87928f9e-c513-4eea-9c29-0c403c57b537");
         List<Integer> freetimeList = Arrays.stream(freetime).boxed().collect(Collectors.toList());
         req.setAttribute("freetime", freetimeList);
-        req.setAttribute("count", 0);
+        req.setAttribute("count", 1);
         schedules = mentorDAO.getScheduleByMentorID("87928f9e-c513-4eea-9c29-0c403c57b537");
+        req.setAttribute("mentorID","87928f9e-c513-4eea-9c29-0c403c57b537");
         req.setAttribute("schedules", schedules);
         req.setAttribute("bookings", bookings);
         req.getRequestDispatcher("/view/mentor/schedule/ViewSchedule.jsp").forward(req, resp);

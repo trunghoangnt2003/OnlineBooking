@@ -10,10 +10,19 @@ public class Booking {
     private Date date;
     private Mentor mentor;
     private Mentee mentee;
-    private Timestamp startDate;
-    private Timestamp endDate;
+    private Date startDate;
+    private Date endDate;
+    private String des;
 
-    public Booking(int id, Status status, float amount, Date date, Mentor mentor, Mentee mentee, Timestamp startDate, Timestamp endDate) {
+    public String getDes() {
+        return des;
+    }
+
+    public void setDes(String des) {
+        this.des = des;
+    }
+
+    public Booking(int id, Status status, float amount, Date date, Mentor mentor, Mentee mentee, Date startDate, Date endDate) {
         this.id = id;
         this.status = status;
         this.amount = amount;
@@ -27,19 +36,19 @@ public class Booking {
     public Booking() {
     }
 
-    public Timestamp getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Timestamp startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public Timestamp getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Timestamp endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
