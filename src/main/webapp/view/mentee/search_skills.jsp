@@ -93,34 +93,43 @@
                 </div>
             </div>
         </div>
-        <div class="info">
-            <h3>Search Result</h3>
-            <hr>
-            <div class="">
-                <c:forEach var="level_skill" items="${requestScope.list_level_skill}">
-                    <div>
-                        <form action="SearchMentor" method="get">
-                            <input name="skill" type="hidden" value="${level_skill.skill.name}"/>
-                            <input name="level" type="hidden" value="${level_skill.level.name}">
-                            <div class="response-content">
-                                    <div class="skill-title">
-                                        <img src="${pageContext.request.contextPath}/${level_skill.skill.src_icon}" style="width: 40px; height: 40px">
-                                        <span> ${level_skill.skill.name} for ${level_skill.level.name}</span>
-                                    </div>
-                                    <div>
-                                        <button type="submit" class="btn btn-outline-success"  data-mdb-ripple-init data-mdb-ripple-color="dark" >Find Mentor</button>
-                                    </div>
+        <div class="info"  >
+            <c:if test="${requestScope.list_level_skill.isEmpty()}">
+                <div style="display: flex; justify-content: center">
+                 <img src="${pageContext.request.contextPath}/img/frogmessege.png" alt="Logo" style="height: 400px"/>
+                </div>
+            </c:if>
+            <c:if test="${!requestScope.list_level_skill.isEmpty()}">
+            <div >
+                <h3>Search Result</h3>
+                <hr>
+                <div class="">
+                    <c:forEach var="level_skill" items="${requestScope.list_level_skill}">
+                        <div>
+                            <form action="SearchMentor" method="get">
+                                <input name="skill" type="hidden" value="${level_skill.skill.name}"/>
+                                <input name="level" type="hidden" value="${level_skill.level.name}">
+                                <div class="response-content">
+                                        <div class="skill-title">
+                                            <img src="${pageContext.request.contextPath}/${level_skill.skill.src_icon}" style="width: 40px; height: 40px">
+                                            <span> ${level_skill.skill.name} for ${level_skill.level.name}</span>
+                                        </div>
+                                        <div>
+                                            <button type="submit" class="btn btn-outline-success"  data-mdb-ripple-init data-mdb-ripple-color="dark" >Find Mentor</button>
+                                        </div>
 
+                                </div>
+                            </form>
+
+                            <div >
+                                <span style="margin-left: 50px; opacity: 80%">${level_skill.description} </span>
                             </div>
-                        </form>
-
-                        <div >
-                            <span style="margin-left: 50px; opacity: 80%">${level_skill.description} </span>
                         </div>
-                    </div>
-                    <hr>
-                </c:forEach>
+                        <hr>
+                    </c:forEach>
+                </div>
             </div>
+            </c:if>
         </div>
     </div>
 </div>
