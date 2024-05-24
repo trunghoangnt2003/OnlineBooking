@@ -1,7 +1,5 @@
 // Selecting form and input elements
 const form = document.querySelector("form");
-const passwordInput = document.getElementById("password");
-const passToggleBtn = document.getElementById("pass-toggle-btn");
 
 // Function to display error messages
 const showError = (field, errorText) => {
@@ -17,13 +15,10 @@ const handleFormData = (e) => {
     e.preventDefault();
 
     // Retrieving input elements
-
-    const usernameInput = document.getElementById("username");
+    const emailInput = document.getElementById("email");
 
     // Getting trimmed values from input fields
-    const username = usernameInput.value.trim();
-    const password = passwordInput.value.trim();
-
+    const email = emailInput.value.trim();
 
 
     // Regular expression pattern for email validation
@@ -35,16 +30,8 @@ const handleFormData = (e) => {
 
     // Performing validation checks
 
-    if (username === "") {
-        showError(usernameInput, "Enter your user name");
-    }
-
-    if (password === "") {
-        showError(passwordInput, "Enter your password");
-    }else {
-        if(!combinations.regex.test(password)){
-            showError(passwordInput,"At least 8 characters long");
-        }
+    if (!emailPattern.test(email)) {
+        showError(emailInput, "Enter a valid email address : abc@mail.com");
     }
 
 

@@ -24,22 +24,29 @@ public class ActivatedController extends HttpServlet {
         AccountDAO accountDAO = new AccountDAO();
         ArrayList<Account> accounts = accountDAO.selectAll();
         String account_email = "";
+        Account accountCheck = null;
         boolean check = true;
         for(Account account:accounts){
-            if(SHA1.toSHA1(account.getEmail()+account.getUserName()).equals(email)){
+
+            if(SHA1.toSHA1(account.getEmail()+account.getEmail()).equals(email)){
+
                 if (account.getStatus().getId()==StatusEnum.INACTIVE){
                     account_email = account.getEmail();
+                    accountCheck = account;
                     check=false;
                     break;
                 }else {
-                    resp.getWriter().println("<h2>Your account has been activated</2>");
+                    resp.getWriter().println("Your account has been activated");
                 }
             }
         }
         if(check) {
             resp.getWriter().println("Sorry, the link you provided has expired");
         }else{
-            resp.getWriter().println("account activated :" + account_email );
+            resp.getWriter().println("Account Activated" );
+            resp.getWriter().println("user name : "+accountCheck.getUserName());
+            resp.getWriter().println("email : "+accountCheck.getEmail());
+            resp.getWriter().println("Role : "+(accountCheck.getRole().getId()==1?"Mentee":"Mentor"));
             accountDAO.updateStatus(account_email, StatusEnum.ACTIVE);
         }
 

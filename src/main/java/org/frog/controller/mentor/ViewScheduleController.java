@@ -28,7 +28,7 @@ public class ViewScheduleController extends AuthenticationServlet {
             String from = req.getParameter("from");
             String to = req.getParameter("to");
             MentorDAO mentorDAO = new MentorDAO();
-            mentorDAO.updateFreeTimeOfMentor(DateTimeHelper.convertToTimestamp(setDate, from), DateTimeHelper.convertToTimestamp(setDate, to), "87928f9e-c513-4eea-9c29-0c403c57b537");
+            mentorDAO.updateFreeTimeOfMentor(DateTimeHelper.convertToTimestamp(setDate, from), DateTimeHelper.convertToTimestamp(setDate, to), account.getId());
             resp.sendRedirect("/Frog/mentor/schedule?today="+setDate);
 
         }
@@ -60,15 +60,15 @@ public class ViewScheduleController extends AuthenticationServlet {
 
         }else{
             ArrayList<BookingSchedule> menteeInfo = new ArrayList<>();
-            menteeInfo = mentorDAO.getInfoByDayID("87928f9e-c513-4eea-9c29-0c403c57b537",DateTimeHelper.converDayIDtoStartDate(dayID),DateTimeHelper.converDayIDtoEndDate(dayID));
+            menteeInfo = mentorDAO.getInfoByDayID(account.getId(),DateTimeHelper.converDayIDtoStartDate(dayID),DateTimeHelper.converDayIDtoEndDate(dayID));
             req.setAttribute("menteeInfo", menteeInfo);
         }
-        ArrayList<BookingSchedule> bookings = mentorDAO.getBookingbyMentorID("87928f9e-c513-4eea-9c29-0c403c57b537");
+        ArrayList<BookingSchedule> bookings = mentorDAO.getBookingbyMentorID(account.getId());
         List<Integer> freetimeList = Arrays.stream(freetime).boxed().collect(Collectors.toList());
         req.setAttribute("freetime", freetimeList);
         req.setAttribute("count", 1);
-        schedules = mentorDAO.getScheduleByMentorID("87928f9e-c513-4eea-9c29-0c403c57b537");
-        req.setAttribute("mentorID","87928f9e-c513-4eea-9c29-0c403c57b537");
+        schedules = mentorDAO.getScheduleByMentorID(account.getId());
+        req.setAttribute("mentorID",account.getId());
         req.setAttribute("schedules", schedules);
         req.setAttribute("bookings", bookings);
         req.getRequestDispatcher("/view/mentor/schedule/ViewSchedule.jsp").forward(req, resp);

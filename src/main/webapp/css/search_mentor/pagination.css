@@ -1,0 +1,39 @@
+/* Định dạng chung cho các liên kết trong phân trang */
+.pagination .page-link {
+    color: #179b81; /* Màu chữ mặc định */
+    background-color: rgb(246, 255, 253); /* Màu nền mặc định */
+    border: 1px solid #179b81; /* Viền mặc định */
+}
+
+/* Định dạng khi hover */
+.pagination .page-link:hover {
+    color: #fff; /* Màu chữ khi hover */
+    background-color: #179b81; /* Màu nền khi hover */
+    border-color: #179b81; /* Viền khi hover */
+}
+
+/* Định dạng cho thẻ li active */
+.pagination .page-item.active .page-link {
+    color: #fff !important; /* Màu chữ khi active */
+    background-color: #179b81 !important; /* Màu nền khi active */
+    border-color: #179b81 !important; /* Viền khi active */
+}
+
+/* Định dạng cho thẻ li active khi hover */
+.pagination .page-item.active .page-link:hover {
+    color: #fff !important; /* Màu chữ khi hover trên thẻ active */
+    background-color: #179b81 !important; /* Màu nền khi hover trên thẻ active */
+    border-color: #179b81 !important; /* Viền khi hover trên thẻ active */
+}
+
+/* Bỏ viền màu xanh dương khi focus */
+.pagination .page-link:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/* Bỏ viền màu xanh dương khi active */
+.pagination .page-link:active {
+    outline: none;
+    box-shadow: none;
+}

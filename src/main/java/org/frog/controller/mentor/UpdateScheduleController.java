@@ -44,7 +44,7 @@ public class UpdateScheduleController extends AuthenticationServlet {
                     if(bs.getSchedule().getStatus() == true){
                         mentorDAO.updateBusyMentorSchedule(bs.getSchedule().getId());
                         mentorDAO.updateResultsForMenteeRequest(bs.getBooking().getId(),3);
-                        req.getSession().setAttribute("existError", "");
+                        req.getSession().removeAttribute("existError");
 
                         resp.sendRedirect("/Frog/mentor/schedule");
                     }
@@ -55,7 +55,7 @@ public class UpdateScheduleController extends AuthenticationServlet {
                        boolean check = DateTimeHelper.compareTimeMenteeBook(menteeBookedTime,startT,endT);
                        if(check == true){
                            mentorDAO.updateResultsForMenteeRequest(bs.getBooking().getId(),3);
-                           req.getSession().setAttribute("existError", "");
+                           req.getSession().removeAttribute("existError");
 
                            resp.sendRedirect("/Frog/mentor/schedule");
                        }
@@ -75,6 +75,7 @@ public class UpdateScheduleController extends AuthenticationServlet {
                     BookingSchedule bs = new BookingSchedule();
                     bs = mentorDAO.getBookNScheID(startT, endT, id,menteeID);
                     mentorDAO.updateResultsForMenteeRequest(bs.getBooking().getId(),2);
+                    req.getSession().removeAttribute("existError");
                     resp.sendRedirect("/Frog/mentor/schedule");
                 }
             }

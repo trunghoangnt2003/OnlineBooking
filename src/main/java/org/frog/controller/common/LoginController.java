@@ -13,28 +13,28 @@ import java.io.IOException;
 public class LoginController extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse res){
         try {
-            req.getRequestDispatcher("view/public/login.jsp").forward(req,res);
+            req.getRequestDispatcher("view/public/signin.jsp").forward(req,res);
         } catch (ServletException | IOException e) {
             throw new RuntimeException(e);
         }
     }
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-        String userName = req.getParameter("userName");
-        String passWord = req.getParameter("passWord");
-        passWord = SHA1.toSHA1(passWord);
+        String userName = req.getParameter("username");
+        String passWord = req.getParameter("password");
+        String sha1PassWord = SHA1.toSHA1(passWord);
         String warningLogin;
         String url;
         AccountDAO accountDAO = new AccountDAO();
-        Account account = accountDAO.getLogin(userName, passWord);
+        Account account = accountDAO.getLogin(userName, sha1PassWord);
 
         if(account == null){
-            url = "view/public/login.jsp";
-            warningLogin = "email or password incorrect";
+            url = "view/public/signin.jsp";
+            warningLogin = "username or password incorrect";
             req.setAttribute("warningLogin", warningLogin);
             req.getRequestDispatcher(url).forward(req, res);
         }else {
-            if(account.getStatus().getId()== StatusEnum.INACTIVE){
-                url = "view/public/login.jsp";
+            if (account.getStatus().getId() == StatusEnum.INACTIVE) {
+                url = "view/public/signin.jsp";
                 warningLogin = "Account need to be activated";
                 req.setAttribute("warningLogin", warningLogin);
                 req.getRequestDispatcher(url).forward(req, res);
@@ -45,8 +45,29 @@ public class LoginController extends HttpServlet {
             Cookie c_username = new Cookie("userName", userName);
             c_username.setMaxAge(3600 * 24 * 7);
 
-            Cookie c_password = new Cookie("passWord", passWord);
+            Cookie c_password = new Cookie("passWord", sha1PassWord);
             c_password.setMaxAge(3600 * 24 * 7);
+            String remember = req.getParameter("remember");
+            System.out.println(remember);
+            if (remember != null) {
+                Cookie c_username_rm = new Cookie("usernameRM", userName);
+                c_username_rm.setMaxAge(3600 * 24 * 7);
+
+                Cookie c_password_rm = new Cookie("passwordRM", passWord);
+                c_password_rm.setMaxAge(3600 * 24 * 7);
+                res.addCookie(c_username_rm);
+                res.addCookie(c_password_rm);
+            }else {
+                System.out.println("here");
+                Cookie c_username_rm = new Cookie("usernameRM", "");
+                c_username_rm.setMaxAge(-1);
+
+                Cookie c_password_rm = new Cookie("passwordRM", "");
+                c_password_rm.setMaxAge(-1);
+
+                res.addCookie(c_username_rm);
+                res.addCookie(c_password_rm);
+            }
 
             res.addCookie(c_username);
             res.addCookie(c_password);

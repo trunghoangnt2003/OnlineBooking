@@ -77,7 +77,7 @@ public class MentorDAO {
 
         try {
             connection = JDBC.getConnection();
-            String sql = "SELECT b.id,b.mentee_id,create_date,amount,from_date,to_date,b.des,level_id,ls.description, bs.schedule_id,bs.start_date,bs.end_date,\n" +
+            String sql = "SELECT b.id,b.mentee_id,create_date,amount,from_date,to_date,b.description AS des,level_id,ls.description, bs.schedule_id,bs.start_date,bs.end_date,\n" +
                     "b.status_id,s.type,acc.name,acc.address,acc.dob,acc.gender,acc.mail,acc.phone\n" +
                     "FROM Booking b INNER JOIN Booking_Schedule bs ON b.id = bs.booking_id  \n" +
                     "INNER JOIN Level_Skill ls ON ls.id = b.level_skill_id\n" +
@@ -244,7 +244,7 @@ public class MentorDAO {
 
         try {
             connection = JDBC.getConnection();
-            String sql = "SELECT b.id,b.mentee_id,create_date,amount,from_date,to_date,b.des,level_id,ls.description, bs.schedule_id,bs.start_date,bs.end_date,\n" +
+            String sql = "SELECT b.id,b.mentee_id,create_date,amount,from_date,to_date,b.description AS des,level_id,ls.description, bs.schedule_id,bs.start_date,bs.end_date,\n" +
                     "b.status_id,s.type,acc.name,acc.address,acc.dob,acc.gender,acc.mail,acc.phone\n" +
                     "FROM Booking b INNER JOIN Booking_Schedule bs ON b.id = bs.booking_id  \n" +
                     "INNER JOIN Level_Skill ls ON ls.id = b.level_skill_id\n" +

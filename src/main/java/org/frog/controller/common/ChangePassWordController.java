@@ -33,6 +33,7 @@ public class ChangePassWordController extends HttpServlet{
         DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         String date = formatter.format(new Date());
         String account_email = "";
+        String mess;
         boolean check = true;
         for(Account account:accounts){
             if(SHA1.toSHA1(account.getEmail()+date).equals(email)){
@@ -42,12 +43,15 @@ public class ChangePassWordController extends HttpServlet{
             }
         }
         if(check) {
-            resp.getWriter().println("Sorry, the link you provided has expired");
+            mess = "Sorry, the link you provided has expired";
+            req.setAttribute("mess",mess);
         }else{
-            System.out.println("Change Pass : "+account_email);
+
+            mess = "Change Pass : "+account_email;
+            req.setAttribute("mess",mess);
             accountDAO.updatePassWord(account_email, SHA1.toSHA1(passWord));
-            resp.sendRedirect("login");
         }
+        req.getRequestDispatcher("view/public/changePassDone.jsp").forward(req, resp);
 
     }
 

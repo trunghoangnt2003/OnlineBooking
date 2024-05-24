@@ -2,6 +2,7 @@ package org.frog.utility;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.util.UUID;
 
 public class SHA1 {
     public static String toSHA1(String str) {
@@ -20,6 +21,8 @@ public class SHA1 {
     }
 
     public static void main(String[] args) {
-        System.out.println(SHA1.toSHA1("123"));
+        UUID id = UUID.randomUUID();
+        System.out.println(id);
+        System.out.println(SHA1.toSHA1("123456789"));
     }
 }
