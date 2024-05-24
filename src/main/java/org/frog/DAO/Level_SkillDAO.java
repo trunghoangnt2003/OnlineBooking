@@ -66,7 +66,7 @@ public class Level_SkillDAO {
                     "INNER JOIN Level_Skill ON [Level].id = Level_Skill.level_id " +
                     "INNER JOIN Skill ON Level_Skill.skill_id = Skill.id " +
                     "INNER JOIN Skill_Category ON Skill.cate_id = Skill_Category.id " +
-                    "WHERE Skill.name = ?";
+                    "WHERE Skill.name like '%" + name + "%'";
 
             if (levels != null && levels.length > 0) {
                 sql += " AND (";
@@ -80,15 +80,14 @@ public class Level_SkillDAO {
             }
 
             preparedStatement = connection.prepareStatement(sql.toString());
-            preparedStatement.setString(1, name);
+//            preparedStatement.setString(1, name);
 
             if (levels != null && levels.length > 0) {
                 for (int i = 0; i < levels.length; i++) {
-                    preparedStatement.setString(2 + i, levels[i]);
+                    preparedStatement.setString(1 + i, levels[i]);
                 }
             }
 
-            System.out.println(preparedStatement); // Debugging line to see the final query
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {

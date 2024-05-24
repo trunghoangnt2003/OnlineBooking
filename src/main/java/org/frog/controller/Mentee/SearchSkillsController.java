@@ -24,12 +24,12 @@ public class SearchSkillsController extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String skill = request.getParameter("skill");
-        System.out.println(skill);
         String[] levels = request.getParameterValues("level");
 
         SkillsDAO skillsDAO = new SkillsDAO();
         CategoryDAO categoryDAO = new CategoryDAO();
         LevelDAO levelDAO = new LevelDAO();
+        Level_SkillDAO level_skillDAO = new Level_SkillDAO();
 
         ArrayList<Level> list_level = levelDAO.getAll();
         ArrayList<Category> list_cate = categoryDAO.getAll();
@@ -39,7 +39,7 @@ public class SearchSkillsController extends HttpServlet {
             request.setAttribute("levels_select", levels_select);
         }
 
-        Level_SkillDAO level_skillDAO = new Level_SkillDAO();
+
         ArrayList<Level_Skills> list_level_skill = level_skillDAO.getLevel_Skill(skill, levels);
 
         request.setAttribute("list_level_skill", list_level_skill);

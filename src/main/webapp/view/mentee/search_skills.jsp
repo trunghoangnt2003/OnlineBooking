@@ -25,13 +25,19 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
-<body>
+<body >
 <jsp:include page="../common/header.jsp"></jsp:include>
+<div class="banner">
+    <img src="${pageContext.request.contextPath}/img/Banner.png" alt="Logo"/>
+</div>
 <div class="container main">
+
     <div class="search-container">
         <div class="search-box">
-            <input type="text" class="search-input" placeholder="Search skills..." />
-            <button class="search-btn">
+            <label>
+                <input type="text" class="search-input" id="search" placeholder="Search skills..." />
+            </label>
+            <button class="search-btn" onclick="searchHandler()">
                 <i class="fas fa-search fa-sm"></i>
             </button>
         </div>
@@ -88,21 +94,31 @@
             </div>
         </div>
         <div class="info">
-            <div class="response-text">
-
-                Response for:
-                <c:forEach var="level_skill" items="${requestScope.list_level_skill}" varStatus="status">
-                    ${level_skill.skill.name} for ${level_skill.level.name}
-                    <c:if test="${!status.last}">, </c:if>
-                </c:forEach>
-
-            </div>
+            <h3>Search Result</h3>
             <hr>
             <div class="">
                 <c:forEach var="level_skill" items="${requestScope.list_level_skill}">
                     <div>
-                        <h4>${level_skill.skill.name} for ${level_skill.level.name}</h4>
+                        <form action="SearchMentor" method="get">
+                            <input name="skill" type="hidden" value="${level_skill.skill.name}"/>
+                            <input name="level" type="hidden" value="${level_skill.level.name}">
+                            <div class="response-content">
+                                    <div class="skill-title">
+                                        <img src="${pageContext.request.contextPath}/${level_skill.skill.src_icon}" style="width: 40px; height: 40px">
+                                        <span> ${level_skill.skill.name} for ${level_skill.level.name}</span>
+                                    </div>
+                                    <div>
+                                        <button type="submit" class="btn btn-outline-success"  data-mdb-ripple-init data-mdb-ripple-color="dark" >Find Mentor</button>
+                                    </div>
+
+                            </div>
+                        </form>
+
+                        <div >
+                            <span style="margin-left: 50px; opacity: 80%">${level_skill.description} </span>
+                        </div>
                     </div>
+                    <hr>
                 </c:forEach>
             </div>
         </div>
@@ -165,6 +181,19 @@
             let encodedSkill = encodeURIComponent(name)
             window.location.href = `${pageContext.request.contextPath}/Search_Skills?skill=` + encodedSkill+ levels;
         }
+    }
+
+    function searchHandler() {
+        const search_value =  document.getElementById("search").value;
+        let levels = "";
+        const checkboxes = document.querySelectorAll('#listLevel .checkbox:checked');
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                levels +=  "&level="+checkbox.value;
+            }
+        });
+        let encodedSkill = encodeURIComponent(search_value)
+        window.location.href = `${pageContext.request.contextPath}/Search_Skills?skill=` + encodedSkill+ levels;
     }
 </script>
 </body>
