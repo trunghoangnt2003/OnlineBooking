@@ -1,8 +1,9 @@
 
-
+.main{
+    padding-bottom: 100px;
+}
 
 .body{
-    display: flex;
     margin: 50px 20px 0 20px;
 }
 .image{
