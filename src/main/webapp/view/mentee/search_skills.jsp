@@ -55,13 +55,11 @@
                                 <label>
 
                                     <input type="checkbox" class="checkbox" name="level" value="${level.name}"
-                                    <c:forEach items="${requestScope.levels_select}" var="selectedLevel">
-                                        <c:if test="${selectedLevel.equals(level.name)}">
-                                            <c:set var="isChecked" value="true" />
-                                        </c:if>
-                                    </c:forEach>
-                                    <input type="checkbox" class="checkbox" name="level" value="${level.name}"
-                                           <c:if test="${isChecked}">checked</c:if>
+                                        <c:forEach items="${requestScope.levels_select}" var="selectedLevel">
+                                            <c:if test="${selectedLevel.equals(level.name)}">
+                                                checked
+                                            </c:if>
+                                        </c:forEach>
                                     >
                                 </label>
                                 <span class="item-text">&nbsp;${level.name}</span>
