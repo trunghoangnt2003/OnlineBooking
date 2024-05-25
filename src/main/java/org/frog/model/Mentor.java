@@ -2,7 +2,6 @@ package org.frog.model;
 
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Mentor {
 
@@ -20,7 +19,7 @@ public class Mentor {
 
     private int totalBookings;
 
-    private ArrayList<Skill> skills;
+    private ArrayList<Level_Skills> level_skills;
 
     public Mentor() {
 
@@ -33,6 +32,11 @@ public class Mentor {
         this.experience = experience;
         this.education = education;
         this.rating = rating;
+    }
+
+
+    public Mentor(Account account) {
+        this.account = account;
     }
 
     public Mentor(Account account, String detail, int price, String exp, String edu) {
@@ -98,5 +102,13 @@ public class Mentor {
 
     public void setTotalBookings(int totalBookings) {
         this.totalBookings = totalBookings;
+    }
+
+    public ArrayList<Level_Skills> getLevel_skills() {
+        return level_skills;
+    }
+
+    public void setLevel_skills(ArrayList<Level_Skills> level_skills) {
+        this.level_skills = level_skills;
     }
 }

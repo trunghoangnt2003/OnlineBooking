@@ -16,7 +16,7 @@ public class WishListDAO {
         ArrayList<WishList> wishLists = new ArrayList<>();
         try {
             Connection connection = JDBC.getConnection();
-            String sql = "SELECT Account.name, Wish_List.status, Wish_List.time_request\n" +
+            String sql = "SELECT Account.name, Wish_List.status, Wish_List.date\n" +
                     "FROM    Wish_List join Mentee on Wish_List.mentee_id = Mentee.account_id\n" +
                     "\t\t\tjoin Account on Mentee.account_id = Account.id\n" +
                     "\t\t\t\t  where Wish_List.mentor_id = ?";
@@ -32,7 +32,7 @@ public class WishListDAO {
                 mentee.setAccount(account);
                 wishList.setMentee(mentee);
                 wishList.setStatus(resultSet.getInt("status"));
-                wishList.setTimeRequest(resultSet.getDate("time_request"));
+                wishList.setTimeRequest(resultSet.getDate("date"));
                 wishLists.add(wishList);
             }
         } catch (SQLException e) {

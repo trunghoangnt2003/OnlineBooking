@@ -10,6 +10,7 @@ import org.frog.model.Status;
 import org.frog.utility.Email;
 import org.frog.utility.SHA1;
 import org.frog.utility.StatusEnum;
+import org.frog.utility.validate;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -59,14 +60,19 @@ public class RegisterController extends HttpServlet {
     }
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         String password = req.getParameter("password");
-        password = SHA1.toSHA1(password);
         String email = req.getParameter("mail");
         String name = req.getParameter("name");
         String userName = req.getParameter("userName");
         String phone = req.getParameter("phone");
         String address = req.getParameter("address");
-        int role = Integer.parseInt(req.getParameter("role"));
-        int gender = Integer.parseInt(req.getParameter("gender"));
+        String roleString = req.getParameter("role");
+        // if role == null . default = 1
+        roleString = roleString!=null?roleString:"1";
+        int role = Integer.parseInt(roleString);
+        String genderString = req.getParameter("gender");
+        // if gender == null . default = 1
+        genderString = genderString!=null?genderString:"1";
+        int gender = Integer.parseInt(genderString);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         java.sql.Date dob = null;
         try {
@@ -76,6 +82,14 @@ public class RegisterController extends HttpServlet {
             throw new RuntimeException(e);
         }
         String warningRegister;
+        password = validate.checkPassword(password);
+        email = validate.checkMail(email);
+        if(password == null || email == null){
+            warningRegister = "Error validating";
+            req.setAttribute("warningRegister", warningRegister);
+            req.getRequestDispatcher("view/public/signup.jsp").forward(req,res);
+        }
+        password = SHA1.toSHA1(password);
         AccountDAO accountDAO = new AccountDAO();
         Account account = accountDAO.getAccountByEmail(email);
         System.out.println(account);

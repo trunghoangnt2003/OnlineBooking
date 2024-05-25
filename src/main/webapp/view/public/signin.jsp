@@ -28,7 +28,7 @@
     <div class="d-flex justify-content-between align-items-center text-success">
         <!-- Checkbox -->
         <div class="form-check mb-0">
-            <input class="form-check-input" type="checkbox" value="" name="remember"/>
+            <input class="form-check-input" type="checkbox" value="1" name="remember" id="remember"/>
             <label class="form-check-label" style="margin-top:5px;margin-left: 5px ">
                 Remember me
             </label>
@@ -52,6 +52,44 @@
 <script src="${pageContext.request.contextPath}/js/login.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    function getCookie(cookieName) {
+        const name = cookieName + "=";
+        const decodedCookie = decodeURIComponent(document.cookie);
+        const cookieArray = decodedCookie.split(';');
+
+        for(let i = 0; i < cookieArray.length; i++) {
+            let cookie = cookieArray[i];
+            while (cookie.charAt(0) === ' ') {
+                cookie = cookie.substring(1);
+            }
+            if (cookie.indexOf(name) === 0) {
+                return cookie.substring(name.length, cookie.length);
+            }
+        }
+        return "";
+    }
+
+    // Function to set the value of the input field with the retrieved cookie value
+    function setUserNameValueToInput() {
+        document.getElementById("username").value = getCookie("usernameRM");
+    }
+    function setPassWordValueToInput() {
+        document.getElementById("password").value = getCookie("passwordRM");
+    }
+    function setRememberValueToInput() {
+        const username = getCookie("usernameRM");
+        if(username){
+            document.getElementById("remember").click();
+        }
+    }
+
+    // Load the cookie value when the page is fully loaded
+    window.onload = function() {
+        setRememberValueToInput();
+        setPassWordValueToInput();
+        setUserNameValueToInput();
+        // You can call more functions here if needed
+    };
     <c:if test="${requestScope.warningLogin!=null}">
     window.onload = function() {
         Swal.fire({

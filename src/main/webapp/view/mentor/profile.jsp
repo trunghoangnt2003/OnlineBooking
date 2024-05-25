@@ -76,9 +76,18 @@
             </div>
             <hr class="line">
             <%-- =================================            --%>
-            <div class="profile-detail">
-                <div>Education: ${requestScope.mentor.education}</div>
-                <div>Year of Experience: ${requestScope.mentor.experience} year</div>
+            <div class="profile-detail d-flex justify-content-between" >
+                <div>
+                    <div>Education: ${requestScope.mentor.education}</div>
+                    <div>Year of Experience: ${requestScope.mentor.experience} year</div>
+                </div>
+
+                <div style="margin-right: 20px">
+                    <a href="/Frog/mentor/follower">
+                        <button type="button" class="btn btn-primary" data-mdb-ripple-init>View Follow Request</button>
+                    </a>
+                </div>
+
             </div>
         </div>
 

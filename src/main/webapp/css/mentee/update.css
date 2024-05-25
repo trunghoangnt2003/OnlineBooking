@@ -1,0 +1,115 @@
+body{margin-top:20px;
+    color: #bcd0f7;
+    background: white;
+}
+.information{
+    display: block;
+}
+.main-container{
+    padding: 50px 150px;
+}
+.information-detail{
+    width: 50%;
+}
+.body-content{
+    margin-bottom: 30px;
+}
+
+.information-detail div div input{
+    color: black;
+}
+.upload{
+    position: relative;
+}
+.round{
+    position: absolute;
+    bottom: 30px;
+    left: 50px
+}
+.camera{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    background: #0CA4F6;
+    border-radius: 50%;
+}
+.account-settings .user-profile {
+    margin: 0 0 1rem 0;
+    padding-bottom: 1rem;
+    text-align: center;
+}
+.account-settings .user-profile .user-avatar {
+    margin: 0 0 1rem 0;
+}
+.account-settings .user-profile .user-avatar img {
+    width: 300px;
+    height: 300px;
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    border-radius: 50%;
+}
+.account-settings .user-profile h5.user-name {
+    margin: 0 0 0.5rem 0;
+}
+.account-settings .user-profile h6.user-email {
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 400;
+}
+.account-settings .about {
+    margin: 1rem 0 0 0;
+    font-size: 0.8rem;
+    text-align: center;
+}
+.card {
+    background: rgb(246, 255, 253);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 0;
+    margin-bottom: 1rem;
+}
+#file-input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+}
+
+/* Style the camera icon */
+.camera-icon {
+    display: inline-block;
+    cursor: pointer;
+    font-size: 24px; /* Adjust size as needed */
+    color: #000; /* Adjust color as needed */
+}
+
+/* Optional: Style the round div if needed */
+.round {
+    position: relative;
+    display: inline-block;
+}
+.form-control {
+    border: 1px solid #596280;
+    min-height: 50px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    font-size: 18px;
+    background: rgb(246, 255, 253);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    color: #bcd0f7;
+}
+.button-r{
+    margin-right: 10px;
+}
+.button-l{
+    margin-left: 10px;
+}
+.gender-r{
+    margin-right: 20px;
+}

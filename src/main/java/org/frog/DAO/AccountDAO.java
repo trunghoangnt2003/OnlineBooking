@@ -52,16 +52,10 @@ public class AccountDAO {
             while (resultSet.next()) {
                 account = new Account();
                 account.setId(resultSet.getString("id"));
+                account.setEmail(resultSet.getString("mail"));
                 account.setUserName(resultSet.getString("username"));
                 account.setPassword(resultSet.getString("password"));
                 account.setStatus(new Status(resultSet.getInt("status"),""));
-                account.setEmail(resultSet.getString("mail"));
-                account.setGender(resultSet.getInt("gender"));
-                account.setName(resultSet.getString("name"));
-                account.setDob(resultSet.getDate("dob"));
-                account.setPhone(resultSet.getString("phone"));
-                account.setAddress(resultSet.getString("address"));
-
             }
             JDBC.closeConnection(connection);
         } catch (SQLException ignored) {
@@ -131,13 +125,6 @@ public class AccountDAO {
             while (resultSet.next()) {
                 user = new Account();
                 user.setEmail(email);
-                user.setPhone(resultSet.getString("phone"));
-                user.setName(resultSet.getString("name"));
-                user.setDob(resultSet.getDate("dob"));
-                user.setAddress(resultSet.getString("address"));
-                user.setUserName(resultSet.getString("username"));
-                user.setGender(resultSet.getInt("gender"));
-                
             }
             JDBC.closeConnection(connection);
         } catch (SQLException ignored) {
@@ -240,7 +227,7 @@ public class AccountDAO {
             preparedStatement.setString(2,account.getName());
             preparedStatement.setDate(3,account.getDob());
             preparedStatement.setString(4,account.getPhone());
-            preparedStatement.setInt(5,account.getGender());
+            preparedStatement.setInt(   5,account.getGender());
             preparedStatement.setString(6,account.getAddress());
             preparedStatement.setString(7,account.getEmail());
             preparedStatement.setString(8,account.getUserName());

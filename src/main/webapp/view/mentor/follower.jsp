@@ -24,6 +24,12 @@
 <body>
 <jsp:include page="../common/header.jsp"></jsp:include>
 <div class="container mt-5">
+    <div style="margin: 0 0  70px 50px ">
+        <a href="${pageContext.request.contextPath}/mentor/profile" style="text-decoration: none">
+            <i class="fa-solid fa-arrow-right-to-bracket fa-rotate-180 fa-xl" style="color: #07ad90"></i>
+            &nbsp;<span style="color: #07ad90; font-weight: 500; font-size: 20px; margin-top: 10px" >Back to profile</span>
+        </a>
+    </div>
     <h1 class="mb-4">List of Following Requests</h1>
     <table class="table table-striped">
         <thead class="table-dark">

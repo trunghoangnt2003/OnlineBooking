@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.frog.DAO.AccountDAO;
 import org.frog.DAO.CategoryDAO;
 import org.frog.DAO.MentorDAO;
-import org.frog.DAO.SkillDAO;
+import org.frog.DAO.SkillsDAO;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.Account;
 import org.frog.model.Category;
@@ -51,7 +51,7 @@ public class CreateCVController extends AuthenticationServlet {
             AccountDAO accountDAO = new AccountDAO();
             account = accountDAO.getAccountById(account.getId());
 
-            SkillDAO skillDAO = new SkillDAO();
+            SkillsDAO skillDAO = new SkillsDAO();
             ArrayList<Skill> skills = skillDAO.getSkillByCateId(3);
 
             CategoryDAO categoryDAO = new CategoryDAO();
