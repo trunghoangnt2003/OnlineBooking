@@ -88,6 +88,15 @@
                             </li>
 
                         </c:if>
+                        <c:if test="${sessionScope.account.role.id == 2}">
+                            <li class="nav-item">
+                                <a class="nav-link" href="<%=url%>/Home">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<%=url%>/mentor/createcv">Create CV</a>
+                            </li>
+
+                        </c:if>
                     </ul>
                     <!-- Left links -->
 
@@ -144,18 +153,26 @@
                                         <a class="dropdown-item" href="<%=url%>/mentee/profile">Information</a>
                                         </c:if>
                                         <c:if test="${sessionScope.account.role.id == 2}">
-                                            <a class="dropdown-item" href="<%=url%>/#">Information</a>
+                                            <a class="dropdown-item" href="<%=url%>/mentor/profile">Information</a>
                                         </c:if>
                                     </li>
                                     <li>
                                         <c:if test="${sessionScope.account.role.id == 1}">
                                             <a class="dropdown-item" href="<%=url%>/mentee/update">Settings</a>
                                         </c:if>
+                                        <c:if test="${sessionScope.account.role.id == 2}">
+                                            <a class="dropdown-item" href="<%=url%>/mentor/createcv">Settings</a>
+                                        </c:if>
                                     </li>
                                     <c:if test="${sessionScope.account.role.id == 1}">
                                     <li>
                                         <a class="dropdown-item" href="<%=url%>/mentee/viewBooking">Bookings</a>
                                     </li>
+                                    </c:if>
+                                    <c:if test="${sessionScope.account.role.id == 2}">
+                                        <li>
+                                            <a class="dropdown-item" href="<%=url%>/mentor/follower">Follower</a>
+                                        </li>
                                     </c:if>
                                     <li>
                                         <a class="dropdown-item" href="<%=url%>/logout">Logout</a>
