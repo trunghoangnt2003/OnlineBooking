@@ -51,12 +51,18 @@ public class AccountDAO {
             preparedStatement.setString(2, passWord);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
+                int role = resultSet.getInt("role_id");
                 account = new Account();
+                String name = resultSet.getString("name");
                 account.setId(resultSet.getString("id"));
                 account.setEmail(resultSet.getString("mail"));
                 account.setUserName(resultSet.getString("username"));
                 account.setPassword(resultSet.getString("password"));
                 account.setStatus(new Status(resultSet.getInt("status"),""));
+                account.setRole(new Role(role,""));
+                String avatar = resultSet.getString("avatar");
+                account.setAvatar(avatar);
+                account.setName(name);
             }
             JDBC.closeConnection(connection);
         } catch (SQLException ignored) {
@@ -91,7 +97,7 @@ public class AccountDAO {
                 user.setName(name);
                 user.setAvatar(avatar);
                 user.setRole(new Role(role,""));
-                System.out.println(user.getPassword());
+                System.out.println(user.getRole().getId());
             }
             JDBC.closeConnection(connection);
         } catch (SQLException ignored) {

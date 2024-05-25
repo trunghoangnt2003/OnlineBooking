@@ -116,6 +116,7 @@
                                         role="button"
                                         aria-expanded="false"
                                 >
+                        <c:if test="${sessionScope.account.avatar == null}">
                                     <img
                                             src="https://www.logolynx.com/images/logolynx/4b/4beebce89d681837ba2f4105ce43afac.png"
                                             class="rounded-circle"
@@ -123,6 +124,16 @@
                                             alt="Logo user"
                                             loading="lazy"
                                     />
+                        </c:if>
+                                    <c:if test="${sessionScope.account.avatar != null}">
+                                        <img
+                                                src="${sessionScope.account.avatar}"
+                                                class="rounded-circle"
+                                                height="25"
+                                                alt="Logo user"
+                                                loading="lazy"
+                                        />
+                                    </c:if>
                                 </a>
                                 <ul
                                         class="dropdown-menu dropdown-menu-end"
@@ -130,10 +141,10 @@
                                 >
                                     <li>
                                         <c:if test="${sessionScope.account.role.id == 1}">
-                                        <a class="dropdown-item" href="<%=url%>/mentee/profile">Infomation</a>
+                                        <a class="dropdown-item" href="<%=url%>/mentee/profile">Information</a>
                                         </c:if>
                                         <c:if test="${sessionScope.account.role.id == 2}">
-                                            <a class="dropdown-item" href="<%=url%>/#">Infomation</a>
+                                            <a class="dropdown-item" href="<%=url%>/#">Information</a>
                                         </c:if>
                                     </li>
                                     <li>
