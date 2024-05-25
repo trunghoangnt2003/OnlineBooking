@@ -40,15 +40,14 @@ public class Account {
         this.dob = dob;
         this.phone = phone;
         this.email = email;
-        this.address = address;
         this.gender = gender;
+        this.address = address;
         this.wallet = wallet;
         this.status = status;
         this.role = role;
     }
 
     public Account() {}
-
 
     public String getId() {
         return id;
@@ -82,14 +81,6 @@ public class Account {
         this.password = password;
     }
 
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
     public Date getDob() {
         return dob;
     }
@@ -112,6 +103,14 @@ public class Account {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getEmail() {

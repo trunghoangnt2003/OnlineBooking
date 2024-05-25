@@ -71,7 +71,7 @@ public class LoginController extends HttpServlet {
 
             res.addCookie(c_username);
             res.addCookie(c_password);
-            res.sendRedirect("home");
+            res.sendRedirect("Search_Skills");
         }
     }
 

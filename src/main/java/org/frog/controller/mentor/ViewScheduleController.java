@@ -28,7 +28,7 @@ public class ViewScheduleController extends AuthenticationServlet {
             String from = req.getParameter("from");
             String to = req.getParameter("to");
             MentorDAO mentorDAO = new MentorDAO();
-            mentorDAO.updateFreeTimeOfMentor(DateTimeHelper.convertToTimestamp(setDate, from), DateTimeHelper.convertToTimestamp(setDate, to), account.getId());
+            mentorDAO.updateFreeTimeOfMentor(DateTimeHelper.convertToTimestamp(setDate, from), DateTimeHelper.convertToTimestamp(setDate, to),account.getId());
             resp.sendRedirect("/Frog/mentor/schedule?today="+setDate);
 
         }
@@ -42,7 +42,7 @@ public class ViewScheduleController extends AuthenticationServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
 
         String day = req.getParameter("today");
-        int[] freetime = {1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24};
+        int[] freetime = {1,2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24};
         ArrayList<Schedule> schedules = new ArrayList<>();
         if(day == null){
             LocalDate date = LocalDate.now();

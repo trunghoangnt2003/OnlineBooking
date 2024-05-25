@@ -1,6 +1,7 @@
 package org.frog.DAO;
 
 import org.frog.model.Category;
+import org.frog.model.Level;
 import org.frog.model.Skill;
 
 import java.sql.Connection;
@@ -16,17 +17,22 @@ public class SkillsDAO {
         ArrayList<Skill> list = new ArrayList<>();
         try {
             Connection connection = JDBC.getConnection();
-            String sql = "select * \n" +
-                    "from [Skill] \n" +
+            String sql = "select * from [Skill]\n" +
                     "order by name asc";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
+                String src_icon = resultSet.getString("src_icon");
                 Category category = new Category();
                 category.setId(resultSet.getInt("cate_id"));
-                Skill skill = new Skill(id, name, category, null);
+
+                Skill skill = new Skill();
+                skill.setId(id);
+                skill.setName(name);
+                skill.setSrc_icon(src_icon);
+                skill.setCategory(category);
                 list.add(skill);
             }
             JDBC.closeConnection(connection);
@@ -36,40 +42,89 @@ public class SkillsDAO {
         return list;
     }
 
-    public ArrayList<Skill> getByMentorId(String mentor_id) {
-        ArrayList<Skill> list = new ArrayList<>();
+
+    public Skill getByName(String skillName) {
         try {
             Connection connection = JDBC.getConnection();
-            String sql = "Select Skill.id, name, cate_id\n" +
-                    "from Mentor_Skill join Skill on Mentor_Skill.skill_id = Skill.id\n" +
-                    "Where mentor_id = ?";
+            String sql = "select * from [Skill]\n" +
+                    "where name = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, mentor_id);
+            preparedStatement.setString(1, skillName);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
-
+                String src_icon = resultSet.getString("src_icon");
                 Category category = new Category();
                 category.setId(resultSet.getInt("cate_id"));
 
-                Skill skill = new Skill(id, name, category, null);
-                list.add(skill);
+                Skill skill = new Skill();
+                skill.setId(resultSet.getInt("id"));
+                skill.setName(name);
+                skill.setSrc_icon(src_icon);
+                skill.setCategory(category);
+                return skill;
             }
-        }catch (SQLException e) {
+            JDBC.closeConnection(connection);
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return list;
-
+        return null;
     }
 
+    public ArrayList<Skill> getSkillByMentorId(String id) {
+        ArrayList<Skill> skills = new ArrayList<>();
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "SELECT Skill.id, Skill.name, Level.id, Level.type\n" +
+                    "FROM     [Level] INNER JOIN\n" +
+                    "                  Level_Skill ON [Level].id = Level_Skill.level_id INNER JOIN\n" +
+                    "                  Mentor_Level_Skill ON Level_Skill.id = Mentor_Level_Skill.skill_level_id INNER JOIN\n" +
+                    "                  Mentor ON Mentor_Level_Skill.mentor_id = Mentor.account_id INNER JOIN\n" +
+                    "                  Skill ON Level_Skill.skill_id = Skill.id\n" +
+                    "\t\t\t\t  where Mentor.account_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Level level = new Level();
+                level.setId(resultSet.getInt("id"));
+                level.setName(resultSet.getString("type"));
 
-    public static void main(String[] args) {
+                Skill skill = new Skill();
+                skill.setId(resultSet.getInt("id"));
+                skill.setName(resultSet.getString("name"));
 
-        SkillsDAO skillsDAO = new SkillsDAO();
-        ArrayList<Skill> list = skillsDAO.getByMentorId("1525cfd4-fbb9-4667-9d00-2a54582a2f28");
-        for (Skill skill : list) {
-            System.out.println(skill);
+                skills.add(skill);
+            }
+            JDBC.closeConnection(connection);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
+        return skills;
     }
+
+    public ArrayList<Skill> getSkillByCateId(int id) {
+        ArrayList<Skill> skills = new ArrayList<>();
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "SELECT *\n" +
+                    "FROM     Skill INNER JOIN\n" +
+                    "                  Skill_Category ON Skill.cate_id = Skill_Category.id\n" +
+                    "\t\t\t\t  where cate_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Skill skill = new Skill();
+                skill.setId(resultSet.getInt("id"));
+                skill.setName(resultSet.getString("name"));
+                skills.add(skill);
+            }
+            JDBC.closeConnection(connection);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return skills;
+    }
+
 }

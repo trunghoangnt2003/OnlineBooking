@@ -5,7 +5,6 @@ import org.frog.model.*;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.logging.Level;
 
 public class MentorDAO {
     public ArrayList<Schedule> getScheduleByMentorID(String id) {
@@ -77,14 +76,16 @@ public class MentorDAO {
 
         try {
             connection = JDBC.getConnection();
-            String sql = "SELECT b.id,b.mentee_id,create_date,amount,from_date,to_date,b.description AS des,level_id,ls.description, bs.schedule_id,bs.start_date,bs.end_date,\n" +
+            String sql = "SELECT b.id,b.mentee_id,create_date,amount,from_date,to_date,b.description AS des,level_id,skill.name AS skill_name,l.type AS level_type,ls.description, bs.schedule_id,bs.start_date,bs.end_date,\n" +
                     "b.status_id,s.type,acc.name,acc.address,acc.dob,acc.gender,acc.mail,acc.phone\n" +
                     "FROM Booking b INNER JOIN Booking_Schedule bs ON b.id = bs.booking_id  \n" +
                     "INNER JOIN Level_Skill ls ON ls.id = b.level_skill_id\n" +
+                    "INNER JOIN Level l ON l.id = ls.level_id\n" +
+                    "INNER JOIN Skill skill ON skill.id=ls.skill_id\n" +
                     "INNER JOIN Status s ON s.id = b.status_id\n" +
                     "INNER JOIN Mentee m ON m.account_id = b.mentee_id\n" +
                     "INNER JOIN Account acc ON acc.id = m.account_id\n" +
-                    "WHERE b.mentor_id =?\n" +
+                    "WHERE b.mentor_id = ? \n" +
                     "ORDER BY start_date";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, id);
@@ -106,7 +107,15 @@ public class MentorDAO {
                 // luu level skill trong skill
                 Skill skill = new Skill();
                 skill.setId(resultSet.getInt("level_id"));
-                skill.setName(resultSet.getString("description"));
+                skill.setName(resultSet.getString("skill_name"));
+
+                Level lvl = new Level();
+                lvl.setName(resultSet.getString("level_type"));
+
+                Level_Skills level_skills = new Level_Skills();
+                level_skills.setSkill(skill);
+                level_skills.setLevel(lvl);
+                level_skills.setDescription(resultSet.getString("description"));
 
                 Schedule sche = new Schedule();
                 sche.setId(resultSet.getInt("schedule_id"));
@@ -120,11 +129,11 @@ public class MentorDAO {
                 booking.setDate(resultSet.getDate("create_date"));
                 booking.setStartDate(resultSet.getDate("from_date"));
                 booking.setEndDate(resultSet.getDate("to_date"));
-                booking.setDes(resultSet.getString("des"));
+                booking.setDescription(resultSet.getString("des"));
 
                 BookingSchedule bs = new BookingSchedule();
                 bs.setAccount(acc);
-                bs.setSkill(skill);
+                bs.setSkill(level_skills);
                 bs.setStatus(s);
                 bs.setBooking(booking);
                 bs.setSchedule(sche);
@@ -244,10 +253,12 @@ public class MentorDAO {
 
         try {
             connection = JDBC.getConnection();
-            String sql = "SELECT b.id,b.mentee_id,create_date,amount,from_date,to_date,b.description AS des,level_id,ls.description, bs.schedule_id,bs.start_date,bs.end_date,\n" +
+            String sql = "SELECT b.id,b.mentee_id,create_date,amount,from_date,to_date,b.description AS des,level_id,skill.name AS skill_name,l.type AS level_type,ls.description, bs.schedule_id,bs.start_date,bs.end_date,\n" +
                     "b.status_id,s.type,acc.name,acc.address,acc.dob,acc.gender,acc.mail,acc.phone\n" +
                     "FROM Booking b INNER JOIN Booking_Schedule bs ON b.id = bs.booking_id  \n" +
                     "INNER JOIN Level_Skill ls ON ls.id = b.level_skill_id\n" +
+                    "INNER JOIN Level l ON l.id = ls.level_id\n" +
+                    "INNER JOIN Skill skill ON skill.id=ls.skill_id\n" +
                     "INNER JOIN Status s ON s.id = b.status_id\n" +
                     "INNER JOIN Mentee m ON m.account_id = b.mentee_id\n" +
                     "INNER JOIN Account acc ON acc.id = m.account_id\n" +
@@ -278,7 +289,15 @@ public class MentorDAO {
                 // luu level skill trong skill
                 Skill skill = new Skill();
                 skill.setId(resultSet.getInt("level_id"));
-                skill.setName(resultSet.getString("description"));
+                skill.setName(resultSet.getString("skill_name"));
+
+                Level lvl = new Level();
+                lvl.setName(resultSet.getString("level_type"));
+
+                Level_Skills level_skills = new Level_Skills();
+                level_skills.setSkill(skill);
+                level_skills.setLevel(lvl);
+                level_skills.setDescription(resultSet.getString("description"));
 
                 Schedule sche = new Schedule();
                 sche.setId(resultSet.getInt("schedule_id"));
@@ -292,11 +311,11 @@ public class MentorDAO {
                 booking.setDate(resultSet.getDate("create_date"));
                 booking.setStartDate(resultSet.getDate("from_date"));
                 booking.setEndDate(resultSet.getDate("to_date"));
-                booking.setDes(resultSet.getString("des"));
+                booking.setDescription(resultSet.getString("des"));
 
                 BookingSchedule bs = new BookingSchedule();
                 bs.setAccount(acc);
-                bs.setSkill(skill);
+                bs.setSkill(level_skills);
                 bs.setStatus(s);
                 bs.setBooking(booking);
                 bs.setSchedule(sche);

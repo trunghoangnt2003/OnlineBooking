@@ -10,7 +10,7 @@ public class BookingSchedule {
     private  Booking booking;
     private Account account;
     private Status status;
-    private Skill skill;
+    private Level_Skills skill;
 
     public Account getAccount() {
         return account;
@@ -20,11 +20,11 @@ public class BookingSchedule {
         this.account = account;
     }
 
-    public Skill getSkill() {
+    public Level_Skills getSkill() {
         return skill;
     }
 
-    public void setSkill(Skill skill) {
+    public void setSkill(Level_Skills skill) {
         this.skill = skill;
     }
 

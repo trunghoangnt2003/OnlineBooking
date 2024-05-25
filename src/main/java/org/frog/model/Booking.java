@@ -12,15 +12,8 @@ public class Booking {
     private Mentee mentee;
     private Date startDate;
     private Date endDate;
-    private String des;
-
-    public String getDes() {
-        return des;
-    }
-
-    public void setDes(String des) {
-        this.des = des;
-    }
+    private String description;
+    private Level_Skills level_skills;
 
     public Booking(int id, Status status, float amount, Date date, Mentor mentor, Mentee mentee, Date startDate, Date endDate) {
         this.id = id;
@@ -98,5 +91,22 @@ public class Booking {
 
     public void setMentee(Mentee mentee) {
         this.mentee = mentee;
+    }
+
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Level_Skills getLevel_skills() {
+        return level_skills;
+    }
+
+    public void setLevel_skills(Level_Skills level_skills) {
+        this.level_skills = level_skills;
     }
 }

@@ -1,0 +1,134 @@
+.main {
+    display: flex;
+    padding: 50px;
+    background: white;
+}
+/* Hide the file input */
+
+.box-image {
+    width:65%;
+    height: 500px;
+    margin-right: 20px;
+    border-radius: 10px;
+    background: rgb(246, 255, 253);
+    display: flex;
+    box-shadow: 0 0 20px rgba(0,0,0, 0.25);
+}
+.function{
+    display: flex;
+    margin-bottom: 20px;
+    color: white;
+}
+.function-box{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    width: 150px;
+    height: 50px;
+    background-color: #F4E0B9;
+    border-radius: 10px;
+    margin-top: 20px;
+    font-size: 20px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    color: #000000;
+}
+.btn-warning{
+    position: relative;
+    padding: 11px 16px;
+    font-size: 15px;
+}
+.btn-warning input[type="file"] {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+}
+
+.box-detail {
+    width: 40%;
+    height: 500px;
+    margin-left: 20px;
+    box-shadow: 0 0 20px rgba(0,0,0, 0.25);
+    border-radius: 10px;
+}
+.function{
+    margin-left: 20px;
+}
+.function-box a {
+    text-decoration: none; /* Loại bỏ gạch chân */
+    color: inherit; /* Sử dụng màu chữ của thẻ cha */
+    display: block; /* Chuyển đổi thẻ a thành khối */
+}
+
+.avatar{
+    margin-left: 20px;
+    margin-top: 20px;
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+}
+
+
+.name {
+    margin-top: 20px;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    font-style: italic;
+    padding-left: 20px;
+    font-size: 20px;
+}
+.body-content{
+    width: 100%;
+    height: 100%;
+}
+.card-image{
+    background: #07ad90;
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+}
+
+.infor-basic div{
+    margin-top: 7px;
+    padding-left: 20px;
+}
+
+.infor-basic h3 {
+    margin-right: 32px;
+    margin-top: 6px;
+    text-align: center;
+    color: black;
+    padding-top: 10px;
+}
+.function{
+    display: flex;
+    margin-bottom: 20px;
+}
+.function-box{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    width: 150px;
+    height: 50px;
+    background-color: #F4E0B9;
+    border-radius: 10px;
+    margin-top: 20px;
+    font-size: 20px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    color: #000000;
+}
+a {
+    text-decoration: none;
+    color: inherit; /* Inherits the color from the parent .function-box */
+    font-size: inherit; /* Inherits the font size from the parent .function-box */
+    font-family: inherit; /* Inherits the font family from the parent .function-box */
+    font-weight: inherit; /* Inherits the font weight from the parent .function-box */
+}
+
+
+

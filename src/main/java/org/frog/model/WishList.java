@@ -1,17 +1,28 @@
 package org.frog.model;
 
+import java.util.Date;
 import java.util.List;
 
 public class WishList {
+    private Mentor mentor;
     private Mentee mentee;
-    private List<Mentor> mentors;
+    private Date timeRequest;
+    private int status;
 
-    public WishList(Mentee mentee, List<Mentor> mentors) {
+    public WishList(Mentor mentor, Mentee mentee) {
+        this.mentor = mentor;
         this.mentee = mentee;
-        this.mentors = mentors;
     }
 
     public WishList() {
+    }
+
+    public Mentor getMentor() {
+        return mentor;
+    }
+
+    public void setMentor(Mentor mentor) {
+        this.mentor = mentor;
     }
 
     public Mentee getMentee() {
@@ -22,12 +33,19 @@ public class WishList {
         this.mentee = mentee;
     }
 
-    public List<Mentor> getMentors() {
-        return mentors;
+    public Date getTimeRequest() {
+        return timeRequest;
     }
 
-    public void setMentors(List<Mentor> mentors) {
-        this.mentors = mentors;
+    public void setTimeRequest(Date timeRequest) {
+        this.timeRequest = timeRequest;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 }

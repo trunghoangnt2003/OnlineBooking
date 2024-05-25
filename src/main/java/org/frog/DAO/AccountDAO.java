@@ -51,6 +51,8 @@ public class AccountDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 account = new Account();
+                account.setId(resultSet.getString("id"));
+                account.setEmail(resultSet.getString("mail"));
                 account.setUserName(resultSet.getString("username"));
                 account.setPassword(resultSet.getString("password"));
                 account.setStatus(new Status(resultSet.getInt("status"),""));
@@ -129,6 +131,33 @@ public class AccountDAO {
         }
         return user;
     }
+
+    public Account getAccountById (String id) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "select * from Account where id = ?";
+            assert connection != null;
+            PreparedStatement preparedStatement = connection.prepareCall(sql);
+            preparedStatement.setString(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Account account = new Account();
+                account.setId(resultSet.getString("id"));
+                account.setUserName(resultSet.getString("username"));
+                account.setEmail(resultSet.getString("mail"));
+                account.setGender(resultSet.getInt("gender"));
+                account.setName(resultSet.getString("name"));
+                account.setDob(resultSet.getDate("dob"));
+                account.setPhone(resultSet.getString("phone"));
+                account.setAddress(resultSet.getString("address"));
+                account.setAvatar(resultSet.getString("avatar"));
+                return account;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
     // add thuoc tinh can dang ki
     public int register() {
         int kq = 0;
@@ -198,7 +227,7 @@ public class AccountDAO {
             preparedStatement.setString(2,account.getName());
             preparedStatement.setDate(3,account.getDob());
             preparedStatement.setString(4,account.getPhone());
-            preparedStatement.setInt(5,account.getGender());
+            preparedStatement.setInt(   5,account.getGender());
             preparedStatement.setString(6,account.getAddress());
             preparedStatement.setString(7,account.getEmail());
             preparedStatement.setString(8,account.getUserName());

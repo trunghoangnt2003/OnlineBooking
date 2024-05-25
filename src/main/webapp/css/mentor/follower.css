@@ -1,0 +1,36 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    font-weight: 500;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.table-dark {
+    background-color: #343a40;
+    color: white;
+}
+
+.btn {
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    display: inline-block;
+    font-size: 14px;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border: none;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+}

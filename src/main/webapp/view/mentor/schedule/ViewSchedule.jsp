@@ -11,34 +11,26 @@
 <head>
     <title>Title</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mentor/ViewSchedule.css">
-        <link
-                rel="stylesheet"
-                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    <!-- Fontawesome CDN Link -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
-        />
-        <!-- Google Fonts -->
-    <%--    <link--%>
-    <%--            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"--%>
-    <%--            rel="stylesheet"--%>
-    <%--    />--%>
-        <!-- MDB -->
-        <link
-                href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.min.css"
-                rel="stylesheet"
-        />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
-        <script>
-            import { Dropdown, Ripple, initMDB } from "mdb-ui-kit";
-
-            initMDB({Dropdown, Ripple});
-        </script>
-        <!-- Custom styles for this template -->
-        <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900&amp;display=swap" rel="stylesheet">
-        <!-- Custom styles for this template -->
-        <link href="blog.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+            rel="stylesheet"
+    />
+    <!-- MDB -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css"
+            rel="stylesheet"
+    />
+    <!-- SweetAlert2 -->
+    <scr
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
 </head>
 <body>
@@ -88,7 +80,7 @@
 <!-- The Modal for Info -->
 <div id="infoModal" class="modal">
     <!-- Modal content -->
-    <div class="modal-content" style="width: 80%">
+    <div class="modal-content" style="width: 90%">
         <span class="closeInfo">&times;</span>
         <p>Request List </p>
         <table class="request-list">
@@ -98,7 +90,9 @@
                 <td>Amount</td>
                 <td>Date Waiting</td>
                 <td>Description</td>
-                <td>Skill</td>
+                <td>Skill Name</td>
+                <td>Skill Level</td>
+                <td>Description Skill</td>
                 <td>Start Date</td>
                 <td>End Date</td>
                 <td>Name</td>
@@ -111,16 +105,20 @@
                     <td>${book.booking.date}</td>
                     <td>  ${book.booking.amount}</td>
                     <td>   ${book.booking.startDate} - ${book.booking.endDate}</td>
-                    <td>  ${book.booking.des} </td>
-                    <td>  ${book.skill.name}</td>
+                    <td>  ${book.booking.description} </td>
+                    <td>  ${book.skill.skill.name}</td>
+                    <td>  ${book.skill.level.name}</td>
+                    <td>  ${book.skill.description}</td>
                     <td>${book.schedule.dateStart}</td>
                     <td>${book.schedule.dateEnd}</td>
                     <td>${book.account.name}</td>
                     <td>${book.account.email}</td>
-                    <td>  <c:if test="${book.status.id ==1 }"><button name="accept" value="accept">
+                    <td>  <c:if test="${book.status.id ==1 }">
+                        <button name="accept" value="accept">
                         <a href="schedule/update?start=${book.schedule.dateStart}&&end=${book.schedule.dateEnd}&&id=${requestScope.mentorID}&&option=true&&menteeID=${book.account.id}" class="button">Accept</a></button></c:if>
+
                         <c:if test="${book.status.id ==1 }">
-                            <button name="reject" value="reject"><a href="schedule/update?start=${book.schedule.dateStart}&&end=${book.schedule.dateEnd}&&id=${requestScope.mentorID}&&option=false&&menteeID=${book.account.id}" class="button">Reject</a>
+                            <button name="reject" value="reject"><a href="schedule/update?start=${book.schedule.dateStart}&&end=${book.schedule.dateEnd}&&id=${requestScope.mentorID}&&option=false&&menteeID=${book.account.id}" class="button"> Reject</a>
                             </button></c:if>
                         <c:if test="${book.status.id !=1 }">${book.status.type}</c:if>
                     </td>
@@ -206,6 +204,7 @@
                     <td>Name</td>
                     <td>Mail</td>
                     <td>Skill</td>
+                    <td>Level</td>
                     <td>Start</td>
                     <td>End</td>
                     <td>URL</td>
@@ -217,7 +216,8 @@
                         <td>${count}</td>
                         <td>${info.account.name}</td>
                         <td>${info.account.email}</td>
-                        <td>  ${info.skill.name}</td>
+                        <td>  ${info.skill.skill.name}</td>
+                        <td>  ${info.skill.level.name}</td>
                         <td>${info.schedule.dateStart}</td>
                         <td>${info.schedule.dateEnd}</td>
                         <td><a href=""></a></td>
