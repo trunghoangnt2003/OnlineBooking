@@ -92,6 +92,7 @@ public class Booking {
         this.mentee = mentee;
     }
 
+
     public String getDescription() {
         return description;
     }
@@ -107,5 +108,4 @@ public class Booking {
     public void setLevel_skills(Level_Skills level_skills) {
         this.level_skills = level_skills;
     }
-
 }
