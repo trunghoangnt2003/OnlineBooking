@@ -55,6 +55,13 @@ public class AccountDAO {
                 account.setUserName(resultSet.getString("username"));
                 account.setPassword(resultSet.getString("password"));
                 account.setStatus(new Status(resultSet.getInt("status"),""));
+                account.setEmail(resultSet.getString("mail"));
+                account.setGender(resultSet.getInt("gender"));
+                account.setName(resultSet.getString("name"));
+                account.setDob(resultSet.getDate("dob"));
+                account.setPhone(resultSet.getString("phone"));
+                account.setAddress(resultSet.getString("address"));
+
             }
             JDBC.closeConnection(connection);
         } catch (SQLException ignored) {
@@ -124,11 +131,45 @@ public class AccountDAO {
             while (resultSet.next()) {
                 user = new Account();
                 user.setEmail(email);
+                user.setPhone(resultSet.getString("phone"));
+                user.setName(resultSet.getString("name"));
+                user.setDob(resultSet.getDate("dob"));
+                user.setAddress(resultSet.getString("address"));
+                user.setUserName(resultSet.getString("username"));
+                user.setGender(resultSet.getInt("gender"));
+                
             }
             JDBC.closeConnection(connection);
         } catch (SQLException ignored) {
         }
         return user;
+    }
+
+    public Account getAccountById (String id) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "select * from Account where id = ?";
+            assert connection != null;
+            PreparedStatement preparedStatement = connection.prepareCall(sql);
+            preparedStatement.setString(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Account account = new Account();
+                account.setId(resultSet.getString("id"));
+                account.setUserName(resultSet.getString("username"));
+                account.setEmail(resultSet.getString("mail"));
+                account.setGender(resultSet.getInt("gender"));
+                account.setName(resultSet.getString("name"));
+                account.setDob(resultSet.getDate("dob"));
+                account.setPhone(resultSet.getString("phone"));
+                account.setAddress(resultSet.getString("address"));
+                account.setAvatar(resultSet.getString("avatar"));
+                return account;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
     }
     // add thuoc tinh can dang ki
     public int register() {

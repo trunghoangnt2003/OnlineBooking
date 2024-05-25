@@ -11,85 +11,6 @@ import java.util.ArrayList;
 
 public class MentorDAO {
 
-    public ArrayList<Mentor> selectAll() {
-
-        ArrayList<Mentor> list = new ArrayList<>();
-        try {
-
-            Connection connection = JDBC.getConnection();
-            String sql = "Select *\n" +
-                    "from Account a JOIN Mentor m on a.id = m.account_id ";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                Account account = new Account();
-                account.setId(resultSet.getString("id"));
-                account.setName(resultSet.getString("name"));
-                account.setDob(resultSet.getDate("dob"));
-
-                Mentor mentor = new Mentor();
-                mentor.setAccount(account);
-                mentor.setEducation(resultSet.getString("education"));
-                mentor.setExperience(resultSet.getString("experience"));
-                mentor.setPrice(resultSet.getFloat("price"));
-                mentor.setProfileDetail(resultSet.getString("profile_detail"));
-                mentor.setRating(resultSet.getFloat("rating"));
-
-                SkillsDAO skillsDAO = new SkillsDAO();
-                mentor.setSkills(  skillsDAO.getByMentorId(account.getId()));
-
-                BookingDAO bookingDAO = new BookingDAO();
-
-                mentor.setTotalBookings(bookingDAO.CalcBookByMentor(account.getId()));
-                System.out.println(mentor.getTotalBookings());
-                list.add(mentor); 
-            }
-        }catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return list;
-    }
-
-    public ArrayList<Mentor> getMentorAndPaging(int page) {
-        ArrayList<Mentor> list = new ArrayList<>();
-        try {
-
-            Connection connection = JDBC.getConnection();
-            String sql = "Select a.id,a.username,a.name,a.dob,a.avatar,m.experience,m.price,m.rating\n" +
-                    "From Account a JOIN Mentor m on a.id = m.account_id\n" +
-                    "ORDER BY a.id\n" +
-                    "OFFSET ? ROWS FETCH NEXT 6 ROWS ONLY;";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, (page - 1) * 6);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                Account account = new Account();
-                account.setId(resultSet.getString("id"));
-                account.setName(resultSet.getString("name"));
-                account.setDob(resultSet.getDate("dob"));
-                account.setAvatar(resultSet.getString("avatar"));
-
-                Mentor mentor = new Mentor();
-                mentor.setAccount(account);
-                mentor.setExperience(resultSet.getString("experience"));
-                mentor.setPrice(resultSet.getFloat("price"));
-                mentor.setRating(resultSet.getFloat("rating"));
-
-                SkillsDAO skillsDAO = new SkillsDAO();
-                mentor.setSkills(  skillsDAO.getByMentorId(account.getId()));
-
-                BookingDAO bookingDAO = new BookingDAO();
-                mentor.setTotalBookings(bookingDAO.CalcBookByMentor(account.getId()));
-
-                list.add(mentor);
-            }
-        }catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-
-        return list;
-    }
-
     public int totalMentor() {
         int total = 0;
         try {
@@ -105,6 +26,29 @@ public class MentorDAO {
             e.printStackTrace();
         }
         return total;
+    }
+
+    public void update(Mentor mentor) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "UPDATE [dbo].[Mentor]\n" +
+                    "   SET [profile_detail] = ?\n" +
+                    "      ,[price] = ?\n" +
+                    "      ,[experience] = ?\n" +
+                    "      ,[education] = ?\n" +
+                    " WHERE Mentor.account_id = ? ";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, mentor.getProfileDetail());
+            preparedStatement.setInt(2, mentor.getPrice());
+            preparedStatement.setString(3, mentor.getExperience());
+            preparedStatement.setString(4, mentor.getEducation());
+            preparedStatement.setString(5, mentor.getAccount().getId());
+            preparedStatement.executeUpdate();
+            JDBC.closeConnection(connection);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public Mentor getMentorById(String id) {
@@ -136,7 +80,7 @@ public class MentorDAO {
                 Mentor mentor = new Mentor();
                 mentor.setAccount(account);
                 mentor.setProfileDetail(resultSet.getString("profile_detail"));
-                mentor.setPrice(resultSet.getFloat("price"));
+                mentor.setPrice(resultSet.getInt("price"));
                 mentor.setExperience(resultSet.getString("experience"));
                 mentor.setEducation(resultSet.getString("education"));
                 mentor.setRating(resultSet.getFloat("rating"));

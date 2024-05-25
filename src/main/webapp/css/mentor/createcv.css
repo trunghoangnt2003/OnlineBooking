@@ -1,0 +1,49 @@
+.box {
+    display: flex;
+    width: 100%;
+    background: rgb(246, 255, 253);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.avatar {
+    border-radius: 10px;
+    width: 250px;
+    height: 250px;
+    margin-right: 20px;
+}
+
+.avatar img {
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.title {
+    color: #1BB295;
+    text-align: center;
+    font-style: italic;
+    font-weight: bold;
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.form {
+    font-size: 15px;
+    width: 100%;
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+.mb-3 {
+    margin-bottom: 1rem;
+}
+
+.btn {
+    margin-left: 35vw;
+}

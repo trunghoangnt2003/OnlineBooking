@@ -9,14 +9,7 @@ public class Skill {
     private int id;
     private String name;
     private Category category;
-    private ArrayList<Mentor> mentors;
-
-    public Skill(int id, String name, Category category, ArrayList<Mentor> mentors) {
-        this.id = id;
-        this.name = name;
-        this.category = category;
-        this.mentors = mentors;
-    }
+    private String src_icon;
 
     public Skill() {
     }
@@ -45,17 +38,16 @@ public class Skill {
         this.category = category;
     }
 
-
-    public ArrayList<Mentor> getMentors() {
-        return mentors;
+    public String getSrc_icon() {
+        return src_icon;
     }
 
-    public void setMentors(ArrayList<Mentor> mentors) {
-        this.mentors = mentors;
+    public void setSrc_icon(String src_icon) {
+        this.src_icon = src_icon;
     }
 
     @Override
     public String toString() {
-       return "Skill [id=" + id + ", name=" + name + ", category=" + category.getId() + "]";
+        return "Skill [id=" + id + ", name=" + name + ", category=" + category.getId() + "]";
     }
 }

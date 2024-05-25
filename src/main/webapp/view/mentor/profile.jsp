@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Profile</title>
+    <title>Profile of Mentor</title>
         <!-- Fontawesome CDN Link -->
         <link rel="stylesheet"
               href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
@@ -40,9 +40,10 @@
             initMDB({Dropdown, Ripple});
         </script>
 </head>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css//mentor/profile.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/mentor/profile.css">
 <body>
 <jsp:include page="../common/header.jsp"></jsp:include>
+
 
     <div class="main">
         <div class="box-left">
@@ -58,7 +59,16 @@
                     <div class="detail"><i class="fa-solid fa-phone" style="color: #74C0FC;"></i> ${requestScope.mentor.account.phone}</div>
                     <div class="detail"><i class="fa-solid fa-location-dot" style="color: #74C0FC;"></i> ${requestScope.mentor.account.address}</div>
                     <div class="detail"><i class="fa-solid fa-calendar-days" style="color: #74C0FC;"></i> ${requestScope.mentor.account.dob}</div>
-                    <div class="detail"><i class="fa-solid fa-venus-mars" style="color: #74C0FC;"></i> ${requestScope.mentor.account.gender ? "Male" : "Female"}</div>
+                    <div class="detail"><i class="fa-solid fa-venus-mars" style="color: #74C0FC;"></i>
+                        <c:choose>
+                            <c:when test="${requestScope.mentor.account.gender == 1}">
+                                Male
+                            </c:when>
+                            <c:otherwise>
+                                Female
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
                 </div>
                 <div class="price">
                     <div>Price: ${requestScope.mentor.price} $/hour</div>
@@ -83,8 +93,8 @@
             <div class="small-box-under">
                 <h3>My Skill</h3>
                 <div>
-                    <c:forEach items="${requestScope.mentor.skills}" var="skill">
-                        <div>${skill.name}</div>
+                    <c:forEach items="${requestScope.level_skills}" var="ls">
+                        <div>${ls.skill.name} : ${ls.level.name}</div>
                     </c:forEach>
                 </div>
             </div>
