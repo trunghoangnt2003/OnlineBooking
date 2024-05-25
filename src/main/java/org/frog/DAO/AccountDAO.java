@@ -114,8 +114,21 @@ public class AccountDAO {
             preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
+                String email = resultSet.getString("mail");
+                String id = resultSet.getString("id");
+                String name = resultSet.getString("name");
+                String avatar = resultSet.getString("avatar");
+                int gender = resultSet.getInt("gender");
+                String userName = resultSet.getNString("username");
+                int role = resultSet.getInt("role_id");
                 user = new Account();
-                user.setUserName(username);
+                user.setUserName(userName);
+                user.setEmail(email);
+                user.setGender(gender);
+                user.setId(id);
+                user.setName(name);
+                user.setAvatar(avatar);
+                user.setRole(new Role(role,""));
             }
             JDBC.closeConnection(connection);
         } catch (SQLException ignored) {
@@ -132,8 +145,20 @@ public class AccountDAO {
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
+                String id = resultSet.getString("id");
+                String name = resultSet.getString("name");
+                String avatar = resultSet.getString("avatar");
+                int gender = resultSet.getInt("gender");
+                String userName = resultSet.getNString("username");
+                int role = resultSet.getInt("role_id");
                 user = new Account();
+                user.setUserName(userName);
                 user.setEmail(email);
+                user.setGender(gender);
+                user.setId(id);
+                user.setName(name);
+                user.setAvatar(avatar);
+                user.setRole(new Role(role,""));
             }
             JDBC.closeConnection(connection);
         } catch (SQLException ignored) {

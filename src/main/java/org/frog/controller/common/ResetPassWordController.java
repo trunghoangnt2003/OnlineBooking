@@ -49,8 +49,8 @@ public class ResetPassWordController extends HttpServlet{
         DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         String date = formatter.format(new Date());
         if(account!=null) {
-            Account checkUserName = accountDAO.getAccountByUserName(userName);
-            if(checkUserName==null) {
+
+            if(!account.getUserName().equals(userName)) {
                 warningRP = "Username don't incorrect";
                 req.setAttribute("warningRP", warningRP);
             }else {

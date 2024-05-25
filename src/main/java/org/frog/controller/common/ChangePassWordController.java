@@ -57,6 +57,20 @@ public class ChangePassWordController extends HttpServlet{
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String email = req.getParameter("token");
+        AccountDAO accountDAO = new AccountDAO();
+        ArrayList<Account> accounts = accountDAO.selectAll();
+        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        String date = formatter.format(new Date());
+        String account_email = "";
+        boolean check = true;
+        for(Account account:accounts){
+            if(SHA1.toSHA1(account.getEmail()+date).equals(email)){
+                account_email = account.getEmail();
+                break;
+            }
+        }
+        req.setAttribute("email",account_email);
         req.getRequestDispatcher("view/public/changePass.jsp").forward(req, resp);
     }
 
