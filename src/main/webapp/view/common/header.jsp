@@ -79,9 +79,15 @@
                 <div class="collapse navbar-collapse" id="navbarButtonsExample">
                     <!-- Left links -->
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Home</a>
-                        </li>
+                        <c:if test="${sessionScope.account.role.id == 1}">
+                            <li class="nav-item">
+                                <a class="nav-link" href="<%=url%>/Home">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<%=url%>/Search_Skills">Search</a>
+                            </li>
+
+                        </c:if>
                     </ul>
                     <!-- Left links -->
 
@@ -123,11 +129,23 @@
                                         aria-labelledby="navbarDropdownMenuAvatar"
                                 >
                                     <li>
-                                        <a class="dropdown-item" href="<%=url%>/logout">Infomation</a>
+                                        <c:if test="${sessionScope.account.role.id == 1}">
+                                        <a class="dropdown-item" href="<%=url%>/mentee/profile">Infomation</a>
+                                        </c:if>
+                                        <c:if test="${sessionScope.account.role.id == 2}">
+                                            <a class="dropdown-item" href="<%=url%>/#">Infomation</a>
+                                        </c:if>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="<%=url%>/logout">Settings</a>
+                                        <c:if test="${sessionScope.account.role.id == 1}">
+                                            <a class="dropdown-item" href="<%=url%>/mentee/update">Settings</a>
+                                        </c:if>
                                     </li>
+                                    <c:if test="${sessionScope.account.role.id == 1}">
+                                    <li>
+                                        <a class="dropdown-item" href="<%=url%>/mentee/viewBooking">Bookings</a>
+                                    </li>
+                                    </c:if>
                                     <li>
                                         <a class="dropdown-item" href="<%=url%>/logout">Logout</a>
                                     </li>

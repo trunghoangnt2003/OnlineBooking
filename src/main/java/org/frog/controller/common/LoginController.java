@@ -7,8 +7,8 @@ import org.frog.DAO.AccountDAO;
 import org.frog.model.Account;
 import org.frog.utility.SHA1;
 import org.frog.utility.StatusEnum;
-
 import java.io.IOException;
+
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse res){
@@ -71,7 +71,7 @@ public class LoginController extends HttpServlet {
 
             res.addCookie(c_username);
             res.addCookie(c_password);
-            res.sendRedirect("Search_Skills");
+            res.sendRedirect("Home");
         }
     }
 

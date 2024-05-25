@@ -1,6 +1,7 @@
 package org.frog.DAO;
 
 import org.frog.model.Account;
+import org.frog.model.Role;
 import org.frog.model.Status;
 import org.frog.utility.StatusEnum;
 
@@ -76,10 +77,11 @@ public class AccountDAO {
                 System.out.println(resultSet.getString("mail"));
                 String id = resultSet.getString("id");
                 String name = resultSet.getString("name");
-                //String avatar = resultSet.getString("avatar");
+                String avatar = resultSet.getString("avatar");
                 int gender = resultSet.getInt("gender");
                 String passWord = resultSet.getString("password");
                 String userName = resultSet.getNString("username");
+                int role = resultSet.getInt("role_id");
                 user = new Account();
                 user.setUserName(userName);
                 user.setPassword(passWord);
@@ -87,7 +89,8 @@ public class AccountDAO {
                 user.setGender(gender);
                 user.setId(id);
                 user.setName(name);
-                //user.setAvatar(avatar);
+                user.setAvatar(avatar);
+                user.setRole(new Role(role,""));
                 System.out.println(user.getPassword());
             }
             JDBC.closeConnection(connection);
