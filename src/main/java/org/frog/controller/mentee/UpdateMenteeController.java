@@ -24,7 +24,7 @@ import java.sql.Date;
 @WebServlet("/mentee/update")
 public class UpdateMenteeController extends AuthenticationServlet {
 
-    private static final String UPLOAD_DIR = "D:/Swp391/Prog/Prog/src/main/webapp/img";
+    private static final String UPLOAD_DIR = "/img";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
@@ -44,21 +44,24 @@ public class UpdateMenteeController extends AuthenticationServlet {
         String address = req.getParameter("address");
         String username = req.getParameter("username");
         String gender = req.getParameter("gender");
-        System.out.println(gender+"aa");
+        System.out.println(gender + "aa");
 
         Part filePart = req.getPart("photo");
         String avatar = null;
 
         if (filePart != null && filePart.getSize() > 0) {
             String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-            File uploadDirFile = new File(UPLOAD_DIR);
+            String uploadPath = getServletContext().getRealPath("") + UPLOAD_DIR;
+
+            File uploadDirFile = new File(uploadPath);
             if (!uploadDirFile.exists()) {
                 uploadDirFile.mkdirs();
             }
-            String filePath = Paths.get(UPLOAD_DIR, fileName).toString();
+
+            String filePath = Paths.get(uploadPath, fileName).toString();
             try {
                 filePart.write(filePath);
-                avatar = "img/" + fileName;
+                avatar = UPLOAD_DIR + "/" + fileName;
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new ServletException("File upload failed!", e);
