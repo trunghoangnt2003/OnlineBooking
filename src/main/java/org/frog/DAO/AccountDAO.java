@@ -1,6 +1,7 @@
 package org.frog.DAO;
 
 import org.frog.model.Account;
+import org.frog.model.Role;
 import org.frog.model.Status;
 import org.frog.utility.StatusEnum;
 
@@ -50,12 +51,18 @@ public class AccountDAO {
             preparedStatement.setString(2, passWord);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
+                int role = resultSet.getInt("role_id");
                 account = new Account();
+                String name = resultSet.getString("name");
                 account.setId(resultSet.getString("id"));
                 account.setEmail(resultSet.getString("mail"));
                 account.setUserName(resultSet.getString("username"));
                 account.setPassword(resultSet.getString("password"));
                 account.setStatus(new Status(resultSet.getInt("status"),""));
+                account.setRole(new Role(role,""));
+                String avatar = resultSet.getString("avatar");
+                account.setAvatar(avatar);
+                account.setName(name);
             }
             JDBC.closeConnection(connection);
         } catch (SQLException ignored) {
@@ -76,10 +83,11 @@ public class AccountDAO {
                 System.out.println(resultSet.getString("mail"));
                 String id = resultSet.getString("id");
                 String name = resultSet.getString("name");
-                //String avatar = resultSet.getString("avatar");
+                String avatar = resultSet.getString("avatar");
                 int gender = resultSet.getInt("gender");
                 String passWord = resultSet.getString("password");
                 String userName = resultSet.getNString("username");
+                int role = resultSet.getInt("role_id");
                 user = new Account();
                 user.setUserName(userName);
                 user.setPassword(passWord);
@@ -87,8 +95,9 @@ public class AccountDAO {
                 user.setGender(gender);
                 user.setId(id);
                 user.setName(name);
-                //user.setAvatar(avatar);
-                System.out.println(user.getPassword());
+                user.setAvatar(avatar);
+                user.setRole(new Role(role,""));
+                System.out.println(user.getRole().getId());
             }
             JDBC.closeConnection(connection);
         } catch (SQLException ignored) {
