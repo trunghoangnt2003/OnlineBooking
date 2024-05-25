@@ -1,4 +1,4 @@
-package org.frog.controller.mentee;
+package org.frog.controller.Mentee;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
