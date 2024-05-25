@@ -1,12 +1,5 @@
 /* CSS cho bảng */
-.table-info{
-    width: 100%;
-    height: 15%;
-    border-collapse: collapse; /* Loại bỏ khoảng cách giữa các ô */
-    margin: 50px auto;
-    border: 1px solid #999999;
-    border-radius: 5px;
-}
+
 table {
     flex-grow: 1;
     width: 70%;
@@ -67,8 +60,8 @@ td:first-child {
     z-index: 1; /* Sit on top */
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
+    width: 80%; /* Full width */
+    height: 80%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
@@ -76,12 +69,17 @@ td:first-child {
 
 /* Modal Content/Box */
 .modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 80%;
     background-color: #fefefe;
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
     border-radius: 10px
+
+
 }
 
 /* The Close Button */
@@ -98,7 +96,21 @@ td:first-child {
     text-decoration: none;
     cursor: pointer;
 }
-#myBtn, #myBtn2 {
+#myBtn {
+    background-color: #42509e; /* Green background */
+    border: none; /* Remove borders */
+    color: white; /* White text */
+    padding: 15px 49px; /* Add some padding */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Make the container inline */
+    font-size: 16px; /* Increase font size */
+    margin: 4px 2px; /* Add some margin */
+    transition-duration: 0.4s; /* Add transition effect */
+    cursor: pointer; /* Add a pointer cursor on hover */
+    border-radius: 12px; /* Rounded corners */
+}
+#myBtn2 {
     background-color: #42509e; /* Green background */
     border: none; /* Remove borders */
     color: white; /* White text */
@@ -147,7 +159,7 @@ td:first-child {
 .request-list tr:nth-child(even) {
     background-color: #f9f9f9;
 }
-button {
+.button {
     padding: 5px 10px;
     margin-right: 5px;
     border: none;
