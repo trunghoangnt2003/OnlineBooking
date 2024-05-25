@@ -2,17 +2,16 @@ package org.frog.controller.Mentee;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
-import org.frog.DAO.CategoryDAO;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.frog.DAO.MentorDAO;
 import org.frog.DAO.SkillsDAO;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.Account;
-import org.frog.model.Category;
 import org.frog.model.Mentor;
 import org.frog.model.Skill;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.ArrayList;
 
 @WebServlet("/SearchMentor")

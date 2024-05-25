@@ -34,6 +34,11 @@ public class Mentor {
         this.rating = rating;
     }
 
+
+    public Mentor(Account account) {
+        this.account = account;
+    }
+
     public Account getAccount() {
         return account;
     }

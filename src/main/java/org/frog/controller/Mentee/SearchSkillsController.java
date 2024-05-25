@@ -37,7 +37,6 @@ public class SearchSkillsController extends HttpServlet {
         if(levels != null){
             ArrayList<String> levels_select = new ArrayList<>(Arrays.asList(levels));
             for(String level : levels) {
-                System.out.println(level);
             }
             request.setAttribute("levels_select", levels_select);
         }

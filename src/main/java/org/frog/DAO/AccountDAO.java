@@ -51,6 +51,8 @@ public class AccountDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 account = new Account();
+                account.setId(resultSet.getString("id"));
+                account.setEmail(resultSet.getString("mail"));
                 account.setUserName(resultSet.getString("username"));
                 account.setPassword(resultSet.getString("password"));
                 account.setStatus(new Status(resultSet.getInt("status"),""));
@@ -198,7 +200,7 @@ public class AccountDAO {
             preparedStatement.setString(2,account.getName());
             preparedStatement.setDate(3,account.getDob());
             preparedStatement.setString(4,account.getPhone());
-            preparedStatement.setInt(5,account.getGender());
+            preparedStatement.setInt(   5,account.getGender());
             preparedStatement.setString(6,account.getAddress());
             preparedStatement.setString(7,account.getEmail());
             preparedStatement.setString(8,account.getUserName());

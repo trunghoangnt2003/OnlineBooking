@@ -40,15 +40,14 @@ public class Account {
         this.dob = dob;
         this.phone = phone;
         this.email = email;
-        this.address = address;
         this.gender = gender;
+        this.address = address;
         this.wallet = wallet;
         this.status = status;
         this.role = role;
     }
 
     public Account() {}
-
 
     public String getId() {
         return id;
