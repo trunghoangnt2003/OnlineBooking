@@ -13,7 +13,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-12 text-center">
             <h1>Change Password</h1>
         </div>
     </div>
@@ -40,7 +40,7 @@
                     </div>
                 </div>
                 <input type="submit" class="col-xs-12 btn btn-primary btn-load btn-lg" data-loading-text="Changing Password..." value="Change Password">
-            </form
+            </form>
             <a href="login"> Back to login </a>
         </div><!--/col-sm-6-->
     </div><!--/row-->

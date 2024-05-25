@@ -79,8 +79,7 @@ public class UpdateMenteeController extends AuthenticationServlet {
         a.setUserName(username);
         a.setPhone(phone);
         a.setAddress(address);
-        boolean genderBool = gender.equals("1");
-        a.setGender(genderBool);
+        a.setGender(Integer.parseInt(gender));
 
         // Only update avatar if a new one was uploaded
         if (avatar != null) {

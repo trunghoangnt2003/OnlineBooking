@@ -11,6 +11,9 @@ body{margin-top:20px;
 .information-detail{
     width: 50%;
 }
+.body-content{
+    margin-bottom: 30px;
+}
 
 .information-detail div div input{
     color: black;
@@ -41,11 +44,11 @@ body{margin-top:20px;
     margin: 0 0 1rem 0;
 }
 .account-settings .user-profile .user-avatar img {
-    width: 150px;
-    height: 150px;
+    width: 300px;
+    height: 300px;
     -webkit-border-radius: 100px;
     -moz-border-radius: 100px;
-    border-radius: 100px;
+    border-radius: 50%;
 }
 .account-settings .user-profile h5.user-name {
     margin: 0 0 0.5rem 0;
@@ -92,11 +95,21 @@ body{margin-top:20px;
 }
 .form-control {
     border: 1px solid #596280;
+    min-height: 50px;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
-    font-size: .825rem;
+    font-size: 18px;
     background: rgb(246, 255, 253);
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
     color: #bcd0f7;
+}
+.button-r{
+    margin-right: 10px;
+}
+.button-l{
+    margin-left: 10px;
+}
+.gender-r{
+    margin-right: 20px;
 }

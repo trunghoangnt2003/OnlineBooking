@@ -10,7 +10,7 @@
 <html>
 <head>
     <title>Profile</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/profile.css" type="text/css" media="screen, project">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mentee/profile.css" type="text/css" media="screen, project">
     <!-- Fontawesome CDN Link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <!-- Font Awesome -->
@@ -25,26 +25,60 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 </head>
 <body>
-<h1></h1>
-<h1></h1>
-<div class="main">
-    <div class="box-image">
-        <div>
-            <img class="avatar" src="${pageContext.request.contextPath}/${requestScope.mentee.account.avatar}" alt="">
-        </div>
-        <div class="infor-basic">
-            <div class="name">${requestScope.mentee.account.name}</div>
-            <div><i class="fa-solid fa-envelope"></i> ${requestScope.mentee.account.email}</div>
-            <div><i class="fa-solid fa-phone"></i> ${requestScope.mentee.account.phone}</div>
-            <div><i class="fa-solid fa-venus-mars"></i> ${requestScope.mentee.account.gender ? "Male" : "Female"}</div>
-            <div><i class="fa-solid fa-location-dot"></i> ${requestScope.mentee.account.address}</div>
-            <div><i class="fa-solid fa-calendar-days"></i> ${requestScope.mentee.account.dob}</div>
-        </div>
-    </div>
-    <div class="box-detail">
-        <div class="function">
-            <div style="margin-right: 10px" class="function-box"><a href="/Prog/mentee/update">Update Profile</a></div>
-            <div style="margin-right: 10px" class="function-box">View Request</div>
+<jsp:include page="../../common/header.jsp"></jsp:include>
+<div class="page-content page-container" id="page-content">
+    <div class="padding" style="display: flex; justify-content: center; margin-top: 30px; border-radius: 50px">
+        <div class="row container border-10 ">
+            <div class = "body-content" style="">
+                <div class="card user-card-full">
+                    <div class="row m-l-0 m-r-0">
+                        <div class="col-sm-4 bg-c-lite-green user-profile " style="background: #07ad90">
+                            <div class="card-block text-center text-white ">
+                                <div class="m-b-25">
+                                    <img class="avatar" src="${pageContext.request.contextPath}/${requestScope.mentee.account.avatar}" alt="">
+                                </div>
+                                <h4 class="f-w-600 " style="margin-top: 10px">${requestScope.mentee.account.name}</h4>
+                                <a href="update" style="color: white"><i class="fa-solid fa-pen-to-square fa-xl" style="margin-top: 10px"></i></a>
+                            </div>
+                        </div>
+                        <div class="col-sm-8" style="height: 500px; padding: 50px">
+                            <div class="card-block">
+                                <h1 class="m-b-20 p-b-5 b-b-default f-w-600" style="color: #07ad90;font-weight: bold;">Information</h1>
+                                <hr style="color: #07ad90; opacity: 100%">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <span class="m-b-10 f-w-600" style="color: #07AD90;  font-size: 20px">Email</span>
+                                        <h6 class="text-muted f-w-400">${requestScope.mentee.account.email}</h6>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <span class="m-b-10 f-w-600" style="color: #07AD90;  font-size: 20px">Phone</span>
+                                        <h6 class="text-muted f-w-400">${requestScope.mentee.account.phone}</h6>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <span class=" f-w-600" style="color: #07AD90;  font-size: 20px">Gender</span>
+                                        <h6 class="text-muted f-w-400">${requestScope.mentee.account.gender == 1 ? "Male" : "Female"}</h6>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div style="color: #07AD90;  font-size: 20px"> Address </div>
+                                        <span class="m-b-10 f-w-600">${requestScope.mentee.account.address}</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <span class="m-b-10 f-w-600" style="color: #07AD90;  font-size: 20px">Date of Birth</span>
+                                        <h6 class="text-muted f-w-400">${requestScope.mentee.account.dob}</h6>
+                                    </div>
+                                </div>
+                                <div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -39,13 +39,13 @@ public class LoginGoogleController extends HttpServlet {
 
             if (user == null) {
                 //register if email don't have in database
-                String url = "view/public/login.jsp";
+                String url = "view/public/signin.jsp";
                 String warningLogin = "an account that does not exist in the system";
                 request.setAttribute("warningLogin", warningLogin);
                 request.getRequestDispatcher(url).forward(request, response);
             } else {
                 HttpSession session = request.getSession();
-                session.setAttribute("user", user);
+                session.setAttribute("account", user);
                 Cookie c_username = new Cookie("email", email);
                 c_username.setMaxAge(3600 * 24 * 7);
 
@@ -54,9 +54,9 @@ public class LoginGoogleController extends HttpServlet {
 
                 response.addCookie(c_username);
                 response.addCookie(c_password);
-                //request.getRequestDispatcher("home").forward(request, response);
-                //response.sendRedirect("home");
-                response.getWriter().println(user.getUserName()+" "+user.getPassword());
+                request.getRequestDispatcher("home").forward(request, response);
+                response.sendRedirect("home");
+//                response.getWriter().println(user.getUserName()+" "+user.getPassword());
             }
         }
     }

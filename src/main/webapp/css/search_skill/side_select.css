@@ -1,0 +1,134 @@
+/* Google Fonts - Poppins */
+/*@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');*/
+
+.level-container{
+    max-width: 320px;
+    width: 100%;
+    margin: 20px auto 30px;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+.level-container hr{
+    color: #07ad90;
+    opacity:50%;
+    margin: 0;
+}
+
+.list-level{
+    max-width: 320px;
+    border-radius: 8px;
+    margin: 0 auto 0;
+    background-color: #fff;
+    padding-left: 0;
+    /*box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);*/
+}
+
+.list-level .level{
+    display: flex;
+    align-items: center;
+    list-style: none;
+    height: 50px;
+    padding: 0 15px;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 8px;
+}
+
+.select-content {
+    position: relative;
+    max-width: 320px;
+    width: 100%;
+    margin: 20px auto 30px;
+}
+
+.select-btn{
+    display: flex;
+    height: 50px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #fff;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.select-btn .btn-text{
+    font-size: 17px;
+    font-weight: 400;
+    color: #333;
+}
+
+.select-btn .arrow-dwn{
+    display: flex;
+    height: 21px;
+    width: 21px;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 50%;
+    background: #6e93f7;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+.select-btn.open .arrow-dwn{
+    transform: rotate(-180deg);
+}
+
+.list-items{
+    position: relative;
+    margin-top: 15px;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: #fff;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    display: none;
+}
+
+.select-btn.open ~ .list-items{
+    display: block;
+}
+
+.list-items .item{
+    display: flex;
+    align-items: center;
+    list-style: none;
+    height: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+    padding: 0 15px;
+    border-radius: 8px;
+}
+
+.list-items .item:hover{
+
+    background-color: #e5fff9;
+}
+
+.item .item-text{
+    font-size: 16px;
+    font-weight: 400;
+    color: #333;
+    margin-left: 10px;
+}
+
+.level .checkbox{
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.list-level .level:hover{
+
+    background-color: #e5fff9;
+}
+
+.item img{
+    width: 30px;
+    height: 30px;
+    padding: 5px;
+    object-fit: cover;
+}

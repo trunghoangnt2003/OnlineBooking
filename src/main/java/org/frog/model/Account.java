@@ -13,6 +13,8 @@ public class Account {
 
     private String password;
 
+    private String avatar;
+
     private Date dob;
 
     private String phone;
@@ -21,18 +23,17 @@ public class Account {
 
     private String address;
 
-    private boolean gender;
+    private int gender;
 
     private Wallet wallet;
 
     private Status status;
 
-    private String avatar;
-
     private Role role;
 
-    public Account(String id, String name, String userName, String password, Date dob, String phone, String email, boolean gender, String address, Wallet wallet, Status status, Role role) {
+    public Account(String id, String avatar, String name, String userName, String password, Date dob, String phone, String email, String address, int gender, Wallet wallet, Status status, Role role) {
         this.id = id;
+        this.avatar = avatar;
         this.name = name;
         this.userName = userName;
         this.password = password;
@@ -80,6 +81,14 @@ public class Account {
         this.password = password;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     public Date getDob() {
         return dob;
     }
@@ -112,11 +121,11 @@ public class Account {
         this.email = email;
     }
 
-    public boolean getGender() {
+    public int getGender() {
         return gender;
     }
 
-    public void setGender(boolean gender) {
+    public void setGender(int gender) {
         this.gender = gender;
     }
 
@@ -142,13 +151,5 @@ public class Account {
 
     public void setRole(Role role) {
         this.role = role;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
     }
 }

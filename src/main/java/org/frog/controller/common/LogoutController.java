@@ -12,9 +12,9 @@ import java.io.IOException;
 
 /**
  *
- * @author trung
+ * @author trungs
  */
-@WebServlet(name = "LogoutController", urlPatterns = {"/logout"})
+@WebServlet("/logout")
 public class LogoutController extends HttpServlet {
 
     @Override

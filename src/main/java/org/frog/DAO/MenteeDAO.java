@@ -25,7 +25,7 @@ public class MenteeDAO {
                 account.setName(resultSet.getString("name"));
                 account.setDob(resultSet.getDate("dob"));
                 account.setPhone(resultSet.getString("phone"));
-                account.setGender(resultSet.getBoolean("gender"));
+                account.setGender(resultSet.getInt("gender"));
                 account.setAddress(resultSet.getString("address"));
                 account.setUserName(resultSet.getString("username"));
                 account.setEmail(resultSet.getString("mail"));
@@ -93,7 +93,7 @@ public class MenteeDAO {
             preparedStatement.setString(2, mentee.getAccount().getName());
             preparedStatement.setDate(3, mentee.getAccount().getDob());
             preparedStatement.setString(4, mentee.getAccount().getPhone());
-            preparedStatement.setBoolean(5, mentee.getAccount().getGender());
+            preparedStatement.setInt(5, mentee.getAccount().getGender());
             System.out.println(mentee.getAccount().getGender()+"sssss");
             preparedStatement.setString(6, mentee.getAccount().getAddress());
             preparedStatement.setString(7, mentee.getAccount().getAvatar());
@@ -106,14 +106,6 @@ public class MenteeDAO {
         }
     }
 
-
-    public static void main(String[] args) {
-        Account a = new Account();
-        a.setName("Doan Manh Gioi");
-     //   a.setGender("");
-        Mentee m = new Mentee();
-
-    }
 }
 
 
