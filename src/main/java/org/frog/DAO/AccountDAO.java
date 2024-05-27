@@ -21,16 +21,19 @@ public class AccountDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                String passWord = resultSet.getString("password");
-                String userName = resultSet.getNString("username");
-                String email = resultSet.getNString("mail");
-                int status = resultSet.getInt("status");
-                Account user = new Account();
-                user.setUserName(userName);
-                 user.setPassword(passWord);
-                 user.setEmail(email);
-                 user.setStatus(new Status(status,""));
-                 list.add(user);
+                int role = resultSet.getInt("role_id");
+                Account account = new Account();
+                String name = resultSet.getString("name");
+                account.setId(resultSet.getString("id"));
+                account.setEmail(resultSet.getString("mail"));
+                account.setUserName(resultSet.getString("username"));
+                account.setPassword(resultSet.getString("password"));
+                account.setStatus(new Status(resultSet.getInt("status"),""));
+                account.setRole(new Role(role,""));
+                String avatar = resultSet.getString("avatar");
+                account.setAvatar(avatar);
+                account.setName(name);
+                 list.add(account);
 
             }
             JDBC.closeConnection(connection);

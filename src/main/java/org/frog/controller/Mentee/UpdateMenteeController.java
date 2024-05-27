@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import org.frog.DAO.MenteeDAO;
 import org.frog.controller.auth.AuthenticationServlet;
@@ -88,10 +89,10 @@ public class UpdateMenteeController extends AuthenticationServlet {
         if (avatar != null) {
             a.setAvatar(avatar);
         }
-
         Mentee mentee = new Mentee(a);
         menteeDAO.updateMentee(mentee);
-
+        HttpSession session = req.getSession();
+        session.setAttribute("account",account);
         resp.sendRedirect("profile");
     }
 }

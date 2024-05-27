@@ -22,7 +22,8 @@
             <p class="text-center">Use the form below to change your password. Your password cannot be the same as your username.</p>
             <form method="post" id="passwordForm" action="change-pass">
                 <label for="email">Email</label>
-                <input id="email" type="text" class="input-lg form-control" name="email" value="${requestScope.email}" readonly>
+                <input name="email" value="${param.token}" type="hidden">
+                <input id="email" type="text" class="input-lg form-control"  value="${requestScope.email}" readonly>
                 <br>
                 <input type="password" class="input-lg form-control" name="password1" id="password1" placeholder="New Password" autocomplete="off">
                 <div class="row">

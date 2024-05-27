@@ -139,7 +139,7 @@
                         </c:if>
                                     <c:if test="${sessionScope.account.avatar != null}">
                                         <img
-                                                src="${sessionScope.account.avatar}"
+                                                src="${pageContext.request.contextPath}/${sessionScope.account.avatar}"
                                                 class="rounded-circle"
                                                 height="25"
                                                 alt="Logo user"
