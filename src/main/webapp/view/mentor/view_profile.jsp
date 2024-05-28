@@ -40,7 +40,7 @@
             initMDB({Dropdown, Ripple});
         </script>
 </head>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/mentor/profile.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/mentor/view_profile.css">
 <body>
 <jsp:include page="../common/header.jsp"></jsp:include>
 
@@ -83,7 +83,7 @@
                 </div>
 
                 <div style="margin-right: 20px">
-                    <a href="/Frog/mentor/follower">
+                    <a href="/Frog/mentor/view_follower">
                         <button type="button" class="btn btn-primary" data-mdb-ripple-init>View Follow Request</button>
                     </a>
                 </div>

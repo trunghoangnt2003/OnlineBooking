@@ -12,8 +12,8 @@ import org.frog.model.WishList;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet("/mentor/follower")
-public class ViewListFollow extends AuthenticationServlet {
+@WebServlet("/mentor/view_follower")
+public class ViewListFollowController extends AuthenticationServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
@@ -26,6 +26,6 @@ public class ViewListFollow extends AuthenticationServlet {
         ArrayList<WishList> wishLists = dao.getWishListByMentorId(account.getId());
 
         req.setAttribute("wishLists", wishLists);
-        req.getRequestDispatcher("../view/mentor/follower.jsp").forward(req, resp);
+        req.getRequestDispatcher("../view/mentor/view_follower.jsp").forward(req, resp);
     }
 }

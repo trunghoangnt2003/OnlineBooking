@@ -21,7 +21,7 @@ public class MenteeController extends AuthenticationServlet {
         Mentee mentee = menteeDAO.getMenteeById(account.getId());
         System.out.println(mentee.getAccount() + "aaaaaaa");
         req.setAttribute("mentee", mentee);
-        req.getRequestDispatcher("../view/mentee/profile/profile.jsp").forward(req, resp);
+        req.getRequestDispatcher("../view/mentee/profile/view_profile.jsp").forward(req, resp);
     }
 
 

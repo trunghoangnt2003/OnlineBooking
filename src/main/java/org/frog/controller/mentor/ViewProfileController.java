@@ -14,8 +14,8 @@ import org.frog.model.Mentor;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet("/mentor/profile")
-public class ProfileController extends AuthenticationServlet {
+@WebServlet("/mentor/view_profile")
+public class ViewProfileController extends AuthenticationServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
@@ -40,7 +40,7 @@ public class ProfileController extends AuthenticationServlet {
                 }
                 req.setAttribute("level_skills", level_skills);
                 req.setAttribute("mentor", mentor);
-                req.getRequestDispatcher("../view/mentor/profile.jsp").forward(req, resp);
+                req.getRequestDispatcher("../view/mentor/view_profile.jsp").forward(req, resp);
             }
         } catch (ServletException | IOException e) {
             throw new RuntimeException(e);

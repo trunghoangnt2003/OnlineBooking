@@ -46,7 +46,7 @@ public class AccountDAO {
         Account account = null;
         try {
             Connection connection = JDBC.getConnection();
-            String sql = "select * from [account]"
+            String sql = "select * from [Account]"
                     + "where [username]=? AND [password]=?";
             assert connection != null;
             PreparedStatement preparedStatement = connection.prepareCall(sql);

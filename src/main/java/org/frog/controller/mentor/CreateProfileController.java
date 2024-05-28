@@ -16,8 +16,8 @@ import org.frog.model.Skill;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet("/mentor/createcv")
-public class CreateCVController extends AuthenticationServlet {
+@WebServlet("/mentor/create_profile")
+public class CreateProfileController extends AuthenticationServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
         String edu = req.getParameter("edu");
@@ -31,7 +31,7 @@ public class CreateCVController extends AuthenticationServlet {
             try {
                 price = Integer.parseInt(raw_price);
             }catch (NumberFormatException e) {
-                req.getRequestDispatcher("/mentor/createcv").forward(req, resp);
+                req.getRequestDispatcher("/mentor/create_profile").forward(req, resp);
                 return;
             }
         }
@@ -41,7 +41,7 @@ public class CreateCVController extends AuthenticationServlet {
         mentor.setPrice(price);
         mentor.setProfileDetail(detail);
         mentorDAO.update(mentor);
-        resp.sendRedirect("/Frog/mentor/profile");
+        resp.sendRedirect("/Frog/mentor/view_profile");
 
     }
 
@@ -60,7 +60,7 @@ public class CreateCVController extends AuthenticationServlet {
             req.setAttribute("skill", skills);
             req.setAttribute("cate", cate);
             req.setAttribute("account", account);
-            req.getRequestDispatcher("../view/mentor/createCV.jsp").forward(req, resp);
+            req.getRequestDispatcher("../view/mentor/create_profile.jsp").forward(req, resp);
         } catch (ServletException | IOException e) {
             throw new RuntimeException(e);
         }
