@@ -11,4 +11,5 @@ public class StatusEnum {
     public static final int INACTIVE = 8;
     public static final int BOOKED = 9;
     public static final int FREE = 10;
+    public static final int ACCEPT = 11;
 }

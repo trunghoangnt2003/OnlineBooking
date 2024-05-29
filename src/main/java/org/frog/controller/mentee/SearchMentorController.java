@@ -12,6 +12,7 @@ import org.frog.model.Skill;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 @WebServlet("/SearchMentor")
 public class SearchMentorController extends HttpServlet {
@@ -22,7 +23,8 @@ public class SearchMentorController extends HttpServlet {
         String page_raw = request.getParameter("page");
         String skill_name = request.getParameter("skill");
         String level = request.getParameter("level");
-
+        String search = request.getParameter("search");
+        String order_raw = request.getParameter("order");
         int page = 1;
         if (page_raw != null) {
             page = Integer.parseInt(page_raw);
@@ -31,9 +33,12 @@ public class SearchMentorController extends HttpServlet {
 
         MentorDAO mentorDAO = new MentorDAO();
         SkillsDAO skillsDAO = new SkillsDAO();
+        int order = 0;
+        if(order_raw != null){
+            order = Integer.parseInt(order_raw);
+        }
 
-        ArrayList<Mentor> list_mentor = mentorDAO.getMentorAndPaging(page, skill_name, level);
-
+        ArrayList<Mentor> list_mentor = mentorDAO.getMentorAndPaging(page, skill_name, level,search,order);
 
         int totalMentor = mentorDAO.totalMentor(skill_name, level);
         int end_page = totalMentor / 4;
@@ -43,6 +48,9 @@ public class SearchMentorController extends HttpServlet {
 
         Skill skill = skillsDAO.getByName(skill_name);
 
+
+        request.setAttribute("search", search);
+        request.setAttribute("order", order_raw);
         request.setAttribute("skill_name", skill_name);
         request.setAttribute("total_mentor", totalMentor);
         request.setAttribute("end_page", end_page);

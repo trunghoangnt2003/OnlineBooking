@@ -2,6 +2,7 @@ package org.frog.DAO;
 
 import org.frog.model.Account;
 import org.frog.model.Mentor;
+import org.frog.utility.OrderEnum;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -50,20 +51,34 @@ public class MentorDAO {
         return list;
     }
 
-    public ArrayList<Mentor> getMentorAndPaging(int page, String skill, String level) {
+    public ArrayList<Mentor> getMentorAndPaging(int page, String skill, String level,String search, int order ) {
+        if (search == null){
+            search = "";
+        }
         ArrayList<Mentor> list = new ArrayList<>();
         try {
 
             Connection connection = JDBC.getConnection();
-            String sql = "Select a.id,a.username,a.name,a.dob,a.avatar,m.experience,m.price,m.rating, s.name, l.type\n" +
+            String sql = "Select a.id,a.username,a.name as mentor_name,a.dob,a.avatar,\n" +
+                    "m.experience,m.price,m.rating, s.name as skill, l.type, Count(b.mentor_id) as totalBooking\n" +
                     "From Account a JOIN Mentor m on a.id = m.account_id\n" +
-                    "\t JOIN Mentor_Level_Skill mls ON m.account_id = mls.mentor_id\n" +
-                    "\t JOin Level_Skill ls on mls.skill_level_id = ls.id\n" +
-                    "\t JOin Skill  s ON ls.skill_id = s.id\n" +
-                    "\t Join Level l On ls.level_id = l.id\n" +
-                    "Where s.name = ? And l.type = ?\n" +
-                    "ORDER BY a.id\n" +
-                    "OFFSET ? ROWS FETCH NEXT 4 ROWS ONLY";
+                    "JOIN Mentor_Level_Skill mls ON m.account_id = mls.mentor_id\n" +
+                    "JOin Level_Skill ls on mls.skill_level_id = ls.id\n" +
+                    "JOin Skill  s ON ls.skill_id = s.id\n" +
+                    "Join Level l On ls.level_id = l.id\n" +
+                    "Left join Booking b ON a.id = b.mentor_id and status_id = 3\n" +
+                    "Where s.name = ? And l.type = ? AND a.name like '%"+ search +"%' \n" +
+                    "Group By a.id,a.username,a.name,a.dob,a.avatar,\n" +
+                    "m.experience,m.price,m.rating, s.name, l.type\n" ;
+
+            if (order == OrderEnum.POPULAR){
+                sql += "ORDER BY  totalBooking DESC \n" ;
+            }else if( order == OrderEnum.RATE){
+                sql += "ORDER BY  rating DESC \n" ;
+            }else{
+                sql += "ORDER BY  id \n" ;
+            }
+            sql += "OFFSET ? ROWS FETCH NEXT 4 ROWS ONLY";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, skill);
             preparedStatement.setString(2, level);
@@ -72,7 +87,7 @@ public class MentorDAO {
             while (resultSet.next()) {
                 Account account = new Account();
                 account.setId(resultSet.getString("id"));
-                account.setName(resultSet.getString("name"));
+                account.setName(resultSet.getString("mentor_name"));
                 account.setDob(resultSet.getDate("dob"));
                 account.setAvatar(resultSet.getString("avatar"));
 
@@ -86,7 +101,7 @@ public class MentorDAO {
 //                mentor.setSkills(  skillsDAO.getByMentorId(account.getId()));
 
                 BookingDAO bookingDAO = new BookingDAO();
-                mentor.setTotalBookings(bookingDAO.CalcBookByMentor(account.getId()));
+                mentor.setTotalBookings(resultSet.getInt("totalBooking"));
 
                 list.add(mentor);
             }
