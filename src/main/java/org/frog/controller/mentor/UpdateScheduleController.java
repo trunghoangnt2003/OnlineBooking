@@ -41,7 +41,8 @@ public class UpdateScheduleController extends AuthenticationServlet {
                     MentorDAO mentorDAO = new MentorDAO();
                     BookingSchedule bs = new BookingSchedule();
                     bs = mentorDAO.getBookNScheID(startT, endT, id,menteeID);
-                    if(bs.getSchedule().getStatus() == true){
+                    if(bs.getSchedule().getStatus()){
+
                         mentorDAO.updateBusyMentorSchedule(bs.getSchedule().getId());
                         mentorDAO.updateResultsForMenteeRequest(bs.getBooking().getId(),3);
                         req.getSession().removeAttribute("existError");
@@ -53,7 +54,7 @@ public class UpdateScheduleController extends AuthenticationServlet {
                         ArrayList<Schedule> menteeBookedTime = new ArrayList<>();
                         menteeBookedTime = mentorDAO.getBookedScheduleMentee(id,bookingID);
                        boolean check = DateTimeHelper.compareTimeMenteeBook(menteeBookedTime,startT,endT);
-                       if(check == true){
+                       if(check ){
                            mentorDAO.updateResultsForMenteeRequest(bs.getBooking().getId(),3);
                            req.getSession().removeAttribute("existError");
 

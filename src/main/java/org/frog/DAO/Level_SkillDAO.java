@@ -122,7 +122,8 @@ public class Level_SkillDAO {
                 sql += " )";
             }
 
-            preparedStatement = connection.prepareStatement(sql.toString());
+            assert connection != null;
+            preparedStatement = connection.prepareStatement(sql);
 //            preparedStatement.setString(1, name);
 
             if (levels != null && levels.length > 0) {

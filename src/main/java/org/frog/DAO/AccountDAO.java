@@ -38,6 +38,7 @@ public class AccountDAO {
             }
             JDBC.closeConnection(connection);
         } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
         return list;
     }
@@ -274,8 +275,8 @@ public class AccountDAO {
             kq = preparedStatement.executeUpdate();
 
             JDBC.closeConnection(connection);
-        } catch (SQLException ignored) {
-            System.out.println(ignored.getMessage());
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
         return kq;
     }
