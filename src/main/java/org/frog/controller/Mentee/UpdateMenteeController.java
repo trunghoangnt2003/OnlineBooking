@@ -18,14 +18,14 @@ import java.nio.file.Paths;
 import java.sql.Date;
 
 @MultipartConfig(
-        fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
+        fileSizeThreshold = 1024 * 1024, // 1 MB
         maxFileSize = 1024 * 1024 * 10,      // 10 MB
         maxRequestSize = 1024 * 1024 * 100   // 100 MB
 )
 @WebServlet("/mentee/update")
 public class UpdateMenteeController extends AuthenticationServlet {
 
-    private static final String UPLOAD_DIR = "/img";
+    private static final String UPLOAD_DIR = "img\\image_user"; // Removed leading slash for relative path
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
@@ -52,7 +52,9 @@ public class UpdateMenteeController extends AuthenticationServlet {
 
         if (filePart != null && filePart.getSize() > 0) {
             String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-            String uploadPath = getServletContext().getRealPath("") + UPLOAD_DIR;
+            String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIR;
+
+            System.out.println("Upload Path: " + uploadPath); // Debugging statement
 
             File uploadDirFile = new File(uploadPath);
             if (!uploadDirFile.exists()) {
@@ -60,9 +62,11 @@ public class UpdateMenteeController extends AuthenticationServlet {
             }
 
             String filePath = Paths.get(uploadPath, fileName).toString();
+            System.out.println(filePath);
             try {
                 filePart.write(filePath);
                 avatar = UPLOAD_DIR + "/" + fileName;
+                System.out.println("File uploaded to: " + filePath); // Debugging statement
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new ServletException("File upload failed!", e);
@@ -93,7 +97,7 @@ public class UpdateMenteeController extends AuthenticationServlet {
         menteeDAO.updateMentee(mentee);
         account.setAvatar(avatar);
         HttpSession session = req.getSession();
-        session.setAttribute("account",account);
+        session.setAttribute("account", account);
         resp.sendRedirect("profile");
     }
 }

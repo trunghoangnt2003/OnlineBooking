@@ -7,7 +7,7 @@ public class WishList {
     private Mentor mentor;
     private Mentee mentee;
     private Date timeRequest;
-    private int status;
+    private Status status;
 
     public WishList(Mentor mentor, Mentee mentee) {
         this.mentor = mentor;
@@ -41,11 +41,11 @@ public class WishList {
         this.timeRequest = timeRequest;
     }
 
-    public int getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 }

@@ -103,26 +103,26 @@ public class Level_SkillDAO {
 
         try {
             connection = JDBC.getConnection();
-            String sql = "SELECT Skill.id, Skill.name, Skill.src_icon, Level_Skill.id as level_skill_id, Level_Skill.level_id, Level.type, " +
+            StringBuilder sql = new StringBuilder("SELECT Skill.id, Skill.name, Skill.src_icon, Level_Skill.id as level_skill_id, Level_Skill.level_id, Level.type, " +
                     "Level_Skill.description, Skill.cate_id, Skill_Category.name as category " +
                     "FROM [Level] " +
                     "INNER JOIN Level_Skill ON [Level].id = Level_Skill.level_id " +
                     "INNER JOIN Skill ON Level_Skill.skill_id = Skill.id " +
                     "INNER JOIN Skill_Category ON Skill.cate_id = Skill_Category.id " +
-                    "WHERE Skill.name like '%" + name + "%'";
+                    "WHERE Skill.name like '%" + name + "%'");
 
             if (levels != null && levels.length > 0) {
-                sql += " AND (";
+                sql.append(" AND (");
                 for (int i = 0; i < levels.length; i++) {
-                    sql += " Level.type = ?";
+                    sql.append(" Level.type = ?");
                     if (i < levels.length - 1) {
-                        sql += " OR";
+                        sql.append(" OR");
                     }
                 }
-                sql += " )";
+                sql.append(" )");
             }
 
-            preparedStatement = connection.prepareStatement(sql.toString());
+            preparedStatement = connection.prepareStatement(sql.toString().toString());
 //            preparedStatement.setString(1, name);
 
             if (levels != null && levels.length > 0) {
