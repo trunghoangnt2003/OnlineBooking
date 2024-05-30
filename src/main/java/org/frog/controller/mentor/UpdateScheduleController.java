@@ -4,12 +4,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.frog.DAO.Mentor.MentorDAO;
+import org.frog.DAO.MentorDAO;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.Account;
 import org.frog.model.BookingSchedule;
 import org.frog.model.Schedule;
-import org.frog.utility.MentorUtils.DateTimeHelper;
+import org.frog.utility.DateTimeHelper;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -40,10 +40,10 @@ public class UpdateScheduleController extends AuthenticationServlet {
                     Timestamp endT = Timestamp.valueOf(end);
                     MentorDAO mentorDAO = new MentorDAO();
                     BookingSchedule bs = new BookingSchedule();
-                    bs = mentorDAO.getBookNScheID(startT, endT, id,menteeID);
-                    if(bs.getSchedule().getStatus() == true){
-                        mentorDAO.updateBusyMentorSchedule(bs.getSchedule().getId());
-                        mentorDAO.updateResultsForMenteeRequest(bs.getBooking().getId(),3);
+//                    bs = mentorDAO.getBookNScheID(startT, endT, id,menteeID);
+                    if(true){ //bs.getSchedule().getStatus() ==
+//                        mentorDAO.updateBusyMentorSchedule(bs.getSchedule().getId());
+//                        mentorDAO.updateResultsForMenteeRequest(bs.getBooking().getId(),3);
                         req.getSession().removeAttribute("existError");
 
                         resp.sendRedirect("/Frog/mentor/schedule");
@@ -51,10 +51,10 @@ public class UpdateScheduleController extends AuthenticationServlet {
                     else{
                         int bookingID = bs.getSchedule().getId();
                         ArrayList<Schedule> menteeBookedTime = new ArrayList<>();
-                        menteeBookedTime = mentorDAO.getBookedScheduleMentee(id,bookingID);
+//                        menteeBookedTime = mentorDAO.getBookedScheduleMentee(id,bookingID);
                        boolean check = DateTimeHelper.compareTimeMenteeBook(menteeBookedTime,startT,endT);
                        if(check == true){
-                           mentorDAO.updateResultsForMenteeRequest(bs.getBooking().getId(),3);
+//                           mentorDAO.updateResultsForMenteeRequest(bs.getBooking().getId(),3);
                            req.getSession().removeAttribute("existError");
 
                            resp.sendRedirect("/Frog/mentor/schedule");
@@ -73,8 +73,8 @@ public class UpdateScheduleController extends AuthenticationServlet {
                     Timestamp endT = Timestamp.valueOf(end);
                     MentorDAO mentorDAO = new MentorDAO();
                     BookingSchedule bs = new BookingSchedule();
-                    bs = mentorDAO.getBookNScheID(startT, endT, id,menteeID);
-                    mentorDAO.updateResultsForMenteeRequest(bs.getBooking().getId(),2);
+//                    bs = mentorDAO.getBookNScheID(startT, endT, id,menteeID);
+//                    mentorDAO.updateResultsForMenteeRequest(bs.getBooking().getId(),2);
                     req.getSession().removeAttribute("existError");
                     resp.sendRedirect("/Frog/mentor/schedule");
                 }
