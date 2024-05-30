@@ -2,6 +2,7 @@ package org.frog.model;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 public class Booking {
     private int id;
@@ -14,6 +15,7 @@ public class Booking {
     private Date endDate;
     private String description;
     private Level_Skills level_skills;
+
 
     public Booking(int id, Status status, float amount, Date date, Mentor mentor, Mentee mentee, Date startDate, Date endDate) {
         this.id = id;
@@ -109,4 +111,6 @@ public class Booking {
     public void setLevel_skills(Level_Skills level_skills) {
         this.level_skills = level_skills;
     }
+
+
 }

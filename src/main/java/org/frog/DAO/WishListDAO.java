@@ -29,6 +29,9 @@ public class WishListDAO {
 
                 mentee.setAccount(account);
                 wishList.setMentee(mentee);
+                Status status = new Status();
+                status.setId(resultSet.getInt("status"));
+                wishList.setStatus(status);
                 //fix loi sua int -> status
            //     wishList.setStatus(resultSet.getInt("status"));
                 wishList.setTimeRequest(resultSet.getDate("date"));

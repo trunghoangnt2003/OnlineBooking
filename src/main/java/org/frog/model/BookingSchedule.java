@@ -5,51 +5,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookingSchedule {
+    private int id;
     private Schedule schedule;
-    private ArrayList<Booking> bookings;
-    private  Booking booking;
-    private Account account;
+    private Booking booking;
+    private boolean isAttend;
     private Status status;
-    private Level_Skills skill;
 
-    public Account getAccount() {
-        return account;
+    public int getId() {
+        return id;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-
-    public Level_Skills getSkill() {
-        return skill;
-    }
-
-    public void setSkill(Level_Skills skill) {
-        this.skill = skill;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public Booking getBooking() {
-        return booking;
-    }
-
-    public void setBooking(Booking booking) {
-        this.booking = booking;
-    }
-
-    public BookingSchedule(ArrayList<Booking> bookings, Schedule schedule) {
-        this.bookings = bookings;
-        this.schedule = schedule;
-    }
-
-    public BookingSchedule() {
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Schedule getSchedule() {
@@ -60,11 +27,27 @@ public class BookingSchedule {
         this.schedule = schedule;
     }
 
-    public ArrayList<Booking> getBookings() {
-        return bookings;
+    public Booking getBooking() {
+        return booking;
     }
 
-    public void setBookings(ArrayList<Booking> bookings) {
-        this.bookings = bookings;
+    public void setBooking(Booking booking) {
+        this.booking = booking;
+    }
+
+    public boolean isAttend() {
+        return isAttend;
+    }
+
+    public void setAttend(boolean attend) {
+        isAttend = attend;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }
