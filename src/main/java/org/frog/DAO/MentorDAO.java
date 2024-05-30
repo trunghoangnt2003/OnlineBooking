@@ -112,8 +112,11 @@ public class MentorDAO {
         return list;
     }
 
-    public int totalMentor(String skill, String level) {
+    public int totalMentor(String skill, String level,String search) {
         int total = 0;
+        if (search == null){
+            search = "";
+        }
         try {
             Connection connection = JDBC.getConnection();
             String sql = "Select Count(m.account_id)\n" +
@@ -122,7 +125,7 @@ public class MentorDAO {
                     "\t JOin Level_Skill ls on mls.skill_level_id = ls.id\n" +
                     "\t JOin Skill  s ON ls.skill_id = s.id\n" +
                     "\t Join Level l On ls.level_id = l.id\n" +
-                    "Where s.name = ? And l.type = ?";
+                    "Where s.name = ? And l.type = ? AND a.name like '%"+ search +"%'\n";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, skill);
             preparedStatement.setString(2, level);

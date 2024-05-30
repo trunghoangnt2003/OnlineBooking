@@ -40,9 +40,9 @@ public class SearchMentorController extends HttpServlet {
 
         ArrayList<Mentor> list_mentor = mentorDAO.getMentorAndPaging(page, skill_name, level,search,order);
 
-        int totalMentor = mentorDAO.totalMentor(skill_name, level);
+        int totalMentor = mentorDAO.totalMentor(skill_name, level,search);
         int end_page = totalMentor / 4;
-        if (mentorDAO.totalMentor(skill_name, level) % 4 != 0) {
+        if (totalMentor % 4 != 0) {
             end_page++;
         }
 
