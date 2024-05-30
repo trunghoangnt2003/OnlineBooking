@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" external-system-id="GRADLE" name="Gradle : org : Frog-1.0-SNAPSHOT.war (exploded)">
+  <artifact type="exploded-war" build-on-make="true" external-system-id="GRADLE" name="Gradle : org : Frog-1.0-SNAPSHOT.war (exploded)">
     <output-path>$PROJECT_DIR$/build/libs/exploded/Frog-1.0-SNAPSHOT.war</output-path>
     <properties id="gradle-properties">
       <options external-project-path="$PROJECT_DIR$">

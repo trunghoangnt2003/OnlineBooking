@@ -5,7 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.frog.DAO.Mentor.MentorDAO;
+import org.frog.DAO.MentorDAO;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.*;
 import org.frog.utility.MentorUtils.DateTimeHelper;
