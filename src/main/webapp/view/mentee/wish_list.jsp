@@ -51,7 +51,7 @@
                             <td style="border: 1px solid black; padding: 10px; text-align: center;">${w.status.type}</td>
                             <td style="border: 1px solid black; padding: 10px; text-align: center;">${w.timeRequest}</td>
                             <td>
-                                <i class=""  onclick="location.href='updateBooking?id=${booking.id}'" style="color: #74C0FC;"></i>
+                                <i class=""  onclick="location.href='updateBooking?id=${w.id}'" style="color: #74C0FC;"></i>
                                 <i class=""  onclick="confirmDelete(${booking.id})" style="color: #ff0000;"></i>
                             </td>
                         </tr>
