@@ -7,20 +7,9 @@ import java.time.format.DateTimeFormatter;
 
 public class Schedule {
     private int id;
-    private Timestamp dateStart;
-    private Timestamp dateEnd;
-    private boolean status;
+    private Date date;
+    private Slot slot;
     private Account account;
-    private Booking booking;
-
-    public Schedule(int id, Timestamp dateStart, Timestamp dateEnd, boolean status, Account account, Booking booking) {
-        this.id = id;
-        this.dateStart = dateStart;
-        this.dateEnd = dateEnd;
-        this.status = status;
-        this.account = account;
-        this.booking = booking;
-    }
 
     public Schedule() {
     }
@@ -33,28 +22,20 @@ public class Schedule {
         this.id = id;
     }
 
-    public Timestamp getDateStart() {
-        return dateStart;
+    public Date getDate() {
+        return date;
     }
 
-    public void setDateStart(Timestamp dateStart) {
-        this.dateStart = dateStart;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
-    public Timestamp getDateEnd() {
-        return dateEnd;
+    public Slot getSlot() {
+        return slot;
     }
 
-    public void setDateEnd(Timestamp dateEnd) {
-        this.dateEnd = dateEnd;
-    }
-
-    public boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setSlot(Slot slot) {
+        this.slot = slot;
     }
 
     public Account getAccount() {
@@ -65,41 +46,5 @@ public class Schedule {
         this.account = account;
     }
 
-    public Booking getBooking() {
-        return booking;
-    }
 
-    public void setBooking(Booking booking) {
-        this.booking = booking;
-    }
-    public int getDateStartHour() {
-        LocalDateTime localDateTime = dateStart.toLocalDateTime();
-        return localDateTime.getHour();
-    }
-
-    public int getDateEndtHour() {
-        LocalDateTime localDateTime = dateEnd.toLocalDateTime();
-        if(localDateTime.getMinute()>0) {
-            return localDateTime.getHour()+1;
-        }
-        else{
-            return localDateTime.getHour();
-        }
-    }
-    public  String convertTimestampToString(Timestamp timestamp) {
-        if (timestamp == null) {
-            return ""; // hoặc giá trị mặc định bạn muốn trả về khi timestamp là null
-        }
-        LocalDateTime localDateTime = timestamp.toLocalDateTime();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return localDateTime.format(formatter);
-    }
-    public  String convertTimestampToStringHMS(Timestamp timestamp) {
-        if (timestamp == null) {
-            return ""; // hoặc giá trị mặc định bạn muốn trả về khi timestamp là null
-        }
-        LocalDateTime localDateTime = timestamp.toLocalDateTime();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        return localDateTime.format(formatter);
-    }
 }
