@@ -10,7 +10,7 @@ import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.Account;
 import org.frog.model.BookingSchedule;
 import org.frog.model.Schedule;
-import org.frog.utility.MentorUtils.DateTimeHelper;
+import org.frog.utility.DateTimeHelper;
 
 import java.io.IOException;
 import java.sql.Timestamp;

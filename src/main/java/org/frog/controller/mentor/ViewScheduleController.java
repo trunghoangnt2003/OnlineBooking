@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.frog.DAO.MentorDAO;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.*;
-import org.frog.utility.MentorUtils.DateTimeHelper;
+import org.frog.utility.DateTimeHelper;
 
 import java.io.IOException;
 import java.time.LocalDate;
