@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.frog.DAO.WishListDAO;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.Account;
-import org.frog.model.Mentee;
 import org.frog.model.WishList;
 
 import java.io.IOException;
