@@ -1,4 +1,4 @@
-package org.frog.utility.MentorUtils;
+package org.frog.utility;
 
 import org.frog.model.Schedule;
 import org.frog.model.Week;
