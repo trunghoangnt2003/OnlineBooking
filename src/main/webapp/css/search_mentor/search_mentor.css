@@ -43,7 +43,7 @@
 .search_order{
     display: flex;
     justify-content: space-between;
-    padding: 0 20px 0 40px;
+    padding: 0 20px 0 5px;
     height: 50%;
 }
 .search{
@@ -115,7 +115,7 @@
     display: grid;
     align-items: center;
     justify-content: center;
-    grid-template-columns: repeat(auto-fill,minmax(260px,auto));
+    grid-template-columns: repeat(auto-fill,minmax(255px,auto));
     gap: 2rem;
 }
 

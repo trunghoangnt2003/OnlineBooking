@@ -76,7 +76,7 @@
         }
 
         .pin:after {
-            background-color: gray;
+            background-color: yellowgreen;
             background-image: radial-gradient(25% 25%, circle, hsla(0, 0%, 100%, .3), hsla(0, 0%, 0%, .3));
             border-radius: 50%;
             box-shadow: inset 0 0 0 1px hsla(0, 0%, 0%, .1), inset 3px 3px 3px hsla(0, 0%, 100%, .2), inset -3px -3px 3px hsla(0, 0%, 0%, .2), 18px 8px 3px hsla(0, 0%, 0%, .15);
@@ -101,8 +101,18 @@
             transform-origin: 50% 100%;
         }
 
-        thead th {
-            border: 1px #07AD90 solid;
+        table{
+            border: 2px #07AD90 solid;
+
+        }
+
+        thead tr th {
+            border-left: 1px #07AD90 solid;
+            text-align: center;
+
+        }
+        thead{
+            border-bottom: 2px #07AD90 solid;
         }
 
         tbody tr, td {
@@ -115,11 +125,78 @@
             position: absolute;
             bottom: 0;
             width: 100%;
-            height: 30px;
+
             display: flex;
             justify-content: center;
         }
 
+
+        .checkbox__input {
+            position: absolute;
+            width: 1.375em;
+            height: 1.375em;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .checkbox__input:checked + .checkbox__icon .tick {
+            stroke-dashoffset: 0;
+        }
+
+        .checkbox__icon {
+            width: 1.375em;
+            height: 1.375em;
+            flex-shrink: 0;
+            overflow: visible;
+        }
+
+        .checkbox__icon .tick {
+            stroke-dasharray: 20px;
+            stroke-dashoffset: 20px;
+            transition: stroke-dashoffset .2s ease-out;
+        }
+
+
+        /* Styling for the unordered list */
+        .booking-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            font-family: 'Roboto', sans-serif; 
+            color: #333;
+        }
+
+        /* Styling for the list items */
+        .booking-item {
+            background-color: rgb(176, 237, 215); /* Light background color */
+            margin-bottom: 10px; /* Space between items */
+            padding: 10px; /* Padding inside the list items */
+            border-radius: 5px; /* Rounded corners */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+            display: flex; /* Flexbox for potential icon/text alignment */
+            align-items: center; /* Center items vertically */
+            font-size: 14px; /* Font size */
+        }
+
+        .booking-item:last-child {
+            margin-bottom: 0; /* Remove margin from the last item */
+        }
+
+        /* Optional: Styling for an icon within the list items */
+        .booking-item i {
+            margin-right: 10px; /* Space between icon and text */
+            color: #07AD90; /* Icon color */
+        }
+
+        /* Styling for hidden input within list items */
+        .booking-item input[type="text"] {
+            display: none; /* Hide the input element */
+        }
+
+        /* Styling for text content within list items */
+        .booking-item span {
+            flex-grow: 1; /* Allow text to grow and fill the space */
+        }
     </style>
 </head>
 <body>
@@ -132,6 +209,12 @@
                     <th>
                         <input type="date" id="ymd" name="ymd" onchange="changeDate()" value="${requestScope.today}" />
                     </th>
+                    <c:forEach items="${requestScope.week}" var="date">
+                        <th>${date}</th>
+                    </c:forEach>
+                </tr>
+                <tr>
+                    <th>Slot</th>
                     <th>Monday</th>
                     <th>Tuesday</th>
                     <th>Wednesday</th>
@@ -140,12 +223,7 @@
                     <th>Saturday</th>
                     <th>Sunday</th>
                 </tr>
-                <tr>
-                    <th></th>
-                    <c:forEach items="${requestScope.week}" var="date">
-                        <th>${date.toLocalDate().getDayOfMonth()}/${date.toLocalDate().getMonthValue()}</th>
-                    </c:forEach>
-                </tr>
+
                 </thead>
                 <tbody style="border: 1px #07AD90 solid">
                 <c:forEach items="${requestScope.slots}" var="slot">
@@ -156,35 +234,50 @@
                                 ${slot.start_at}-${slot.end_at}
                         </td>
                         <c:forEach items="${requestScope.week}" var="date">
-                            <td>
+                            <td >
                                 <c:forEach items="${requestScope.bookingSchedules}" var="bs">
                                     <c:if test="${ (bs.schedule.slot.id == slot.id) && (bs.schedule.date == date) }">
-                                        <div class="notes-container">
+                                        <div class="notes-container text-center ">
                                             <i class="pin"></i>
                                             <c:if test="${bs.status.id == 0}">
-                                                <blockquote class="notes color-note" style="background-color: #32cd32">
-                                                    <span>Free</span>
-                                                    <input type="checkbox"
-                                                            <c:forEach items="${requestScope.bookingList}" var="booking">
-                                                                ${booking.schedule.id == bs.schedule.id ? 'checked' : ''}
-                                                            </c:forEach>
-                                                           onchange="handleCheckboxChange(this, ${bs.schedule.id}, ${slot.id}, '${date}')"
-                                                    /> <span>book</span>
-                                                        ${bs.schedule.id}
+                                                <blockquote class="notes color-note font-monospace" style="background-color: #32cd32">
+                                                        <div class="text-center fw-bold fs-4  ">
+                                                            <span > Free</span>
+                                                        </div>
+                                                        <div class="mt-2">
+                                                            <span>book here</span>
+                                                        </div>
+                                                        <input type="checkbox" class="checkbox__input"
+                                                                <c:forEach items="${requestScope.bookingList}" var="booking">
+                                                                    ${booking.schedule.id == bs.schedule.id ? 'checked' : ''}
+                                                                </c:forEach>
+                                                               onchange="handleCheckboxChange(this, ${bs.schedule.id}, ${slot.id}, '${date}')"
+                                                        />
+                                                        <svg class="checkbox__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
+                                                            <rect width="21" height="21" x=".5" y=".5" fill="#FFF" stroke="#006F94" rx="3" />
+                                                            <path class="tick" stroke="#6EA340" fill="none" stroke-linecap="round" stroke-width="4" d="M4 10l5 5 9-9" />
+                                                        </svg>
                                                 </blockquote>
                                             </c:if>
                                             <c:if test="${bs.status.id != 0}">
                                                 <c:if test="${bs.booking.mentee.account.id eq requestScope.mentee_id}">
-                                                    <blockquote class="notes color-note" style="background-color: #F4E0B9">
-                                                        <span>Your Book</span>
+                                                    <blockquote class="notes color-note font-monospace" style="background-color: #F4E0B9">
+
+                                                        <div class="text-center fw-bold">
+                                                            <span>Your Book</span>
+                                                        </div>
                                                         <img width="20px"  src="${pageContext.request.contextPath}${bs.booking.level_skills.skill.src_icon}">
-                                                        <span>${bs.booking.level_skills.skill.name} for ${bs.booking.level_skills.level.name}</span>
-                                                        <span>${bs.status.id}</span>
+                                                        <div style="font-size: 14px">
+                                                            <span>${bs.booking.level_skills.skill.name} for ${bs.booking.level_skills.level.name}</span>
+                                                        </div>
+
                                                     </blockquote>
                                                 </c:if>
                                                 <c:if test="${bs.booking.mentee.account.id ne requestScope.mentee_id}">
-                                                    <blockquote class="notes color-note" style="background-color: #FF6347">
-                                                        <span>Booked by other</span>
+                                                    <blockquote class="notes color-note font-monospace" style="background-color: #FF6347">
+                                                        <div class="text-center fw-bold fs-5  ">
+                                                            <span >Booked by other</span>
+                                                        </div>
                                                     </blockquote>
                                                 </c:if>
                                             </c:if>
@@ -200,7 +293,7 @@
         </div>
 
         <div class="booking">
-            <form action="schedule" id="bookingForm" method="post" style="height: 100%; width: 100%">
+
                 <h5 style="text-align: center">Your Booking</h5>
 
                 <div id="bookingList1">
@@ -209,13 +302,14 @@
                                value="${booking.schedule.id}_${booking.schedule.slot.id}_${booking.schedule.date}" />
                     </c:forEach>
                 </div>
-                <ul id="bookingList">
+                <ul id="bookingList" class="booking-list">
 
                 </ul>
                 <div class="btn-book">
-                    <input type="submit" value="Book">
+                    <button type="button" class="btn btn-outline-success"  onclick="bookHandle()"
+                            data-mdb-ripple-init data-mdb-ripple-color="dark">Book</button>
                 </div>
-            </form>
+
         </div>
     </div>
 </form>
@@ -276,6 +370,7 @@
         bookingList.innerHTML = '';
         bookingArray.forEach(booking => {
             const listItem = document.createElement('li');
+            listItem.className = 'booking-item';
             const input = document.createElement('input');
             input.type = 'text';
             input.name = 'booking-schedule';
@@ -288,6 +383,15 @@
             bookingList.appendChild(input);
             bookingList.appendChild(listItem);
         });
+    }
+
+
+    function bookHandle() {
+        console.log(document.getElementById('frm'))
+        const  form = document.getElementById('frm');
+        form.method = 'POST';
+        form.submit();
+
     }
 </script>
 </body>

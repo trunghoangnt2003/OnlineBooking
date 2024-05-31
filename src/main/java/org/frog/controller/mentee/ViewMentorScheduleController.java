@@ -27,7 +27,7 @@ public class ViewMentorScheduleController extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String ymd_raw = request.getParameter("ymd");
-        String mentor_id = "87928f9e-c513-4eea-9c29-0c403c57b537";
+        String mentor_id = request.getParameter("mentorId"); // get mentor by id day qua lai giua controller va jsp
         String mentee_id = "e8fd47ed-dec2-49bf-829c-b182230ea49d";
         String[] bookings = request.getParameterValues("booking-schedule");
 
