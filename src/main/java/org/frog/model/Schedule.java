@@ -9,7 +9,7 @@ public class Schedule {
     private int id;
     private Date date;
     private Slot slot;
-    private Account account;
+    private Mentor mentor;
 
     public Schedule() {
     }
@@ -38,13 +38,11 @@ public class Schedule {
         this.slot = slot;
     }
 
-    public Account getAccount() {
-        return account;
+    public Mentor getMentor() {
+        return mentor;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setMentor(Mentor mentor) {
+        this.mentor = mentor;
     }
-
-
 }
