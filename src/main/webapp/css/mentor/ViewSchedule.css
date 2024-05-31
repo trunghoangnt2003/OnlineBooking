@@ -23,7 +23,10 @@ td:first-child {
     font-weight: bold; /* In đậm nội dung của ô đầu tiên */
     background-color: #E6E6FA; /* Màu nội dựa cho ô bảng đầu tiên */
 }
-
+/*td:nth-child(2) {*/
+/*    font-weight: bold;*/
+/*    background-color: #E6E6FA;*/
+/*}*/
 /* CSS cho ô bảng có nội dung là "Free" */
 .free {
     background-color: #9ACD32; /* Màu nền xanh lá cây */
@@ -222,4 +225,9 @@ label {
 .table-settings{
     margin-left: 100px;
 
+}
+#button-schedule-td{
+    border: none;
+    border-radius: 5px;
+    padding: 30px 50px;
 }

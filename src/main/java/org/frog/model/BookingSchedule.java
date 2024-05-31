@@ -1,6 +1,8 @@
 package org.frog.model;
 
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,5 +51,12 @@ public class BookingSchedule {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+    public static String convertDateToString(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        String dateString = dateFormat.format(date);
+
+        return dateString;
     }
 }

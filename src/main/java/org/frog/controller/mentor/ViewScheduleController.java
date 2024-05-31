@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.frog.DAO.MentorDAO;
+import org.frog.DAO.ScheduleDAO;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.*;
 import org.frog.utility.DateTimeHelper;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,37 +40,40 @@ public class ViewScheduleController extends AuthenticationServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
-
         String day = req.getParameter("today");
-        int[] freetime = {1,2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24};
-        ArrayList<Schedule> schedules = new ArrayList<>();
+        ArrayList<BookingSchedule> schedules = new ArrayList<>();
+        ArrayList<Slot> slots = new ArrayList<>();
+        List<Week> weeks = new ArrayList<>();
+        MentorDAO mentorDAO = new MentorDAO();
+        ScheduleDAO scheduleDAO = new ScheduleDAO();
         if(day == null){
             LocalDate date = LocalDate.now();
             day = DateTimeHelper.convertDateToString(date);
-            List<Week> weeks = DateTimeHelper.getWeekDates(day);
+            weeks = DateTimeHelper.getWeekDates(day);
             req.setAttribute("weeks", weeks);
         }else{
-            List<Week> weeks = DateTimeHelper.getWeekDates(day);
+             weeks = DateTimeHelper.getWeekDates(day);
             req.setAttribute("weeks", weeks);
         }
+
         String dayID = req.getParameter("dayID");
-
-        MentorDAO mentorDAO = new MentorDAO();
-        if(dayID==null){
-
-        }else{
+        if(dayID!=null){
             ArrayList<BookingSchedule> menteeInfo = new ArrayList<>();
-           // menteeInfo = mentorDAO.getInfoByDayID(account.getId(),DateTimeHelper.converDayIDtoStartDate(dayID),DateTimeHelper.converDayIDtoEndDate(dayID));
+            // menteeInfo = mentorDAO.getInfoByDayID(account.getId(),DateTimeHelper.converDayIDtoStartDate(dayID),DateTimeHelper.converDayIDtoEndDate(dayID));
             req.setAttribute("menteeInfo", menteeInfo);
         }
-       // ArrayList<BookingSchedule> bookings = mentorDAO.getBookingbyMentorID(account.getId());
-        List<Integer> freetimeList = Arrays.stream(freetime).boxed().collect(Collectors.toList());
-        req.setAttribute("freetime", freetimeList);
+        String slotID = req.getParameter("slotID");
+        if(slotID!=null){
+            String [] infoSlotID = slotID.split("_");
+            scheduleDAO.insertDayFreeByMentor(account.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]));
+        }
+
+        slots = scheduleDAO.getSlots();
+        schedules = scheduleDAO.getSchedulesByIDnDay(account.getId(), DateTimeHelper.convertStringToDateByDay(weeks.get(0).getDayOfMonth()), DateTimeHelper.convertStringToDateByDay(weeks.get(6).getDayOfMonth()));
+        req.setAttribute("slots", slots);
         req.setAttribute("count", 1);
-       // schedules = mentorDAO.getScheduleByMentorID(account.getId());
         req.setAttribute("mentorID",account.getId());
         req.setAttribute("schedules", schedules);
-//req.setAttribute("bookings", bookings);
         req.getRequestDispatcher("/view/mentor/schedule/ViewSchedule.jsp").forward(req, resp);
 
     }

@@ -1,10 +1,9 @@
-package org.frog.controller.Mentor;
+package org.frog.controller.mentor;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.frog.DAO.Mentor.MentorDAO;
 import org.frog.DAO.MentorDAO;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.Account;

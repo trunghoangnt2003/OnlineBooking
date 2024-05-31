@@ -3,6 +3,7 @@ package org.frog.utility;
 import org.frog.model.Schedule;
 import org.frog.model.Week;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -67,5 +68,16 @@ public class DateTimeHelper {
         LocalDate givenDate = LocalDate.parse(dayID, formatter);
         LocalDateTime endOfDay = givenDate.atTime(23, 59, 59);
         return Timestamp.valueOf(endOfDay);
+    }
+    public static Date convertStringToDateByDay(String dateString) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date utilDate;
+        try {
+            utilDate = sdf.parse(dateString);
+            return new Date(utilDate.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
