@@ -89,46 +89,38 @@
                         <td>Number</td>
                         <td>Create Date</td>
                         <td>Amount</td>
-                        <td>Date Waiting</td>
                         <td>Description</td>
                         <td>Skill Name</td>
                         <td>Skill Level</td>
-                        <td>Description Skill</td>
                         <td>Start Date</td>
                         <td>End Date</td>
                         <td>Name</td>
-                        <td>Mail</td>
                         <td>Status</td>
                     </tr>
                     <c:forEach items="${bookings}" var="book">
                         <tr>
                             <td>${count}</td>
-                            <td>${book.booking.date}</td>
-                            <td> ${book.booking.amount}</td>
-                            <td>   ${book.booking.startDate} - ${book.booking.endDate}</td>
-                            <td> ${book.booking.description} </td>
-                            <td> ${book.skill.skill.name}</td>
-                            <td> ${book.skill.level.name}</td>
-                            <td> ${book.skill.description}</td>
-                            <td>${book.schedule.dateStart}</td>
-                            <td>${book.schedule.dateEnd}</td>
-                            <td>${book.account.name}</td>
-                            <td>${book.account.email}</td>
+                            <td>${book.date}</td>
+                            <td>${book.amount}</td>
+                            <td>${book.description} </td>
+                            <td><img width="20px"  src="${pageContext.request.contextPath}${book.level_skills.skill.src_icon}">
+                                    ${book.level_skills.skill.name}</td>
+                            <td>${book.level_skills.level.name}</td>
+                            <td>${book.startDate}</td>
+                            <td>${book.endDate}</td>
+                            <td>${book.mentee.account.name}</td>
                             <td><c:if test="${book.status.id ==1 }">
                                 <button name="accept" value="accept">
-                                    <a href="schedule/update?start=${book.schedule.dateStart}&&end=${book.schedule.dateEnd}&&id=${requestScope.mentorID}&&option=true&&menteeID=${book.account.id}"
+                                    <a href="schedule/update?bookingID=${book.id}&&option=true"
                                        class="button">Accept</a></button>
                             </c:if>
-
                                 <c:if test="${book.status.id ==1 }">
-                                    <button name="reject" value="reject"><a
-                                            href="schedule/update?start=${book.schedule.dateStart}&&end=${book.schedule.dateEnd}&&id=${requestScope.mentorID}&&option=false&&menteeID=${book.account.id}"
-                                            class="button"> Reject</a>
+                                    <button name="reject" value="reject">
+                                        <a href="schedule/update?bookingID=${book.id}&&option=false"
+                                           class="button">Reject</a></button>
                                     </button>
                                 </c:if>
-                                <c:if test="${book.status.id !=1 }">${book.status.type}</c:if>
                             </td>
-
                             <c:set var="count" value="${count= count +1}"></c:set>
                         </tr>
                     </c:forEach>
@@ -157,29 +149,42 @@
                     <c:forEach items="${weeks}" var="week">
                         <c:set var="countCheck" value="${count = 0}"></c:set>
                         <c:set var="foundBusy" value="false"></c:set>
+                        <c:set var="name" value=""></c:set>
+
                         <td>
                             <c:forEach items="${schedules}" var="sche">
                                 <c:if test="${sche.schedule.date == week.convertStringToDateByDay(week.dayOfMonth) && sche.schedule.slot.id == t.id}">
                                     <c:if test="${sche.status.id == 11}">
-                                    <a href="#" class="info-link" data-modal-id="tdModal" style="text-decoration: none"
-                                       data-book-id="${week.dayOfMonth}">
-                                    </a>
+                                        <a href="#" class="info-link" data-modal-id="tdModal" style="text-decoration: none"
+                                           data-book-id="${week.dayOfMonth}">
+                                        </a>
                                         <c:set var="countCheck" value="${count = 1}"></c:set>
                                         <c:set var="foundBusy" value="true"></c:set>
+                                        <c:set var="name" value="${sche.booking.level_skills.skill.name}"></c:set>
+
                                     </c:if>
                                     <c:if test="${(sche.status.id == 0 || sche.status.id==2) && !foundBusy}">
                                         <c:set var="countCheck" value="${count = 2}"></c:set>
+                                    </c:if>
+                                    <c:if test="${(sche.status.id == 1 ) && !foundBusy}">
+                                        <c:set var="countCheck" value="${count = 3}"></c:set>
                                     </c:if>
                                 </c:if>
                             </c:forEach>
                             <c:choose>
                                 <c:when test="${countCheck == 1 }">
                                     <button id="button-schedule-td" class="info-link" data-book-id="${week.dayOfMonth}_${t.id}" style="background-color: red">
-
+                                        ${name}
                                     </button>
+
                                 </c:when>
                                 <c:when test="${countCheck == 2 }">
                                     <button id="button-schedule-td" class="button-schedule-td2"  data-schedule-id="${week.dayOfMonth}_${t.id}" style="background-color: green">
+
+                                    </button>
+                                </c:when>
+                                <c:when test="${countCheck == 3 }">
+                                    <button id="button-schedule-td" class="button-schedule-td2"  data-schedule-id="${week.dayOfMonth}_${t.id}" style="background-color: yellow">
 
                                     </button>
                                 </c:when>

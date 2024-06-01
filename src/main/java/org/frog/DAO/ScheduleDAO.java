@@ -29,9 +29,12 @@ public class ScheduleDAO {
 
     public ArrayList<BookingSchedule> getSchedulesByIDnDay(String id, Date start , Date end){
         ArrayList<BookingSchedule> schedules = new ArrayList<>();
-        String sql="SELECT s.id,s.date,slot_id,s.account_id,bs.booking_id,bs.schedule_id,isAtend,status_id \n" +
+        String sql="SELECT s.id,s.date,slot_id,s.account_id,bs.booking_id,skill.name,bs.schedule_id,isAtend,bs.status_id \n" +
                 "FROM Schedule s \n" +
                 "LEFT JOIN Booking_Schedule bs ON s.id = bs.schedule_id\n" +
+                "LEFT JOIN Booking b ON b.id = bs.booking_id\n" +
+                "LEFT JOIN Level_Skill ls ON ls.id = b.level_skill_id\n" +
+                "LEFT JOIN Skill skill ON skill.id = ls.skill_id\n" +
                 "WHERE s.account_id=? AND s.date >= ? AND s.date <= ?\n" +
                 "ORDER BY s.date ";
         try {
@@ -59,6 +62,11 @@ public class ScheduleDAO {
                 bs.setSchedule(s);
 
                 Booking b = new Booking();
+                Level_Skills ls = new Level_Skills();
+                Skill skill = new Skill();
+                skill.setName(resultSet.getString("name"));
+                ls.setSkill(skill);
+                b.setLevel_skills(ls);
                 b.setId(resultSet.getInt("booking_id"));
                 bs.setBooking(b);
 

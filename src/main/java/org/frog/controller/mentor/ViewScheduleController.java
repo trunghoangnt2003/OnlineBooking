@@ -4,6 +4,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.frog.DAO.Booking_ScheduleDAO;
 import org.frog.DAO.MentorDAO;
 import org.frog.DAO.ScheduleDAO;
 import org.frog.controller.auth.AuthenticationServlet;
@@ -46,6 +47,8 @@ public class ViewScheduleController extends AuthenticationServlet {
         List<Week> weeks = new ArrayList<>();
         MentorDAO mentorDAO = new MentorDAO();
         ScheduleDAO scheduleDAO = new ScheduleDAO();
+        Booking_ScheduleDAO bs = new Booking_ScheduleDAO();
+        ArrayList<Booking> bookings = new ArrayList<>();
         if(day == null){
             LocalDate date = LocalDate.now();
             day = DateTimeHelper.convertDateToString(date);
@@ -70,6 +73,8 @@ public class ViewScheduleController extends AuthenticationServlet {
 
         slots = scheduleDAO.getSlots();
         schedules = scheduleDAO.getSchedulesByIDnDay(account.getId(), DateTimeHelper.convertStringToDateByDay(weeks.get(0).getDayOfMonth()), DateTimeHelper.convertStringToDateByDay(weeks.get(6).getDayOfMonth()));
+        bookings = bs.getBookingByMenteeBookMentor(account.getId());
+        req.setAttribute("bookings",bookings);
         req.setAttribute("slots", slots);
         req.setAttribute("count", 1);
         req.setAttribute("mentorID",account.getId());
