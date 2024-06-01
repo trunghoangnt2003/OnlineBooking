@@ -22,11 +22,15 @@
 
     <style>
         .main {
-            margin: 40px;
+            margin: 10px 40px;
         }
 
         .info-container{
+            width: 80%;
             margin: 20px 40px;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 7px 2px rgba(0, 0, 0, 0.05);
         }
 
 
@@ -231,6 +235,9 @@
 <body>
 <jsp:include page="../../common/header.jsp"></jsp:include>
 <form action="schedule" method="GET" id="frm">
+    <div style="margin: 20px 0 40px 40px;">
+        <jsp:include page="../../common/backBtn.jsp"></jsp:include>
+    </div>
     <div class="info-container">
         <c:set var="level_skill" value="${requestScope.level_skills}"></c:set>
         <input type="text" hidden="hidden" name="mentorId" value="${requestScope.mentor.account.id}"/>
@@ -241,15 +248,14 @@
             <div class="category">
                 <span class="category_name">${level_skill.skill.category.name} </span>
             </div>
-            <div class="d-flex align-items-center">
+            <div class="d-flex align-items-center mt-4">
                 <img style="width: 40px" src="${pageContext.request.contextPath}${level_skill.skill.src_icon}">
-                <span>${level_skill.skill.name} for ${level_skill.level.name} </span>
+                <h5 style="color: #07ad90; margin: 0 0 0 10px">${level_skill.skill.name} for ${level_skill.level.name} </h5>
             </div>
         </div>
-        <div>
-
-            <span> Mentor ${requestScope.mentor.account.name}</span>
-            <span>${requestScope.mentor.price}$/per slot</span>
+        <div  class="d-flex justify-content-between mt-3">
+            <span class="fs-4"> Mentor: ${requestScope.mentor.account.name}</span>
+            <span class="fs-5">${requestScope.mentor.price}$/per slot</span>
 
         </div>
     </div>
@@ -299,7 +305,7 @@
                                                         <div class="text-center fw-bold fs-4  ">
                                                             <span > Free</span>
                                                         </div>
-                                                        <div class="mt-2">
+                                                        <div class="mt-1" style="font-size: 14px">
                                                             <span>book here</span>
                                                         </div>
                                                         <input type="checkbox" class="checkbox__input"
@@ -315,23 +321,25 @@
                                                 </blockquote>
                                             </c:if>
                                             <c:if test="${bs.status.id != 0}">
-                                                <c:if test="${bs.booking.mentee.account.id eq requestScope.mentee_id}">
+                                                <c:if test="${bs.booking.mentee.account.id.equals(requestScope.mentee_id)}">
                                                     <blockquote class="notes color-note font-monospace" style="background-color: #F4E0B9">
 
                                                         <div class="text-center fw-bold">
                                                             <span>Your Book</span>
                                                         </div>
-                                                        <img width="20px"  src="${pageContext.request.contextPath}${bs.booking.level_skills.skill.src_icon}">
+                                                        <img width="20px" class="mt-2"  src="${pageContext.request.contextPath}${bs.booking.level_skills.skill.src_icon}">
                                                         <div style="font-size: 14px">
-                                                            <span>${bs.booking.level_skills.skill.name} for ${bs.booking.level_skills.level.name}</span>
+                                                            <span>${bs.booking.level_skills.level.name}</span>
                                                         </div>
-
                                                     </blockquote>
                                                 </c:if>
                                                 <c:if test="${bs.booking.mentee.account.id ne requestScope.mentee_id}">
                                                     <blockquote class="notes color-note font-monospace" style="background-color: #FF6347">
-                                                        <div class="text-center fw-bold fs-5  ">
-                                                            <span >Booked by other</span>
+                                                        <div class="text-center fw-bold fs-5">
+                                                            <span >Busy </span>
+                                                        </div>
+                                                        <div class="text-center mt-2" style="font-size: 12px">
+                                                            <span> Booking are not possible</span>
                                                         </div>
                                                     </blockquote>
                                                 </c:if>
@@ -382,6 +390,11 @@
 <script>
     let bookingArray = [];
     let number_booking = 0;
+
+    function backHandle(){
+        console.log(window.history);
+        window.history.back();
+    }
 
     document.addEventListener("DOMContentLoaded", function() {
         const bookingList1 = document.getElementById('bookingList1');
@@ -506,8 +519,6 @@
 
             }
         });
-
-
     }
 </script>
 </body>

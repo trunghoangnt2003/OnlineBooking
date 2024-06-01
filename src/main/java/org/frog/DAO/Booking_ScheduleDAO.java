@@ -26,6 +26,7 @@ public class Booking_ScheduleDAO {
                     "Where s.account_id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1,mentor_id);
+
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 BookingSchedule bookingSchedule = new BookingSchedule();
@@ -76,7 +77,6 @@ public class Booking_ScheduleDAO {
                 account_mentee.setId(resultSet.getString("mentee_id"));
                 mentee.setAccount(account_mentee);
                 booking.setMentee(mentee);
-
                 list.add(bookingSchedule);
             }
         }catch (Exception e){

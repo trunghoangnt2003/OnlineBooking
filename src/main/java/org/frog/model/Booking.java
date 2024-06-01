@@ -122,7 +122,7 @@ public class Booking {
                 ", amount=" + amount +
                 ", date=" + date +
                 ", mentor=" + mentor.getAccount().getId() +
-                ", mentee=" + mentee+
+                ", mentee=" + mentee.getAccount().getId()+
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", description='" + description + '\'' +

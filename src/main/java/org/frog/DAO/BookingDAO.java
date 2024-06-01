@@ -49,6 +49,8 @@ public class BookingDAO {
                     "\t\t\t\t\twhere Booking.mentee_id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1,id);
+
+
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Account account = new Account();
@@ -123,23 +125,32 @@ public class BookingDAO {
     }
 
     public Booking findByInfo(Booking b) {
+        Booking booking = null;
 
         try {
             Connection connection = JDBC.getConnection();
-            String sql = "Select id, create_date" +
-                        " from Booking" +
-                         " where mentor_id = ?  and from_date = ? and to_date = ? and level_skill_id = ?"; //and mentee_id = ?
+            String sql = "SELECT TOP 1 id, create_date " +
+                    "FROM Booking " +
+                    "WHERE mentor_id = ? AND mentee_id = ? AND from_date = ? AND to_date = ? AND level_skill_id = ? " +
+                    "ORDER BY create_date DESC";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, b.getMentor().getAccount().getId());
-//            preparedStatement.setString(2, b.getMentee().getAccount().getId());
-            preparedStatement.setDate(2, b.getStartDate());
-            preparedStatement.setDate(3, b.getEndDate());
-            preparedStatement.setInt(4, b.getLevel_skills().getId());
+            preparedStatement.setString(2, b.getMentee().getAccount().getId());
+            preparedStatement.setDate(3, b.getStartDate());
+            preparedStatement.setDate(4, b.getEndDate());
+            preparedStatement.setInt(5, b.getLevel_skills().getId());
+
+            System.out.println("SQL: " + preparedStatement.toString());
+            System.out.println("Mentor ID: " + b.getMentor().getAccount().getId());
+            System.out.println("Mentee ID: " + b.getMentee().getAccount().getId());
+            System.out.println("Start Date: " + b.getStartDate());
+            System.out.println("End Date: " + b.getEndDate());
+            System.out.println("Level Skills ID: " + b.getLevel_skills().getId());
+
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                Booking booking = new Booking();
+                booking = new Booking();
                 booking.setId(resultSet.getInt("id"));
-
                 booking.setStatus(b.getStatus());
                 booking.setAmount(b.getAmount());
                 booking.setDate(resultSet.getDate("create_date"));
@@ -149,12 +160,12 @@ public class BookingDAO {
                 booking.setEndDate(b.getEndDate());
                 booking.setDescription(b.getDescription());
                 booking.setLevel_skills(b.getLevel_skills());
-                return booking;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return null;
+        return booking;
     }
+
 }

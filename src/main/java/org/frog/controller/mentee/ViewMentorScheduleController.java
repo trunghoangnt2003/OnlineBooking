@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.frog.DAO.*;
+import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.*;
 import org.frog.utility.DateTimeHelper;
 import org.frog.utility.StatusEnum;
@@ -19,17 +20,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @WebServlet("/mentee/schedule")
-public class ViewMentorScheduleController extends HttpServlet {
+public class ViewMentorScheduleController extends AuthenticationServlet {
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response,Account account) throws ServletException, IOException {
+        if(account.getRole().getId() != 1) {
+            response.sendRedirect("/Frog/Search_Skills");
+            return;
+        }
         String ymd_raw = request.getParameter("ymd");
         String mentor_id = request.getParameter("mentorId"); // get mentor by id day qua lai giua controller va jsp
         String skill = request.getParameter("skill");
         String level = request.getParameter("level");
 
 
-        String mentee_id = "e8fd47ed-dec2-49bf-829c-b182230ea49d";
+        String mentee_id = account.getId();
         String[] bookings = request.getParameterValues("booking-schedule");
 
         ArrayList<BookingSchedule> bookingList = new ArrayList<>();
@@ -96,7 +101,8 @@ public class ViewMentorScheduleController extends HttpServlet {
     }
 
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    public void doPost(HttpServletRequest request, HttpServletResponse response, Account account) throws ServletException, IOException{
+
         String[] bookings = request.getParameterValues("booking-schedule");
         String mentor_id = request.getParameter("mentorId"); // get mentor by id day qua lai giua controller va jsp
         String skill = request.getParameter("skill");
@@ -140,14 +146,12 @@ public class ViewMentorScheduleController extends HttpServlet {
         booking.setDescription(description);
 
         Mentor mentor = new Mentor();
-        Account account = new Account();
-        account.setId(mentor_id);
-        mentor.setAccount(account);
+        Account acc_mentor = new Account();
+        acc_mentor.setId(mentor_id);
+        mentor.setAccount(acc_mentor);
         booking.setMentor(mentor);
 
         Mentee mentee = new Mentee();
-        account = new Account();
-//        account.setId(mentee_id);
         mentee.setAccount(account);
         booking.setMentee(mentee);
 
