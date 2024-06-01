@@ -80,17 +80,10 @@ public class Level_SkillDAO {
                 level_skills.setSkill(skill);
 
                 list.add(level_skills);
-                System.out.println("siisisi" + list.size());
             }
             JDBC.closeConnection(connection);
         }catch (Exception e) {
             e.printStackTrace();
-        }
-        System.out.println("size: " +list.size());
-        for(Level_Skills level_skills : list) {
-            System.out.println("jdjdjjdjd");
-            System.out.println(level_skills.getSkill().getName());
-            System.out.println(level_skills.getLevel().getName());
         }
         return list;
     }
@@ -159,16 +152,5 @@ public class Level_SkillDAO {
             e.printStackTrace();
         }
         return list;
-    }
-
-
-
-    public static void main(String[] args) {
-        Level_SkillDAO level_skillDAO = new Level_SkillDAO();
-        ArrayList<Level_Skills> list = level_skillDAO.getLevel_SkillByMentorId("1525cfd4-fbb9-4667-9d00-2a54582a2f28");
-        for(Level_Skills level_skills : list) {
-            System.out.println(level_skills.getSkill().getName());
-            System.out.println(level_skills.getLevel().getName());
-        }
     }
 }

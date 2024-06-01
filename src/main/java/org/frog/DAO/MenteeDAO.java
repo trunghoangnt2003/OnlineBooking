@@ -94,10 +94,8 @@ public class MenteeDAO {
             preparedStatement.setDate(3, mentee.getAccount().getDob());
             preparedStatement.setString(4, mentee.getAccount().getPhone());
             preparedStatement.setInt(5, mentee.getAccount().getGender());
-            System.out.println(mentee.getAccount().getGender()+"sssss");
             preparedStatement.setString(6, mentee.getAccount().getAddress());
             preparedStatement.setString(7, mentee.getAccount().getAvatar());
-            System.out.println(mentee.getAccount().getAvatar());
             preparedStatement.setString(8, mentee.getAccount().getId());
             preparedStatement.executeUpdate();
             JDBC.closeConnection(connection);

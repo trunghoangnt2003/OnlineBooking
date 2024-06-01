@@ -83,7 +83,6 @@ public class AccountDAO {
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                System.out.println(resultSet.getString("mail"));
                 String id = resultSet.getString("id");
                 String name = resultSet.getString("name");
                 String avatar = resultSet.getString("avatar");
@@ -100,7 +99,6 @@ public class AccountDAO {
                 user.setName(name);
                 user.setAvatar(avatar);
                 user.setRole(new Role(role,""));
-                System.out.println(user.getRole().getId());
             }
             JDBC.closeConnection(connection);
         } catch (SQLException ignored) {
@@ -304,12 +302,9 @@ public class AccountDAO {
             PreparedStatement preparedStatement = null;
             if (connection != null) {
                 preparedStatement = connection.prepareStatement(sql);
-                System.out.println("pass 1");
                 preparedStatement.setString(1, newPass);
                 preparedStatement.setString(2, email);
-                System.out.println("pass 2");
                 preparedStatement.executeUpdate();
-                System.out.println("pass 3");
                 JDBC.closeConnection(connection);
             }
 
@@ -325,13 +320,10 @@ public class AccountDAO {
                     + "where mail= ?\n";
             PreparedStatement preparedStatement = null;
             if (connection != null) {
-                System.out.println("update status 1 ");
                 preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setInt(1, status);
                 preparedStatement.setString(2, email);
-                System.out.println("update status 2");
                 preparedStatement.executeUpdate();
-                System.out.println("update status 3");
             }
 
             JDBC.closeConnection(connection);

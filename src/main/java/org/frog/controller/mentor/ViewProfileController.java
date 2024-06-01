@@ -28,16 +28,11 @@ public class ViewProfileController extends AuthenticationServlet {
             MentorDAO mentorDAO = new MentorDAO();
             Mentor mentor = mentorDAO.getMentorById(account.getId());
             if ( mentor == null) {
-                resp.sendRedirect("/Frog/mentor/createcv");
+                resp.sendRedirect("/Frog/mentor/create_profile");
             }else {
                 Level_SkillDAO level_skillDAO = new Level_SkillDAO();
-                System.out.println("mentor id :" +account.getId());
                 ArrayList<Level_Skills> level_skills = level_skillDAO.getLevel_SkillByMentorId(account.getId());
 
-                for (Level_Skills level_skill : level_skills) {
-                    System.out.println(level_skill.getLevel().getName());
-                    System.out.println(level_skill.getSkill().getName());
-                }
                 req.setAttribute("level_skills", level_skills);
                 req.setAttribute("mentor", mentor);
                 req.getRequestDispatcher("../view/mentor/view_profile.jsp").forward(req, resp);

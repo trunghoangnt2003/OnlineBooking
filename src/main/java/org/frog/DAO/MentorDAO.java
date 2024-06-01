@@ -37,8 +37,7 @@ public class MentorDAO {
                 BookingDAO bookingDAO = new BookingDAO();
 
                 mentor.setTotalBookings(bookingDAO.CalcBookByMentor(account.getId()));
-                System.out.println(mentor.getTotalBookings());
-                list.add(mentor); 
+                list.add(mentor);
             }
         }catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -120,25 +119,32 @@ public class MentorDAO {
     public void update(Mentor mentor) {
         try {
             Connection connection = JDBC.getConnection();
-            String sql = "UPDATE [dbo].[Mentor]\n" +
-                    "   SET [profile_detail] = ?\n" +
-                    "      ,[price] = ?\n" +
-                    "      ,[experience] = ?\n" +
-                    "      ,[education] = ?\n" +
-                    " WHERE Mentor.account_id = ? ";
+            String sql = "INSERT INTO [dbo].[Mentor]\n" +
+                    "           ([account_id]\n" +
+                    "           ,[profile_detail]\n" +
+                    "           ,[price]\n" +
+                    "           ,[experience]\n" +
+                    "           ,[education])\n" +
+                    "     VALUES (\n" +
+                    "           ?\n" +
+                    "           ,?\n" +
+                    "           ,?\n" +
+                    "           ,?\n" +
+                    "           ,?)";
+            assert connection != null;
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, mentor.getProfileDetail());
-            preparedStatement.setInt(2, mentor.getPrice());
-            preparedStatement.setString(3, mentor.getExperience());
-            preparedStatement.setString(4, mentor.getEducation());
-            preparedStatement.setString(5, mentor.getAccount().getId());
-            preparedStatement.executeUpdate();
+            preparedStatement.setString(1, mentor.getAccount().getId());
+            preparedStatement.setString(2, mentor.getProfileDetail());
+            preparedStatement.setInt(3, mentor.getPrice());
+            preparedStatement.setString(4, mentor.getExperience());
+            preparedStatement.setString(5, mentor.getEducation());
+            preparedStatement.execute();
             JDBC.closeConnection(connection);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
+
 
     public Mentor getMentorById(String id) {
 
@@ -173,18 +179,6 @@ public class MentorDAO {
                 mentor.setExperience(resultSet.getString("experience"));
                 mentor.setEducation(resultSet.getString("education"));
                 mentor.setRating(resultSet.getFloat("rating"));
-//                System.out.println(mentor.getAccount().getId());
-//                System.out.println(mentor.getAccount().getName());
-//                System.out.println(mentor.getAccount().getDob());
-//                System.out.println(mentor.getAccount().getPhone());
-//                System.out.println(mentor.getAccount().getGender());
-//                System.out.println(mentor.getAccount().getAddress());
-//                System.out.println(mentor.getAccount().getEmail());
-//                System.out.println(mentor.getAccount().getAvatar());
-//                System.out.println(mentor.getProfileDetail());
-//                System.out.println(mentor.getPrice());
-//                System.out.println(mentor.getExperience());
-//                System.out.println(mentor.getEducation());
 
                 return mentor;
             }
@@ -524,5 +518,21 @@ public class MentorDAO {
         }
 
         return bookings;
+    }
+
+    public void updateImage(Account account) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "UPDATE [dbo].[Account]\n" +
+                    "   SET [avatar] = ? \n" +
+                    " WHERE Account.id = ? ";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(2, account.getId());
+            preparedStatement.setString(1, account.getAvatar());
+            preparedStatement.executeUpdate();
+            JDBC.closeConnection(connection);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

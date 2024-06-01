@@ -18,7 +18,7 @@ import java.nio.file.Paths;
 import java.sql.Date;
 
 @MultipartConfig(
-        fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
+        fileSizeThreshold = 1024 * 1024, // 1 MB
         maxFileSize = 1024 * 1024 * 10,      // 10 MB
         maxRequestSize = 1024 * 1024 * 100   // 100 MB
 )
@@ -45,11 +45,9 @@ public class UpdateMenteeController extends AuthenticationServlet {
         String address = req.getParameter("address");
         String username = req.getParameter("username");
         String gender = req.getParameter("gender");
-        System.out.println(gender + "aa");
 
         Part filePart = req.getPart("photo");
         String avatar = null;
-
         if (filePart != null && filePart.getSize() > 0) {
             String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
             String uploadPath = getServletContext().getRealPath("") + UPLOAD_DIR;

@@ -43,13 +43,11 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mentor/view_profile.css">
 <body>
 <jsp:include page="../common/header.jsp"></jsp:include>
-
-
     <div class="main">
         <div class="box-left">
             <div class="bio">
                 <div class="bio-image">
-                    <div><img class="avatar" src="${pageContext.request.contextPath}/img/profile.jpg"></div>
+                    <div><img class="avatar" src="${pageContext.request.contextPath}${requestScope.mentor.account.avatar}"></div>
                     <div class="name">${requestScope.mentor.account.name}</div>
                 </div>
 
@@ -79,7 +77,7 @@
             <div class="profile-detail d-flex justify-content-between" >
                 <div>
                     <div>Education: ${requestScope.mentor.education}</div>
-                    <div>Year of Experience: ${requestScope.mentor.experience} year</div>
+                    <div>Year of Experience: ${requestScope.mentor.experience}</div>
                 </div>
 
                 <div style="margin-right: 20px">

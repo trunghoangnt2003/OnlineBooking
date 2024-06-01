@@ -93,7 +93,7 @@
                                 <a class="nav-link" href="<%=url%>/Home">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="<%=url%>/mentor/createcv">Create CV</a>
+                                <a class="nav-link" href="<%=url%>/mentor/update_profile">Update CV</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="<%=url%>/mentor/schedule">Schedule</a>
@@ -156,7 +156,7 @@
                                         <a class="dropdown-item" href="<%=url%>/mentee/profile">Information</a>
                                         </c:if>
                                         <c:if test="${sessionScope.account.role.id == 2}">
-                                            <a class="dropdown-item" href="<%=url%>/mentor/profile">Information</a>
+                                            <a class="dropdown-item" href="<%=url%>/mentor/view_profile">Information</a>
                                         </c:if>
                                     </li>
                                     <li>
@@ -164,7 +164,7 @@
                                             <a class="dropdown-item" href="<%=url%>/mentee/update">Settings</a>
                                         </c:if>
                                         <c:if test="${sessionScope.account.role.id == 2}">
-                                            <a class="dropdown-item" href="<%=url%>/mentor/createcv">Settings</a>
+                                            <a class="dropdown-item" href="<%=url%>/mentor/update_profile">Settings</a>
                                         </c:if>
                                     </li>
                                     <c:if test="${sessionScope.account.role.id == 1}">
@@ -174,7 +174,7 @@
                                     </c:if>
                                     <c:if test="${sessionScope.account.role.id == 2}">
                                         <li>
-                                            <a class="dropdown-item" href="<%=url%>/mentor/follower">Follower</a>
+                                            <a class="dropdown-item" href="<%=url%>/mentor/view_follower">Follower</a>
                                         </li>
                                     </c:if>
                                     <li>

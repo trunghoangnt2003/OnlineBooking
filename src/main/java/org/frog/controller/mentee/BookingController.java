@@ -20,9 +20,6 @@ public class BookingController extends AuthenticationServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
         BookingDAO bookingDAO = new BookingDAO();
         List<Booking> bookingList = bookingDAO.getAllRequestOfBooking(account.getId());
-        for (Booking booking : bookingList) {
-            System.out.println(booking.getStartDate());
-        }
         req.setAttribute("bookingList", bookingList);
         req.getRequestDispatcher("../view/booking/bookingRequest.jsp").forward(req, resp);
     }

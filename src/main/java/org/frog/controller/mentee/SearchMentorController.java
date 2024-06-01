@@ -29,7 +29,6 @@ public class SearchMentorController extends HttpServlet {
         if (page_raw != null) {
             page = Integer.parseInt(page_raw);
         }
-        System.out.println(page);
 
         MentorDAO mentorDAO = new MentorDAO();
         SkillsDAO skillsDAO = new SkillsDAO();

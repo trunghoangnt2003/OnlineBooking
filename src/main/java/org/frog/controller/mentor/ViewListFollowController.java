@@ -17,7 +17,17 @@ public class ViewListFollowController extends AuthenticationServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+        String action = req.getParameter("action");
+        String requestId = req.getParameter("requestId");
 
+        WishListDAO wDao = new WishListDAO();
+
+        if("accept".equals(action)) {
+            wDao.updateStatusAccept(requestId, 3);
+        } else if("reject".equals(action)) {
+             wDao.updateStatusReject(requestId, 2);
+        }
+        resp.sendRedirect("/Frog/mentor/view_follower");
     }
 
     @Override
