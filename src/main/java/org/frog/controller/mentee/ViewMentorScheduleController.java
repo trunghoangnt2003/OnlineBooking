@@ -5,13 +5,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import org.frog.DAO.Booking_ScheduleDAO;
-import org.frog.DAO.SlotDAO;
-import org.frog.model.BookingSchedule;
-import org.frog.model.Schedule;
-import org.frog.model.Slot;
+import org.frog.DAO.*;
+import org.frog.model.*;
 import org.frog.utility.DateTimeHelper;
+import org.frog.utility.StatusEnum;
 
 import javax.mail.Session;
 import java.io.IOException;
@@ -28,6 +25,10 @@ public class ViewMentorScheduleController extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String ymd_raw = request.getParameter("ymd");
         String mentor_id = request.getParameter("mentorId"); // get mentor by id day qua lai giua controller va jsp
+        String skill = request.getParameter("skill");
+        String level = request.getParameter("level");
+
+
         String mentee_id = "e8fd47ed-dec2-49bf-829c-b182230ea49d";
         String[] bookings = request.getParameterValues("booking-schedule");
 
@@ -56,8 +57,9 @@ public class ViewMentorScheduleController extends HttpServlet {
 
         SlotDAO slotDAO = new SlotDAO();
         Booking_ScheduleDAO booking_scheduleDAO = new Booking_ScheduleDAO();
-
+        MentorDAO mentorDAO = new MentorDAO();
         ArrayList<Slot> slots = slotDAO.selectAll();
+        Level_SkillDAO level_skillDAO = new Level_SkillDAO();
 
         Date toDay = new Date();
         java.sql.Date from = null;
@@ -77,13 +79,13 @@ public class ViewMentorScheduleController extends HttpServlet {
             today = DateTimeHelper.convertUtilDateToSqlDate(ymd);
         }
         ArrayList<java.sql.Date> week = DateTimeHelper.getDatesBetween(from, to);
-
         ArrayList<BookingSchedule> bookingSchedules = booking_scheduleDAO.getBookingScheduleByMentor(mentor_id);
+        Mentor mentor = mentorDAO.getMentorById(mentor_id);
+        Level_Skills level_skills = level_skillDAO.getBySkillAndLevel(skill, level);
 
 
-        for(BookingSchedule bs : bookingList) {
-            System.out.println(bs.getSchedule().getId() + " " + bs.getSchedule().getSlot().getId() + " " + bs.getSchedule().getDate());
-        }
+        request.setAttribute("level_skills", level_skills);
+        request.setAttribute("mentor", mentor);
         request.setAttribute("bookingList", bookingList);
         request.setAttribute("mentee_id", mentee_id);
         request.setAttribute("bookingSchedules", bookingSchedules);
@@ -96,13 +98,76 @@ public class ViewMentorScheduleController extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         String[] bookings = request.getParameterValues("booking-schedule");
+        String mentor_id = request.getParameter("mentorId"); // get mentor by id day qua lai giua controller va jsp
+        String skill = request.getParameter("skill");
+        String level = request.getParameter("level");
+        String amount_raw = request.getParameter("total_amount");
+        String description = request.getParameter("message");
 
+        ArrayList<Integer> scheduleList = new ArrayList<>();
+        ArrayList<Integer> slotList = new ArrayList<>();
+        ArrayList<String> dateList = new ArrayList<>();
+        int amount =0;
+        if(amount_raw != null) {
+            amount = Integer.parseInt(amount_raw);
+        }
         if(bookings != null) {
             for (String booking : bookings) {
-                System.out.println(booking);
-                response.getWriter().println(booking);
+                try {
+                    String[] array_bookings = booking.split("_");
+                    scheduleList.add(Integer.parseInt(array_bookings[0]));
+                    slotList.add(Integer.parseInt(array_bookings[1]));
+                    dateList.add(array_bookings[2]);
+                }catch (NumberFormatException e){
+                    e.printStackTrace();
+                }
             }
         }
 
+        BookingDAO bookingDAO = new BookingDAO();
+        Level_SkillDAO level_skillDAO = new Level_SkillDAO();
+        Booking_ScheduleDAO booking_scheduleDAO = new Booking_ScheduleDAO();
+
+
+        Booking booking = new Booking();
+
+        Status status = new Status();
+        status.setId(StatusEnum.PROCESSING);
+        booking.setStatus(status);
+
+        booking.setAmount(amount);
+
+        booking.setDescription(description);
+
+        Mentor mentor = new Mentor();
+        Account account = new Account();
+        account.setId(mentor_id);
+        mentor.setAccount(account);
+        booking.setMentor(mentor);
+
+        Mentee mentee = new Mentee();
+        account = new Account();
+//        account.setId(mentee_id);
+        mentee.setAccount(account);
+        booking.setMentee(mentee);
+
+        booking.setStartDate(java.sql.Date.valueOf(dateList.get(0)));
+        booking.setEndDate(java.sql.Date.valueOf(dateList.get(dateList.size() - 1)));
+
+        Level_Skills level_skills = level_skillDAO.getBySkillAndLevel(skill, level);
+        booking.setLevel_skills(level_skills);
+
+        bookingDAO.insertBooking(booking);
+
+        Booking book = bookingDAO.findByInfo(booking);
+
+
+        booking_scheduleDAO.makeBooking_Schedule(book, scheduleList);
+
+        response.sendRedirect("../Search_Skills");
     }
+
+
+
+
 }

@@ -1,6 +1,7 @@
 package org.frog.DAO;
 
 import org.frog.model.*;
+import org.frog.utility.StatusEnum;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -82,5 +83,30 @@ public class Booking_ScheduleDAO {
             System.out.println(e.getMessage());
         }
         return list;
+    }
+
+    public void makeBooking_Schedule(Booking booking, ArrayList<Integer> scheduleList){
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "INSERT INTO [dbo].[Booking_Schedule]\n" +
+                    "           ([booking_id]\n" +
+                    "           ,[schedule_id]\n" +
+                    "           ,[status_id])\n" +
+                    "     VALUES\n" +
+                    "           (?\n" +
+                    "           ,?\n" +
+                    "           ,?)";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            for (Integer schedule : scheduleList) {
+                System.out.println("schedule : " + schedule);
+                preparedStatement.setInt(1, booking.getId());
+                preparedStatement.setInt(2, schedule);
+                preparedStatement.setInt(3, StatusEnum.PROCESSING);
+                preparedStatement.executeUpdate();
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 }

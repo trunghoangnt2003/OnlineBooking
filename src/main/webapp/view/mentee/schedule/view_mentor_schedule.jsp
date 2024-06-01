@@ -22,7 +22,25 @@
 
     <style>
         .main {
-            margin: 100px 40px;
+            margin: 40px;
+        }
+
+        .info-container{
+            margin: 20px 40px;
+        }
+
+
+        .category{
+            height: 50px;
+        }
+        .category_name{
+            box-shadow: 0 5px 7px 2px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;;
+            background: #07AD90;
+            color: white;
+            font-size: 20px;
+            padding: 10px;
+            text-align: center;
         }
 
         .schedule {
@@ -30,6 +48,7 @@
         }
 
         .booking {
+            margin-top: 45px;
             width: 15%;
             position: relative;
             justify-content: center;
@@ -121,8 +140,17 @@
             height: 122px;
         }
 
-        .btn-book {
+        .footer-booking{
             position: absolute;
+            bottom: 0;
+        }
+
+        .amount{
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+        }
+        .btn-book {
             bottom: 0;
             width: 100%;
 
@@ -199,10 +227,37 @@
         }
     </style>
 </head>
+
 <body>
+<jsp:include page="../../common/header.jsp"></jsp:include>
 <form action="schedule" method="GET" id="frm">
+    <div class="info-container">
+        <c:set var="level_skill" value="${requestScope.level_skills}"></c:set>
+        <input type="text" hidden="hidden" name="mentorId" value="${requestScope.mentor.account.id}"/>
+        <input type="text" hidden="hidden" name="skill" value="${level_skill.skill.name}"/>
+        <input type="text" hidden="hidden" name="level" value="${level_skill.level.name}">
+        <div>
+
+            <div class="category">
+                <span class="category_name">${level_skill.skill.category.name} </span>
+            </div>
+            <div class="d-flex align-items-center">
+                <img style="width: 40px" src="${pageContext.request.contextPath}${level_skill.skill.src_icon}">
+                <span>${level_skill.skill.name} for ${level_skill.level.name} </span>
+            </div>
+        </div>
+        <div>
+
+            <span> Mentor ${requestScope.mentor.account.name}</span>
+            <span>${requestScope.mentor.price}$/per slot</span>
+
+        </div>
+    </div>
     <div class="d-flex main">
         <div class="schedule">
+            <div>
+                <h2 style="text-align: center; color: #07AD90;">Schedule</h2>
+            </div>
             <table>
                 <thead>
                 <tr>
@@ -294,8 +349,8 @@
 
         <div class="booking">
 
-                <h5 style="text-align: center">Your Booking</h5>
-
+                <h4 style="text-align: center; color: #07AD90">Your Booking</h4>
+                <hr style="margin: 10px 0; border: 1px #1BB295 solid; opacity: 100%"/>
                 <div id="bookingList1">
                     <c:forEach items="${requestScope.bookingList}" var="booking">
                         <input type="text" hidden="hidden"
@@ -305,9 +360,20 @@
                 <ul id="bookingList" class="booking-list">
 
                 </ul>
-                <div class="btn-book">
-                    <button type="button" class="btn btn-outline-success"  onclick="bookHandle()"
-                            data-mdb-ripple-init data-mdb-ripple-color="dark">Book</button>
+                <div class="footer-booking">
+                    <div>
+                        <textarea id="notes" name="message" placeholder="write your sort message" rows="6" ></textarea>
+                    </div>
+                    <div class="amount">
+                        <input id="price" type="number" value="${requestScope.mentor.price}" hidden="hidden">
+                        <span id="number_booking"></span>
+                        <span id="amount"></span>
+
+                    </div>
+                    <div class="btn-book">
+                        <button type="button" class="btn btn-outline-success"  onclick="bookHandle()"
+                                data-mdb-ripple-init data-mdb-ripple-color="dark">Book</button>
+                    </div>
                 </div>
 
         </div>
@@ -315,6 +381,7 @@
 </form>
 <script>
     let bookingArray = [];
+    let number_booking = 0;
 
     document.addEventListener("DOMContentLoaded", function() {
         const bookingList1 = document.getElementById('bookingList1');
@@ -349,6 +416,7 @@
         if (!bookingArray.some(item => item.scheduleId === scheduleId)) {
             bookingArray.push(bookingItem);
             bookingArray.sort((a, b) => a.date - b.date);
+            number_booking += 1;
             updateBookingList();
             // console.log('Added booking:', bookingItem);
             // console.log('Current booking array:', bookingArray);
@@ -360,6 +428,7 @@
 
     function removeFromBookingArray(scheduleId) {
         bookingArray = bookingArray.filter(item => item.scheduleId !== scheduleId);
+        number_booking -= 1;
         updateBookingList();
         // console.log('Removed booking with scheduleId:', scheduleId);
         // console.log('Current booking array:', bookingArray);
@@ -367,6 +436,22 @@
 
     function updateBookingList() {
         const bookingList = document.getElementById('bookingList');
+        const numbook = document.getElementById('number_booking');
+        const amount = document.getElementById('amount');
+        const price = document.getElementById('price').value;
+
+
+
+        numbook.innerHTML = 'Number of booking: ' + number_booking;
+        amount.innerHTML = 'Total amount: ' + number_booking * price + " $";
+
+        const total_amount = document.createElement('input');
+        total_amount.type = 'text';
+        total_amount.name = 'total_amount';
+        total_amount.value = (number_booking * price);
+        total_amount.style.display = 'none';
+        amount.appendChild(total_amount);
+
         bookingList.innerHTML = '';
         bookingArray.forEach(booking => {
             const listItem = document.createElement('li');
@@ -387,10 +472,41 @@
 
 
     function bookHandle() {
-        console.log(document.getElementById('frm'))
-        const  form = document.getElementById('frm');
-        form.method = 'POST';
-        form.submit();
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, book it!",
+        }).then((result) => {
+            if (result.isConfirmed ) {
+                if(number_booking > 0){
+                    Swal.fire({
+                        title: "Done!",
+                        text: "Your booking has been booked.",
+                        icon: "success",
+                        showConfirmButton: false,
+                    });
+
+
+                    setTimeout(() => {
+                        const  form = document.getElementById('frm');
+                        form.method = 'POST';
+                        form.submit();
+                    }, 1500);
+                }else{
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Please select at least one booking.",
+                        icon: "error"
+                    });
+                }
+
+            }
+        });
+
 
     }
 </script>

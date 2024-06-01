@@ -80,7 +80,6 @@ public class Level_SkillDAO {
                 level_skills.setSkill(skill);
 
                 list.add(level_skills);
-                System.out.println("siisisi" + list.size());
             }
             JDBC.closeConnection(connection);
         }catch (Exception e) {
@@ -88,7 +87,6 @@ public class Level_SkillDAO {
         }
         System.out.println("size: " +list.size());
         for(Level_Skills level_skills : list) {
-            System.out.println("jdjdjjdjd");
             System.out.println(level_skills.getSkill().getName());
             System.out.println(level_skills.getLevel().getName());
         }
@@ -161,6 +159,47 @@ public class Level_SkillDAO {
         return list;
     }
 
+
+    public Level_Skills getBySkillAndLevel(String skill_name, String level_name) {
+        try{
+            Connection connection = JDBC.getConnection();
+            String sql = "Select ls.id, ls.skill_id, s.name, s.src_icon, sc.name as category, \n" +
+                    "\t\tls.level_id, l.type\n" +
+                    "From Level_Skill ls JOIN [Level] l ON ls.level_id = l.id\n" +
+                    "\t\tJOIN Skill s ON ls.skill_id = s.id \n" +
+                    "\t\tJOIN Skill_Category sc ON s.cate_id = sc.id\n" +
+                    "WHERE s.name = ? AND l.type = ? ";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, skill_name);
+            preparedStatement.setString(2, level_name);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                Level_Skills level_skills = new Level_Skills();
+                level_skills.setId(resultSet.getInt("id"));
+
+                Skill skill = new Skill();
+                skill.setId(resultSet.getInt("skill_id"));
+                skill.setName(resultSet.getString("name"));
+                skill.setSrc_icon(resultSet.getString("src_icon"));
+
+                Category category = new Category();
+                category.setName(resultSet.getString("category"));
+                skill.setCategory(category);
+                level_skills.setSkill(skill);
+
+                Level level = new Level();
+                level.setId(resultSet.getInt("level_id"));
+                level.setName(resultSet.getString("type"));
+                level_skills.setLevel(level);
+                return level_skills;
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+    }
 
 
     public static void main(String[] args) {
