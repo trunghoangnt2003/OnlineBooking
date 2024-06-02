@@ -535,4 +535,27 @@ public class MentorDAO {
             throw new RuntimeException(e);
         }
     }
+
+    public ArrayList<Mentor> getAllMentorFollowRate() {
+        ArrayList<Mentor> mentors = new ArrayList<>();
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "select Account.name, Mentor.rating\n" +
+                    "from Mentor join Account on Mentor.account_id = Account.id\n" +
+                    "order by Mentor.rating desc";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Account account = new Account();
+                account.setName(resultSet.getString("name"));
+                Mentor mentor = new Mentor();
+                mentor.setAccount(account);
+                mentor.setRating(resultSet.getFloat("rating"));
+                mentors.add(mentor);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return mentors;
+    }
 }

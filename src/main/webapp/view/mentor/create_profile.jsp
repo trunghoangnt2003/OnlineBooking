@@ -97,26 +97,23 @@
                         </div>
                         <div class="mb-3">
                             <label for="detail" class="form-label">Profile Detail:</label>
-                            <textarea class="form-control" id="detail" name="detail" rows="8" placeholder="Detail about yourself" required></textarea>
+                            <textarea class="form-control box-detail" id="detail" name="detail" rows="8" placeholder="Detail about yourself" required></textarea>
                         </div>
 
                     </div>
                     <div class="skill">
-                        <div class="choose_skill">Choose level:</div>
-                        <div>
+                        <div class="row">
                             <c:forEach items="${requestScope.level}" var="l">
-                                <div class="form-check form-check-inline name_skill">
-                                    <input class="form-check-input" type="checkbox" name="${l.id}"/>
-                                    <label class="form-check-label">${l.name}</label>
-                                </div>
-                            </c:forEach>
-                        </div>
-                        <div class="choose_skill">Choose skill:</div>
-                        <div>
-                            <c:forEach items="${requestScope.skill}" var="s">
-                                <div class="form-check form-check-inline name_skill">
-                                    <input class="form-check-input" type="checkbox" name="${s.id}" />
-                                    <label class="form-check-label">${s.name}</label>
+                                <div class="col-4">
+                                        <div class="level">
+                                                ${l.name}
+                                        </div>
+                                    <div>
+                                        <c:forEach items="${requestScope.skill}" var="s">
+                                            <input type="checkbox" name="${s.id}">
+                                            ${s.name}
+                                        </c:forEach>
+                                    </div>
                                 </div>
                             </c:forEach>
                         </div>

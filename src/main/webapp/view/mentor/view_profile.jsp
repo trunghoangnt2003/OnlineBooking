@@ -49,6 +49,9 @@
                 <div class="bio-image">
                     <div><img class="avatar" src="${pageContext.request.contextPath}${requestScope.mentor.account.avatar}"></div>
                     <div class="name">${requestScope.mentor.account.name}</div>
+                    <div class="stars-outer rate">
+                        <div class="stars-inner" data-rating="${requestScope.mentor.rating}"></div>
+                    </div>
                 </div>
 
                 <div class="bio-detail">

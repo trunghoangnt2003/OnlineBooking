@@ -1,0 +1,275 @@
+.section-container {
+    max-width: 90%;
+    margin: auto;
+    padding: 3rem 1rem;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+}
+
+.banner {
+    position: relative;
+    width: 96%;
+    height: 100%;
+    margin: 10px 30px 20px 30px;
+    justify-content: center;
+    border-radius: 20px;
+    box-shadow: 4px 6px 8px rgba(0, 0, 0, 0.6);
+}
+.banner img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    border-radius: 20px;
+}
+.banner img.active {
+    opacity: 1;
+}
+
+nav {
+    max-width: 96%;
+    margin: auto;
+    padding: 2rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.nav-logo {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #07AD90;
+}
+
+.link a {
+    font-weight: 500;
+    color: darkgrey;
+    transition: 0.3s;
+}
+
+.link a:hover {
+    color: #07AD90;
+}
+
+.show-top-mentor h1 {
+    text-align: center;
+    color: #07AD90;
+    font-weight: bold;
+}
+
+.wrapper {
+    max-width: 1100px;
+    width: 100%;
+    position: relative;
+    padding-left: 60px;
+}
+
+.wrapper i {
+    top: 50%;
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+    font-size: 1.25rem;
+    position: absolute;
+    text-align: center;
+    line-height: 50px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.23);
+    transform: translateY(-50%);
+    transition: transform 0.1s linear;
+    margin-left: 50px;
+
+}
+.wrapper i:active{
+    transform: translateY(-50%) scale(0.85);
+}
+.wrapper i:first-child{
+    left: -22px;
+    z-index: 999;
+}
+.wrapper i:last-child{
+    right: -22px;
+}
+.wrapper .carousel{
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc((100% / 3) - 40px);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 16px;
+    border-radius: 8px;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+.carousel::-webkit-scrollbar {
+    display: none;
+}
+.carousel.no-transition {
+    scroll-behavior: auto;
+}
+.carousel.dragging {
+    scroll-snap-type: none;
+    scroll-behavior: auto;
+}
+.carousel.dragging .card {
+    cursor: grab;
+    user-select: none;
+}
+.carousel :where(.card, .img) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.carousel .card {
+    scroll-snap-align: start;
+    height: 342px;
+    list-style: none;
+    background: #fff;
+    cursor: pointer;
+    padding-bottom: 15px;
+    flex-direction: column;
+    border-radius: 8px;
+}
+.carousel .card .img {
+    background: #8B53FF;
+    height: 148px;
+    width: 148px;
+    border-radius: 50%;
+}
+.card .img img {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #fff;
+}
+.carousel .card h2 {
+    font-weight: 500;
+    font-size: 1.56rem;
+    margin: 30px 0 5px;
+}
+.carousel .card span {
+    color: #6A6D78;
+    font-size: 1.31rem;
+}
+
+.stakeholder {
+    background: rgb(246, 255, 253);
+    margin-bottom: 20px;
+}
+.stakeholder h2 {
+    text-align: center;
+    color: #07AD90;
+    padding-top: 20px;
+    font-weight: bold;
+    font-size: 40px;
+}
+
+.stakeholder h4 {
+    text-align: center;
+    color: #07AD90;
+    font-size: 20px;
+}
+
+.detail div i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+}
+
+.detail h4 {
+    text-align: center;
+    color: black;
+    padding-top: 20px;
+}
+
+.detail h6 {
+    text-align: center;
+    color: #939393;
+    padding-top: 5px;
+}
+
+
+.img {
+    width: 96%;
+    height: 60%;
+    margin-left: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.stakeholder img {
+    width: 80%;
+    height: 80%;
+}
+
+.benefit h5 {
+    color: #07AD90;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.benefit h3 {
+    color: #111208;
+    text-align: center;
+    font-weight: bold;
+    font-size: 30px;
+    margin-bottom: 30px;
+}
+
+.benefit {
+    width: 96%;
+    height: 60%;
+    margin-left: 30px;
+    padding-top: 20px;
+}
+
+.footer {
+    background-color: rgb(176, 237, 215);
+    margin: 0 30px 0 30px;
+}
+
+.footer-container {
+    display: grid;
+    grid-template-columns: 2fr repeat(3, 1fr);
+    gap: 5rem;
+}
+
+.footer-col h3 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: red;
+}
+
+.footer-col h4 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #07AD90;
+}
+
+.footer-col p {
+    margin-bottom: 1rem;
+    color: #07AD90;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.footer-col p:hover {
+    color: red;
+}
