@@ -29,7 +29,7 @@ public class ScheduleDAO {
 
     public ArrayList<BookingSchedule> getSchedulesByIDnDay(String id, Date start , Date end){
         ArrayList<BookingSchedule> schedules = new ArrayList<>();
-        String sql="SELECT s.id,s.date,slot_id,s.account_id,bs.booking_id,skill.name,bs.schedule_id,isAtend,bs.status_id \n" +
+        String sql="SELECT s.id,s.date,slot_id,s.account_id,bs.booking_id,skill.name,skill.src_icon,bs.schedule_id,isAtend,bs.status_id \n" +
                 "FROM Schedule s \n" +
                 "LEFT JOIN Booking_Schedule bs ON s.id = bs.schedule_id\n" +
                 "LEFT JOIN Booking b ON b.id = bs.booking_id\n" +
@@ -65,6 +65,7 @@ public class ScheduleDAO {
                 Level_Skills ls = new Level_Skills();
                 Skill skill = new Skill();
                 skill.setName(resultSet.getString("name"));
+                skill.setSrc_icon(resultSet.getString("src_icon"));
                 ls.setSkill(skill);
                 b.setLevel_skills(ls);
                 b.setId(resultSet.getInt("booking_id"));

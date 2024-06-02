@@ -11,6 +11,7 @@
 <head>
     <title>Title</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mentor/ViewSchedule.css">
+
     <!-- Fontawesome CDN Link -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
@@ -32,7 +33,126 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <style>
+            table{
+                border: 2px #07AD90 solid;
 
+            }
+
+            thead tr th {
+                border-left: 1px #07AD90 solid;
+                text-align: center;
+
+            }
+            thead{
+                border-bottom: 2px #07AD90 solid;
+            }
+
+            tbody tr, td {
+                border: 1px #07AD90 solid;
+                width: 110px;
+                height: 110px;
+            }
+
+            
+            .pin {
+                background-color: #aaa;
+                display: block;
+                height: 32px;
+                width: 2px;
+                position: absolute;
+                left: 50%;
+                top: -16px;
+                z-index: 1;
+            }
+            .notes-container {
+                margin: 10px;
+                position: relative;
+            }
+            .pin:after {
+                background-color: #A31;
+                background-image: radial-gradient(25% 25%, circle, hsla(0,0%,100%,.3), hsla(0,0%,0%,.3));
+                border-radius: 50%;
+                box-shadow: inset 0 0 0 1px hsla(0,0%,0%,.1), inset 3px 3px 3px hsla(0,0%,100%,.2), inset -3px -3px 3px hsla(0,0%,0%,.2), 23px 20px 3px hsla(0,0%,0%,.15);
+                content: '';
+                height: 12px;
+                left: -5px;
+                position: absolute;
+                top: -10px;
+                width: 12px;
+            }
+
+            .pin:before {
+                background-color: hsla(0,0%,0%,0.1);
+                box-shadow: 0 0 .25em hsla(0,0%,0%,.1);
+                content: '';
+
+                height: 24px;
+                width: 2px;
+                left: 0;
+                position: absolute;
+                top: 8px;
+
+                transform: rotate(57.5deg);
+                -moz-transform: rotate(57.5deg);
+                -webkit-transform: rotate(57.5deg);
+                -o-transform: rotate(57.5deg);
+                -ms-transform: rotate(57.5deg);
+
+                transform-origin: 50% 100%;
+                -moz-transform-origin: 50% 100%;
+                -webkit-transform-origin: 50% 100%;
+                -ms-transform-origin: 50% 100%;
+                -o-transform-origin: 50% 100%;
+            }
+
+            .notes {
+                color: #333;
+                position: relative;
+                width: 100px;
+                height: 100px;
+                margin: 0 auto;
+                padding: 10px;
+                font-family: Satisfy;
+                font-size: 16px;
+                box-shadow: 0 10px 10px 2px rgba(0, 0, 0, 0.3);
+            }
+            .yellow {
+                background: #eae672;
+                -webkit-transform: rotate(2deg);
+                -moz-transform: rotate(2deg);
+                -o-transform: rotate(2deg);
+                -ms-transform: rotate(2deg);
+                transform: rotate(2deg);
+            }
+            .red {
+                background: #ee5a6f;
+                -webkit-transform: rotate(2deg);
+                -moz-transform: rotate(2deg);
+                -o-transform: rotate(2deg);
+                -ms-transform: rotate(2deg);
+                transform: rotate(2deg);
+            }
+            .green{
+                background: #9ACD32;
+                -webkit-transform: rotate(2deg);
+                -moz-transform: rotate(2deg);
+                -o-transform: rotate(2deg);
+                -ms-transform: rotate(2deg);
+                transform: rotate(2deg);
+            }
+            .grey{
+                background: #aaaaaa;
+                -webkit-transform: rotate(2deg);
+                -moz-transform: rotate(2deg);
+                -o-transform: rotate(2deg);
+                -ms-transform: rotate(2deg);
+                transform: rotate(2deg);
+            }
+
+
+
+        </style>
 </head>
 <body>
 <jsp:include page="/view/common/header.jsp"></jsp:include>
@@ -44,7 +164,6 @@
 
 
 <div class="container">
-
 
     <div class="time-settings">
         <form action="schedule" method="GET" id="getForm">
@@ -130,15 +249,18 @@
         </div>
     </div>
     <div class="table-settings">
-        <table border="1px">
+        <table>
+            <thead>
             <tr>
-                <td></td>
+                <th></th>
                 <c:forEach items="${weeks}" var="week">
-                    <td>${week.dayOfWeek}<br/>
+                    <th>${week.dayOfWeek}<br/>
                             ${week.dayOfMonth}
-                    </td>
+                    </th>
                 </c:forEach>
             </tr>
+            </thead>
+            <tbody>
             <c:forEach items="${slots}" var="t">
                 <tr>
                     <td>
@@ -173,25 +295,47 @@
                             </c:forEach>
                             <c:choose>
                                 <c:when test="${countCheck == 1 }">
-                                    <button id="button-schedule-td" class="info-link" data-book-id="${week.dayOfMonth}_${t.id}" style="background-color: red">
-                                        ${name}
-                                    </button>
+                                    <div class="notes-container">
+                                        <i class="pin"></i>
+                                        <blockquote class="notes red">
+<%--                                            <button id="button-schedule-td1" class="info-link" data-book-id="${week.dayOfMonth}_${t.id}" style="background-color: red">--%>
+<%--                                                    ${name}--%>
+<%--                                            </button>--%>
+                                            abc
+                                        </blockquote>
+                                    </div>
 
                                 </c:when>
                                 <c:when test="${countCheck == 2 }">
-                                    <button id="button-schedule-td" class="button-schedule-td2"  data-schedule-id="${week.dayOfMonth}_${t.id}" style="background-color: green">
 
-                                    </button>
+                                    <div class="notes-container">
+                                        <i class="pin"></i>
+                                        <blockquote class="notes green">
+<%--                                            <button id="button-schedule-td3" class="button-schedule-td2"  data-schedule-id="${week.dayOfMonth}_${t.id}" style="background-color: green">--%>
+<%--                                                               --%>
+<%--                                            </button>--%>
+                                            abc
+                                        </blockquote>
+                                    </div>
                                 </c:when>
                                 <c:when test="${countCheck == 3 }">
-                                    <button id="button-schedule-td" class="button-schedule-td2"  data-schedule-id="${week.dayOfMonth}_${t.id}" style="background-color: yellow">
 
-                                    </button>
+                                    <div class="notes-container">
+                                        <i class="pin"></i>
+                                        <blockquote class="notes yellow">
+<%--                                            <button id="button-schedule-td4" class="button-schedule-td2"  data-schedule-id="${week.dayOfMonth}_${t.id}" style="background-color: yellow">--%>
+
+<%--                                            </button>--%>
+                                            abc
+                                        </blockquote>
+                                    </div>
                                 </c:when>
                                 <c:otherwise>
-                                    <button id="button-schedule-td" class="button-schedule-td"
-                                            data-schedule-id="${week.dayOfMonth}_${t.id}">
-                                    </button>
+                                    <div class="notes-container">
+                                        <i class="pin"></i>
+
+                                    </div>
+
                                 </c:otherwise>
 
                             </c:choose>
@@ -202,6 +346,7 @@
                     </c:forEach>
                 </tr>
             </c:forEach>
+            </tbody>
         </table>
 
         <div id="tdModal" class="modal">
@@ -213,6 +358,7 @@
                 <p>Schedule details</p>
                 <p>Schedule details</p>
                 <table class="table-info">
+
                     <tr>
                         <td>
                             Number

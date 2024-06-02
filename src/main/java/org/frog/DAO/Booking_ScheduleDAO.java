@@ -1,11 +1,13 @@
 package org.frog.DAO;
 
 import org.frog.model.*;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class Booking_ScheduleDAO {
     public ArrayList<BookingSchedule> getBookingScheduleByMentor(String mentor_id){
@@ -72,7 +74,7 @@ public class Booking_ScheduleDAO {
                 skill.setSrc_icon(resultSet.getString("src_icon"));
                 level_skill.setSkill(skill);
 
-                Level level = new Level();
+                org.frog.model.Level level = new org.frog.model.Level();
                 level.setId(resultSet.getInt("level_id"));
                 level.setName(resultSet.getString("type"));
                 level_skill.setLevel(level);
@@ -102,7 +104,7 @@ public class Booking_ScheduleDAO {
             Connection connection = JDBC.getConnection();
             String sql = "  Select  b.id,b.status_id,status.type,\n" +
                     "\t\t\t\t\tb.amount,b.create_date,b.description,b.from_date,b.to_date,\n" +
-                    "                    level_skill_id,skill_id, sk.name as skill_name, sk.src_icon, ls.level_id, l.type,b.mentee_id,\n" +
+                    "                    level_skill_id,skill_id, sk.name as skill_name, sk.src_icon, ls.level_id, l.type as typeS,b.mentee_id,\n" +
                     "\t\t\t\t\tacc.name,acc.address,acc.dob,acc.gender,acc.mail,acc.phone \n" +
                     "FROM Booking b\n" +
                     " INNER Join Level_Skill ls on b.level_skill_id = ls.id\n" +
@@ -131,9 +133,9 @@ public class Booking_ScheduleDAO {
                 skill.setSrc_icon(resultSet.getString("src_icon"));
                 level_skill.setSkill(skill);
 
-                Level level = new Level();
+                org.frog.model.Level level = new org.frog.model.Level();
                 level.setId(resultSet.getInt("level_id"));
-                level.setName(resultSet.getString("type"));
+                level.setName(resultSet.getString("typeS"));
                 level_skill.setLevel(level);
 
                 Mentee mentee = new Mentee();
@@ -163,7 +165,101 @@ public class Booking_ScheduleDAO {
         }
         return bookings;
     }
-//       public int getNumberSlotsFromBooing(){
-//
-//       }
+    public boolean updateScheduleBookings(int id,int status_id) throws SQLException {
+        Connection connection = JDBC.getConnection();
+        try {
+            int numbersCheck = 0;
+            connection.setAutoCommit(false);
+            String sql_number_check = " SELECT COUNT(booking_id) AS numberSlots FROM Booking_Schedule where booking_id =?";
+            PreparedStatement stm = connection.prepareStatement(sql_number_check);
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()){
+                numbersCheck = rs.getInt("numberSlots");
+            }
+
+            String sql_update_sbs = "UPDATE [Booking_Schedule]\n" +
+                    "   SET \n" +
+                    "      [status_id] = ?\n" +
+                    " WHERE booking_id = ?";
+            PreparedStatement stm_update_sbs = connection.prepareStatement(sql_update_sbs);
+            stm_update_sbs.setInt(1, status_id);
+            stm_update_sbs.setInt(2, id);
+            int numberUpdate = stm_update_sbs.executeUpdate();
+            if(numbersCheck == numberUpdate){
+                connection.commit();
+                return true;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Booking_ScheduleDAO.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                connection.rollback();
+            } catch (SQLException ex1) {
+                Logger.getLogger(Booking_ScheduleDAO.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(Booking_ScheduleDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return false;
+    }
+    public boolean deleteScheduleBookings(int id) throws SQLException {
+        Connection connection = JDBC.getConnection();
+        try {
+            int numbersCheck = 0;
+            connection.setAutoCommit(false);
+            String sql_number_check = " SELECT COUNT(booking_id) AS numberSlots FROM Booking_Schedule where booking_id =?";
+            PreparedStatement stm = connection.prepareStatement(sql_number_check);
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()){
+                numbersCheck = rs.getInt("numberSlots");
+            }
+
+            String sql_update_sbs = "DELETE FROM [Booking_Schedule]\n" +
+                    "      WHERE booking_id = ?\n";
+            PreparedStatement stm_update_sbs = connection.prepareStatement(sql_update_sbs);
+            stm_update_sbs.setInt(1, id);
+            int numberUpdate = stm_update_sbs.executeUpdate();
+            if(numbersCheck == numberUpdate){
+                connection.commit();
+                return true;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Booking_ScheduleDAO.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                connection.rollback();
+            } catch (SQLException ex1) {
+                Logger.getLogger(Booking_ScheduleDAO.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(Booking_ScheduleDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return false;
+    }
+    public  void updateBooking(int id , int status_id ) throws SQLException {
+        String sql = "UPDATE [Booking]\n" +
+                "   SET \n" +
+                "      [status_id] = ?\n" +
+                " WHERE id = ?";
+        try{
+            PreparedStatement stm = JDBC.getConnection().prepareStatement(sql);
+            stm.setInt(1,status_id);
+            stm.setInt(2,id);
+            stm.executeUpdate();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 }

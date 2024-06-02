@@ -20,12 +20,13 @@ public class DeleteScheduleController extends AuthenticationServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
         try{
+            String day = req.getParameter("today");
             String slotID = req.getParameter("slotID");
             if(slotID!=null){
                 String [] infoSlotID = slotID.split("_");
                 ScheduleDAO scheduleDAO = new ScheduleDAO();
                 scheduleDAO.deleteDayFreeByMentor(account.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]));
-                resp.sendRedirect("/Frog/mentor/schedule");
+                resp.sendRedirect("/Frog/mentor/schedule?today="+day);
             }
         }catch(Exception e){
             e.printStackTrace();

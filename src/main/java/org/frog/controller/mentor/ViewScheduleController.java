@@ -79,7 +79,7 @@ public class ViewScheduleController extends AuthenticationServlet {
         req.setAttribute("count", 1);
         req.setAttribute("mentorID",account.getId());
         req.setAttribute("schedules", schedules);
-        req.getRequestDispatcher("/view/mentor/schedule/ViewSchedule.jsp").forward(req, resp);
+        req.getRequestDispatcher("../view/mentor/schedule/ViewMentorSchedule.jsp").forward(req, resp);
 
     }
 }
