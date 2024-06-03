@@ -1,4 +1,4 @@
-package org.frog.utility.MentorUtils;
+package org.frog.utility;
 
 import org.frog.model.Schedule;
 import org.frog.model.Week;
@@ -53,11 +53,6 @@ public class DateTimeHelper {
         return timestamp;
     }
     public static boolean compareTimeMenteeBook(ArrayList<Schedule> list, java.sql.Timestamp start, java.sql.Timestamp end) {
-        for (Schedule s : list) {
-            if (start.compareTo(s.getDateEnd()) > 0 || end.compareTo(s.getDateStart()) < 0) {
-                return true;
-            }
-        }
         return false;
     }
     public static Timestamp converDayIDtoStartDate(String dayID) {

@@ -1,9 +1,6 @@
 package org.frog.DAO;
 
-import org.frog.model.Account;
-import org.frog.model.Level_Skills;
-import org.frog.model.Mentee;
-import org.frog.model.WishList;
+import org.frog.model.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,7 +28,9 @@ public class WishListDAO {
 
                 mentee.setAccount(account);
                 wishList.setMentee(mentee);
-                wishList.setStatus(resultSet.getInt("status"));
+                Status status = new Status();
+                status.setId(resultSet.getInt("status"));
+                wishList.setStatus(status);
                 wishList.setTimeRequest(resultSet.getDate("date"));
                 wishLists.add(wishList);
             }
