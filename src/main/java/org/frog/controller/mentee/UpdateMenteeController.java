@@ -45,7 +45,6 @@ public class UpdateMenteeController extends AuthenticationServlet {
         String address = req.getParameter("address");
         String username = req.getParameter("username");
         String gender = req.getParameter("gender");
-        System.out.println(gender + "aa");
 
         Part filePart = req.getPart("photo");
         String avatar = null;
@@ -53,8 +52,6 @@ public class UpdateMenteeController extends AuthenticationServlet {
         if (filePart != null && filePart.getSize() > 0) {
             String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
             String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIR;
-
-            System.out.println("Upload Path: " + uploadPath); // Debugging statement
 
             File uploadDirFile = new File(uploadPath);
             if (!uploadDirFile.exists()) {

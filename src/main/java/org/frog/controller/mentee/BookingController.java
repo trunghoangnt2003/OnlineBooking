@@ -19,7 +19,7 @@ public class BookingController extends AuthenticationServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
         BookingDAO bookingDAO = new BookingDAO();
-        List<Booking> bookingList = bookingDAO.getAllRequestOfBooking(account.getId());
+        List<Booking> bookingList = bookingDAO.getAllRequestProcessOfBooking(account.getId());
         for (Booking booking : bookingList) {
             System.out.println(booking.getStartDate());
         }
