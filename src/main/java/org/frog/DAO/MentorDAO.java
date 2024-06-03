@@ -96,6 +96,46 @@ public class MentorDAO {
 
         return list;
     }
+    public ArrayList<Mentor> getMentorAndPagingAndSearch(int page, String name) {
+        ArrayList<Mentor> list = new ArrayList<>();
+        try {
+
+            Connection connection = JDBC.getConnection();
+            String sql = "Select a.id,a.username,a.name,a.dob,a.avatar,m.experience,m.price,m.rating\n" +
+                    "From Account a JOIN Mentor m on a.id = m.account_id\n" +
+                    "\t JOIN Mentor_Level_Skill mls ON m.account_id = mls.mentor_id\n" +
+                    "\t JOin Level_Skill ls on mls.skill_level_id = ls.id\n" +
+                    "\t JOin Skill  s ON ls.skill_id = s.id\n" +
+                    "\t Join Level l On ls.level_id = l.id\n" +
+                    "ORDER BY a.id\n" +
+                    "OFFSET ? ROWS FETCH NEXT 5 ROWS ONLY";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, (page - 1) * 5);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Account account = new Account();
+                account.setId(resultSet.getString("id"));
+                account.setName(resultSet.getString("name"));
+                account.setDob(resultSet.getDate("dob"));
+                account.setAvatar(resultSet.getString("avatar"));
+
+                Mentor mentor = new Mentor();
+                mentor.setAccount(account);
+                mentor.setExperience(resultSet.getString("experience"));
+                mentor.setPrice(resultSet.getInt("price"));
+                mentor.setRating(resultSet.getFloat("rating"));
+
+                BookingDAO bookingDAO = new BookingDAO();
+                mentor.setTotalBookings(bookingDAO.CalcBookByMentor(account.getId()));
+
+                list.add(mentor);
+            }
+        }catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return list;
+    }
 
     public int totalMentor(String skill, String level) {
         int total = 0;
@@ -120,7 +160,21 @@ public class MentorDAO {
         }
         return total;
     }
-
+    public int totalMentor(){
+        int total = 0;
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "select count(*) from [dbo].[Mentor]";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                total = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return total;
+    }
     public void update(Mentor mentor) {
         try {
             Connection connection = JDBC.getConnection();

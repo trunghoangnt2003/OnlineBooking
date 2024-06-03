@@ -106,10 +106,10 @@
                     <c:if test="${sessionScope.account==null}">
                         <div class="d-flex align-items-center">
                             <button data-mdb-ripple-init type="button" class="btn px-3 me-2" style='background-color: #07ad90;'>
-                                Login
+                                <a href="login" style="text-decoration: none">Sign in </a>
                             </button>
                             <button data-mdb-ripple-init type="button" class="btn me-3" style='background-color: #07ad90;'>
-                                Sign up for free
+                                <a href="register" style="text-decoration: none">Sign up for free</a>
                             </button>
                         </div>
                     </c:if>
