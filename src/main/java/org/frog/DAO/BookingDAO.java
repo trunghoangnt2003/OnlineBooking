@@ -69,7 +69,7 @@ public class BookingDAO {
                 booking.setStartDate(resultSet.getDate("from_date"));
                 booking.setEndDate(resultSet.getDate("to_date"));
                 booking.setDescription(resultSet.getString("description"));
-                booking.setDate(resultSet.getDate("create_date"));
+                booking.setDate(resultSet.getTimestamp("create_date"));
 
                 bookingList.add(booking);
 

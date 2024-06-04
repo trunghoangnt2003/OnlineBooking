@@ -53,6 +53,7 @@
         <br/>
         <!-- Nút mở modal mới -->
         <button id="myBtn2">View Request</button>
+        <button id="myBtn3" onclick="history_request()">History Request</button>
 
         <div id="infoModal" class="modal">
             <!-- Modal content -->
@@ -88,12 +89,14 @@
                             <td><c:if test="${book.status.id ==1 }">
                                 <button name="accept" value="accept">
                                     <a href="schedule/update?bookingID=${book.id}&&option=true"
-                                       class="button" onclick="updateStatus('${sessionScope.updateStatus}')">Accept</a></button>
+                                       class="button" onclick="updateStatus('${sessionScope.updateStatus}')">Accept</a>
+                                </button>
                             </c:if>
                                 <c:if test="${book.status.id ==1 }">
                                     <button name="reject" value="reject">
                                         <a href="schedule/update?bookingID=${book.id}&&option=false"
-                                           class="button" onclick="rejectStatus('${sessionScope.rejectStatus}')">Reject</a></button>
+                                           class="button"
+                                           onclick="rejectStatus('${sessionScope.rejectStatus}')">Reject</a></button>
                                     </button>
                                 </c:if>
                             </td>
@@ -132,22 +135,34 @@
                     <c:forEach items="${weeks}" var="week">
                         <c:set var="countCheck" value="${count = 0}"></c:set>
                         <c:set var="foundBusy" value="false"></c:set>
-                        <c:set var="name" value=""></c:set>
+                        <c:set var="icon" value="false"></c:set>
 
                         <td>
                             <c:forEach items="${schedules}" var="sche">
                                 <c:if test="${sche.schedule.date == week.convertStringToDateByDay(week.dayOfMonth) && sche.schedule.slot.id == t.id}">
                                     <c:if test="${sche.status.id == 11}">
-                                        <a href="#" class="info-link" data-modal-id="tdModal"
-                                           style="text-decoration: none"
-                                           data-book-id="${week.dayOfMonth}">
-                                        </a>
                                         <c:set var="countCheck" value="${count = 1}"></c:set>
                                         <c:set var="foundBusy" value="true"></c:set>
                                         <c:set var="nameSkill" value="${sche.booking.level_skills.skill.name}"></c:set>
-                                        <c:set var="avatarSkill" value="${sche.booking.level_skills.skill.src_icon}"></c:set>
+                                        <c:set var="avatarSkill"
+                                               value="${sche.booking.level_skills.skill.src_icon}"></c:set>
+                                        <c:set var="nameType" value="${sche.booking.level_skills.level.name}"></c:set>
 
-
+                                    </c:if>
+                                    <c:if test="${sche.status.id == 3}">
+                                        <c:set var="countCheck" value="${count = 1}"></c:set>
+                                        <c:set var="nameSkill" value="${sche.booking.level_skills.skill.name}"></c:set>
+                                        <c:set var="avatarSkill"
+                                               value="${sche.booking.level_skills.skill.src_icon}"></c:set>
+                                        <c:set var="nameType" value="${sche.booking.level_skills.level. name}"></c:set>
+                                        <c:if test="${sche.attend}">
+                                            <c:set var="present" value="present"></c:set>
+                                            <c:set var="icon" value="true"></c:set>
+                                        </c:if>
+                                        <c:if test="${!sche.attend}">
+                                            <c:set var="present" value="absent"></c:set>
+                                            <c:set var="icon" value="true"></c:set>
+                                        </c:if>
                                     </c:if>
                                     <c:if test="${(sche.status.id == 0 || sche.status.id==2) && !foundBusy}">
                                         <c:set var="countCheck" value="${count = 2}"></c:set>
@@ -159,15 +174,26 @@
                             </c:forEach>
                             <c:choose>
                                 <c:when test="${countCheck == 1 }">
+
                                     <div class="notes-container">
                                         <i class="pin"></i>
                                         <blockquote class="notes red">
                                             <img width="30px" src="${pageContext.request.contextPath}${avatarSkill}">
+                                            <c:if test="${present.equals('present') && icon}">
+                                                <i class="fa-solid fa-frog fa-xl" style="color: #63E6BE;"></i>
+                                            </c:if>
+                                            <c:if test="${present.equals('absent') && icon }">
+                                                <i class="fa-solid fa-face-sad-tear fa-xl" style="color: #FFFFFF;"></i>
 
-                                            <button id="button-schedule-td1" class="info-link" data-book-id="${week.dayOfMonth}_${t.id}"
+                                            </c:if>
+
+                                            <button id="button-schedule-td1" class="info-link"
+                                                    data-book-id="${week.dayOfMonth}_${t.id}"
+                                                    data-today-id="${week.dayOfMonth}"
                                                     style="background: transparent" onclick="informationMentee()">
                                                     ${nameSkill}
-                                            </button >
+                                                    ${nameType}
+                                            </button>
 
                                         </blockquote>
                                     </div>
@@ -180,7 +206,8 @@
                                         <blockquote class="notes green">
 
                                             <button id="button-schedule-td3" class="button-schedule-td3"
-                                                    data-schedule-id="${week.dayOfMonth}_${t.id}"  data-today-id="${week.dayOfMonth}"
+                                                    data-schedule-id="${week.dayOfMonth}_${t.id}"
+                                                    data-today-id="${week.dayOfMonth}"
                                                     style=" background: transparent; " onclick="deleteFreeDay()">
 
                                             </button>
@@ -203,7 +230,8 @@
                                 <c:otherwise>
 
                                     <button id="button-schedule-td" style="background: white" class="button-schedule-td"
-                                            data-schedule-id="${week.dayOfMonth}_${t.id}" data-today-id="${week.dayOfMonth}"
+                                            data-schedule-id="${week.dayOfMonth}_${t.id}"
+                                            data-today-id="${week.dayOfMonth}"
                                             onclick="setFreeDay()">
 
                                     </button>
@@ -225,246 +253,352 @@
             <div class="modal-content2" style="width: 70%">
                 <span class="close">&times;</span>
                 <!-- Your modal content here -->
+                <p style=" margin-left: -150px;">Schedule details</p>
+                <p> (Note: If the lesson has been finished,please confirm slot)</p>
+                <div style="display: block;order: 1;margin-left: -550px;">
 
-                <p>Schedule details</p>
-<%--                <table class="table-info">--%>
-<%--                    <tr>--%>
-<%--                        <td>--%>
-<%--                            Number--%>
-<%--                        </td>--%>
-<%--                        <td>Name</td>--%>
-<%--                        <td>Mail</td>--%>
-<%--                        <td>Skill</td>--%>
-<%--                        <td>Level</td>--%>
-<%--                        <td>Start</td>--%>
-<%--                        <td>End</td>--%>
-<%--                        <td>URL</td>--%>
-<%--                    </tr>--%>
-<%--                    <c:set var="count" value="${count= 1}"></c:set>--%>
+                    <div class="info-card">
+                        <ul>
+                            <li style="list-style-type: none">Name : ${bookInfo[0].booking.mentee.account.name}</li>
+                            <li style="list-style-type: none">Mail : ${bookInfo[0].booking.mentee.account.email}</li>
+                            <li style="list-style-type: none">Phone : ${bookInfo[0].booking.mentee.account.phone}</li>
+                        </ul>
+                    </div>
+                    <div class="info-card">
 
-<%--                    <c:forEach items="${menteeInfo}" var="info">--%>
-<%--                        <tr>--%>
-<%--                            <td>${count}</td>--%>
-<%--                            <td>${info.account.name}</td>--%>
-<%--                            <td>${info.account.email}</td>--%>
-<%--                            <td>  ${info.skill.skill.name}</td>--%>
-<%--                            <td>  ${info.skill.level.name}</td>--%>
-<%--                            <td>${info.schedule.dateStart}</td>--%>
-<%--                            <td>${info.schedule.dateEnd}</td>--%>
-<%--                            <td><a href=""></a></td>--%>
-<%--                        </tr>--%>
-<%--                        <c:set var="count" value="${count= count +1}"></c:set>--%>
+                        <ul>
 
-<%--                    </c:forEach>--%>
+                            <li style="list-style-type: none">Skill name : <img width="30px"
+                                                                                src="${pageContext.request.contextPath}${bookInfo[0].booking.level_skills.skill.src_icon}">
+                                ${bookInfo[0].booking.level_skills.skill.name}</li>
+                            <li style="list-style-type: none">Skill level
+                                : ${bookInfo[0].booking.level_skills.level.name}</li>
+                        </ul>
+                        <ul>
+                            <li style="list-style-type: none">Day:${bookInfo[0].schedule.date} </li>
+                            <li style="list-style-type: none">Time
+                                : ${bookInfo[0].schedule.slot.start_at}-${bookInfo[0].schedule.slot.end_at}</li>
+                            <li style="list-style-type: none">Slot Booked : ${bookInfo[0].schedule.slot.id}</li>
+                        </ul>
+                    </div>
 
-<%--                </table>--%>
+
+                    <div class="info-card1" style="margin-left: 850px; margin-top: -370px ">
+
+                        <ul>
+                            <li style="list-style-type: none">Created date :  ${bookInfo[0].booking.date}</li>
+                            <li style="list-style-type: none">Total amount request : ${bookInfo[0].booking.amount}</li>
+
+
+                            <li style="list-style-type: none">Status payment :
+                                <span style="color: #f8ce0b"> <c:if
+                                        test="${bookInfo[0].booking.status.id == 11 }">Payment Not Confirm Yet</c:if> </span>
+                                <span style="color: #28a745"><c:if
+                                        test="${bookInfo[0].booking.status.id == 3 }">Payment Confirmed</c:if></span>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li style="list-style-type: none">Confirm slot:</li>
+                            <c:if test="${bookInfo[0].status.id == 3 }">
+                                <li style="pointer-events: none;list-style-type: none;display: inline">
+                                    <input type="button" value="Present" id="confirmBtn2" style=" background: #919aa3">
+                                </li>
+                                <li style="pointer-events: none;list-style-type: none;display: inline">
+                                    <input type="button" value="Absent" id="absentBtn2" style=" background: #919aa3">
+                                </li>
+                                <li style="list-style-type: none">(Request was sent, money will unlock after finish all slot)</li>
+
+                            </c:if>
+                            <c:if test="${bookInfo[0].status.id == 11 }">
+                                <li style="list-style-type: none; display: inline">
+                                    <input type="button" value="Present" id="confirmBtn"
+                                           data-id=" ${bookInfo[0].id}"
+                                    onclick="confirmSlot()" >
+                                </li>
+                                <li style="list-style-type: none;display: inline" >
+                                    <input type="button" value="Absent" id="absentBtn"
+                                           data-id=" ${bookInfo[0].id}"
+                                           onclick="absentSlot()">
+                                </li>
+                            </c:if>
+                        </ul>
+                    </div>
+                </div>
+
             </div>
+
+
         </div>
     </div>
 
 </div>
 
-    <script>
-        // Lấy modal mới cho thông tin
-        var infoModal = document.getElementById("infoModal");
-        // Lấy nút mở modal mới
-        var btn2 = document.getElementById("myBtn2");
-        // Lấy phần tử <span> (nút đóng) để đóng modal mới
-        var spanInfo = document.getElementsByClassName("closeInfo")[0];
-        // Khi người dùng nhấp vào nút, mở modal mới
-        btn2.onclick = function () {
-            infoModal.style.display = "block";
-            return false; // Ngăn chặn gửi form mặc định
+<script>
+    // Lấy modal mới cho thông tin
+    var infoModal = document.getElementById("infoModal");
+    // Lấy nút mở modal mới
+    var btn2 = document.getElementById("myBtn2");
+    // Lấy phần tử <span> (nút đóng) để đóng modal mới
+    var spanInfo = document.getElementsByClassName("closeInfo")[0];
+    // Khi người dùng nhấp vào nút, mở modal mới
+    btn2.onclick = function () {
+        infoModal.style.display = "block";
+        return false; // Ngăn chặn gửi form mặc định
+    }
+    // Khi người dùng nhấp vào nút đóng (x), đóng modal mới
+    spanInfo.onclick = function () {
+        infoModal.style.display = "none";
+    }
+    var spans = document.getElementsByClassName("close");
+    for (var i = 0; i < spans.length; i++) {
+        spans[i].onclick = function () {
+            var modal = this.parentElement.parentElement;
+            modal.style.display = "none";
         }
-        // Khi người dùng nhấp vào nút đóng (x), đóng modal mới
-        spanInfo.onclick = function () {
-            infoModal.style.display = "none";
-        }
-        var spans = document.getElementsByClassName("close");
-        for (var i = 0; i < spans.length; i++) {
-            spans[i].onclick = function() {
-                var modal = this.parentElement.parentElement;
-                modal.style.display = "none";
-            }
-        }
+    }
 
 
-        // set free day
-        const setFreeDay = () => {
-                    var tdLinks = document.getElementsByClassName("button-schedule-td");
-                    var newURL = "";
-                    // Loop through each element and set the click event handler
-                    for (let i = 0; i < tdLinks.length; i++) {
-                        tdLinks[i].onclick = function (event) {
-                            event.preventDefault();
-                            Swal.fire({
-                                title: "Are you sure you want to set a free day?",
-                                text: "",
-                                icon: "question",
-                                showCancelButton: true,
-                                confirmButtonColor: "#3085d6",
-                                cancelButtonColor: "#d33",
-                                confirmButtonText: "Yes, I set it!"
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                            var slotID = this.getAttribute('data-schedule-id');
-                            var today = this.getAttribute('data-today-id');
-                             newURL = "schedule?slotID=" + slotID+"&&today="+ today;
-                            localStorage.setItem('isSuccess', 'yes');
+    // set free day
+    const setFreeDay = () => {
+        var tdLinks = document.getElementsByClassName("button-schedule-td");
+        var newURL = "";
+        // Loop through each element and set the click event handler
+        for (let i = 0; i < tdLinks.length; i++) {
+            tdLinks[i].onclick = function (event) {
+                event.preventDefault();
+                Swal.fire({
+                    title: "Are you want to set a free day?",
+                    text: "",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, I set it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var slotID = this.getAttribute('data-schedule-id');
+                        var today = this.getAttribute('data-today-id');
+                        newURL = "schedule?slotID=" +slotID + "&today=" + today;
+                        localStorage.setItem('isSuccess', 'yes');
 
-                            // Redirect to the new URL
-                            window.location.href = newURL;
-                                }
-                            });
-                        };
-
+                        // Redirect to the new URL
+                        window.location.href = newURL;
                     }
-
-                    // Show success message
-
-
-        };
-        const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-            }
-        });
-        //delete free day
-        const deleteFreeDay = () => {
-            var tdLinks = document.getElementsByClassName("button-schedule-td3");
-            var newURL = "";
-            // Loop through each element and set the click event handler
-            for (let i = 0; i < tdLinks.length; i++) {
-                tdLinks[i].onclick = function (event) {
-                    event.preventDefault();
-                    Swal.fire({
-                        title: "Are you sure you want to DELETE a free day?",
-                        text: "",
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#3085d6",
-                        cancelButtonColor: "#d33",
-                        confirmButtonText: "Yes, I DELETE it!"
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            var slotID = this.getAttribute('data-schedule-id');
-                            var today = this.getAttribute('data-today-id');
-                            newURL = "schedule/delete?slotID=" + slotID+"&&today="+ today;
-                            localStorage.setItem('isDelete', 'yes');
-
-                            // Redirect to the new URL
-                            window.location.href = newURL;
-                        }
-                    });
-                };
-
-            }
-            ;
-        }
-        const  updateStatus = (details) =>{
-            localStorage.setItem('update_status', details);
+                });
+            };
 
         }
-        const  rejectStatus = (details) =>{
-            localStorage.setItem('reject_status', details);
+
+        // Show success message
+
+
+    };
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
+    //delete free day
+    const deleteFreeDay = () => {
+        var tdLinks = document.getElementsByClassName("button-schedule-td3");
+        var newURL = "";
+        // Loop through each element and set the click event handler
+        for (let i = 0; i < tdLinks.length; i++) {
+            tdLinks[i].onclick = function (event) {
+                event.preventDefault();
+                Swal.fire({
+                    title: "Are you want to DELETE a free day?",
+                    text: "",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, I DELETE it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var slotID = this.getAttribute('data-schedule-id');
+                        var today = this.getAttribute('data-today-id');
+                        newURL = "schedule/delete?slotID=" +slotID + "&today=" + today;
+                        localStorage.setItem('isDelete', 'yes');
+
+                        // Redirect to the new URL
+                        window.location.href = newURL;
+                    }
+                });
+            };
 
         }
-        const informationMentee = () =>{
-            var links = document.getElementsByClassName("info-link");
-            for (var i = 0; i < links.length; i++) {
-                links[i].onclick = function(event) {
-                    event.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ a
+        ;
+    }
+    const updateStatus = (details) => {
+        localStorage.setItem('update_status', details);
 
-                    // Lấy giá trị data-book-id từ phần tử a được click
-                    var bookID = this.getAttribute('data-book-id');
+    }
+    const rejectStatus = (details) => {
+        localStorage.setItem('reject_status', details);
 
-                    // Tạo URL mới dựa trên bookID
-                    var newURL = "schedule?dayID=" + bookID;
+    }
+    const informationMentee = () => {
+        var links = document.getElementsByClassName("info-link");
+        for (var i = 0; i < links.length; i++) {
+            links[i].onclick = function (event) {
+                event.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ a
 
-                    // Lưu trạng thái của modal và ID của modal vào localStorage
-                    localStorage.setItem('modalToOpen', 'tdModal');
+                // Lấy giá trị data-book-id từ phần tử a được click
+                var bookID = this.getAttribute('data-book-id');
+                var today = this.getAttribute('data-today-id');
+                // Tạo URL mới dựa trên bookID
+                var newURL = "schedule?dayID=" + bookID + "&today=" + today;
 
-                    // Lưu bookID vào localStorage để sử dụng sau khi trang được tải lại (nếu cần)
-                    localStorage.setItem('bookID', bookID);
+                // Lưu trạng thái của modal và ID của modal vào localStorage
+                localStorage.setItem('modalToOpen', 'tdModal');
 
-                    // Chuyển hướng đến URL mới
+                // Lưu bookID vào localStorage để sử dụng sau khi trang được tải lại (nếu cần)
+                localStorage.setItem('bookID', bookID);
+
+                // Chuyển hướng đến URL mới
+                window.location.href = newURL;
+            };
+        }
+
+
+    }
+    const confirmSlot = () => {
+        var btnOnclick = document.getElementById("confirmBtn");
+        var newURL = "";
+        btnOnclick.onclick = function (event) {
+                event.preventDefault();
+                Swal.fire({
+                    title: "Are you want to CONFIRM a slot ?",
+                    text: "Ensure that the slot has happened",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, I confirm it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var ID = this.getAttribute('data-id');
+                        newURL = 'schedule/confirm?ID='+ID+'&option=present';
+                        localStorage.setItem('isConfirmSlot','yes');
+                        // Redirect to the new URL
+                        window.location.href = newURL;
+                    }
+                });
+            };
+    }
+    const absentSlot = () => {
+        var btnOnclick = document.getElementById("absentBtn");
+        var newURL = "";
+        btnOnclick.onclick = function (event) {
+            event.preventDefault();
+            Swal.fire({
+                title: "is the mentee ABSENT a slot ?",
+                text: "Ensure that the slot has happened",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, absent !"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var ID = this.getAttribute('data-id');
+                    newURL = 'schedule/confirm?ID='+ID+'&option=absent';
+                    localStorage.setItem('isAbsent','yes');
+                    // Redirect to the new URL
                     window.location.href = newURL;
-                };
+                }
+            });
+        };
+    }
+    // set free day
+    window.onload = function () {
+        var isSuccess = localStorage.getItem('isSuccess');
+        // Nếu modal được lưu là mở, mở modal
+        var isDelete = localStorage.getItem('isDelete');
+        var update_status = localStorage.getItem('update_status');
+        var reject_status = localStorage.getItem('reject_status');
+        var modalToOpen = localStorage.getItem('modalToOpen');
+        var isConfirmSlot = localStorage.getItem('isConfirmSlot');
+        var isAbsent = localStorage.getItem('isAbsent');
+        if (isSuccess) {
+            Toast.fire({
+                icon: "success",
+                title: "set day in successfully"
+            });
+            localStorage.removeItem('isSuccess');
+        }
+        if (isDelete) {
+            Toast.fire({
+                icon: "success",
+                title: "Delete in successfully"
+            });
+            localStorage.removeItem('isDelete');
+        }
+        if (update_status) {
+            let icon;
+            if (update_status === 'schedule confirmed') {
+                icon = "success";
+            } else {
+                icon = "error";
             }
 
+            Toast.fire({
+                icon: icon,
+                title: update_status
+            });
+
+            localStorage.removeItem('update_status');
+        }
+        if (reject_status) {
+            let icon;
+            if (reject_status === 'schedule rejected') {
+                icon = "success";
+            } else {
+                icon = "error";
+            }
+
+            Toast.fire({
+                icon: icon,
+                title: reject_status
+            });
+
+            localStorage.removeItem('reject_status');
+        }
+        if (modalToOpen) {
+            var modal = document.getElementById(modalToOpen);
+            modal.style.display = "block";
+
+            // Xóa trạng thái modal ra khỏi localStorage (để không mở lại khi tải trang lần tiếp theo)
+            localStorage.removeItem('modalToOpen');
 
         }
-        // set free day
-        window.onload = function () {
-            var isSuccess = localStorage.getItem('isSuccess');
-            // Nếu modal được lưu là mở, mở modal
-            var isDelete = localStorage.getItem('isDelete');
-            var update_status = localStorage.getItem('update_status');
-            var reject_status = localStorage.getItem('reject_status');
-            var modalToOpen = localStorage.getItem('modalToOpen');
-            if (isSuccess) {
-                Toast.fire({
-                    icon: "success",
-                    title: "set day in successfully"
-                });
-                localStorage.removeItem('isSuccess');
-            }
-            if (isDelete) {
-                Toast.fire({
-                    icon: "success",
-                    title: "Delete in successfully"
-                });
-                localStorage.removeItem('isDelete');
-            }
-            if (update_status) {
-                let icon;
-                if (update_status === 'schedule confirmed') {
-                    icon = "success";
-                } else {
-                    icon = "error";
-                }
+        if (isConfirmSlot) {
+            Toast.fire({
+                icon: "success",
+                title: "Take present in successfully"
+            });
+            localStorage.removeItem('isConfirmSlot');
+        }
+        if (isAbsent) {
+            Toast.fire({
+                icon: "success",
+                title: "Take absent in successfully"
+            });
+            localStorage.removeItem('isAbsent');
+        }
+    };
+    const history_request = () =>{
+        window.location.href = 'schedule/history';
+    }
 
-                Toast.fire({
-                    icon: icon,
-                    title: update_status
-                });
-
-                localStorage.removeItem('update_status');
-            }
-            if (reject_status) {
-                let icon;
-                if (reject_status === 'schedule rejected') {
-                    icon = "success";
-                } else {
-                    icon = "error";
-                }
-
-                Toast.fire({
-                    icon: icon,
-                    title: reject_status
-                });
-
-                localStorage.removeItem('reject_status');
-            }
-            if (modalToOpen) {
-                var modal = document.getElementById(modalToOpen);
-                modal.style.display = "block";
-
-                // Xóa trạng thái modal ra khỏi localStorage (để không mở lại khi tải trang lần tiếp theo)
-                localStorage.removeItem('modalToOpen');
-
-            }
-
-        };
-
-
-    </script>
+</script>
 
 </div>
 </body>

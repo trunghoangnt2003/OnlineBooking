@@ -14,10 +14,7 @@ import org.frog.utility.DateTimeHelper;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @WebServlet("/mentor/schedule")
 public class ViewScheduleController extends AuthenticationServlet {
@@ -61,9 +58,13 @@ public class ViewScheduleController extends AuthenticationServlet {
 
         String dayID = req.getParameter("dayID");
         if(dayID!=null){
-            ArrayList<BookingSchedule> menteeInfo = new ArrayList<>();
-            // menteeInfo = mentorDAO.getInfoByDayID(account.getId(),DateTimeHelper.converDayIDtoStartDate(dayID),DateTimeHelper.converDayIDtoEndDate(dayID));
-            req.setAttribute("menteeInfo", menteeInfo);
+            try {
+                String[] infoDayID = dayID.split("_");
+                ArrayList<BookingSchedule> bookInfo = bs.getDetailBooking(account.getId(), DateTimeHelper.convertStringToDateByDay(infoDayID[0]), Integer.parseInt(infoDayID[1]));
+                req.setAttribute("bookInfo", bookInfo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         String slotID = req.getParameter("slotID");
         if(slotID!=null){

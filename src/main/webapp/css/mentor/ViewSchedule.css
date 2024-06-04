@@ -62,7 +62,7 @@ body{
     width: 90%;
     background-color: #fefefe;
     margin: 15% auto; /* 15% from the top and centered */
-    padding: 150px;
+    padding: 100px 200px;
     border: 1px solid #888;
     border-radius: 10px
 
@@ -71,8 +71,8 @@ body{
 
 /* The Close Button */
 .close {
-    margin-top: -145px;
-    margin-left: 950px;
+    margin-top: -100px;
+    margin-left: 800px;
     color: #aaa;
     float: right;
     font-size: 28px;
@@ -85,8 +85,8 @@ body{
     text-decoration: none;
     cursor: pointer;
 }
-#myBtn {
-    background-color: #42509e; /* Green background */
+#myBtn ,#confirmBtn2 ,#absentBtn2{
+    background-color: #07AD90; /* Green background */
     border: none; /* Remove borders */
     color: white; /* White text */
     padding: 15px 49px; /* Add some padding */
@@ -99,8 +99,8 @@ body{
     cursor: pointer; /* Add a pointer cursor on hover */
     border-radius: 12px; /* Rounded corners */
 }
-#myBtn2 {
-    background-color: #42509e; /* Green background */
+#myBtn2,#confirmBtn ,#absentBtn{
+    background-color: #07AD90; /* Green background */
     border: none; /* Remove borders */
     color: white; /* White text */
     padding: 15px 32px; /* Add some padding */
@@ -113,14 +113,27 @@ body{
     cursor: pointer; /* Add a pointer cursor on hover */
     border-radius: 12px; /* Rounded corners */
 }
-
-#myBtn:hover, #myBtn2:hover {
+#myBtn3{
+    background-color: #07AD90; /* Green background */
+    border: none; /* Remove borders */
+    color: white; /* White text */
+    padding: 15px 24px; /* Add some padding */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Make the container inline */
+    font-size: 16px; /* Increase font size */
+    margin: 4px 2px; /* Add some margin */
+    transition-duration: 0.4s; /* Add transition effect */
+    cursor: pointer; /* Add a pointer cursor on hover */
+    border-radius: 12px; /* Rounded corners */
+}
+#myBtn:hover, #myBtn2:hover ,#myBtn3:hover{
     background-color: white; /* White background on hover */
     color: black; /* Black text on hover */
     border: 2px solid #42509e; /* Green border on hover */
 }
 .closeInfo {
-    margin-left: 1250px;
+    margin-left: 1100px;
     color: #aaa;
     float: right;
     font-size: 28px;
@@ -133,7 +146,6 @@ body{
     text-decoration: none;
     cursor: pointer;
 }
-
 
 button[name="accept"] {
     background-color: #4CAF50;
@@ -202,7 +214,7 @@ label {
 #button-schedule-td1{
     border: none;
     border-radius: 5px;
-    padding: 44px 49px;
+    padding: 38px 29px;
     margin-left: -18px;
     margin-top: -45px;
 }
@@ -321,7 +333,7 @@ th:first-child{
     transform: rotate(2deg);
 }
 .red {
-    background: #ee5a6f;
+    background: #f29263;
     -webkit-transform: rotate(2deg);
     -moz-transform: rotate(2deg);
     -o-transform: rotate(2deg);
@@ -362,7 +374,45 @@ th:first-child{
 .request-list tr:nth-child(even) {
     background-color: #f9f9f9;
 }
+/* css cho table booking detail*/
+.info-card   {
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    width: 330px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+}
 
+.info-card .info-card1 ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
 
+.info-card .info-card1 li {
+    margin: 10px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.info-card .info-card1 li span {
+    font-weight: bold;
+    color: #555;
+}
+
+.info-card .info-card1 ul + ul {
+    margin-top: 20px;
+}
+.info-card1   {
+    border: 1px solid #ccc;
+    padding: 80px 20px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    width: 500px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+}
 
 
