@@ -11,15 +11,14 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
 
-    <!-- MDB -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css" rel="stylesheet" />
-
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css" rel="stylesheet" />
     <style>
         .main {
             margin: 10px 40px;
@@ -66,6 +65,7 @@
         .notes {
             color: #333;
             position: relative;
+            text-align: start;
             width: 100px;
             height: 100px;
             margin: 0 auto;
@@ -229,6 +229,14 @@
         .booking-item span {
             flex-grow: 1; /* Allow text to grow and fill the space */
         }
+
+
+        .notetip{
+            width: 20px;
+            height: 20px;
+            border-radius: 10%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2)
+        }
     </style>
 </head>
 
@@ -244,7 +252,6 @@
         <input type="text" hidden="hidden" name="skill" value="${level_skill.skill.name}"/>
         <input type="text" hidden="hidden" name="level" value="${level_skill.level.name}">
         <div>
-
             <div class="category">
                 <span class="category_name">${level_skill.skill.category.name} </span>
             </div>
@@ -262,7 +269,7 @@
     <div class="d-flex main">
         <div class="schedule">
             <div>
-                <h2 style="text-align: center; color: #07AD90;">Schedule</h2>
+                <h1 style="text-align: center; color: #07AD90;">Schedule</h1>
             </div>
             <table>
                 <thead>
@@ -289,9 +296,8 @@
                 <tbody style="border: 1px #07AD90 solid">
                 <c:forEach items="${requestScope.slots}" var="slot">
                     <tr>
-                        <td>
-                            <span>Slots ${slot.id}</span>
-                            <br/>
+                        <td class="text-center">
+                            <h6>Slot ${slot.id}</h6>
                                 ${slot.start_at}-${slot.end_at}
                         </td>
                         <c:forEach items="${requestScope.week}" var="date">
@@ -301,7 +307,7 @@
                                         <div class="notes-container text-center ">
                                             <i class="pin"></i>
                                             <c:if test="${bs.status.id == 0}">
-                                                <blockquote class="notes color-note font-monospace" style="background-color: #32cd32">
+                                                <blockquote class="notes color-note font-monospace" style="background-color: #32cd32; text-align: center">
                                                         <div class="text-center fw-bold fs-4  ">
                                                             <span > Free</span>
                                                         </div>
@@ -322,16 +328,46 @@
                                             </c:if>
                                             <c:if test="${bs.status.id != 0}">
                                                 <c:if test="${bs.booking.mentee.account.id.equals(requestScope.mentee_id)}">
-                                                    <blockquote class="notes color-note font-monospace" style="background-color: #F4E0B9">
+                                                    <c:if test="${bs.status.id == 1}">
+                                                        <blockquote class="notes color-note font-monospace" style="background-color: #F4E0B9">
 
-                                                        <div class="text-center fw-bold">
-                                                            <span>Your Book</span>
-                                                        </div>
-                                                        <img width="20px" class="mt-2"  src="${pageContext.request.contextPath}${bs.booking.level_skills.skill.src_icon}">
-                                                        <div style="font-size: 14px">
-                                                            <span>${bs.booking.level_skills.level.name}</span>
-                                                        </div>
-                                                    </blockquote>
+                                                            <div class="text-center fw-bold">
+                                                                <span>Your Book</span>
+                                                            </div>
+                                                            <img width="20px" class="mt-2"  src="${pageContext.request.contextPath}${bs.booking.level_skills.skill.src_icon}">
+                                                            <div style="font-size: 14px">
+                                                                <span>${bs.booking.level_skills.level.name}</span>
+                                                                <span style="font-size: 10px">Processing...</span>
+                                                            </div>
+                                                        </blockquote>
+                                                    </c:if>
+                                                    <c:if test="${bs.status.id == 11}">
+                                                        <blockquote class="notes color-note font-monospace" style="background-color: #fff142">
+
+                                                            <div class="text-center fw-bold">
+                                                                <span>Your Book</span>
+                                                            </div>
+                                                            <img width="20px" class="mt-2"  src="${pageContext.request.contextPath}${bs.booking.level_skills.skill.src_icon}">
+                                                            <div style="font-size: 14px">
+                                                                <span>${bs.booking.level_skills.level.name}</span>
+
+                                                                <span style="font-size: 10px">Accepted</span>
+                                                            </div>
+                                                        </blockquote>
+                                                    </c:if>
+                                                    <c:if test="${bs.status.id == 3}">
+                                                        <blockquote class="notes color-note font-monospace" style="background-color: #faad12">
+
+                                                            <div class="text-center fw-bold">
+                                                                <span>Your Book</span>
+                                                            </div>
+                                                            <img width="20px" class="mt-2"  src="${pageContext.request.contextPath}${bs.booking.level_skills.skill.src_icon}">
+                                                            <div style="font-size: 12px">
+                                                                <span>${bs.booking.level_skills.level.name}</span>
+                                                                <span style="font-size: 10px">Done</span>
+                                                            </div>
+                                                        </blockquote>
+                                                    </c:if>
                                                 </c:if>
                                                 <c:if test="${bs.booking.mentee.account.id ne requestScope.mentee_id}">
                                                     <blockquote class="notes color-note font-monospace" style="background-color: #FF6347">
@@ -353,6 +389,23 @@
                 </c:forEach>
                 </tbody>
             </table>
+            <div class="d-flex justify-content-between mt-4" style="width: 50%" >
+                <div class="d-flex">
+                    <div class="notetip" style="background-color: #FF6347FF;" ></div> <span class="text-danger ms-2">Busy</span>
+                </div>
+                <div class="d-flex">
+                    <div class="notetip" style="background-color: #FAAD12FF " ></div> <span class="text-warning ms-2">Done</span>
+                </div>
+                <div class="d-flex">
+                    <div class="notetip" style="background-color: #FFF142FF " ></div> <span class="ms-2" style="color: #FFF142FF">Accepted</span>
+                </div>
+                <div class="d-flex">
+                    <div class="notetip" style="background-color: #F4E0B9 " ></div> <span class="ms-2" style="color: #F4E0B9">Processing</span>
+                </div>
+                <div class="d-flex">
+                    <div class="notetip" style="background-color: #32CD32FF " ></div> <span class="ms-2" style="color: #32CD32FF">Free</span>
+                </div>
+            </div>
         </div>
 
         <div class="booking">
@@ -417,11 +470,23 @@
     }
 
     function handleCheckboxChange(checkbox, scheduleId, slotId, date) {
-        if (checkbox.checked) {
-            addToBookingArray(scheduleId, slotId, date);
-        } else {
-            removeFromBookingArray(scheduleId);
+        if(new Date(date) < new Date()){
+            checkbox.checked = false;
+            Swal.fire({
+                icon: "error",
+                title: "This slot is outdated !",
+                text: "Please choose another slot from the future.",
+                showConfirmButton: false,
+                timer: 2000
+            });
+        }else{
+            if (checkbox.checked) {
+                addToBookingArray(scheduleId, slotId, date);
+            } else {
+                removeFromBookingArray(scheduleId);
+            }
         }
+
     }
 
     function addToBookingArray(scheduleId, slotId, date) {
@@ -513,7 +578,9 @@
                     Swal.fire({
                         title: "Error!",
                         text: "Please select at least one booking.",
-                        icon: "error"
+                        icon: "error",
+                        showConfirmButton: false,
+                        timer: 2000
                     });
                 }
 
@@ -521,5 +588,11 @@
         });
     }
 </script>
+
+<!-- MDB -->
+<script
+        type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.0/mdb.umd.min.js"
+></script>
 </body>
 </html>

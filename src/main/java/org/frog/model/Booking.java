@@ -8,7 +8,7 @@ public class Booking {
     private int id;
     private Status status;
     private int amount;
-    private Date date;
+    private Timestamp date;
     private Mentor mentor;
     private Mentee mentee;
     private Date startDate;
@@ -17,7 +17,7 @@ public class Booking {
     private Level_Skills level_skills;
 
 
-    public Booking(int id, Status status, int amount, Date date, Mentor mentor, Mentee mentee, Date startDate, Date endDate) {
+    public Booking(int id, Status status, int amount, Timestamp date, Mentor mentor, Mentee mentee, Date startDate, Date endDate) {
         this.id = id;
         this.status = status;
         this.amount = amount;
@@ -71,11 +71,11 @@ public class Booking {
         this.amount = amount;
     }
 
-    public Date getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 

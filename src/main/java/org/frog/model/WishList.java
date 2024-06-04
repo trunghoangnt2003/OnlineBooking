@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 public class WishList {
+    private int id;
     private Mentor mentor;
     private Mentee mentee;
     private Date timeRequest;
@@ -15,6 +16,14 @@ public class WishList {
     }
 
     public WishList() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Mentor getMentor() {

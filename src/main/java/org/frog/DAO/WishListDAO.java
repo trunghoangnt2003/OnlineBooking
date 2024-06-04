@@ -39,4 +39,51 @@ public class WishListDAO {
         }
         return wishLists;
     }
+
+    public ArrayList<WishList> getOfMentee(String mentee_id) {
+        ArrayList<WishList> wishLists = new ArrayList<>();
+
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "SELECT [mentor_id]\n" +
+                    "      ,[mentee_id]\n" +
+                    "      ,[status_id]\n" +
+                    "      ,[date]\n" +
+                    "      ,[id]\n" +
+                    "  FROM [dbo].[Wish_List]" +
+                    "WHERE mentee_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, mentee_id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                WishList wishList = new WishList();
+                wishList.setId(resultSet.getInt("id"));
+
+                Account acc_mentor = new Account();
+                acc_mentor.setId(resultSet.getString("mentor_id"));
+
+                Mentor mentor = new Mentor();
+                mentor.setAccount(acc_mentor);
+                wishList.setMentor(mentor);
+
+
+                Account acc_mentee = new Account();
+                acc_mentee.setId(resultSet.getString("mentee_id"));
+
+                Mentee mentee = new Mentee();
+                mentee.setAccount(acc_mentee);
+                wishList.setMentee(mentee);
+
+                Status status = new Status();
+                status.setId(resultSet.getInt("status_id"));
+                wishList.setStatus(status);
+                wishList.setTimeRequest(resultSet.getDate("date"));
+
+                wishLists.add(wishList);
+            }
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return wishLists;
+    }
 }

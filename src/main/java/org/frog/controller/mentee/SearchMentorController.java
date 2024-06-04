@@ -7,8 +7,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.frog.DAO.MentorDAO;
 import org.frog.DAO.SkillsDAO;
+import org.frog.DAO.WishListDAO;
 import org.frog.model.Mentor;
 import org.frog.model.Skill;
+import org.frog.model.WishList;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,14 +27,17 @@ public class SearchMentorController extends HttpServlet {
         String level = request.getParameter("level");
         String search = request.getParameter("search");
         String order_raw = request.getParameter("order");
+
+        String mentee_id = "e8fd47ed-dec2-49bf-829c-b182230ea49d";
         int page = 1;
         if (page_raw != null) {
             page = Integer.parseInt(page_raw);
         }
-        System.out.println(page);
+
 
         MentorDAO mentorDAO = new MentorDAO();
         SkillsDAO skillsDAO = new SkillsDAO();
+        WishListDAO wishListDAO = new WishListDAO();
         int order = 0;
         if(order_raw != null){
             order = Integer.parseInt(order_raw);
@@ -47,8 +52,10 @@ public class SearchMentorController extends HttpServlet {
         }
 
         Skill skill = skillsDAO.getByName(skill_name);
+        ArrayList<WishList> wishList = wishListDAO.getOfMentee(mentee_id);
 
 
+        request.setAttribute("wishList", wishList);
         request.setAttribute("search", search);
         request.setAttribute("order", order_raw);
         request.setAttribute("skill_name", skill_name);
