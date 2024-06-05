@@ -128,7 +128,8 @@
             <c:forEach items="${slots}" var="t">
                 <tr>
                     <td>
-                        <div style="display: flex; text-align: center">Slot${t.id}
+                        <div style="display: flex; text-align: center">Slot${t.id}<br/>
+                                ${t.start_at}-${t.end_at}
                         </div>
                     </td>
 
@@ -208,8 +209,9 @@
                                             <button id="button-schedule-td3" class="button-schedule-td3"
                                                     data-schedule-id="${week.dayOfMonth}_${t.id}"
                                                     data-today-id="${week.dayOfMonth}"
-                                                    style=" background: transparent; " onclick="deleteFreeDay()">
-
+                                                    style=" background: transparent; "
+                                                    data-set-error="${sessionScope.DeleteSlotError}"
+                                                    onclick="deleteFreeDay()">
                                             </button>
 
                                         </blockquote>
@@ -232,6 +234,7 @@
                                     <button id="button-schedule-td" style="background: white" class="button-schedule-td"
                                             data-schedule-id="${week.dayOfMonth}_${t.id}"
                                             data-today-id="${week.dayOfMonth}"
+                                            data-set-error="${sessionScope.AddSlotError}"
                                             onclick="setFreeDay()">
 
                                     </button>
@@ -334,6 +337,11 @@
 </div>
 
 <script>
+    function removeSession() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "schedule/deleteSession", true);
+        xhr.send();
+    }
     // Lấy modal mới cho thông tin
     var infoModal = document.getElementById("infoModal");
     // Lấy nút mở modal mới
@@ -378,8 +386,10 @@
                     if (result.isConfirmed) {
                         var slotID = this.getAttribute('data-schedule-id');
                         var today = this.getAttribute('data-today-id');
-                        newURL = "schedule?slotID=" +slotID + "&today=" + today;
                         localStorage.setItem('isSuccess', 'yes');
+
+                        newURL = "schedule?slotID=" +slotID + "&today=" + today;
+
 
                         // Redirect to the new URL
                         window.location.href = newURL;
@@ -388,11 +398,14 @@
             };
 
         }
-
-        // Show success message
-
-
     };
+    var error = document.getElementById('button-schedule-td').getAttribute('data-set-error');
+    if(error){
+        localStorage.removeItem('isSuccess');
+        localStorage.setItem('failToSet', error);
+    }
+
+
     const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -436,6 +449,13 @@
         }
         ;
     }
+    var errorDelete = document.getElementById('button-schedule-td3').getAttribute('data-set-error');
+    if(errorDelete){
+        localStorage.removeItem('isDelete');
+        localStorage.setItem('failToDelete', errorDelete);
+    }
+
+
     const updateStatus = (details) => {
         localStorage.setItem('update_status', details);
 
@@ -527,6 +547,22 @@
         var modalToOpen = localStorage.getItem('modalToOpen');
         var isConfirmSlot = localStorage.getItem('isConfirmSlot');
         var isAbsent = localStorage.getItem('isAbsent');
+        var failToSet = localStorage.getItem('failToSet');
+        var failToDelete = localStorage.getItem('failToDelete');
+        if (failToSet) {
+            Toast.fire({
+                icon: "error",
+                title: failToSet
+            });
+            localStorage.removeItem('failToSet');
+        }
+        if (failToDelete) {
+            Toast.fire({
+                icon: "error",
+                title: failToDelete
+            });
+            localStorage.removeItem('failToDelete');
+        }
         if (isSuccess) {
             Toast.fire({
                 icon: "success",
@@ -593,6 +629,8 @@
             });
             localStorage.removeItem('isAbsent');
         }
+        removeSession();
+
     };
     const history_request = () =>{
         window.location.href = 'schedule/history';

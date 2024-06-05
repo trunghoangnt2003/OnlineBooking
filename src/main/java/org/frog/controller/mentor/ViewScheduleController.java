@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.frog.DAO.Booking_ScheduleDAO;
 import org.frog.DAO.MentorDAO;
 import org.frog.DAO.ScheduleDAO;
+import org.frog.DAO.SlotDao;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.*;
 import org.frog.utility.DateTimeHelper;
@@ -38,6 +39,7 @@ public class ViewScheduleController extends AuthenticationServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+
         String day = req.getParameter("today");
         ArrayList<BookingSchedule> schedules = new ArrayList<>();
         ArrayList<Slot> slots = new ArrayList<>();
@@ -69,7 +71,15 @@ public class ViewScheduleController extends AuthenticationServlet {
         String slotID = req.getParameter("slotID");
         if(slotID!=null){
             String [] infoSlotID = slotID.split("_");
-            scheduleDAO.insertDayFreeByMentor(account.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]));
+            SlotDao slDAO = new SlotDao();
+            Slot id = slDAO.getTimeSlot(Integer.parseInt(infoSlotID[1]));
+            if(DateTimeHelper.compareDayIDtoNow(infoSlotID[0], id.getStart_at(), id.getEnd_at())){
+                scheduleDAO.insertDayFreeByMentor(account.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]));
+
+            }
+            else{
+                req.getSession().setAttribute("AddSlotError", "slot in passed");
+            }
         }
 
         slots = scheduleDAO.getSlots();

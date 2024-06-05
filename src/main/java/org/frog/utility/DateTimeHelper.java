@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.temporal.TemporalAdjusters;
@@ -80,4 +81,26 @@ public class DateTimeHelper {
             return null;
         }
     }
+    public static boolean compareDayIDtoNow(String day, String start , String end){
+        start = start.trim() + ":00";
+        end = end.trim() + ":00";
+
+        DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm:ss");
+        LocalTime startTime = LocalTime.parse(start, formatterTime);
+        LocalTime endTime = LocalTime.parse(end, formatterTime);
+
+        DateTimeFormatter formatterDay = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate selectDay = LocalDate.parse(day, formatterDay);
+        LocalDateTime startDayTime = selectDay.atTime(startTime);
+        LocalDateTime endDayTime = selectDay.atTime(endTime);
+        LocalDateTime now = LocalDateTime.now();
+        if(now.isAfter(startDayTime) && now.isAfter(endDayTime)){
+            return false;
+        }
+        else if (now.isAfter(startDayTime) && now.isBefore(endDayTime)){
+            return false;
+        }
+        return true;
+    }
+
 }
