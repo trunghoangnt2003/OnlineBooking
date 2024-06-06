@@ -42,7 +42,6 @@ public class Level_SkillDAO {
                 Level level = new Level();
                 level.setId(resultSet.getInt("level_id"));
                 level_skills.setLevel(level);
-
                 list.add(level_skills);
             }
             JDBC.closeConnection(connection);
@@ -56,7 +55,7 @@ public class Level_SkillDAO {
         ArrayList<Level_Skills> list = new ArrayList<>();
         try {
             Connection connection = JDBC.getConnection();
-            String sql = "SELECT Skill.id as skill_id, Skill.name, Level.id, Level.type\n" +
+            String sql = "SELECT Skill.id as skill_id, Skill.name, Skill.src_icon, Level.id, Level.type\n" +
                     "FROM     [Level] INNER JOIN\n" +
                     "                  Level_Skill ON [Level].id = Level_Skill.level_id INNER JOIN\n" +
                     "                  Mentor_Level_Skill ON Level_Skill.id = Mentor_Level_Skill.skill_level_id INNER JOIN\n" +
@@ -77,6 +76,7 @@ public class Level_SkillDAO {
                 Skill skill = new Skill();
                 skill.setId(resultSet.getInt("skill_id"));
                 skill.setName(resultSet.getString("name"));
+                skill.setSrc_icon(resultSet.getString("src_icon"));
                 level_skills.setSkill(skill);
 
                 list.add(level_skills);

@@ -6,15 +6,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.frog.DAO.Level_SkillDAO;
 import org.frog.DAO.MentorDAO;
+import org.frog.DAO.ReviewDAO;
+import org.frog.DAO.WishListDAO;
 import org.frog.controller.auth.AuthenticationServlet;
-import org.frog.model.Account;
-import org.frog.model.Level_Skills;
-import org.frog.model.Mentor;
+import org.frog.model.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet("/mentor/view_profile")
+@WebServlet("/mentor/profile")
 public class ViewProfileController extends AuthenticationServlet {
 
     @Override
@@ -25,16 +25,29 @@ public class ViewProfileController extends AuthenticationServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
         try {
+            String mentorId = req.getParameter("mentorid");
             MentorDAO mentorDAO = new MentorDAO();
-            Mentor mentor = mentorDAO.getMentorById(account.getId());
+            Mentor mentor = mentorDAO.getMentorById(mentorId);
             if ( mentor == null) {
                 resp.sendRedirect("/Frog/mentor/create_profile");
             }else {
                 Level_SkillDAO level_skillDAO = new Level_SkillDAO();
-                ArrayList<Level_Skills> level_skills = level_skillDAO.getLevel_SkillByMentorId(account.getId());
+                ArrayList<Level_Skills> level_skills = level_skillDAO.getLevel_SkillByMentorId(mentorId);
+                ReviewDAO reviewDAO = new ReviewDAO();
+                ArrayList<Review> reviews = reviewDAO.getMenteeReviewByMentorId(mentorId);
+                WishListDAO dao = new WishListDAO();
+                ArrayList<WishList> wishLists = dao.getWishListByMentorId(mentorId);
 
+                boolean isAuthor = false;
+                if(mentorId.equals(account.getId())){
+                    isAuthor = true;
+                }
+                req.setAttribute("isAuthor", isAuthor);
+                req.setAttribute("numberFollower", wishLists.size());
                 req.setAttribute("level_skills", level_skills);
                 req.setAttribute("mentor", mentor);
+                req.setAttribute("review", reviews);
+                req.setAttribute("id", mentorId);
                 req.getRequestDispatcher("../view/mentor/view_profile.jsp").forward(req, resp);
             }
         } catch (ServletException | IOException e) {

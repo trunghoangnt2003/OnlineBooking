@@ -331,4 +331,32 @@ public class AccountDAO {
             System.out.println(ignored.getMessage());
         }
     }
+
+    public void updateAccount(Account account) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "UPDATE [dbo].[Account]\n" +
+                    "   SET [name] = ?\n" +
+                    "      ,[dob] = ?\n" +
+                    "      ,[phone] = ?\n" +
+                    "      ,[gender] = ?\n" +
+                    "      ,[address] = ?\n" +
+                    "      ,[avatar] = ?\n" +
+                    " WHERE Account.id = ?";
+            PreparedStatement preparedStatement = null;
+            if (connection != null) {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, account.getName());
+                preparedStatement.setDate(2, account.getDob());
+                preparedStatement.setString(3, account.getPhone());
+                preparedStatement.setInt(4, account.getGender());
+                preparedStatement.setString(5, account.getAddress());
+                preparedStatement.setString(6, account.getAvatar());
+                preparedStatement.setString(7, account.getId());
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

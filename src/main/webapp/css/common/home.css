@@ -75,7 +75,7 @@ nav {
     padding-left: 60px;
 }
 
-.wrapper i {
+.angle {
     top: 50%;
     height: 50px;
     width: 50px;
@@ -90,7 +90,6 @@ nav {
     transform: translateY(-50%);
     transition: transform 0.1s linear;
     margin-left: 50px;
-
 }
 .wrapper i:active{
     transform: translateY(-50%) scale(0.85);
@@ -115,13 +114,6 @@ nav {
 }
 .carousel::-webkit-scrollbar {
     display: none;
-}
-.carousel.no-transition {
-    scroll-behavior: auto;
-}
-.carousel.dragging {
-    scroll-snap-type: none;
-    scroll-behavior: auto;
 }
 .carousel.dragging .card {
     cursor: grab;
@@ -253,7 +245,7 @@ nav {
     margin-bottom: 1rem;
     font-size: 1.5rem;
     font-weight: 600;
-    color: red;
+    color: #07AD90;
 }
 
 .footer-col h4 {
@@ -271,5 +263,47 @@ nav {
 }
 
 .footer-col p:hover {
-    color: red;
+    color: #63E6BE;
+}
+
+.stars-outer {
+    position: relative;
+    display: inline-block;
+}
+
+.stars-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 0;
+}
+
+.stars-outer::before {
+    content: "\f005 \f005 \f005 \f005 \f005";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    color: #ccc;
+}
+
+.stars-inner::before {
+    content: "\f005 \f005 \f005 \f005 \f005";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    color: #f8ce0b;
+}
+
+.rate-follower {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+}
+
+.rate {
+    margin-right: 150px;
+}
+
+.follower {
+    margin-left: 8px;
 }

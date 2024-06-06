@@ -179,7 +179,6 @@ public class MentorDAO {
                 mentor.setExperience(resultSet.getString("experience"));
                 mentor.setEducation(resultSet.getString("education"));
                 mentor.setRating(resultSet.getFloat("rating"));
-
                 return mentor;
             }
             JDBC.closeConnection(connection);
@@ -540,13 +539,14 @@ public class MentorDAO {
         ArrayList<Mentor> mentors = new ArrayList<>();
         try {
             Connection connection = JDBC.getConnection();
-            String sql = "select Account.name, Mentor.rating\n" +
+            String sql = "select Account.name, Account.id, Mentor.rating\n" +
                     "from Mentor join Account on Mentor.account_id = Account.id\n" +
                     "order by Mentor.rating desc";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Account account = new Account();
+                account.setId(resultSet.getString("id"));
                 account.setName(resultSet.getString("name"));
                 Mentor mentor = new Mentor();
                 mentor.setAccount(account);
@@ -557,5 +557,26 @@ public class MentorDAO {
             throw new RuntimeException(e);
         }
         return mentors;
+    }
+    public void updateMentor(Mentor mentor, String id) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "UPDATE [dbo].[Mentor]\n" +
+                    "   SET [profile_detail] = ?\n" +
+                    "      ,[price] = ?\n" +
+                    "      ,[experience] = ?\n" +
+                    "      ,[education] = ?\n" +
+                    " WHERE Mentor.account_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(5, id);
+            preparedStatement.setString(1, mentor.getProfileDetail());
+            preparedStatement.setInt(2, mentor.getPrice());
+            preparedStatement.setString(3, mentor.getExperience());
+            preparedStatement.setString(4, mentor.getEducation());
+            preparedStatement.executeUpdate();
+            JDBC.closeConnection(connection);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -32,9 +32,11 @@ public class ViewListFollowController extends AuthenticationServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+        String id = req.getParameter("id");
         WishListDAO dao = new WishListDAO();
-        ArrayList<WishList> wishLists = dao.getWishListByMentorId(account.getId());
+        ArrayList<WishList> wishLists = dao.getWishListByMentorId(id);
 
+        req.setAttribute("id", id);
         req.setAttribute("wishLists", wishLists);
         req.getRequestDispatcher("../view/mentor/view_follower.jsp").forward(req, resp);
     }

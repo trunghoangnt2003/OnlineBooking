@@ -44,9 +44,9 @@
                         <div class="round">
                             <input type="file" name="photo" id="file-input" onchange="previewImage();"/>
                             <div class="camera">
-                                <%--                        <label for="file-input" class="camera-icon">--%>
-                                <%--                            <i class="fa fa-camera fa-sm" style="color: white;"></i>--%>
-                                <%--                        </label>--%>
+                                                        <label for="file-input" class="camera-icon">
+                                                            <i class="fa fa-camera fa-sm" style="color: white;"></i>
+                                                        </label>
                             </div>
                         </div>
                     </div>
