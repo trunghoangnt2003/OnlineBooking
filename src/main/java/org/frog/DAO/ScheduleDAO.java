@@ -88,7 +88,8 @@ public class ScheduleDAO {
             return null;
         }
     }
-    public void insertDayFreeByMentor(String id , Date date ,int slot_id){
+    public int insertDayFreeByMentor(String id , Date date ,int slot_id){
+        int numUppdate = 0;
         String sql="INSERT INTO [dbo].[Schedule]\n" +
                 "           ([date]\n" +
                 "           ,[slot_id]\n" +
@@ -103,10 +104,11 @@ public class ScheduleDAO {
             preparedStatement.setDate(1, date);
             preparedStatement.setString(3, id);
             preparedStatement.setInt(2, slot_id);
-            preparedStatement.executeUpdate();
+            numUppdate = preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return numUppdate;
     }
     public void deleteDayFreeByMentor(String id , Date date ,int slot_id){
         String sql="DELETE FROM [dbo].[Schedule]\n" +

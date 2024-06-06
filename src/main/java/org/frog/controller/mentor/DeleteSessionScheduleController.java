@@ -20,6 +20,7 @@ public class DeleteSessionScheduleController extends AuthenticationServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
         req.getSession().removeAttribute("AddSlotError");
         req.getSession().removeAttribute("DeleteSlotError");
+        req.getSession().removeAttribute("numberUpdateSuccess");
         resp.sendRedirect("/Frog/mentor/schedule");
     }
 }

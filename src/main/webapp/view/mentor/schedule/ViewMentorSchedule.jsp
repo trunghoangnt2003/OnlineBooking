@@ -44,16 +44,116 @@
         <form action="schedule" method="GET" id="getForm">
             <div>
                 <label for="today">Select Date:</label>
-                <input type="date" class="styled-date" name="today" id="today" value="${param.today}"
-                       onchange="document.getElementById('getForm').submit()">
+                <input type="date" class="styled-date" name="today" id="today" value="${param.today}" data-viewID="${param.viewID}"
+                       onchange="updateURL()">
             </div>
         </form>
 
-        <button id="myBtn">Set Time</button>
+        <button id="myBtn" onclick="openSetTime()">Set Time</button>
         <br/>
         <!-- Nút mở modal mới -->
         <button id="myBtn2">View Request</button>
         <button id="myBtn3" onclick="history_request()">History Request</button>
+
+        <c:if test="${param.viewID != null}" >
+            <div>
+                <p style="font-weight: bold; text-decoration: underline;">Booking Slot Detail:</p>
+
+                <c:forEach items="${BookingSlots}" var="sche">
+                    <c:if test="${param.viewID == sche.booking.id }">
+
+                        <span style="font-weight: bold;">  Slot ${sche.schedule.slot.id} - Day ${sche.schedule.date}</span> <br/>
+                    </c:if>
+
+                </c:forEach>
+            </div>
+        </c:if>
+        <div id="myModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content-time" style="width: 60%">
+                <span class="close" style="margin-left: 750px">&times;</span>
+                <!-- Form để gửi yêu cầu POST -->
+                <p style="font-weight: bold;">SET FREE DAY</p>
+
+                <div class="container-card">
+                    <div class="form-container">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="selectWeek" value="1" checked>
+                            <label class="form-check-label">
+                                One Week
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="selectWeek" value="2">
+                            <label class="form-check-label">
+                                Two Week
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="selectWeek" value="3">
+                            <label class="form-check-label">
+                                Three Week
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="selectWeek" value="4">
+                            <label class="form-check-label">
+                                Four Week
+                            </label>
+                        </div>
+
+
+                        <span>Select Day Of Week </span>
+                        <select id="selectDOW" class="select-container">
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Saturday">Saturday</option>
+                        <option value="Sunday">Sunday</option>
+                        </select><br/>
+                        <span>Select Slot:</span>
+                        <div class="select-container">
+                            <input type="checkbox" name="selectSlot" value="1"> Slot 1 (08:00 - 10:00)
+                        </div>
+                        <div class="select-container">
+                            <input type="checkbox" name="selectSlot" value="2"> Slot 2 (10:00 - 12:00)
+                        </div>
+                        <div class="select-container">
+                            <input type="checkbox" name="selectSlot" value="3"> Slot 3 (13:00 - 15:00)
+                        </div>
+                        <div class="select-container">
+                            <input type="checkbox" name="selectSlot" value="4"> Slot 4 (15:00 - 17:00)
+                        </div>
+                        <div class="select-container">
+                            <input type="checkbox" name="selectSlot" value="5"> Slot 5 (17:00 - 19:00)
+                        </div>
+                        <div class="select-container">
+                            <input type="checkbox" name="selectSlot" value="6"> Slot 6 (19:00 - 21:00)
+                        </div>
+                        <div class="select-container">
+                            <input type="checkbox" name="selectSlot" value="7"> Slot 7 (21:00 - 23:00)
+                        </div>
+                        <br/>
+                        <button type="button" class="submit-button2"
+                                onclick="addListBooks()">Add Slot</button>
+
+                    </div>
+                    <div class="filter-box ">
+                        <div>List of book
+                            <div id="showCount" class="count-container"></div>
+                        </div>
+                        <div id="checkboxContainer"></div>
+
+                    </div>
+                    <div><input type="button" value="SAVE" class="submit-button" data-receive="${sessionScope.numberUpdateSuccess}" id="btnSetFreeTime"
+                                onclick="sendSetTimeData()">
+                    </div>
+                </div>
+
+            </div>
+        </div>
 
         <div id="infoModal" class="modal">
             <!-- Modal content -->
@@ -72,6 +172,7 @@
                         <td>End Date</td>
                         <td>Name</td>
                         <td>Status</td>
+                        <td>View Slot</td>
                     </tr>
                     <c:forEach items="${bookings}" var="book">
                         <tr>
@@ -97,8 +198,13 @@
                                         <a href="schedule/update?bookingID=${book.id}&&option=false"
                                            class="button"
                                            onclick="rejectStatus('${sessionScope.rejectStatus}')">Reject</a></button>
-                                    </button>
                                 </c:if>
+                            </td>
+                            <td>
+                                <button name="view" value="view" style="background-color: #f8ce0b">
+                                    <a href="schedule?viewID=${book.id}"
+                                       class="button">
+                                       View</a></button>
                             </td>
                             <c:set var="count" value="${count= count +1}"></c:set>
                         </tr>
@@ -129,7 +235,7 @@
                 <tr>
                     <td>
                         <div style="display: flex; text-align: center">Slot${t.id}<br/>
-                                ${t.start_at}-${t.end_at}
+                                ${t.start_at}- ${t.end_at}
                         </div>
                     </td>
 
@@ -137,7 +243,7 @@
                         <c:set var="countCheck" value="${count = 0}"></c:set>
                         <c:set var="foundBusy" value="false"></c:set>
                         <c:set var="icon" value="false"></c:set>
-
+                        <c:set var="waitingIcon" value="false"></c:set>
                         <td>
                             <c:forEach items="${schedules}" var="sche">
                                 <c:if test="${sche.schedule.date == week.convertStringToDateByDay(week.dayOfMonth) && sche.schedule.slot.id == t.id}">
@@ -169,6 +275,9 @@
                                         <c:set var="countCheck" value="${count = 2}"></c:set>
                                     </c:if>
                                     <c:if test="${(sche.status.id == 1 ) && !foundBusy}">
+                                        <c:if test="${param.viewID == sche.booking.id }">
+                                            <c:set var="waitingIcon" value="true"></c:set>
+                                        </c:if>
                                         <c:set var="countCheck" value="${count = 3}"></c:set>
                                     </c:if>
                                 </c:if>
@@ -222,10 +331,16 @@
                                     <div class="notes-container">
                                         <i class="pin"></i>
                                         <blockquote class="notes yellow">
-                                                <%--                                            <button id="button-schedule-td4" class="button-schedule-td2"  data-schedule-id="${week.dayOfMonth}_${t.id}" style="background-color: yellow">--%>
-
-                                                <%--                                            </button>--%>
                                             Waiting...
+
+                                            <c:if test="${waitingIcon}">
+                                                <div style="    margin-top: 20px;
+                                            margin-left: 10px;">
+                                                <i class="fa-solid fa-envelope fa-xl"></i>
+                                                </div>
+                                            </c:if>
+
+
                                         </blockquote>
                                     </div>
                                 </c:when>
@@ -289,7 +404,7 @@
                     <div class="info-card1" style="margin-left: 850px; margin-top: -370px ">
 
                         <ul>
-                            <li style="list-style-type: none">Created date :  ${bookInfo[0].booking.date}</li>
+                            <li style="list-style-type: none">Created date : ${bookInfo[0].booking.date}</li>
                             <li style="list-style-type: none">Total amount request : ${bookInfo[0].booking.amount}</li>
 
 
@@ -309,16 +424,18 @@
                                 <li style="pointer-events: none;list-style-type: none;display: inline">
                                     <input type="button" value="Absent" id="absentBtn2" style=" background: #919aa3">
                                 </li>
-                                <li style="list-style-type: none">(Request was sent, money will unlock after finish all slot)</li>
+                                <li style="list-style-type: none">(Request was sent, money will unlock after finish all
+                                    slot)
+                                </li>
 
                             </c:if>
                             <c:if test="${bookInfo[0].status.id == 11 }">
                                 <li style="list-style-type: none; display: inline">
                                     <input type="button" value="Present" id="confirmBtn"
                                            data-id=" ${bookInfo[0].id}"
-                                    onclick="confirmSlot()" >
+                                           onclick="confirmSlot()">
                                 </li>
-                                <li style="list-style-type: none;display: inline" >
+                                <li style="list-style-type: none;display: inline">
                                     <input type="button" value="Absent" id="absentBtn"
                                            data-id=" ${bookInfo[0].id}"
                                            onclick="absentSlot()">
@@ -337,11 +454,27 @@
 </div>
 
 <script>
+    function updateURL() {
+        var todayElement = document.getElementById('today');
+        var selectedDate = todayElement.value;
+        var viewID = todayElement.getAttribute('data-viewID');
+        var currentURL = window.location.href;
+        var baseURL = currentURL.split('?')[0];
+        var newParams = "today=" + selectedDate;
+
+        if (viewID) {
+            newParams += "&viewID=" + viewID;
+        }
+
+        var newURL = baseURL + "?" + newParams;
+        window.location.href = newURL;
+    }
     function removeSession() {
         var xhr = new XMLHttpRequest();
         xhr.open("GET", "schedule/deleteSession", true);
         xhr.send();
     }
+
     // Lấy modal mới cho thông tin
     var infoModal = document.getElementById("infoModal");
     // Lấy nút mở modal mới
@@ -364,7 +497,17 @@
             modal.style.display = "none";
         }
     }
+    const openSetTime = () => {
+        var modal = document.getElementById("myModal");
+        var span = document.getElementsByClassName("close")[0];
+        var btnOnclick = document.getElementById("myBtn");
+        btnOnclick.onclick = function (event) {
 
+            modal.style.display = "block";
+            return false;
+
+        };
+    }
 
     // set free day
     const setFreeDay = () => {
@@ -388,7 +531,7 @@
                         var today = this.getAttribute('data-today-id');
                         localStorage.setItem('isSuccess', 'yes');
 
-                        newURL = "schedule?slotID=" +slotID + "&today=" + today;
+                        newURL = "schedule?slotID=" + slotID + "&today=" + today;
 
 
                         // Redirect to the new URL
@@ -400,7 +543,7 @@
         }
     };
     var error = document.getElementById('button-schedule-td').getAttribute('data-set-error');
-    if(error){
+    if (error) {
         localStorage.removeItem('isSuccess');
         localStorage.setItem('failToSet', error);
     }
@@ -437,7 +580,7 @@
                     if (result.isConfirmed) {
                         var slotID = this.getAttribute('data-schedule-id');
                         var today = this.getAttribute('data-today-id');
-                        newURL = "schedule/delete?slotID=" +slotID + "&today=" + today;
+                        newURL = "schedule/delete?slotID=" + slotID + "&today=" + today;
                         localStorage.setItem('isDelete', 'yes');
 
                         // Redirect to the new URL
@@ -450,12 +593,14 @@
         ;
     }
     var errorDelete = document.getElementById('button-schedule-td3').getAttribute('data-set-error');
-    if(errorDelete){
+    if (errorDelete) {
         localStorage.removeItem('isDelete');
         localStorage.setItem('failToDelete', errorDelete);
     }
-
-
+    var numberFreeTime = document.getElementById('btnSetFreeTime').getAttribute('data-receive');
+    if (numberFreeTime) {
+        localStorage.setItem('numberFreeTime', numberFreeTime);
+    }
     const updateStatus = (details) => {
         localStorage.setItem('update_status', details);
 
@@ -493,25 +638,25 @@
         var btnOnclick = document.getElementById("confirmBtn");
         var newURL = "";
         btnOnclick.onclick = function (event) {
-                event.preventDefault();
-                Swal.fire({
-                    title: "Are you want to CONFIRM a slot ?",
-                    text: "Ensure that the slot has happened",
-                    icon: "question",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, I confirm it!"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        var ID = this.getAttribute('data-id');
-                        newURL = 'schedule/confirm?ID='+ID+'&option=present';
-                        localStorage.setItem('isConfirmSlot','yes');
-                        // Redirect to the new URL
-                        window.location.href = newURL;
-                    }
-                });
-            };
+            event.preventDefault();
+            Swal.fire({
+                title: "Are you want to CONFIRM a slot ?",
+                text: "Ensure that the slot has happened",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, I confirm it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var ID = this.getAttribute('data-id');
+                    newURL = 'schedule/confirm?ID=' + ID + '&option=present';
+                    localStorage.setItem('isConfirmSlot', 'yes');
+                    // Redirect to the new URL
+                    window.location.href = newURL;
+                }
+            });
+        };
     }
     const absentSlot = () => {
         var btnOnclick = document.getElementById("absentBtn");
@@ -529,13 +674,105 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     var ID = this.getAttribute('data-id');
-                    newURL = 'schedule/confirm?ID='+ID+'&option=absent';
-                    localStorage.setItem('isAbsent','yes');
+                    newURL = 'schedule/confirm?ID=' + ID + '&option=absent';
+                    localStorage.setItem('isAbsent', 'yes');
                     // Redirect to the new URL
                     window.location.href = newURL;
                 }
             });
         };
+    }
+    let counter = 0;
+    let countSlots = 0;
+    const addListBooks = () => {
+        if (counter >= 7) {
+            Toast.fire({
+                icon: "error",
+                title: "Add list limit in 7 times"
+            });
+            return;
+        }
+        var dayOfWeek = document.getElementById('selectDOW').value;
+        var slots = document.getElementsByName('selectSlot');
+        var container = document.getElementById('checkboxContainer');
+        var showCount = document.getElementById('showCount');
+        for (var i = 0; i < slots.length; i++) {
+            if (slots[i].checked) {
+                var checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.value = dayOfWeek + "_" + slots[i].value;
+                checkbox.name = 'setTimeData';
+                checkbox.checked = true;
+                dayOfWeek = dayOfWeek + "_" + slots[i].value;
+                countSlots++;
+                checkbox.addEventListener('change', function () {
+                    if (!this.checked) {
+                        //---------- giam count
+                        counter--;
+                        var down = this.value.split("_");
+                        for (let i = 1; i < down.length; i++) {
+                            countSlots=countSlots-1;
+                        }
+                        var label = document.createElement('label');
+                        label.appendChild(document.createTextNode(dayOfWeek));
+                        var countElement = document.createElement("span");
+                        countElement.textContent = "total booked: " + countSlots;
+                        var showCount = document.getElementById("showCount");
+                        showCount.innerHTML = "";
+                        showCount.appendChild(countElement);
+                        //-----------------
+
+                        var parent = this.parentNode;
+                        parent.removeChild(this.nextSibling); // Xóa label
+                        parent.removeChild(this.nextSibling); // Xóa <br>
+                        parent.removeChild(this); // Xóa checkbox
+                    }
+                });
+            }
+        }
+        var label = document.createElement('label');
+        label.appendChild(document.createTextNode(dayOfWeek));
+        var countElement = document.createElement("span");
+        countElement.textContent = "total booked: " + countSlots;
+        var showCount = document.getElementById("showCount");
+        showCount.innerHTML = "";
+        showCount.appendChild(countElement);
+        container.appendChild(checkbox);
+        container.appendChild(label);
+        container.appendChild(document.createElement('br'));
+
+        counter++;
+
+        for (var i = 0; i < slots.length; i++) {
+            slots[i].checked = false;
+        }
+
+    }
+    const sendSetTimeData = () => {
+        var weeks = document.getElementsByName('selectWeek');
+        var dataSlots = document.getElementsByName('setTimeData');
+        let selectedWeek;
+        for (const weekElement of weeks) {
+            if (weekElement.checked) {
+                selectedWeek = weekElement.value;
+                break;
+            }
+        }
+        if (dataSlots.length == 0) {
+            Toast.fire({
+                icon: "error",
+                title: "Must add slot to save"
+            });
+            return;
+        }
+        let selectedData = [];
+        for (const dataElement of dataSlots) {
+            if (dataElement.checked) {
+                selectedData.push(dataElement.value);
+            }
+        }
+
+        window.location.href = 'schedule/set?week=' + selectedWeek + '&data=' + selectedData.join(",")
     }
     // set free day
     window.onload = function () {
@@ -549,6 +786,14 @@
         var isAbsent = localStorage.getItem('isAbsent');
         var failToSet = localStorage.getItem('failToSet');
         var failToDelete = localStorage.getItem('failToDelete');
+        var numberFreeTime = localStorage.getItem('numberFreeTime');
+        if (numberFreeTime) {
+            Toast.fire({
+                icon: "success",
+                title: numberFreeTime+" slots added "
+            });
+            localStorage.removeItem('numberFreeTime');
+        }
         if (failToSet) {
             Toast.fire({
                 icon: "error",
@@ -632,9 +877,10 @@
         removeSession();
 
     };
-    const history_request = () =>{
+    const history_request = () => {
         window.location.href = 'schedule/history';
     }
+
 
 </script>
 

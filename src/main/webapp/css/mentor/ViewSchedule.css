@@ -8,8 +8,14 @@
 body{
     background-color: rgb(245, 245, 245);
 }
-
-
+.filter-box {
+    border: 0 solid #000;
+    border-radius: 8px;
+    padding: 10px;
+    width: 300px;
+    height: 300px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 .dayOfWeek{
     font-weight: bold;
     font-size: 20px;
@@ -68,7 +74,19 @@ body{
 
 
 }
+.modal-content-time {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 100px;
+    border: 1px solid #888;
+    border-radius: 10px
 
+
+}
 /* The Close Button */
 .close {
     margin-top: -100px;
@@ -414,5 +432,82 @@ th:first-child{
     background-color: #f9f9f9;
     border-radius: 10px;
 }
+/*-----------------*/
+.container-card {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 50px;
+}
 
+.form-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
+.form-check input[type="radio"] {
+    margin-right: 10px;
+}
+
+.form-check-label {
+    font-weight: bold;
+}
+
+#selectDOW {
+    margin-bottom: 10px;
+}
+
+.selectSlot input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.submit-button  {
+    position: absolute;
+    margin-top: 250px;
+    margin-left: -220px;
+    background-color: #07AD90;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-button2  {
+    position: absolute;
+    margin-top: -160px;
+    margin-left: 315px;
+    background-color: #07AD90;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+}
+.submit-button2:hover {
+    background-color: #0056b3;
+}
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.checkbox-container label {
+    font-weight: normal;
+}
+
+.select-container {
+    margin-bottom: 5px;
+}

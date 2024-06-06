@@ -168,12 +168,7 @@
                                         <i class="fa-solid fa-envelope fa-sm"></i>   Waiting  :   ${numberOfWaiting}</p>
                                     <p style=" text-decoration: none;text-transform: uppercase;font-weight: bold;    margin-left: -130px;
                                      margin-top: 15px;">
-                                        <i class="fa-solid fa-face-smile fa-sm"></i>  Accepted (%) :   ${(numberOfAccepted/numberOfInvited)*100}%</p>
-                                    <p style=" text-decoration: none;text-transform: uppercase;font-weight: bold;    margin-left: -130px;
-                                     margin-top: -15px;">
-                                        <i class="fa-solid fa-face-frown fa-sm"></i>  Cancel (%) :   ${(numberOfRejected/numberOfInvited)*100}%</p>
-                                    <p style=" text-decoration: none;text-transform: uppercase;font-weight: bold;    margin-left: -130px;
-                                     margin-top: -15px;">
+                                      
                                         Star:  ${rating}   </p>
                                     <div class="stars-outer">
                                         <div class="stars-inner" data-rating="${rating}"></div>

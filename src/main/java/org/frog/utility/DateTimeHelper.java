@@ -102,5 +102,21 @@ public class DateTimeHelper {
         }
         return true;
     }
+    public static boolean checkExpiredBooking(Timestamp createDate){
+        LocalDateTime createDateTime = createDate.toLocalDateTime();
+        LocalDateTime expireDateTime = createDateTime.plusDays(1);
+        LocalDateTime now = LocalDateTime.now();
+        if (now.isAfter(expireDateTime)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static String getFutureDate(int weeksAhead) {
+        LocalDate today = LocalDate.now();
+        LocalDate futureDate = today.plusWeeks(weeksAhead);
+
+        return futureDate.toString();
+    }
 
 }
