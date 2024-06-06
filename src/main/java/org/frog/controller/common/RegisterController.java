@@ -17,6 +17,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 import java.util.UUID;
 
 @WebServlet("/register")
@@ -50,7 +51,28 @@ public class RegisterController extends HttpServlet {
         send.sendEmail(tile, content, email);
 
     }
+    private String generateID(String prefix) {
+        String id;
+        do {
+            // Tạo một số ngẫu nhiên 6 chữ số
+            Random random = new Random();
+            int randomNum = 100000 + random.nextInt(900000);
+            id = prefix + randomNum;
+        } while (isIDExists(id));
+        return id;
+    }
 
+    private String createMentorID() {
+        return generateID("MO");
+    }
+
+    private String createMenteeID() {
+        return generateID("ME");
+    }
+    private boolean isIDExists(String id) {
+        AccountDAO accountDAO = new AccountDAO();
+        return !accountDAO.checkExitsId(id);
+    }
     public void doGet(HttpServletRequest req, HttpServletResponse res){
         try {
             req.getRequestDispatcher("view/public/signup.jsp").forward(req,res);
@@ -105,8 +127,12 @@ public class RegisterController extends HttpServlet {
                 req.setAttribute("warningRegister", warningRegister);
                 req.getRequestDispatcher("view/public/signup.jsp").forward(req,res);
             }else {
-                UUID uuid = UUID.randomUUID();
-                String id = uuid.toString();
+                String id;
+                if(role == 1){
+                    id = createMenteeID();
+                }else {
+                    id = createMentorID();
+                }
                 Account accountRegister = new Account(id,null,name,userName,password,dob,phone,email,address,gender,null,new Status(StatusEnum.INACTIVE,""),new Role(role,""));
 
                 accountDAO.insertUser(accountRegister);

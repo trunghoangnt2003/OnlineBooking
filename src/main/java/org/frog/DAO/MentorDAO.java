@@ -1,7 +1,9 @@
 package org.frog.DAO;
 
 import org.frog.model.Account;
+import org.frog.model.Level_Skills;
 import org.frog.model.Mentor;
+import org.frog.model.Status;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -101,33 +103,46 @@ public class MentorDAO {
         try {
 
             Connection connection = JDBC.getConnection();
-            String sql = "Select a.id,a.username,a.name,a.dob,a.avatar,m.experience,m.price,m.rating\n" +
-                    "From Account a JOIN Mentor m on a.id = m.account_id\n" +
-                    "\t JOIN Mentor_Level_Skill mls ON m.account_id = mls.mentor_id\n" +
-                    "\t JOin Level_Skill ls on mls.skill_level_id = ls.id\n" +
-                    "\t JOin Skill  s ON ls.skill_id = s.id\n" +
-                    "\t Join Level l On ls.level_id = l.id\n" +
-                    "ORDER BY a.id\n" +
-                    "OFFSET ? ROWS FETCH NEXT 5 ROWS ONLY";
+            String sql = "with t as (\n" +
+                    "\tselect m.account_id,count(b.id) as [bookingTotal]\n" +
+                    "\tfrom Mentor m join Booking b on m.account_id=b.mentor_id\n" +
+                    "\twhere b.status_id = 11 or b.status_id = 3\n" +
+                    "\tgroup by m.account_id\n" +
+                    "),t1 as (\n" +
+                    "\tselect m.account_id,count(b.id) as [bookingDone]\n" +
+                    "\tfrom Mentor m join Booking b on m.account_id=b.mentor_id\n" +
+                    "\twhere b.status_id = 3 \n" +
+                    "\tgroup by m.account_id\n" +
+                    ")\n" +
+                    "\n" +
+                    "select a.id,a.name,a.username,m.rating,a.status,ISNULL(t.bookingTotal,0) as totalBooking , IsNull((1.0*t1.bookingDone/t.bookingTotal)*100,0) as percentageCompleted\n" +
+                    "from Account a join Mentor m on a.id=m.account_id\n" +
+                    "full join t on t.account_id=m.account_id\n" +
+                    "full join t1 on t1.account_id = m.account_id\n" +
+                    "where a.username like '%"+name+"%'\n" +
+                    "order by a.id\n" +
+                    "\n" +
+                    "OFFSET ? ROWS FETCH NEXT 4 ROWS ONLY";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, (page - 1) * 5);
+            preparedStatement.setInt(1, (page - 1) * 4);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Account account = new Account();
                 account.setId(resultSet.getString("id"));
                 account.setName(resultSet.getString("name"));
-                account.setDob(resultSet.getDate("dob"));
-                account.setAvatar(resultSet.getString("avatar"));
-
+                account.setUserName(resultSet.getString("username"));
+                account.setStatus(new Status(resultSet.getInt("status"),""));
                 Mentor mentor = new Mentor();
                 mentor.setAccount(account);
-                mentor.setExperience(resultSet.getString("experience"));
-                mentor.setPrice(resultSet.getInt("price"));
                 mentor.setRating(resultSet.getFloat("rating"));
 
-                BookingDAO bookingDAO = new BookingDAO();
-                mentor.setTotalBookings(bookingDAO.CalcBookByMentor(account.getId()));
 
+                mentor.setTotalBookings(resultSet.getInt("totalBooking"));
+                mentor.setPercentageCompleted(resultSet.getInt("percentageCompleted"));
+
+                Level_SkillDAO levelSkillDAO = new Level_SkillDAO();
+                ArrayList<Level_Skills> skills = levelSkillDAO.getLevel_SkillByMentorId(account.getId());
+                mentor.setLevel_skills(skills);
                 list.add(mentor);
             }
         }catch (SQLException e) {
@@ -135,6 +150,41 @@ public class MentorDAO {
         }
 
         return list;
+    }
+    public int totalMentorAndPagingAndSearch(int page, String name) {
+        int totalMentor = 0;
+        try {
+
+            Connection connection = JDBC.getConnection();
+            String sql = "with t as (\n" +
+                    "\tselect m.account_id,count(b.id) as [bookingTotal]\n" +
+                    "\tfrom Mentor m join Booking b on m.account_id=b.mentor_id\n" +
+                    "\twhere b.status_id = 11 or b.status_id = 3\n" +
+                    "\tgroup by m.account_id\n" +
+                    "),t1 as (\n" +
+                    "\tselect m.account_id,count(b.id) as [bookingDone]\n" +
+                    "\tfrom Mentor m join Booking b on m.account_id=b.mentor_id\n" +
+                    "\twhere b.status_id = 3 \n" +
+                    "\tgroup by m.account_id\n" +
+                    ")\n" +
+                    "\n" +
+                    "select a.id,a.name,a.username,m.rating,a.status,ISNULL(t.bookingTotal,0) as totalBooking , IsNull((1.0*t1.bookingDone/t.bookingTotal)*100,0) as percentageCompleted\n" +
+                    "from Account a join Mentor m on a.id=m.account_id\n" +
+                    "full join t on t.account_id=m.account_id\n" +
+                    "full join t1 on t1.account_id = m.account_id\n" +
+                    "where a.username like '%"+name+"%'\n" +
+                    "order by a.id\n";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                totalMentor++;
+            }
+        }catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return totalMentor;
     }
 
     public int totalMentor(String skill, String level) {

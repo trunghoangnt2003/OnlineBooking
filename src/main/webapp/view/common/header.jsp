@@ -100,6 +100,18 @@
                             </li>
 
                         </c:if>
+                        <c:if test="${sessionScope.account.role.id == 3}">
+                            <li class="nav-item">
+                                <a class="nav-link" href="<%=url%>/admin/home">Dash Board</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<%=url%>/admin/mentor">Manage Mentor</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<%=url%>/Search_Skills">Manage Mentee</a>
+                            </li>
+
+                        </c:if>
                     </ul>
                     <!-- Left links -->
 
@@ -158,6 +170,9 @@
                                         <c:if test="${sessionScope.account.role.id == 2}">
                                             <a class="dropdown-item" href="<%=url%>/mentor/profile">Information</a>
                                         </c:if>
+                                        <c:if test="${sessionScope.account.role.id == 3}">
+                                            <a class="dropdown-item" href="<%=url%>/admin/profile">Information</a>
+                                        </c:if>
                                     </li>
                                     <li>
                                         <c:if test="${sessionScope.account.role.id == 1}">
@@ -165,6 +180,9 @@
                                         </c:if>
                                         <c:if test="${sessionScope.account.role.id == 2}">
                                             <a class="dropdown-item" href="<%=url%>/mentor/createcv">Settings</a>
+                                        </c:if>
+                                        <c:if test="${sessionScope.account.role.id == 3}">
+                                            <a class="dropdown-item" href="<%=url%>/admin/update">Settings</a>
                                         </c:if>
                                     </li>
                                     <c:if test="${sessionScope.account.role.id == 1}">
@@ -194,8 +212,8 @@
     </header>
 </div>
 <!-- MDB -->
-<script
-        type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.umd.min.js"
-></script>
+<%--<script--%>
+<%--        type="text/javascript"--%>
+<%--        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.umd.min.js"--%>
+<%--></script>--%>
 <%--</html>--%>

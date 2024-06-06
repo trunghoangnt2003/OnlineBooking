@@ -35,7 +35,7 @@
     <div class="search-container">
         <div class="search-box">
             <label>
-                <input type="text" class="search-input" id="search" placeholder="Search skills..." />
+                <input type="text" class="search-input" id="search" placeholder="Search skills..." value="${requestScope.name}"/>
             </label>
             <button class="search-btn" onclick="searchHandler()">
                 <i class="fas fa-search fa-sm"></i>

@@ -34,7 +34,7 @@ public class MenteeDAO {
                 Mentee mentee = new Mentee(account);
                 return mentee;
             } else {
-                System.out.println("No mentee found with account_id: " + id);
+
             }
         } catch (SQLException e) {
             e.printStackTrace();  // Log the stack trace
@@ -94,10 +94,9 @@ public class MenteeDAO {
             preparedStatement.setDate(3, mentee.getAccount().getDob());
             preparedStatement.setString(4, mentee.getAccount().getPhone());
             preparedStatement.setInt(5, mentee.getAccount().getGender());
-            System.out.println(mentee.getAccount().getGender()+"sssss");
+
             preparedStatement.setString(6, mentee.getAccount().getAddress());
             preparedStatement.setString(7, mentee.getAccount().getAvatar());
-            System.out.println(mentee.getAccount().getAvatar());
             preparedStatement.setString(8, mentee.getAccount().getId());
             preparedStatement.executeUpdate();
             JDBC.closeConnection(connection);
