@@ -242,7 +242,7 @@
 
 <body>
 <jsp:include page="../../common/header.jsp"></jsp:include>
-<form action="schedule" method="GET" id="frm">
+<form action="booking-schedule" method="GET" id="frm">
     <div style="margin: 20px 0 40px 40px;">
         <jsp:include page="../../common/backBtn.jsp"></jsp:include>
     </div>

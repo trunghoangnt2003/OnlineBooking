@@ -1,6 +1,7 @@
 package org.frog.DAO;
 
 import org.frog.model.*;
+import org.frog.utility.StatusEnum;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -51,9 +52,10 @@ public class WishListDAO {
                     "      ,[date]\n" +
                     "      ,[id]\n" +
                     "  FROM [dbo].[Wish_List]" +
-                    "WHERE mentee_id = ?";
+                    "WHERE mentee_id = ? And status_id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, mentee_id);
+            preparedStatement.setInt(2, StatusEnum.ACCEPT);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 WishList wishList = new WishList();

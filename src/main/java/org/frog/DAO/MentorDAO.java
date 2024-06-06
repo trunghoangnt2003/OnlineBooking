@@ -253,4 +253,49 @@ public class MentorDAO {
         }
         return list;
     }
+
+    public Mentor getById(String id){
+        try{
+         String sql = "Select account_id, profile_detail, price, experience, education, rating\n" +
+                 "From Mentor\n" +
+                 "Where account_id = ?"   ;
+         Connection connection = JDBC.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(sql);
+         preparedStatement.setString(1, id);
+         ResultSet resultSet = preparedStatement.executeQuery();
+         if(resultSet.next()){
+             Mentor mentor = new Mentor();
+
+             Account account = new Account();
+             account.setId(resultSet.getString("account_id"));
+             mentor.setAccount(account);
+             mentor.setProfileDetail(resultSet.getString("profile_detail"));
+             mentor.setPrice(resultSet.getInt("price"));
+             mentor.setExperience(resultSet.getString("experience"));
+             mentor.setEducation(resultSet.getString("education"));
+             mentor.setRating(resultSet.getFloat("rating"));
+             return mentor;
+         }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public void updateRatingById(String id,float  rating){
+        try{
+            String sql = "UPDATE [dbo].[Mentor]\n" +
+                    "   SET [rating] = ?\n" +
+                    " WHERE account_id = ? "   ;
+            Connection connection = JDBC.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setFloat(1, rating);
+            preparedStatement.setString(2, id);
+            preparedStatement.executeUpdate();
+            JDBC.closeConnection(connection);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }

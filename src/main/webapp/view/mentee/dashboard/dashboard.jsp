@@ -190,7 +190,20 @@
             margin: 0 auto;
         }
 
+        .input-comment textarea{
+            width: 70%;
+            margin: 0 auto;
+        }
+
         .label_reason{
+            width: 70%;
+            margin: 0 auto;
+            font-size: 15px;
+            font-weight: bold;
+            align-items: start ;
+        }
+
+        .label_comment{
             width: 70%;
             margin: 0 auto;
             font-size: 15px;
@@ -201,21 +214,77 @@
         .input-reason{
             margin: 10px 0 40px;
         }
+
+        .input-comment{
+            margin: 10px 0 40px;
+        }
+
     </style>
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/rating.css"/>
+    <style>
+        .stars-container{
+            margin: 10px 0;
+        }
+
+       .stars{
+           display: flex;
+           justify-content: center;
+           list-style: none;
+           padding: 0;
+           margin: 0;
+       }
+
+       .star{
+           cursor: pointer;
+           padding: 0 7px;
+           font-size: 20px;
+           color: #ccc;
+           transition: color 0.2s, transform 0.2s;
+       }
+
+       .selected, .star:hover{
+           color: #ffcc00;
+           transform: scale(1.2);
+       }
+
+
+    </style>
 </head>
 <body>
 <jsp:include page="../../common/header.jsp"></jsp:include>
 <div class="rating-modal" id="rating-modal">
     <div class="blur-bg"></div>
     <div class="content-modal">
-
         <div class="titlemodal">Feedback Mentor</div>
-        Nội dung hiển thị trong Modal của bạn
+        <div id="rating-to-mentor"></div>
+        <div class="stars-container">
+            <ul class="stars">
+                <li class="star" data-value="1">
+                    <i class="fas fa-star"></i>
+                </li>
+                <li class="star" data-value="2">
+                    <i class="fas fa-star"></i>
+                </li>
+                <li class="star" data-value="3">
+                    <i class="fas fa-star"></i>
+                </li>
+                <li class="star" data-value="4">
+                    <i class="fas fa-star"></i>
+                </li>
+                <li class="star" data-value="5">
+                    <i class="fas fa-star"></i>
+                </li>
+            </ul>
+        </div>
+        <div class="input-comment">
+            <div class="d-flex label_comment">
+                <span >Comment </span>
+            </div>
+            <textarea class="form-control" placeholder="Write your comment" name="comment" id="comment" rows="6"></textarea>
+        </div>
         <div class="closemodal">
             <button type="button" onclick="ratingHandle()" class="btn btn-outline-dark btn-rounded" data-mdb-ripple-init  data-mdb-ripple-color="dark">Cancel</button>
-            <button type="button" class="btn btn-outline-primary btn-rounded" data-mdb-ripple-init  data-mdb-ripple-color="dark">Send</button>
+            <button type="button"  onclick="sendRating()" class="btn btn-outline-primary btn-rounded" data-mdb-ripple-init  data-mdb-ripple-color="dark">Send</button>
         </div>
     </div>
 </div>
@@ -225,23 +294,21 @@
     <div class="content-modal">
 
         <div class="titlemodal" style="color: darkred">Report Mentor </div>
-        <form action="dashboard" method="POST" id="frm-report">
-            <div class="to-mentor" id="to-mentor"></div>
-            <div class="input-reason">
-                   <div class="d-flex label_reason">
-                       <span >Reason </span>
-                   </div>
-                    <textarea class="form-control" placeholder="Write your reason" name="reason" id="reason" rows="6"></textarea>
-                    <span style="font-size: 12px">(The system will check your report and take action)</span>
-            </div>
 
-
+        <div class="to-mentor" id="to-mentor"></div>
+        <div class="input-reason">
+               <div class="d-flex label_reason">
+                   <span >Reason </span>
+               </div>
+                <textarea class="form-control" placeholder="Write your reason" name="reason" id="reason" rows="6"></textarea>
+                <span style="font-size: 12px">(The system will check your report and take action)</span>
+        </div>
 
         <div class="closemodal">
             <button type="button" onclick="reportHandle()" class="btn btn-outline-dark btn-rounded" data-mdb-ripple-init  data-mdb-ripple-color="dark">Cancel</button>
-            <button type="button" onclick="submitHandle()" class="btn btn-outline-danger  btn-rounded" data-mdb-ripple-init  data-mdb-ripple-color="dark">Report</button>
+            <button type="button" onclick="sendReport()" class="btn btn-outline-danger  btn-rounded" data-mdb-ripple-init  data-mdb-ripple-color="dark">Report</button>
         </div>
-        </form>
+
     </div>
 </div>
 
@@ -273,7 +340,7 @@
                         <td>${mentor.price} $</td>
 
                         <td>
-                            <div style="cursor: pointer; text-align: center" onclick="ratingHandle()"  >
+                            <div style="cursor: pointer; text-align: center" onclick="ratingHandle('${mentor.account.id}','${mentor.account.name}')"  >
                                 <i class="fa-regular fa-face-smile" style="color: #0CA4F6;"></i>
                             </div>
                         </td>
@@ -344,32 +411,162 @@
         }
     })
 
-    function ratingHandle(){
+    const stars = document.querySelectorAll('.star');
+    let rating ;
+
+    function ratingHandle(mentor_id,mentor){
         document.getElementById("rating-modal").classList.toggle("active");
+        const to = document.getElementById("rating-to-mentor");
+        const comment = document.getElementById('comment');
+        comment.value = "";
+        highlightStars(5);
+        to.innerHTML = "<span class='text-start' style='font-size: 16px'> <b>"+mentor+"</b></span>";
+        const input_id = document.createElement('input');
+        input_id.type = 'text';
+        input_id.name = "mentor_id";
+        input_id.value = mentor_id;
+        input_id.id = "mentor_id";
+        input_id.style.display = "none";
+
+        to.appendChild(input_id);
     }
+    stars.forEach(star => {
+        star.addEventListener('mouseenter', handleHover);
+        star.addEventListener('click', handleClick);
+        star.addEventListener('mouseleave', handleLeave);
+
+    });
+
+    function highlightStars(rating) {
+        stars.forEach((star, index) => {
+            if(index < rating) {
+                star.classList.add('selected');
+            } else {
+                star.classList.remove('selected');
+            }
+        })
+    }
+
+    function handleHover(e) {
+        const rating = e.currentTarget.getAttribute('data-value');
+        highlightStars(rating);
+    }
+
+    function  handleLeave(e) {
+        highlightStars(rating);
+    }
+
+    function handleClick(e) {
+        // btn.style.display = "block";
+        rating = e.currentTarget.getAttribute('data-value');
+        highlightStars(rating);
+    }
+
+    function fetchRating(mentor_id,comment){
+        fetch("../mentee/review", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({mentor_id:mentor_id,comment:comment,rating:rating}),
+        }).then( response => {
+            if (response.ok) {
+                console.log(response);
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Your work has been saved",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }else {
+                console.log(response);
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Something went wrong!",
+                });
+            }
+        }).catch(
+            error => {
+                console.log('Error',error);
+            }
+        )
+    }
+
+    function sendRating(){
+        const mentor_id = document.getElementById("mentor_id").value;
+        const comment = document.getElementById('comment').value;
+        console.log(mentor_id);
+        console.log(comment);
+        console.log(rating);
+
+        if(mentor_id && comment)
+        {
+            fetchRating(mentor_id,comment);
+            document.getElementById("rating-modal").classList.toggle("active");
+        }
+        else
+        {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: " Please rating stars and comment!",
+            });
+        }
+    }
+
+
     function reportHandle(mentor_id,mentor){
         document.getElementById("report-modal").classList.toggle("active");
         const to = document.getElementById("to-mentor");
         const reason = document.getElementById('reason');
         reason.value = "";
+
         to.innerHTML = "<span class='text-center'>Report mentor: <b>"+mentor+"</b></span>";
         const input_id = document.createElement('input');
-        input_id.type = "hidden";
+        input_id.type = 'text';
         input_id.name = "mentor_id";
         input_id.value = mentor_id;
+        input_id.id = "mentor_id";
+        input_id.style.display = "none";
 
-        const isReason = document.createElement('input');
-        isReason.type = 'text';
-        isReason.name = 'isReason';
-        isReason.value = "reason";
-        isReason.style.display = 'none';
-
-        to.append(isReason);
         to.appendChild(input_id);
     }
 
-    function submitHandle(){
 
+    function fetchReport(mentor_id,reason){
+        fetch("../mentee/report", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({mentor_id:mentor_id,reason:reason}),
+        }).then( response => {
+            if (response.ok) {
+                console.log(response);
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Your work has been saved",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                document.getElementById("report-modal").classList.toggle("active");
+            } else {
+                throw new Error('Network response was not ok.');
+            }
+        }).catch(
+            error => {
+                console.error('Error:', error);
+            }
+        )
+
+    }
+
+
+
+    function sendReport(){
         Swal.fire({
             title: "Are you sure?",
             text: "Do you want to report this mentor?",
@@ -388,7 +585,9 @@
                         text: " Please input reason!",
                     });
                 }else{
-                    document.getElementById("frm-report").submit();
+                    const mentor_id = document.getElementById("mentor_id").value;
+                    fetchReport(mentor_id,reason);
+                    // document.getElementById("frm-report").submit();
                 }
 
             }
@@ -396,7 +595,14 @@
 
 
     }
+
+
 </script>
-<script src="${pageContext.request.contextPath}/js/common/rating.js"></script>
+
+<script
+        type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.0/mdb.umd.min.js"
+></script>
+<%--<script src="${pageContext.request.contextPath}/js/common/rating.js"></script>--%>
 </body>
 </html>

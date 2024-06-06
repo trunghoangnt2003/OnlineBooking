@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@WebServlet("/mentee/schedule")
+@WebServlet("/mentee/booking-schedule")
 public class ViewMentorScheduleController extends AuthenticationServlet {
 
     @Override
