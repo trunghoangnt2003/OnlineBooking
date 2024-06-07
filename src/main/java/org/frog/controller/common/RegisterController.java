@@ -4,6 +4,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import org.frog.DAO.AccountDAO;
+import org.frog.DAO.MenteeDAO;
+import org.frog.DAO.MentorDAO;
 import org.frog.model.Account;
 import org.frog.model.Role;
 import org.frog.model.Status;
@@ -136,6 +138,13 @@ public class RegisterController extends HttpServlet {
                 Account accountRegister = new Account(id,null,name,userName,password,dob,phone,email,address,gender,null,new Status(StatusEnum.INACTIVE,""),new Role(role,""));
 
                 accountDAO.insertUser(accountRegister);
+                if(role == 1){
+                    MenteeDAO menteeDAO = new MenteeDAO();
+                    menteeDAO.insert(accountRegister);
+                }else {
+                    MentorDAO mentorDAO = new MentorDAO();
+                    mentorDAO.register(accountRegister);
+                }
                 String done;
                 done = "Please check your mail to activate your account.";
 

@@ -104,6 +104,23 @@ public class MenteeDAO {
             e.printStackTrace();  // Log the stack trace
         }
     }
+    public void insert(Account account) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "INSERT INTO [dbo].[Mentee]\n" +
+                    "           ([account_id])\n" +
+                    "     VALUES\n" +
+                    "           (?)";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, account.getId());
+
+            preparedStatement.executeUpdate();
+            JDBC.closeConnection(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();  // Log the stack trace
+        }
+    }
 
 }
 

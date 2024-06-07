@@ -247,6 +247,24 @@ public class MentorDAO {
         }
 
     }
+    public void register(Account account) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "INSERT INTO [dbo].[Mentor]\n" +
+                    "           ([account_id])\n" +
+                    "\n" +
+                    "     VALUES\n" +
+                    "           (?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, account.getId());
+
+            preparedStatement.executeUpdate();
+            JDBC.closeConnection(connection);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
     public Mentor getMentorById(String id) {
 
