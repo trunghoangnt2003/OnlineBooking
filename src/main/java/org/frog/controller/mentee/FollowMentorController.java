@@ -25,8 +25,7 @@ public class FollowMentorController extends AuthenticationServlet {
         }else{
             dao.Follow(account.getId(), "c7129ebe-ca47-42d7-8ad9-fd9c0006859f");
         }
-
-       resp.sendRedirect("wishlist");
+       resp.sendRedirect("profile");
     }
 }
 

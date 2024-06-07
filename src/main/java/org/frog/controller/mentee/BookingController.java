@@ -20,10 +20,16 @@ public class BookingController extends AuthenticationServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
         BookingDAO bookingDAO = new BookingDAO();
         List<Booking> bookingList = bookingDAO.getAllRequestProcessOfBooking(account.getId());
-        for (Booking booking : bookingList) {
-            System.out.println(booking.getStartDate());
-        }
+        List<Booking> bookingListC = bookingDAO.getAllRequestCancelOfBooking(account.getId());
+        req.setAttribute("bookingListC", bookingListC);
         req.setAttribute("bookingList", bookingList);
+        String bookingID = req.getParameter("idb");
+        System.out.println("id b " + bookingID);
+        if (bookingID != null) {
+            bookingDAO.deleteBooking(bookingID);
+            resp.sendRedirect("viewBooking");
+            return;
+        }
         req.getRequestDispatcher("../view/booking/bookingRequest.jsp").forward(req, resp);
     }
 

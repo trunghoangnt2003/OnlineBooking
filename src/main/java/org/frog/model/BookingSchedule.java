@@ -8,7 +8,7 @@ public class BookingSchedule {
     private int id;
     private Schedule schedule;
     private Booking booking;
-    private boolean isAttend;
+    private boolean attend;
     private Status status;
 
     public int getId() {
@@ -36,11 +36,11 @@ public class BookingSchedule {
     }
 
     public boolean isAttend() {
-        return isAttend;
+        return attend;
     }
 
     public void setAttend(boolean attend) {
-        isAttend = attend;
+        this.attend = attend;
     }
 
     public Status getStatus() {

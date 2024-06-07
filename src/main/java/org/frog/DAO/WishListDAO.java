@@ -150,7 +150,7 @@ public class WishListDAO {
                     "      [date] = GETDATE()\n" +
                     " WHERE Wish_List.id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, StatusEnum.REJECT);
+            preparedStatement.setInt(1, StatusEnum.CANCEL);
             preparedStatement.setInt(2,wish_list_id);
             preparedStatement.executeUpdate();
         }catch (SQLException e) {
@@ -163,7 +163,7 @@ public class WishListDAO {
             Connection connection = JDBC.getConnection();
             String sql = "UPDATE [dbo].[Wish_List]\n" +
                     "                      SET \n" +
-                    "                        [status_id] = 1,\n" +
+                    "                        [status_id] = 11,\n" +
                     "                         [date] = GETDATE()\n" +
                     "                    WHERE Wish_List.mentor_id = ? AND Wish_List.mentee_id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -185,7 +185,7 @@ public class WishListDAO {
                     "     VALUES\n" +
                     "           (?\n" +
                     "           ,?\n" +
-                    "           ,1\n" +
+                    "           ,11\n" +
                     "           ,GETDATE())";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, id_mentor);

@@ -15,7 +15,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <style>
         .table-container {
-            max-height: 200px; /* Adjust the height as needed */
+            max-height: 400px; /* Adjust the height as needed */
             overflow-y: auto;
             margin-top: 20px;
         }
@@ -25,17 +25,27 @@
             background-color: #f8f9fa; /* Background color to make the header stand out */
             z-index: 1;
         }
+        .back{
+            margin-top: 20px;
+            margin-left: 100px;
+            margin-bottom: 50px;
+        }
     </style>
 </head>
 <body class="body">
 <jsp:include page="../common/header.jsp"></jsp:include>
+<div class="back">
+<jsp:include page="../common/backBtn.jsp"></jsp:include>
+</div>
 <div class="container">
+    <div style="height: 70%">
     <h1 style="color: #179b81; display: flex; justify-content: center">Processing</h1>
     <div class="table-container">
         <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
             <thead>
             <tr>
                 <th style="background:  #179b81">Mentor</th>
+                <th style="background:  #179b81">Price</th>
                 <th style="background:  #179b81">From Date</th>
                 <th style="background:  #179b81">To Date</th>
                 <th style="background:  #179b81">Description</th>
@@ -48,13 +58,13 @@
             <c:forEach items="${requestScope.bookingList}" var="booking">
                 <tr>
                     <td>${booking.mentor.account.name}</td>
+                    <td>${booking.amount}$</td>
                     <td>${booking.startDate}</td>
                     <td>${booking.endDate}</td>
                     <td>${booking.description}</td>
                     <td>${booking.level_skills.skill.name} for ${booking.level_skills.level.name}</td>
                     <td>${booking.date}</td>
-                    <td>
-                        <i class="fa-solid fa-file-pen fa-2xl" onclick="location.href='updateBooking?id=${booking.id}'" style="color: #74C0FC;"></i>
+                    <td style="display: flex; justify-content: center; margin-top: 8px">
                         <i class="fa-solid fa-delete-left fa-rotate-180 fa-2xl" onclick="confirmDelete(${booking.id})" style="color: #ff0000;"></i>
                     </td>
                 </tr>
@@ -62,27 +72,41 @@
             </tbody>
         </table>
     </div>
-</div>
-<!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Row information</h4>
-            </div>
-            <div class="modal-body">
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-
+    </div>
+    <div style="height: 70%">
+    <h1 style="color: #179b81; display: flex; justify-content: center">Cancel History</h1>
+    <div class="table-container">
+        <table id="example2" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th style="background:  #179b81">Mentor</th>
+                <th style="background:  #179b81">Price</th>
+                <th style="background:  #179b81">From Date</th>
+                <th style="background:  #179b81">To Date</th>
+                <th style="background:  #179b81">Description</th>
+                <th style="background:  #179b81">Skill</th>
+                <th style="background: #179b81">Create Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach items="${requestScope.bookingListC}" var="booking">
+                <tr>
+                    <td>${booking.mentor.account.name}</td>
+                    <td>${booking.amount}$</td>
+                    <td>${booking.startDate}</td>
+                    <td>${booking.endDate}</td>
+                    <td>${booking.description}</td>
+                    <td>${booking.level_skills.skill.name} for ${booking.level_skills.level.name}</td>
+                    <td>${booking.date}</td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+    </div>
     </div>
 </div>
+<!-- Modal -->
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     function confirmDelete(bookingId) {
@@ -104,11 +128,15 @@
                     showConfirmButton: false
                 });
                 setTimeout(() => {
-                    location.href = "deleteBooking?id=" + bookingId;
+                    location.href = "viewBooking?idb=" + bookingId;
                 }, 2000);
             }
         });
     }
 </script>
+<script
+        type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.umd.min.js"
+></script>
 </body>
 </html>

@@ -35,7 +35,7 @@ public class BookingDAO {
         try {
 
             Connection connection = JDBC.getConnection();
-            String sql = "select Account.[name],Booking.id, Booking.from_date, Booking.to_date, Booking.[description], Skill.[name] as skill,Level.type,Booking.create_date \n" +
+            String sql = "select Account.[name],Booking.id,Booking.amount, Booking.from_date, Booking.to_date, Booking.[description], Skill.[name] as skill,Level.type,Booking.create_date \n" +
                     "                                        from Booking join [dbo].[Level_Skill]\n" +
                     "                                        on Booking.level_skill_id = [dbo].[Level_Skill].id\n" +
                     "                                        join [dbo].[Level]\n" +
@@ -66,6 +66,7 @@ public class BookingDAO {
                 Booking booking = new Booking();
                 booking.setMentor(mentor);
                 booking.setLevel_skills(levelSkills);
+                booking.setAmount(resultSet.getInt("amount"));
                 booking.setId(resultSet.getInt("id"));
                 booking.setStartDate(resultSet.getDate("from_date"));
                 booking.setEndDate(resultSet.getDate("to_date"));
@@ -87,7 +88,7 @@ public class BookingDAO {
         try {
 
             Connection connection = JDBC.getConnection();
-            String sql = "select Account.[name],Booking.id, Booking.from_date, Booking.to_date, Booking.[description], Skill.[name] as skill,Level.type,Booking.create_date \n" +
+            String sql = "select Account.[name],Booking.amount,Booking.id, Booking.from_date, Booking.to_date, Booking.[description], Skill.[name] as skill,Level.type,Booking.create_date \n" +
                     "                                        from Booking join [dbo].[Level_Skill]\n" +
                     "                                        on Booking.level_skill_id = [dbo].[Level_Skill].id\n" +
                     "                                        join [dbo].[Level]\n" +
@@ -98,7 +99,7 @@ public class BookingDAO {
                     "                                       on Booking.mentor_id = Mentor.account_id\n" +
                     "                                        join Account\n" +
                     "                                        on Account.id = Mentor.account_id\n" +
-                    "                    where Booking.mentee_id = ? and Booking.status_id = 1";
+                    "                    where Booking.mentee_id = ? and Booking.status_id = 12";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -123,7 +124,7 @@ public class BookingDAO {
                 booking.setEndDate(resultSet.getDate("to_date"));
                 booking.setDescription(resultSet.getString("description"));
                 booking.setDate(resultSet.getTimestamp("create_date"));
-
+                booking.setAmount(resultSet.getInt("amount"));
                 bookingList.add(booking);
 
             }
@@ -134,4 +135,18 @@ public class BookingDAO {
         return null;
     }
 
+    public void deleteBooking(String id){
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "UPDATE [dbo].[Booking]\n" +
+                    "   SET [status_id] = 12\n" +
+                    "      ,[create_date] = GETDATE()\n" +
+                    " WHERE Booking.id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, id);
+            preparedStatement.executeUpdate();
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
