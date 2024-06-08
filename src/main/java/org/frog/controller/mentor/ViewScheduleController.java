@@ -77,7 +77,6 @@ public class ViewScheduleController extends AuthenticationServlet {
                 if (DateTimeHelper.checkExpiredBooking(b.getDate())) {
                     bs.deleteScheduleBookings(b.getId());
                     bs.updateBooking(b.getId(), 2);
-
                     bookings.remove(b);
 
                 }

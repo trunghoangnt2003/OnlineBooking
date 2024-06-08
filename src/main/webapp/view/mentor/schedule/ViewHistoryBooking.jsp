@@ -29,7 +29,7 @@
             position: absolute;
             right: 270px;
             margin-top: -25px;
-            width: 600px;
+            width: 400px;
             height: 30px;
             border: 1px solid #000;
             padding: 2px;
@@ -48,6 +48,7 @@
             font-size: 16px;
             cursor: pointer;
         }
+
         .modal {
             display: none; /* Hidden by default */
             position: fixed; /* Stay in place */
@@ -57,8 +58,8 @@
             width: 100%; /* Full width */
             height: 100%; /* Full height */
             overflow: auto; /* Enable scroll if needed */
-            background-color: rgb(0,0,0); /* Fallback color */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            background-color: rgb(0, 0, 0); /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
         }
 
         /* Modal Content/Box */
@@ -88,23 +89,45 @@
             text-decoration: none;
             cursor: pointer;
         }
-        .statistic-card{
+
+        .statistic-card {
             border: 2px solid #000;
             border-radius: 3px;
             padding: 40px 150px;
             background-color: #f9f9f9;
             width: fit-content;
             margin: 10px auto;
-            margin-top:40px;
+            margin-top: 40px;
             margin-left: -130px;
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
         }
-        .formatted-text {
-            text-decoration: underline; /* Gạch chân */
-            text-transform: uppercase; /* Viết hoa */
-            font-weight: bold; /* In đậm */
-            margin: 0; /* Xóa khoảng cách */
+
+        .pagination {
+            list-style-type: none;
+            padding: 0;
+            overflow: hidden;
         }
+
+        .pagination li {
+            display: inline;
+        }
+
+        .pagination li a {
+            display: inline-block;
+            padding: 8px 16px;
+            text-decoration: none;
+            color: black;
+        }
+
+        .pagination li.active a {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .pagination li a:hover:not(.active) {
+            background-color: #ddd;
+        }
+
     </style>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
@@ -119,68 +142,88 @@
         </a>
     </div>
     <div style="justify-content: space-between; display: flex;align-items: center;">
-        <h1 class="mb-4">List of History Requests </h1>
+        <h1 class="mb-4">List of History Request </h1>
+
         <div>
             <button id="filterButton" style="background: transparent;border: none;outline: none; cursor: pointer;">
 
                 <i class="fa-solid fa-filter fa-xl"></i>
             </button>
 
-            <button id="statisticButton" style="background: transparent;border: none;outline: none; cursor: pointer;" onclick="openStatisticBtn()">
-            <i class="fa-solid fa-square-poll-horizontal fa-xl"></i>
+            <button id="statisticButton" style="background: transparent;border: none;outline: none; cursor: pointer;"
+                    onclick="openStatisticBtn()">
+                <i class="fa-solid fa-square-poll-horizontal fa-xl"></i>
             </button>
-                 <div id="filterBox" class="filter-box">
-                        <button id="closeButton" class="close-button">X</button>
-                            <div class="content" style="display: flex;margin: 2px 480px;
-                                 margin-left: 0px;justify-content: space-around;">
+            <div id="filterBox" class="filter-box">
+                <button id="closeButton" class="close-button">X</button>
+                <div class="content" style="    display: flex;
+                    margin: 5px 235px;
+                    margin-left: -10px;
+                    justify-content: space-around;">
+                    <!-- Thêm nội dung tùy ý vào đây -->
+                    <p>
+                        <button style="background: transparent;border: none;outline: none; cursor: pointer;">
+                            <i class="fa-solid fa-arrow-up-wide-short">
 
-                                <!-- Thêm nội dung tùy ý vào đây -->
-                                <p><i class="fa-solid fa-arrow-up-wide-short"></i></p>
-                                <p><i class="fa-solid fa-arrow-down-wide-short"></i></p>
-                                <p><i class="fa-solid fa-filter-circle-dollar"></i></p>
+                            </i></button>
+                    </p>
+                    <p>
+                        <button style="background: transparent;border: none;outline: none; cursor: pointer;">  <i class="fa-solid fa-arrow-down-wide-short"></i></button>
+                    </p>
+                    <p>
+                        <button style="background: transparent;border: none;outline: none; cursor: pointer;"
+                           id="filterBtn" value="money" onclick="filterByAmount()">
+                            <i class="fa-solid fa-filter-circle-dollar"></i>
+                        </button>
+                    </p>
 
-                            </div>
                 </div>
+            </div>
 
-                 <div id="myModal" class="modal">
-                        <div class="modal-content">
-                            <span class="close">&times;</span>
-                            <div style="display: flex">
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <div style="display: flex">
 
-                                <div class="statistic-card">
-                                    <p style="margin-left: -130px;
-                                     margin-top: -25px; text-decoration: underline;font-weight: bold;">Statistic request</p>
-                                    <p style=" text-decoration: none;text-transform: uppercase;font-weight: bold;    margin-left: -130px;
+                        <div class="statistic-card">
+                            <p style="margin-left: -130px;
+                                     margin-top: -25px; text-decoration: underline;font-weight: bold;">Statistic
+                                request</p>
+                            <p style=" text-decoration: none;text-transform: uppercase;font-weight: bold;    margin-left: -130px;
                                      margin-top: 20px;">
-                                        <i class="fa-solid fa-circle-info fa-sm"></i>          Details</p>
+                                <i class="fa-solid fa-circle-info fa-sm"></i> Details</p>
 
-                                    <p style=" text-decoration: none;text-transform: uppercase;font-weight: bold;    margin-left: -130px;
+                            <p style=" text-decoration: none;text-transform: uppercase;font-weight: bold;    margin-left: -130px;
                                      margin-top: 20px;">
-                                        <i class="fa-solid fa-user-pen fa-sm"></i>  Total Invited  :   ${numberOfInvited}</p>
-                                    <p style=" text-decoration: none;text-transform: uppercase;font-weight: bold;    margin-left: -130px;
+                                <i class="fa-solid fa-user-pen fa-sm"></i> Total Invited : ${numberOfInvited}</p>
+                            <p style=" text-decoration: none;text-transform: uppercase;font-weight: bold;    margin-left: -130px;
                                      margin-top: 0px;">
-                                       <i class="fa-solid fa-circle-check fa-sm"></i> Accepted  :   ${numberOfAccepted}</p>
-                                    <p style=" text-decoration: none;text-transform: uppercase;font-weight: bold;    margin-left: -130px;
+                                <i class="fa-solid fa-circle-check fa-sm"></i> Accepted : ${numberOfAccepted}</p>
+                            <p style=" text-decoration: none;text-transform: uppercase;font-weight: bold;    margin-left: -130px;
                                      margin-top: -15px;">
-                                        <i class="fa-solid fa-ban fa-sm"></i>  Cancel  :   ${numberOfRejected}</p>
-                                    <p style=" text-decoration: none;text-transform: uppercase;font-weight: bold;    margin-left: -130px;
+                                <i class="fa-solid fa-ban fa-sm"></i> Cancel : ${numberOfRejected}</p>
+                            <p style=" text-decoration: none;text-transform: uppercase;font-weight: bold;    margin-left: -130px;
                                      margin-top: -15px;">
-                                        <i class="fa-solid fa-envelope fa-sm"></i>   Waiting  :   ${numberOfWaiting}</p>
-                                    <p style=" text-decoration: none;text-transform: uppercase;font-weight: bold;    margin-left: -130px;
+                                <i class="fa-solid fa-envelope fa-sm"></i> Waiting : ${numberOfWaiting}</p>
+                            <p style=" text-decoration: none;text-transform: uppercase;font-weight: bold;    margin-left: -130px;
                                      margin-top: 15px;">
-                                      
-                                        Star:  ${rating}   </p>
-                                    <div class="stars-outer">
-                                        <div class="stars-inner" data-rating="${rating}"></div>
-                                    </div>
-                                </div>
-                                <div id="myPlot" style="width:70%;max-width:600px" data-accept="${numberOfAccepted}"
-                                 data-reject="${numberOfRejected}" data-waiting="${numberOfWaiting}"></div>
+
+                                Star: ${rating}   </p>
+                            <div class="stars-outer">
+                                <div class="stars-inner" data-rating="${rating}"></div>
                             </div>
                         </div>
+                        <div id="myPlot" style="width:70%;max-width:600px" data-accept="${numberOfAccepted}"
+                             data-reject="${numberOfRejected}" data-waiting="${numberOfWaiting}"></div>
+                    </div>
                 </div>
+            </div>
         </div>
     </div>
+    <c:if test="${param.page != null}">
+        <c:set var="count" value="${(param.page+1)*10+1}"></c:set>
+    </c:if>
+
     <table class="table table-striped">
         <thead class="table-dark">
         <tr>
@@ -212,19 +255,37 @@
                 <td>${book.mentee.account.name}</td>
                 <td>${book.status.type }
                 </td>
-                <c:set var="count" value="${count= count +1}"></c:set>
+
+                <c:set var="count" value="${count=  1 + count}"></c:set>
             </tr>
         </c:forEach>
         </tbody>
     </table>
+
+    <c:if test="${not empty bookingsHistory}">
+        <ul class="pagination">
+            <c:set var="total" value="${totalBookings}"/>
+            <c:set var="totalPages" value="${(total / 20) + (total % 20 == 0 ? 0 : 1)}"/>
+            <li class="<c:if test="${param.page==1 || param.page == null}">active</c:if>">
+                <a href="history?page=1">1</a>
+            </li>
+            <c:forEach begin="${2}" end="${totalPages}" step="${1}" var="i">
+                <li class="<c:if test="${param.page==i }">active</c:if>">
+                    <a href="history?page=${i}">${i}</a>
+                </li>
+            </c:forEach>
+            <li> <h6 style="margin-left: 1082px;">Total bookings: ${numberOfInvited}</h6></li>
+        </ul>
+
+    </c:if>
 </div>
 <script>
-    document.getElementById('filterButton').addEventListener('click', function() {
+    document.getElementById('filterButton').addEventListener('click', function () {
         // Hiển thị thanh khung hình chữ nhật
         document.getElementById('filterBox').style.display = 'block';
     });
 
-    document.getElementById('closeButton').addEventListener('click', function() {
+    document.getElementById('closeButton').addEventListener('click', function () {
         // Ẩn thanh khung hình chữ nhật
         document.getElementById('filterBox').style.display = 'none';
     });
@@ -240,15 +301,43 @@
             modal.style.display = "none";
         }
     }
+    const filterByAmount = () => {
+        // var filterValue = document.getElementById('filterBtn').value;
+        // const data = { filter: 'money' };
+        //
+        // fetch('../mentor/schedule/history', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify(data),
+        // })
+        //     .then(response => {
+        //         if (!response.ok) {
+        //             throw new Error('Network response was not ok');
+        //         }
+        //         // return response.json();
+        //     })
+        //     .then(data => {
+        //         // Kiểm tra nội dung phản hồi (nếu cần thiết)
+        //         console.log('Phản hồi từ server:', data);
+        //
+        //         // Chuyển hướng đến JSP nếu phản hồi đúng như mong đợi
+        //         window.location.href = 'ViewHistoryBooking.jsp';
+        //     })
+        //     .catch(error => {
+        //         console.error('Lỗi:', error);
+        //     });
+    }
     var accept = document.getElementById("myPlot").getAttribute("data-accept");
     var reject = document.getElementById("myPlot").getAttribute("data-reject");
     var waiting = document.getElementById("myPlot").getAttribute(" data-waiting");
-    const xArray = ["Accepted", "Canceled","waiting"];
-    const yArray = [accept,reject,waiting];
+    const xArray = ["Accepted", "Canceled", "waiting"];
+    const yArray = [accept, reject, waiting];
 
-    const layout = {title:"Statistic Booking Requests"};
+    const layout = {title: "Statistic Booking Requests"};
 
-    const data = [{labels:xArray, values:yArray, type:"pie"}];
+    const data = [{labels: xArray, values: yArray, type: "pie"}];
 
     Plotly.newPlot("myPlot", data, layout);
 </script>
