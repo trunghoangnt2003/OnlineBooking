@@ -27,6 +27,7 @@ public class UpdateScheduleController extends AuthenticationServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+
         try {
             String opt = req.getParameter("option");
             String bookingID = req.getParameter("bookingID");

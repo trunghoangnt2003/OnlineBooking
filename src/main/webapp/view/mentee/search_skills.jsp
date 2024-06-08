@@ -35,7 +35,7 @@
     <div class="search-container">
         <div class="search-box">
             <label>
-                <input type="text" class="search-input" id="search" placeholder="Search skills..." />
+                <input type="text" class="search-input" id="search" placeholder="Search skills..." value="${requestScope.name}"/>
             </label>
             <button class="search-btn" onclick="searchHandler()">
                 <i class="fas fa-search fa-sm"></i>
@@ -203,5 +203,11 @@
         window.location.href = `${pageContext.request.contextPath}/Search_Skills?skill=` + encodedSkill+ levels;
     }
 </script>
+
+<!-- MDB -->
+<script
+        type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.0/mdb.umd.min.js"
+></script>
 </body>
 </html>

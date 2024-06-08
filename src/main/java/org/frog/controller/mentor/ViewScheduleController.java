@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.frog.DAO.Booking_ScheduleDAO;
 import org.frog.DAO.MentorDAO;
 import org.frog.DAO.ScheduleDAO;
-import org.frog.DAO.SlotDao;
+import org.frog.DAO.SlotDAO;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.*;
 import org.frog.utility.DateTimeHelper;
@@ -59,7 +59,7 @@ public class ViewScheduleController extends AuthenticationServlet {
             String slotID = req.getParameter("slotID");
             if (slotID != null) {
                 String[] infoSlotID = slotID.split("_");
-                SlotDao slDAO = new SlotDao();
+                SlotDAO slDAO = new SlotDAO();
                 Slot id = slDAO.getTimeSlot(Integer.parseInt(infoSlotID[1]));
                 if (DateTimeHelper.compareDayIDtoNow(infoSlotID[0], id.getStart_at(), id.getEnd_at())) {
                     scheduleDAO.insertDayFreeByMentor(account.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]));

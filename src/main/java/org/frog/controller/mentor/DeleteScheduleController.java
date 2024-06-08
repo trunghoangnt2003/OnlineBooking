@@ -5,7 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.frog.DAO.ScheduleDAO;
-import org.frog.DAO.SlotDao;
+import org.frog.DAO.SlotDAO;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.Account;
 import org.frog.model.Slot;
@@ -27,7 +27,7 @@ public class DeleteScheduleController extends AuthenticationServlet {
             if(slotID!=null){
                 String [] infoSlotID = slotID.split("_");
                 ScheduleDAO scheduleDAO = new ScheduleDAO();
-                SlotDao slDAO = new SlotDao();
+                SlotDAO slDAO = new SlotDAO();
                 Slot id = slDAO.getTimeSlot(Integer.parseInt(infoSlotID[1]));
                 if(DateTimeHelper.compareDayIDtoNow(infoSlotID[0], id.getStart_at(), id.getEnd_at())){
                     scheduleDAO.deleteDayFreeByMentor(account.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]));

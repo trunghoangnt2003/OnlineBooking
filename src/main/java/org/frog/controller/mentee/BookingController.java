@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.frog.DAO.BookingDAO;
+import org.frog.DAO.Booking_ScheduleDAO;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.Account;
 import org.frog.model.Booking;
@@ -18,12 +19,26 @@ public class BookingController extends AuthenticationServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+
         BookingDAO bookingDAO = new BookingDAO();
-        List<Booking> bookingList = bookingDAO.getAllRequestOfBooking(account.getId());
-        for (Booking booking : bookingList) {
-            System.out.println(booking.getStartDate());
-        }
+        Booking_ScheduleDAO bsDAO = new Booking_ScheduleDAO();
+        List<Booking> bookingList = bookingDAO.getAllRequestProcessOfBooking(account.getId());
+        List<Booking> bookingListC = bookingDAO.getAllRequestCancelOfBooking(account.getId());
+        req.setAttribute("bookingListC", bookingListC);
         req.setAttribute("bookingList", bookingList);
+        String bookingID = req.getParameter("idb");
+        System.out.println("id b " + bookingID);
+        if (bookingID != null) {
+            try {
+                bookingDAO.deleteBooking(bookingID);
+                bsDAO.deleteScheduleBookings(Integer.parseInt(bookingID));
+                resp.sendRedirect("viewBooking");
+                return;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
         req.getRequestDispatcher("../view/booking/bookingRequest.jsp").forward(req, resp);
     }
 

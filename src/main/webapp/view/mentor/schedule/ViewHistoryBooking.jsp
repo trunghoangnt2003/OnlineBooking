@@ -62,7 +62,8 @@
                             </i></button>
                     </p>
                     <p>
-                        <button style="background: transparent;border: none;outline: none; cursor: pointer;">  <i class="fa-solid fa-arrow-down-wide-short"></i></button>
+                        <button style="background: transparent;border: none;outline: none; cursor: pointer;"><i
+                                class="fa-solid fa-arrow-down-wide-short"></i></button>
                     </p>
                     <p>
                         <button style="background: transparent;border: none;outline: none; cursor: pointer;"
@@ -115,8 +116,8 @@
             </div>
         </div>
     </div>
-    <c:if test="${param.page != null}">
-        <c:set var="count" value="${(param.page+1)*10+1}"></c:set>
+    <c:if test="${param.page >=2 }">
+        <c:set var="count" value="${(param.page - 1) * 20 + 1}"/>
     </c:if>
 
     <table class="table table-striped">
@@ -169,7 +170,8 @@
                     <a href="history?page=${i}">${i}</a>
                 </li>
             </c:forEach>
-            <li> <h6 style="margin-left: 1082px;">Total bookings: ${numberOfInvited}</h6></li>
+            <li><h6 style="right: 0;position: absolute;">
+                Total bookings: ${numberOfInvited}</h6></li>
         </ul>
 
     </c:if>
@@ -226,7 +228,7 @@
     }
     var accept = document.getElementById("myPlot").getAttribute("data-accept");
     var reject = document.getElementById("myPlot").getAttribute("data-reject");
-    var waiting = document.getElementById("myPlot").getAttribute(" data-waiting");
+    var waiting = document.getElementById("myPlot").getAttribute("data-waiting");
     const xArray = ["Accepted", "Canceled", "waiting"];
     const yArray = [accept, reject, waiting];
 

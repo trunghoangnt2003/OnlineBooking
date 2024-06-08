@@ -63,7 +63,7 @@ public abstract class AuthenticationServlet extends HttpServlet {
             String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort()
                     + req.getContextPath();
 
-            resp.sendRedirect(url + "/login");
+            resp.sendRedirect(url + "/error401");
         }
     }
 
@@ -79,7 +79,7 @@ public abstract class AuthenticationServlet extends HttpServlet {
             String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort()
                     + req.getContextPath();
 
-            resp.sendRedirect(url + "/login");
+            resp.sendRedirect(url + "/error401");
         }
 
     }

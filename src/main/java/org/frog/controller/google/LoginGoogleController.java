@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import org.frog.DAO.AccountDAO;
 import org.frog.model.Account;
 import org.frog.model.GoogleUser;
+import org.frog.utility.StatusEnum;
 
 @WebServlet("/google")
 public class LoginGoogleController extends HttpServlet {
@@ -44,6 +45,18 @@ public class LoginGoogleController extends HttpServlet {
                 request.setAttribute("warningLogin", warningLogin);
                 request.getRequestDispatcher(url).forward(request, response);
             } else {
+                if (user.getStatus().getId() == StatusEnum.INACTIVE) {
+                    String url = "view/public/signin.jsp";
+                    String warningLogin = "Account need to be activated";
+                    request.setAttribute("warningLogin", warningLogin);
+                    request.getRequestDispatcher(url).forward(request, response);
+                }
+                if (user.getStatus().getId() == StatusEnum.BAN) {
+                    String url = "view/public/signin.jsp";
+                    String warningLogin = "Your account has been banned, please contact the system to get support.";
+                    request.setAttribute("warningLogin", warningLogin);
+                    request.getRequestDispatcher(url).forward(request, response);
+                }
                 HttpSession session = request.getSession();
                 session.setAttribute("account", user);
                 Cookie c_username = new Cookie("email", email);

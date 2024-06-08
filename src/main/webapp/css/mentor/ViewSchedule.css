@@ -90,7 +90,7 @@ body{
 /* The Close Button */
 .close {
     margin-top: -100px;
-    margin-left: 800px;
+    margin-left: 900px;
     color: #aaa;
     float: right;
     font-size: 28px;
@@ -151,7 +151,7 @@ body{
     border: 2px solid #42509e; /* Green border on hover */
 }
 .closeInfo {
-    margin-left: 1100px;
+    margin-left: 1250px;
     color: #aaa;
     float: right;
     font-size: 28px;
@@ -351,7 +351,7 @@ th:first-child{
     transform: rotate(2deg);
 }
 .red {
-    background: #f29263;
+    background: #FAAD12FF;
     -webkit-transform: rotate(2deg);
     -moz-transform: rotate(2deg);
     -o-transform: rotate(2deg);
@@ -478,7 +478,7 @@ th:first-child{
 .submit-button2  {
     position: absolute;
     margin-top: -160px;
-    margin-left: 315px;
+    margin-left: 370px;
     background-color: #07AD90;
     color: #fff;
     border: none;
@@ -510,4 +510,45 @@ th:first-child{
 
 .select-container {
     margin-bottom: 5px;
+}
+/*---------------*/
+.booking-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+}
+
+/* Styling for the list items */
+.booking-item {
+    width: 50%;
+    background-color: rgb(176, 237, 215); /* Light background color */
+    margin-bottom: 10px; /* Space between items */
+    padding: 10px; /* Padding inside the list items */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    display: flex; /* Flexbox for potential icon/text alignment */
+    align-items: center; /* Center items vertically */
+    font-size: 14px; /* Font size */
+}
+
+.booking-item:last-child {
+    margin-bottom: 0; /* Remove margin from the last item */
+}
+
+/* Optional: Styling for an icon within the list items */
+.booking-item i {
+    margin-right: 10px; /* Space between icon and text */
+    color: #07AD90; /* Icon color */
+}
+
+/* Styling for hidden input within list items */
+.booking-item input[type="text"] {
+    display: none; /* Hide the input element */
+}
+
+/* Styling for text content within list items */
+.booking-item span {
+    flex-grow: 1; /* Allow text to grow and fill the space */
 }

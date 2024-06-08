@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Booking {
     private int id;
     private Status status;
-    private float amount;
+    private int amount;
     private Timestamp date;
     private Mentor mentor;
     private Mentee mentee;
@@ -17,7 +17,7 @@ public class Booking {
     private Level_Skills level_skills;
 
 
-    public Booking(int id, Status status, float amount, Timestamp date, Mentor mentor, Mentee mentee, Date startDate, Date endDate) {
+    public Booking(int id, Status status, int amount, Timestamp date, Mentor mentor, Mentee mentee, Date startDate, Date endDate) {
         this.id = id;
         this.status = status;
         this.amount = amount;
@@ -63,11 +63,11 @@ public class Booking {
         this.status = status;
     }
 
-    public float getAmount() {
+    public int getAmount() {
         return amount;
     }
 
-    public void setAmount(float amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 

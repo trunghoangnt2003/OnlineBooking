@@ -44,7 +44,8 @@
         <form action="schedule" method="GET" id="getForm">
             <div>
                 <label for="today">Select Date:</label>
-                <input type="date" class="styled-date" name="today" id="today" value="${param.today}" data-viewID="${param.viewID}"
+                <input type="date" class="styled-date" name="today" id="today" value="${param.today}"
+                       data-viewID="${param.viewID}"
                        onchange="updateURL()">
             </div>
         </form>
@@ -55,17 +56,18 @@
         <button id="myBtn2">View Request</button>
         <button id="myBtn3" onclick="history_request()">History Request</button>
 
-        <c:if test="${param.viewID != null}" >
+        <c:if test="${param.viewID != null}">
             <div>
-                <p style="font-weight: bold; text-decoration: underline;">Booking Slot Detail:</p>
-
+                <h5 style="text-align: center; color: #07AD90;width: 50%;">Slot Detail </h5>
+                <hr style="margin: 10px 0; border: 1px #1BB295 solid; opacity: 100%;width: 50%">
+                <ul id="bookingList" class="booking-list">
                 <c:forEach items="${BookingSlots}" var="sche">
                     <c:if test="${param.viewID == sche.booking.id }">
-
-                        <span style="font-weight: bold;">  Slot ${sche.schedule.slot.id} - Day ${sche.schedule.date}</span> <br/>
+                        <li class="booking-item">  Slot ${sche.schedule.slot.id} - Day ${sche.schedule.date}</li>
                     </c:if>
 
                 </c:forEach>
+                </ul>
             </div>
         </c:if>
         <div id="myModal" class="modal">
@@ -105,13 +107,13 @@
 
                         <span>Select Day Of Week </span>
                         <select id="selectDOW" class="select-container">
-                        <option value="Monday">Monday</option>
-                        <option value="Tuesday">Tuesday</option>
-                        <option value="Wednesday">Wednesday</option>
-                        <option value="Thursday">Thursday</option>
-                        <option value="Friday">Friday</option>
-                        <option value="Saturday">Saturday</option>
-                        <option value="Sunday">Sunday</option>
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday">Friday</option>
+                            <option value="Saturday">Saturday</option>
+                            <option value="Sunday">Sunday</option>
                         </select><br/>
                         <span>Select Slot:</span>
                         <div class="select-container">
@@ -137,7 +139,8 @@
                         </div>
                         <br/>
                         <button type="button" class="submit-button2"
-                                onclick="addListBooks()">Add Slot</button>
+                                onclick="addListBooks()">Add Slot
+                        </button>
 
                     </div>
                     <div class="filter-box ">
@@ -147,7 +150,8 @@
                         <div id="checkboxContainer"></div>
 
                     </div>
-                    <div><input type="button" value="SAVE" class="submit-button" data-receive="${sessionScope.numberUpdateSuccess}" id="btnSetFreeTime"
+                    <div><input type="button" value="SAVE" class="submit-button"
+                                data-receive="${sessionScope.numberUpdateSuccess}" id="btnSetFreeTime"
                                 onclick="sendSetTimeData()">
                     </div>
                 </div>
@@ -189,13 +193,13 @@
                             <td>${book.mentee.account.name}</td>
                             <td><c:if test="${book.status.id ==1 }">
                                 <button name="accept" value="accept">
-                                    <a href="schedule/update?bookingID=${book.id}&&option=true"
+                                    <a href="schedule/update?bookingID=${book.id}&option=true"
                                        class="button" onclick="updateStatus('${sessionScope.updateStatus}')">Accept</a>
                                 </button>
                             </c:if>
                                 <c:if test="${book.status.id ==1 }">
                                     <button name="reject" value="reject">
-                                        <a href="schedule/update?bookingID=${book.id}&&option=false"
+                                        <a href="schedule/update?bookingID=${book.id}&option=false"
                                            class="button"
                                            onclick="rejectStatus('${sessionScope.rejectStatus}')">Reject</a></button>
                                 </c:if>
@@ -204,7 +208,7 @@
                                 <button name="view" value="view" style="background-color: #f8ce0b">
                                     <a href="schedule?viewID=${book.id}"
                                        class="button">
-                                       View</a></button>
+                                        View</a></button>
                             </td>
                             <c:set var="count" value="${count= count +1}"></c:set>
                         </tr>
@@ -288,23 +292,23 @@
                                     <div class="notes-container">
                                         <i class="pin"></i>
                                         <blockquote class="notes red">
-                                            <img width="30px" src="${pageContext.request.contextPath}${avatarSkill}">
-                                            <c:if test="${present.equals('present') && icon}">
-                                                <i class="fa-solid fa-frog fa-xl" style="color: #63E6BE;"></i>
-                                            </c:if>
-                                            <c:if test="${present.equals('absent') && icon }">
-                                                <i class="fa-solid fa-face-sad-tear fa-xl" style="color: #FFFFFF;"></i>
+                                            <img width="30px" src="${pageContext.request.contextPath}${avatarSkill}" style="margin-bottom: 10px;">
 
-                                            </c:if>
 
                                             <button id="button-schedule-td1" class="info-link"
                                                     data-book-id="${week.dayOfMonth}_${t.id}"
                                                     data-today-id="${week.dayOfMonth}"
                                                     style="background: transparent" onclick="informationMentee()">
-                                                    ${nameSkill}
+                                                    <%--                                                    ${nameSkill}--%>
                                                     ${nameType}
                                             </button>
+                                            <c:if test="${present.equals('present') && icon}">
+                                                <i class="fa-solid fa-frog fa-xl" style="color: #02b23c; margin-top:-20px;margin-left: 40px"></i>
+                                            </c:if>
+                                            <c:if test="${present.equals('absent') && icon }">
+                                                <i class="fa-solid fa-face-sad-tear fa-xl" style="color: #f25452; margin-top:-20px;margin-left: 40px"></i>
 
+                                            </c:if>
                                         </blockquote>
                                     </div>
 
@@ -336,7 +340,7 @@
                                             <c:if test="${waitingIcon}">
                                                 <div style="    margin-top: 20px;
                                             margin-left: 10px;">
-                                                <i class="fa-solid fa-envelope fa-xl"></i>
+                                                    <i class="fa-solid fa-envelope fa-xl"></i>
                                                 </div>
                                             </c:if>
 
@@ -469,6 +473,7 @@
         var newURL = baseURL + "?" + newParams;
         window.location.href = newURL;
     }
+
     function removeSession() {
         var xhr = new XMLHttpRequest();
         xhr.open("GET", "schedule/deleteSession", true);
@@ -711,7 +716,7 @@
                         counter--;
                         var down = this.value.split("_");
                         for (let i = 1; i < down.length; i++) {
-                            countSlots=countSlots-1;
+                            countSlots = countSlots - 1;
                         }
                         var label = document.createElement('label');
                         label.appendChild(document.createTextNode(dayOfWeek));
@@ -790,7 +795,7 @@
         if (numberFreeTime) {
             Toast.fire({
                 icon: "success",
-                title: numberFreeTime+" slots added "
+                title: numberFreeTime + " slots added "
             });
             localStorage.removeItem('numberFreeTime');
         }

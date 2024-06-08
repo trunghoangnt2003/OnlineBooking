@@ -36,8 +36,6 @@ public class SearchSkillsController extends HttpServlet {
         ArrayList<Skill> list_skill = skillsDAO.getAll();
         if(levels != null){
             ArrayList<String> levels_select = new ArrayList<>(Arrays.asList(levels));
-            for(String level : levels) {
-            }
             request.setAttribute("levels_select", levels_select);
         }
 

@@ -51,6 +51,50 @@ public class Level_SkillDAO {
         }
         return list;
     }
+    public ArrayList<Level_Skills> getLevel_SkillListPagitaion(int page) {
+        ArrayList<Level_Skills> list = new ArrayList<>();
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "Select ls.id, ls.description, ls.skill_id, s.name as skill, s.src_icon,\n" +
+                    "                  s.cate_id,sc.name as category, ls.level_id,l.type\n" +
+                    "                    From Level_Skill ls Join Skill s On ls.skill_id = s.id\n" +
+                    "                    Join Skill_Category sc On s.cate_id = sc.id\n" +
+                    "\t\t\t\t\tjoin Level l on l.id=ls.level_id\n" +
+                    "\t\t\t\t\torder by ls.id\n" +
+                    "\t\t\t\t\tOFFSET ? ROWS FETCH NEXT 10 ROWS ONLY";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, (page - 1) * 10);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Level_Skills level_skills = new Level_Skills();
+                level_skills.setId(resultSet.getInt("id"));
+                level_skills.setDescription(resultSet.getString("description"));
+
+                Skill skill = new Skill();
+                skill.setId(resultSet.getInt("skill_id"));
+                skill.setName(resultSet.getString("skill"));
+                skill.setSrc_icon(resultSet.getString("src_icon"));
+
+                Category category = new Category();
+                category.setId(resultSet.getInt("cate_id"));
+                category.setName(resultSet.getString("category"));
+                skill.setCategory(category);
+                level_skills.setSkill(skill);
+
+                Level level = new Level();
+                level.setId(resultSet.getInt("level_id"));
+                level.setName(resultSet.getString("type"));
+                level_skills.setLevel(level);
+
+                list.add(level_skills);
+            }
+            JDBC.closeConnection(connection);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
 
     public ArrayList<Level_Skills> getLevel_SkillByMentorId(String id) {
         ArrayList<Level_Skills> list = new ArrayList<>();
@@ -80,17 +124,10 @@ public class Level_SkillDAO {
                 level_skills.setSkill(skill);
 
                 list.add(level_skills);
-                System.out.println("siisisi" + list.size());
             }
             JDBC.closeConnection(connection);
         }catch (Exception e) {
             e.printStackTrace();
-        }
-        System.out.println("size: " +list.size());
-        for(Level_Skills level_skills : list) {
-            System.out.println("jdjdjjdjd");
-            System.out.println(level_skills.getSkill().getName());
-            System.out.println(level_skills.getLevel().getName());
         }
         return list;
     }
@@ -162,14 +199,83 @@ public class Level_SkillDAO {
         return list;
     }
 
+    public Level_Skills getByMentorId(String id) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "SELECT Skill.id as skill_id, Skill.name, Level.id, Level.type\n" +
+                    "FROM     [Level] INNER JOIN\n" +
+                    "                  Level_Skill ON [Level].id = Level_Skill.level_id INNER JOIN\n" +
+                    "                  Mentor_Level_Skill ON Level_Skill.id = Mentor_Level_Skill.skill_level_id INNER JOIN\n" +
+                    "                  Mentor ON Mentor_Level_Skill.mentor_id = Mentor.account_id INNER JOIN\n" +
+                    "                  Skill ON Level_Skill.skill_id = Skill.id\n" +
+                    "\t\t\t\t  where Mentor.account_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                Level_Skills level_skills = new Level_Skills();
 
+                Level level = new Level();
+                level.setId(resultSet.getInt("id"));
+                level.setName(resultSet.getString("type"));
+                level_skills.setLevel(level);
 
-    public static void main(String[] args) {
-        Level_SkillDAO level_skillDAO = new Level_SkillDAO();
-        ArrayList<Level_Skills> list = level_skillDAO.getLevel_SkillByMentorId("1525cfd4-fbb9-4667-9d00-2a54582a2f28");
-        for(Level_Skills level_skills : list) {
-            System.out.println(level_skills.getSkill().getName());
-            System.out.println(level_skills.getLevel().getName());
+                Skill skill = new Skill();
+                skill.setId(resultSet.getInt("skill_id"));
+                skill.setName(resultSet.getString("name"));
+                level_skills.setSkill(skill);
+
+               return  level_skills;
+            }
+            JDBC.closeConnection(connection);
+        }catch (Exception e) {
+            e.printStackTrace();
         }
+        return null;
     }
+    public Level_Skills getBySkillAndLevel(String skill_name, String level_name) {
+        try{
+            Connection connection = JDBC.getConnection();
+            String sql = "Select ls.id, ls.skill_id, s.name, s.src_icon, sc.name as category, \n" +
+                    "\t\tls.level_id, l.type\n" +
+                    "From Level_Skill ls JOIN [Level] l ON ls.level_id = l.id\n" +
+                    "\t\tJOIN Skill s ON ls.skill_id = s.id \n" +
+                    "\t\tJOIN Skill_Category sc ON s.cate_id = sc.id\n" +
+                    "WHERE s.name = ? AND l.type = ? ";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, skill_name);
+            preparedStatement.setString(2, level_name);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                Level_Skills level_skills = new Level_Skills();
+                level_skills.setId(resultSet.getInt("id"));
+
+                Skill skill = new Skill();
+                skill.setId(resultSet.getInt("skill_id"));
+                skill.setName(resultSet.getString("name"));
+                skill.setSrc_icon(resultSet.getString("src_icon"));
+
+                Category category = new Category();
+                category.setName(resultSet.getString("category"));
+                skill.setCategory(category);
+                level_skills.setSkill(skill);
+
+                Level level = new Level();
+                level.setId(resultSet.getInt("level_id"));
+                level.setName(resultSet.getString("type"));
+                level_skills.setLevel(level);
+                return level_skills;
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+    }
+
+
+
+
+
 }
