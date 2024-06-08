@@ -334,7 +334,7 @@
                                                             <div class="text-center fw-bold">
                                                                 <span>Your Book</span>
                                                             </div>
-                                                            <img width="20px" class="mt-2"  src="${pageContext.request.contextPath}${bs.booking.level_skills.skill.src_icon}">
+                                                            <img width="20px" class="mt-2"  src="${pageContext.request.contextPath}/${bs.booking.level_skills.skill.src_icon}">
                                                             <div style="font-size: 14px">
                                                                 <span>${bs.booking.level_skills.level.name}</span>
                                                                 <span style="font-size: 10px">Processing...</span>
@@ -347,7 +347,7 @@
                                                             <div class="text-center fw-bold">
                                                                 <span>Your Book</span>
                                                             </div>
-                                                            <img width="20px" class="mt-2"  src="${pageContext.request.contextPath}${bs.booking.level_skills.skill.src_icon}">
+                                                            <img width="20px" class="mt-2"  src="${pageContext.request.contextPath}/${bs.booking.level_skills.skill.src_icon}">
                                                             <div style="font-size: 14px">
                                                                 <span>${bs.booking.level_skills.level.name}</span>
 
@@ -361,7 +361,7 @@
                                                             <div class="text-center fw-bold">
                                                                 <span>Your Book</span>
                                                             </div>
-                                                            <img width="20px" class="mt-2"  src="${pageContext.request.contextPath}${bs.booking.level_skills.skill.src_icon}">
+                                                            <img width="20px" class="mt-2"  src="${pageContext.request.contextPath}/${bs.booking.level_skills.skill.src_icon}">
                                                             <div style="font-size: 12px">
                                                                 <span>${bs.booking.level_skills.level.name}</span>
                                                                 <span style="font-size: 10px">Done</span>
