@@ -22,114 +22,8 @@
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/rating.css">
-
-    <style>
-        .filter-box {
-            display: none;
-            position: absolute;
-            right: 270px;
-            margin-top: -25px;
-            width: 400px;
-            height: 30px;
-            border: 1px solid #000;
-            padding: 2px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Định dạng nút đóng */
-        .close-button {
-            position: absolute;
-            top: 0px;
-            right: 2px;
-            background: none;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgb(0, 0, 0); /* Fallback color */
-            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-        }
-
-        /* Modal Content/Box */
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 170px;
-            border: 1px solid #888;
-            width: 70%;
-        }
-
-        /* The Close Button */
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            display: flex;
-            justify-content: end;
-            margin-top: -160px;
-            margin-right: -150px;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .statistic-card {
-            border: 2px solid #000;
-            border-radius: 3px;
-            padding: 40px 150px;
-            background-color: #f9f9f9;
-            width: fit-content;
-            margin: 10px auto;
-            margin-top: 40px;
-            margin-left: -130px;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        }
-
-        .pagination {
-            list-style-type: none;
-            padding: 0;
-            overflow: hidden;
-        }
-
-        .pagination li {
-            display: inline;
-        }
-
-        .pagination li a {
-            display: inline-block;
-            padding: 8px 16px;
-            text-decoration: none;
-            color: black;
-        }
-
-        .pagination li.active a {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        .pagination li a:hover:not(.active) {
-            background-color: #ddd;
-        }
-
-    </style>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mentor/ViewHistoryBoking.css">
 </head>
 <body>
 <jsp:include page="/view/common/header.jsp"></jsp:include>
@@ -172,7 +66,7 @@
                     </p>
                     <p>
                         <button style="background: transparent;border: none;outline: none; cursor: pointer;"
-                           id="filterBtn" value="money" onclick="filterByAmount()">
+                                id="filterBtn" value="money" onclick="filterByAmount()">
                             <i class="fa-solid fa-filter-circle-dollar"></i>
                         </button>
                     </p>
@@ -215,6 +109,7 @@
                         </div>
                         <div id="myPlot" style="width:70%;max-width:600px" data-accept="${numberOfAccepted}"
                              data-reject="${numberOfRejected}" data-waiting="${numberOfWaiting}"></div>
+
                     </div>
                 </div>
             </div>
