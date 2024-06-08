@@ -51,6 +51,49 @@ public class Level_SkillDAO {
         }
         return list;
     }
+    public ArrayList<Level_Skills> getLevel_SkillListPagitaion(int page) {
+        ArrayList<Level_Skills> list = new ArrayList<>();
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "Select ls.id, ls.description, ls.skill_id, s.name as skill, s.src_icon,\n" +
+                    "                  s.cate_id,sc.name as category, ls.level_id,l.type\n" +
+                    "                    From Level_Skill ls Join Skill s On ls.skill_id = s.id\n" +
+                    "                    Join Skill_Category sc On s.cate_id = sc.id\n" +
+                    "\t\t\t\t\tjoin Level l on l.id=ls.level_id\n" +
+                    "\t\t\t\t\torder by ls.id\n" +
+                    "\t\t\t\t\tOFFSET ? ROWS FETCH NEXT 10 ROWS ONLY";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, (page - 1) * 10);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Level_Skills level_skills = new Level_Skills();
+                level_skills.setId(resultSet.getInt("id"));
+                level_skills.setDescription(resultSet.getString("description"));
+
+                Skill skill = new Skill();
+                skill.setId(resultSet.getInt("skill_id"));
+                skill.setName(resultSet.getString("skill"));
+                skill.setSrc_icon(resultSet.getString("src_icon"));
+
+                Category category = new Category();
+                category.setId(resultSet.getInt("cate_id"));
+                category.setName(resultSet.getString("category"));
+                skill.setCategory(category);
+                level_skills.setSkill(skill);
+
+                Level level = new Level();
+                level.setId(resultSet.getInt("level_id"));
+                level.setName(resultSet.getString("type"));
+                level_skills.setLevel(level);
+
+                list.add(level_skills);
+            }
+            JDBC.closeConnection(connection);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
     public ArrayList<Level_Skills> getLevel_SkillByMentorId(String id) {
         ArrayList<Level_Skills> list = new ArrayList<>();
@@ -88,36 +131,6 @@ public class Level_SkillDAO {
         return list;
     }
 
-    public ArrayList<Level_Skills> getSkillByMentorId(String id) {
-        ArrayList<Level_Skills> list = new ArrayList<>();
-        try {
-            Connection connection = JDBC.getConnection();
-            String sql = "SELECT distinct Skill.id as skill_id, Skill.name\n" +
-                    "                    FROM   Mentor INNER JOIN Mentor_Level_Skill\n" +
-                    "\t\t\t\t\ton Mentor.account_id = Mentor_Level_Skill.mentor_id\n" +
-                    "\t\t\t\t\tjoin Level_Skill \n" +
-                    "\t\t\t\t\ton Mentor_Level_Skill.skill_level_id = Level_Skill.id\n" +
-                    "\t\t\t\t\tjoin Skill \n" +
-                    "\t\t\t\t\ton Level_Skill.skill_id = Skill.id\n" +
-                    "                      where Mentor.account_id = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                Level_Skills level_skills = new Level_Skills();
-                Skill skill = new Skill();
-                skill.setId(resultSet.getInt("skill_id"));
-                skill.setName(resultSet.getString("name"));
-                level_skills.setSkill(skill);
-                list.add(level_skills);
-            }
-            JDBC.closeConnection(connection);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
-
     public ArrayList<Level_Skills> getLevel_Skill(String name, String[] levels) {
         ArrayList<Level_Skills> list = new ArrayList<>();
         Connection connection = null;
@@ -126,26 +139,26 @@ public class Level_SkillDAO {
 
         try {
             connection = JDBC.getConnection();
-            StringBuilder sql = new StringBuilder("SELECT Skill.id, Skill.name, Skill.src_icon, Level_Skill.id as level_skill_id, Level_Skill.level_id, Level.type, " +
+            String sql = "SELECT Skill.id, Skill.name, Skill.src_icon, Level_Skill.id as level_skill_id, Level_Skill.level_id, Level.type, " +
                     "Level_Skill.description, Skill.cate_id, Skill_Category.name as category " +
                     "FROM [Level] " +
                     "INNER JOIN Level_Skill ON [Level].id = Level_Skill.level_id " +
                     "INNER JOIN Skill ON Level_Skill.skill_id = Skill.id " +
                     "INNER JOIN Skill_Category ON Skill.cate_id = Skill_Category.id " +
-                    "WHERE Skill.name like '%" + name + "%'");
+                    "WHERE Skill.name like '%" + name + "%'";
 
             if (levels != null && levels.length > 0) {
-                sql.append(" AND (");
+                sql += " AND (";
                 for (int i = 0; i < levels.length; i++) {
-                    sql.append(" Level.type = ?");
+                    sql += " Level.type = ?";
                     if (i < levels.length - 1) {
-                        sql.append(" OR");
+                        sql += " OR";
                     }
                 }
-                sql.append(" )");
+                sql += " )";
             }
 
-            preparedStatement = connection.prepareStatement(sql.toString().toString());
+            preparedStatement = connection.prepareStatement(sql.toString());
 //            preparedStatement.setString(1, name);
 
             if (levels != null && levels.length > 0) {
@@ -262,11 +275,5 @@ public class Level_SkillDAO {
 
 
 
-    public static void main(String[] args) {
-        Level_SkillDAO level_skillDAO = new Level_SkillDAO();
-        ArrayList<Level_Skills> list = level_skillDAO.getSkillByMentorId("1525cfd4-fbb9-4667-9d00-2a54582a2f28");
-        for(Level_Skills level_skills : list) {
-            System.out.println(level_skills.getSkill().getName());
-        }
-    }
+
 }

@@ -74,7 +74,7 @@ public class WishListDAO {
                 // Ensure Account ID is being set correctly
                 if (mentor.getAccount().getId() != null) {
                     Level_SkillDAO level_skillDAO = new Level_SkillDAO();
-                    ArrayList<Level_Skills> level_skills = level_skillDAO.getSkillByMentorId(mentor.getAccount().getId());
+                    ArrayList<Level_Skills> level_skills = level_skillDAO.getLevel_SkillByMentorId(mentor.getAccount().getId());
                     mentor.setLevel_skills(level_skills);
                 } else {
                     System.out.println("Account ID is null for mentor");
@@ -123,7 +123,7 @@ public class WishListDAO {
                 mentor.setAccount(account);
 
                 Level_SkillDAO level_skillDAO = new Level_SkillDAO();
-                ArrayList<Level_Skills> level_skills = level_skillDAO.getSkillByMentorId(mentor.getAccount().getId());
+                ArrayList<Level_Skills> level_skills = level_skillDAO.getLevel_SkillByMentorId(mentor.getAccount().getId());
                 mentor.setLevel_skills(level_skills);
 
                 Status status = new Status();

@@ -1,8 +1,8 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
+<%--<!DOCTYPE html>--%>
+<%--<html>--%>
 <%--<head>--%>
 <%--    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">--%>
 <%--    <title>JSP Page</title>--%>
@@ -100,16 +100,28 @@
                             </li>
 
                         </c:if>
+                        <c:if test="${sessionScope.account.role.id == 3}">
+                            <li class="nav-item">
+                                <a class="nav-link" href="<%=url%>/admin/home">Dash Board</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<%=url%>/admin/mentor">Manage Mentor</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<%=url%>/Search_Skills">Manage Mentee</a>
+                            </li>
+
+                        </c:if>
                     </ul>
                     <!-- Left links -->
 
                     <c:if test="${sessionScope.account==null}">
                         <div class="d-flex align-items-center">
                             <button data-mdb-ripple-init type="button" class="btn px-3 me-2" style='background-color: #07ad90;'>
-                                Login
+                                <a href="login" style="text-decoration: none">Sign in </a>
                             </button>
                             <button data-mdb-ripple-init type="button" class="btn me-3" style='background-color: #07ad90;'>
-                                Sign up for free
+                                <a href="register" style="text-decoration: none">Sign up for free</a>
                             </button>
                         </div>
                     </c:if>
@@ -158,6 +170,9 @@
                                         <c:if test="${sessionScope.account.role.id == 2}">
                                             <a class="dropdown-item" href="<%=url%>/mentor/profile">Information</a>
                                         </c:if>
+                                        <c:if test="${sessionScope.account.role.id == 3}">
+                                            <a class="dropdown-item" href="<%=url%>/admin/profile">Information</a>
+                                        </c:if>
                                     </li>
                                     <li>
                                         <c:if test="${sessionScope.account.role.id == 1}">
@@ -165,6 +180,9 @@
                                         </c:if>
                                         <c:if test="${sessionScope.account.role.id == 2}">
                                             <a class="dropdown-item" href="<%=url%>/mentor/createcv">Settings</a>
+                                        </c:if>
+                                        <c:if test="${sessionScope.account.role.id == 3}">
+                                            <a class="dropdown-item" href="<%=url%>/admin/update">Settings</a>
                                         </c:if>
                                     </li>
                                     <c:if test="${sessionScope.account.role.id == 1}">
@@ -198,4 +216,4 @@
 <%--        type="text/javascript"--%>
 <%--        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.umd.min.js"--%>
 <%--></script>--%>
-</html>
+<%--</html>--%>

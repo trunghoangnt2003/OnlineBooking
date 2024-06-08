@@ -7,8 +7,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.frog.DAO.MentorDAO;
 import org.frog.DAO.SkillsDAO;
-import org.frog.controller.auth.AuthenticationServlet;
-import org.frog.model.Account;
 import org.frog.model.Mentor;
 import org.frog.model.Skill;
 
