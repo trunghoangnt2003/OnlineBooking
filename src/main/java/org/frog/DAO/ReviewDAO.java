@@ -21,7 +21,7 @@ public class ReviewDAO {
                     "           ,GetDate()\n" +
                     "           ,?\n" +
                     "           ,?\n" +
-                    "           ,<?)";
+                    "           ,?)";
             Connection connection = JDBC.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, review.getComment());

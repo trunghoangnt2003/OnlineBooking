@@ -10,9 +10,13 @@ public class WishList {
     private Date timeRequest;
     private Status status;
 
-    public WishList(Mentor mentor, Mentee mentee) {
+
+    public WishList(int id, Mentor mentor, Mentee mentee, Date timeRequest, Status status) {
+        this.id = id;
         this.mentor = mentor;
         this.mentee = mentee;
+        this.timeRequest = timeRequest;
+        this.status = status;
     }
 
     public WishList() {

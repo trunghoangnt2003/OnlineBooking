@@ -195,6 +195,22 @@ public class AccountDAO {
         }
         return null;
     }
+    public boolean checkExitsId (String id) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "select * from Account where id = ?";
+            PreparedStatement preparedStatement = connection.prepareCall(sql);
+            preparedStatement.setString(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+
+                return false;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return true;
+    }
     // add thuoc tinh can dang ki
     public int register() {
         int kq = 0;
@@ -332,6 +348,28 @@ public class AccountDAO {
                 System.out.println("update status 2");
                 preparedStatement.executeUpdate();
                 System.out.println("update status 3");
+            }
+
+            JDBC.closeConnection(connection);
+        } catch (SQLException ignored) {
+            System.out.println(ignored.getMessage());
+        }
+    }
+    public void updateStatusById(String id,int status) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "update [account]\n"
+                    + "set status= ?\n"
+                    + "where id= ?\n";
+            PreparedStatement preparedStatement = null;
+            if (connection != null) {
+
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, status);
+                preparedStatement.setString(2, id);
+
+                preparedStatement.executeUpdate();
+
             }
 
             JDBC.closeConnection(connection);

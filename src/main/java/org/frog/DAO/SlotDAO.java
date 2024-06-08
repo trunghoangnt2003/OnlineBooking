@@ -18,11 +18,11 @@ public class SlotDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-               Slot slot = new Slot();
-               slot.setId(resultSet.getInt("id"));
-               slot.setStart_at(resultSet.getString("time_start"));
-               slot.setEnd_at(resultSet.getString("time_end"));
-               slots.add(slot);
+                Slot slot = new Slot();
+                slot.setId(resultSet.getInt("id"));
+                slot.setStart_at(resultSet.getString("time_start"));
+                slot.setEnd_at(resultSet.getString("time_end"));
+                slots.add(slot);
             }
             JDBC.closeConnection(connection);
         }catch (Exception e) {
@@ -39,3 +39,4 @@ public class SlotDAO {
         }
     }
 }
+

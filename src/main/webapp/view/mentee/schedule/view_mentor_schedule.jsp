@@ -256,7 +256,7 @@
                 <span class="category_name">${level_skill.skill.category.name} </span>
             </div>
             <div class="d-flex align-items-center mt-4">
-                <img style="width: 40px" src="${pageContext.request.contextPath}${level_skill.skill.src_icon}">
+                <img style="width: 40px" src="${pageContext.request.contextPath}/${level_skill.skill.src_icon}">
                 <h5 style="color: #07ad90; margin: 0 0 0 10px">${level_skill.skill.name} for ${level_skill.level.name} </h5>
             </div>
         </div>

@@ -14,7 +14,6 @@ import org.frog.model.WishList;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 @WebServlet("/SearchMentor")
 public class SearchMentorController extends HttpServlet {
@@ -44,7 +43,6 @@ public class SearchMentorController extends HttpServlet {
         }
 
         ArrayList<Mentor> list_mentor = mentorDAO.getMentorAndPaging(page, skill_name, level,search,order);
-
         int totalMentor = mentorDAO.totalMentor(skill_name, level,search);
         int end_page = totalMentor / 4;
         if (totalMentor % 4 != 0) {

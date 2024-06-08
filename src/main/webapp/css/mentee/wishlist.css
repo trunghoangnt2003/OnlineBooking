@@ -1,0 +1,14 @@
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.container-process {
+    width: 500px;
+    height: 500px
+}
+.container-accept {
+    width: 500px;
+    height: 500px;
+}

@@ -19,6 +19,8 @@ public class Mentor {
 
     private int totalBookings;
 
+    private float percentageCompleted;
+
     private ArrayList<Level_Skills> level_skills;
 
     public Mentor() {
@@ -87,6 +89,13 @@ public class Mentor {
         this.education = education;
     }
 
+    public float getPercentageCompleted() {
+        return percentageCompleted;
+    }
+
+    public void setPercentageCompleted(float percentageCompleted) {
+        this.percentageCompleted = percentageCompleted;
+    }
 
     public float getRating() {
         return rating;

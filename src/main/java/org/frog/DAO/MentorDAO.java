@@ -1,9 +1,11 @@
 package org.frog.DAO;
 
 import org.frog.model.Account;
+import org.frog.model.Level_Skills;
 import org.frog.model.Mentor;
 import org.frog.utility.OrderEnum;
 import org.frog.utility.StatusEnum;
+import org.frog.model.Status;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -67,7 +69,7 @@ public class MentorDAO {
                     "JOin Level_Skill ls on mls.skill_level_id = ls.id\n" +
                     "JOin Skill  s ON ls.skill_id = s.id\n" +
                     "Join Level l On ls.level_id = l.id\n" +
-                    "Left join Booking b ON a.id = b.mentor_id and status_id = 3\n" +
+                    "Left join Booking b ON a.id = b.mentor_id and b.status_id = 3\n" +
                     "Where s.name = ? And l.type = ? AND a.name like '%" + search + "%' \n" +
                     "Group By a.id,a.username,a.name,a.dob,a.avatar,\n" +
                     "m.experience,m.price,m.rating, s.name, l.type\n";
@@ -113,6 +115,96 @@ public class MentorDAO {
         return list;
     }
 
+    public ArrayList<Mentor> getMentorAndPagingAndSearch(int page, String name) {
+        ArrayList<Mentor> list = new ArrayList<>();
+        try {
+
+            Connection connection = JDBC.getConnection();
+            String sql = "with t as (\n" +
+                    "\tselect m.account_id,count(b.id) as [bookingTotal]\n" +
+                    "\tfrom Mentor m join Booking b on m.account_id=b.mentor_id\n" +
+                    "\twhere b.status_id = 11 or b.status_id = 3\n" +
+                    "\tgroup by m.account_id\n" +
+                    "),t1 as (\n" +
+                    "\tselect m.account_id,count(b.id) as [bookingDone]\n" +
+                    "\tfrom Mentor m join Booking b on m.account_id=b.mentor_id\n" +
+                    "\twhere b.status_id = 3 \n" +
+                    "\tgroup by m.account_id\n" +
+                    ")\n" +
+                    "\n" +
+                    "select a.id,a.name,a.username,m.rating,a.status,ISNULL(t.bookingTotal,0) as totalBooking , IsNull((1.0*t1.bookingDone/t.bookingTotal)*100,0) as percentageCompleted\n" +
+                    "from Account a join Mentor m on a.id=m.account_id\n" +
+                    "full join t on t.account_id=m.account_id\n" +
+                    "full join t1 on t1.account_id = m.account_id\n" +
+                    "where a.username like '%"+name+"%'\n" +
+                    "order by a.id\n" +
+                    "\n" +
+                    "OFFSET ? ROWS FETCH NEXT 4 ROWS ONLY";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, (page - 1) * 4);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Account account = new Account();
+                account.setId(resultSet.getString("id"));
+                account.setName(resultSet.getString("name"));
+                account.setUserName(resultSet.getString("username"));
+                account.setStatus(new Status(resultSet.getInt("status"),""));
+                Mentor mentor = new Mentor();
+                mentor.setAccount(account);
+                mentor.setRating(resultSet.getFloat("rating"));
+
+
+                mentor.setTotalBookings(resultSet.getInt("totalBooking"));
+                mentor.setPercentageCompleted(resultSet.getInt("percentageCompleted"));
+
+                Level_SkillDAO levelSkillDAO = new Level_SkillDAO();
+                ArrayList<Level_Skills> skills = levelSkillDAO.getLevel_SkillByMentorId(account.getId());
+                mentor.setLevel_skills(skills);
+                list.add(mentor);
+            }
+        }catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return list;
+    }
+    public int totalMentorAndPagingAndSearch(int page, String name) {
+        int totalMentor = 0;
+        try {
+
+            Connection connection = JDBC.getConnection();
+            String sql = "with t as (\n" +
+                    "\tselect m.account_id,count(b.id) as [bookingTotal]\n" +
+                    "\tfrom Mentor m join Booking b on m.account_id=b.mentor_id\n" +
+                    "\twhere b.status_id = 11 or b.status_id = 3\n" +
+                    "\tgroup by m.account_id\n" +
+                    "),t1 as (\n" +
+                    "\tselect m.account_id,count(b.id) as [bookingDone]\n" +
+                    "\tfrom Mentor m join Booking b on m.account_id=b.mentor_id\n" +
+                    "\twhere b.status_id = 3 \n" +
+                    "\tgroup by m.account_id\n" +
+                    ")\n" +
+                    "\n" +
+                    "select a.id,a.name,a.username,m.rating,a.status,ISNULL(t.bookingTotal,0) as totalBooking , IsNull((1.0*t1.bookingDone/t.bookingTotal)*100,0) as percentageCompleted\n" +
+                    "from Account a join Mentor m on a.id=m.account_id\n" +
+                    "full join t on t.account_id=m.account_id\n" +
+                    "full join t1 on t1.account_id = m.account_id\n" +
+                    "where a.username like '%"+name+"%'\n" +
+                    "order by a.id\n";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                totalMentor++;
+            }
+        }catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return totalMentor;
+    }
+
+
     public int totalMentor(String skill, String level, String search) {
         int total = 0;
         if (search == null) {
@@ -155,6 +247,24 @@ public class MentorDAO {
             preparedStatement.setString(3, mentor.getExperience());
             preparedStatement.setString(4, mentor.getEducation());
             preparedStatement.setString(5, mentor.getAccount().getId());
+            preparedStatement.executeUpdate();
+            JDBC.closeConnection(connection);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    public void register(Account account) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "INSERT INTO [dbo].[Mentor]\n" +
+                    "           ([account_id])\n" +
+                    "\n" +
+                    "     VALUES\n" +
+                    "           (?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, account.getId());
+
             preparedStatement.executeUpdate();
             JDBC.closeConnection(connection);
         } catch (SQLException e) {

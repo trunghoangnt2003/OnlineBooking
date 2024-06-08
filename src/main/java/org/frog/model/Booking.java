@@ -113,20 +113,4 @@ public class Booking {
     }
 
 
-
-    @Override
-    public String toString() {
-        return "Booking{" +
-                "id=" + id +
-                ", status=" + status.getId() +
-                ", amount=" + amount +
-                ", date=" + date +
-                ", mentor=" + mentor.getAccount().getId() +
-                ", mentee=" + mentee.getAccount().getId()+
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", description='" + description + '\'' +
-                ", level_skills=" + level_skills.getSkill().getName() + " - " + level_skills.getLevel().getName() +
-                '}';
-    }
 }
