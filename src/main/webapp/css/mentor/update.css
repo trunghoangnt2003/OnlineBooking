@@ -1,4 +1,49 @@
-form {
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.image {
+    display: flex;
+    justify-content: center;
+}
+
+.round {
+    display: flex;
+    justify-content: center;
+}
+
+.img-profile img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    text-align: center;
+    object-fit: cover;
+    border: 2px solid #6e93f7;
+}
+
+.input {
     display: flex;
     justify-content: space-around;
+}
+
+.btn-save {
+    display: flex;
+    justify-content: center;
+}
+
+.info {
+    margin: auto;
+}
+
+.skill {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 40px;
+    padding-left: 40px;
+}
+
+.skill-name {
+    font-weight: bold;
 }

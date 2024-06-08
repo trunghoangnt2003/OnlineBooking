@@ -164,6 +164,111 @@
         .head {
             color: white;
         }
+        .pop-up {
+            display: none;
+            position: absolute;
+            top: 120%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+        .overlay {
+            display: none; /* Initially hidden */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            z-index: 1000;
+        }
+        .name {
+            font-weight: bold;
+        }
+        .email {
+            font-weight: bold;
+        }
+        .phone {
+            font-weight: bold;
+        }
+        .gender {
+            font-weight: bold;
+        }
+        .dob {
+            font-weight: bold;
+        }
+        .address {
+            font-weight: bold;
+        }
+        .img-cv {
+            width: 250px;
+            height: 250px;
+            border-radius: 10px;
+        }
+        .info {
+            display: flex;
+            justify-content: space-between;
+        }
+        .left-info {
+            width: 300px;
+        }
+        .right-info {
+            width: 500px;
+        }
+        .close {
+            position: absolute;
+            top: 5px;
+            width: 15px;
+            height: 15px;
+            margin-left: 713px;
+            font-size: 15px;
+            border-radius: 50%;
+            border: 1px solid;
+            cursor: pointer;
+            text-align: center;
+        }
+        .footer {
+            display: flex;
+            justify-content: end;
+            margin-right: 20px;
+            margin-bottom: 15px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        .header-cv {
+            text-align: center;
+            color: #1BB295;
+            margin-top: 10px;
+            margin-bottom: 30px;
+        }
+        .price {
+            background-color: #54ffe7;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            color: #333;
+            font-size: 24px;
+            font-weight: bold;
+            display: inline-block;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-left: 40px;
+        }
+
+        .price:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Highlighting the currency and unit separately */
+        .price span.currency {
+            color: #ff6f61;
+        }
+
+        .price span.unit {
+            font-size: 16px;
+            color: #777;
+        }
     </style>
 </head>
 <body>
@@ -176,6 +281,9 @@
         <div class="row">
             <div class="col-lg-7 col-md-10 head">
                 <h1>Hello ${requestScope.mentor.account.name}</h1>
+                <div class="stars-outer">
+                    <div class="stars-inner" data-rating="${requestScope.mentor.rating}"></div>
+                </div>
                 <p class="text-white mt-0 mb-5">This is profile of ${requestScope.mentor.account.name}, your can see information and something about them</p>
             </div>
         </div>
@@ -192,27 +300,27 @@
                         <h3>My account</h3>
                         <c:choose>
                             <c:when test="${requestScope.isAuthor}">
-                                <button type="button" class="btn btn-info" data-mdb-ripple-init>Update Profile</button>
+                                <button onclick="goToUpdate()" type="button" class="btn btn-info" data-mdb-ripple-init>Update Profile</button>
                             </c:when>
                             <c:otherwise>
                                 <button type="button" class="btn btn-warning" data-mdb-ripple-init>Message</button>
                             </c:otherwise>
                         </c:choose>
-                        <button type="button" class="btn btn-success" data-mdb-ripple-init>View CV</button>
+                        <button onclick="showCV()" type="button" class="btn btn-success" data-mdb-ripple-init>View CV</button>
                     </div>
                     <hr>
                     <h5>User information</h5>
                     <div class="row">
                         <div class="col">
-                            <label>Full Name</label>
+                            <label class="name">Full Name</label>
                             <p>${requestScope.mentor.account.name}</p>
                         </div>
                         <div class="col">
-                            <label>Date of birth</label>
+                            <label class="dob">Date of birth</label>
                             <p>${requestScope.mentor.account.dob}</p>
                         </div>
                         <div class="col">
-                            <label>Gender</label>
+                            <label class="gender">Gender</label>
                             <p><c:choose>
                                 <c:when test="${requestScope.mentor.account.gender == 1}">
                                     Male
@@ -227,15 +335,15 @@
                     <h5>Contact information</h5>
                     <div class="row">
                         <div class="col">
-                            <label>Email</label>
+                            <label class="email">Email</label>
                             <p>${requestScope.mentor.account.email}</p>
                         </div>
                         <div class="col">
-                            <label>Phone</label>
+                            <label class="phone">Phone</label>
                             <p>${requestScope.mentor.account.phone}</p>
                         </div>
                         <div class="col">
-                            <label>Address</label>
+                            <label class="address">Address</label>
                             <p>${requestScope.mentor.account.address}</p>
                         </div>
                     </div>
@@ -262,6 +370,7 @@
                 <div class="card-body text-center">
                     <div>
                         <img src="${pageContext.request.contextPath}${requestScope.mentor.account.avatar}" class="mb-3 img">
+                        <div class="price">${requestScope.mentor.price} $/hour</div>
                     </div>
                     <h3>${requestScope.mentor.account.name}</h3>
                     <p>${requestScope.mentor.account.dob}</p>
@@ -300,8 +409,82 @@
         </div>
     </div>
 </div>
+<div id="overlay" class="overlay"></div>
+<%--POP-UP--%>
+<div id="cv-popup" class="container card col-md-6 pop-up">
+    <div>
+        <h1 class="header-cv">Mentor CV</h1>
+        <button onclick="hideCV()" type="button" class="btn-close close" aria-label="Close"></button>
+        <div class="info">
+            <div class="left-info">
+                <img src="${pageContext.request.contextPath}${requestScope.mentor.account.avatar}" class="mb-3 img-cv">
+                <h5 class="name">Name: ${requestScope.mentor.account.name}</h5>
+                <hr style="margin-right: 23px">
+                <h5>Rating</h5>
+                <div class="stars-outer">
+                    <div class="stars-inner" data-rating="${requestScope.mentor.rating}"></div>
+                </div>
+                <hr style="margin-right: 23px">
+                <div class="email">Email: ${requestScope.mentor.account.email}</div>
+                <hr style="margin-right: 23px">
+                <div class="phone">Phone: ${requestScope.mentor.account.phone}</div>
+                <hr style="margin-right: 23px">
+                <div class="dob">Date of birth: ${requestScope.mentor.account.dob}</div>
+                <hr style="margin-right: 23px">
+                <div class="gender">Gender:
+                    <span><c:choose>
+                        <c:when test="${requestScope.mentor.account.gender == 1}">
+                            Male
+                        </c:when>
+                        <c:otherwise>
+                            Female
+                        </c:otherwise>
+                    </c:choose></span>
+                </div>
+            </div>
+            <div class="right-info">
+                <div>
+                    <label>Education:</label>
+                    <h5>${requestScope.mentor.education}</h5>
+                </div>
+                <hr>
+                <div>
+                    <label>Experience:</label>
+                    <h5>${requestScope.mentor.experience}</h5>
+                </div>
+                <hr>
+                <div>
+                    <label>About Me:</label>
+                    <h5>${requestScope.mentor.profileDetail}</h5>
+                </div>
+                <hr>
+                <h5>My Skills</h5>
+                <div class="skills-container">
+                    <c:forEach items="${requestScope.level_skills}" var="s">
+                        <div class="skill-item">
+                            <img class="icon-skill" src="${pageContext.request.contextPath}${s.skill.src_icon}" alt="${s.skill.name}">
+                            <span class="skill-name">${s.skill.name}</span> : <span class="skill-level">${s.level.name}</span>
+                        </div>
+                    </c:forEach>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <h6 class="footer">CV of mentor: ${requestScope.mentor.account.name}</h6>
+    </div>
+</div>
 
 <script>
+    function showCV() {
+        document.getElementById('cv-popup').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+    }
+
+    function hideCV() {
+        document.getElementById('cv-popup').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         const starsTotal = 5;
 
@@ -319,6 +502,10 @@
             starsInner.style.width = starPercentage + '%';
         });
     });
+
+    function goToUpdate() {
+        window.location.href = "http://localhost:8080/Frog/mentor/update_profile";
+    }
 </script>
 </body>
 </html>

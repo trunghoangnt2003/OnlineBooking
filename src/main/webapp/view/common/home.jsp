@@ -61,7 +61,7 @@
     <a href="youtube.com"><img src="${pageContext.request.contextPath}/img/home/2.png"></a>
     <img src="${pageContext.request.contextPath}/img/home/3.png">
 </section>
-
+<%--editiusahjdkjcbksjdbkc jbjkcdsbkj bckjb shcjsbchbc s--%>
 <div class="show-top-mentor">
     <h1>Top Mentor</h1>
     <div class="wrapper">
@@ -72,11 +72,11 @@
                     <div class="img"><img src="${pageContext.request.contextPath}/img/nobi.jpg" alt="img" draggable="false"></div>
                     <h2>${m.account.name}</h2>
                     <div class="rate-follower">
-                        <div class="stars-outer rate">
+                        <div class="stars-outer rate col-md-9">
                             <div class="stars-inner" data-rating="${m.rating}"></div>
                         </div>
-                        <div class="follower">
-                            <i class="fa-solid fa-user-graduate"></i></i> 8
+                        <div class="col-md-9">
+                            <i class="fa-solid fa-user-graduate"></i> 100
                         </div>
                     </div>
                 </li>
@@ -288,7 +288,8 @@
 
     function changeToMentorProfile(id) {
         console.log(id)
-        window.location.href = 'mentor/view?id='+ id;
+        window.location.href = 'mentor/profile?mentor' +
+            'id='+ id;
     }
     
 </script>

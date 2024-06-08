@@ -36,8 +36,9 @@
         <tr>
             <th>Name</th>
             <th>Time of Request</th>
-            <th>Status</th>
-            <th>Action</th>
+            <td></td>
+<%--            <th>Status</th>--%>
+<%--            <th>Action</th>--%>
         </tr>
         </thead>
         <tbody>
@@ -46,24 +47,25 @@
                 <tr>
                     <td>${w.mentee.account.name}</td>
                     <td>${w.timeRequest}</td>
-                    <td>
-                        <c:choose>
-                            <c:when test="${w.status == 1}">Processing</c:when>
-                            <c:when test="${w.status == 3}">Done</c:when>
-                        </c:choose>
-                    </td>
-                    <td>
-                        <form action="view_follower" method="post" style="display:inline;">
-                            <input type="hidden" name="action" value="accept">
-                            <input type="hidden" name="requestId" value="${w.mentee.account.id}">
-                            <button type="submit" class="btn btn-success me-2">Accept</button>
-                        </form>
-                        <form action="view_follower" method="post" style="display:inline;">
-                            <input type="hidden" name="action" value="reject">
-                            <input type="hidden" name="requestId" value="${w.mentee.account.id}">
-                            <button type="submit" class="btn btn-danger">Reject</button>
-                        </form>
-                    </td>
+                    <td><button onclick="viewMenteeProfle()" type="button" class="btn btn-info" data-mdb-ripple-init>Info</button></td>
+<%--                    <td>--%>
+<%--                        <c:choose>--%>
+<%--                            <c:when test="${w.status == 1}">Processing</c:when>--%>
+<%--                            <c:when test="${w.status == 3}">Done</c:when>--%>
+<%--                        </c:choose>--%>
+<%--                    </td>--%>
+<%--                    <td>--%>
+<%--                        <form action="view_follower" method="post" style="display:inline;">--%>
+<%--                            <input type="hidden" name="action" value="accept">--%>
+<%--                            <input type="hidden" name="requestId" value="${w.mentee.account.id}">--%>
+<%--                            <button type="submit" class="btn btn-success me-2">Accept</button>--%>
+<%--                        </form>--%>
+<%--                        <form action="view_follower" method="post" style="display:inline;">--%>
+<%--                            <input type="hidden" name="action" value="reject">--%>
+<%--                            <input type="hidden" name="requestId" value="${w.mentee.account.id}">--%>
+<%--                            <button type="submit" class="btn btn-danger">Reject</button>--%>
+<%--                        </form>--%>
+<%--                    </td>--%>
                 </tr>
             </c:if>
         </c:forEach>

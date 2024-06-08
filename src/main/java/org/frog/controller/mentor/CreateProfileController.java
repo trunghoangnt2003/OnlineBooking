@@ -34,7 +34,11 @@ public class CreateProfileController extends AuthenticationServlet {
         String detail = req.getParameter("detail");
         int price = 0;
 
-
+        String[] levelSkills = req.getParameterValues("level_skill");
+        for(String s: levelSkills) {
+            Level_SkillDAO level_skillDAO = new Level_SkillDAO();
+            level_skillDAO.insertLevelSkill(account.getId(), Integer.parseInt(s));
+        }
 
         MentorDAO mentorDAO = new MentorDAO();
         Mentor mentor = new Mentor();
@@ -82,7 +86,7 @@ public class CreateProfileController extends AuthenticationServlet {
         mentor.setPrice(price);
         mentor.setProfileDetail(detail);
         mentorDAO.update(mentor);
-        resp.sendRedirect("/Frog/mentor/view_profile");
+        resp.sendRedirect("/Frog/mentor/profile?mentorid=" + account.getId());
     }
 
     @Override
@@ -90,16 +94,15 @@ public class CreateProfileController extends AuthenticationServlet {
         try {
             AccountDAO accountDAO = new AccountDAO();
             account = accountDAO.getAccountById(account.getId());
-
-            SkillsDAO skillDAO = new SkillsDAO();
-            ArrayList<Skill> skills = skillDAO.getAll();
-
             LevelDAO levelDAO = new LevelDAO();
-            ArrayList<Level> level = levelDAO.getAll();
+            ArrayList<Level> levels = levelDAO.getAll();
+            req.setAttribute("levels", levels);
+            Level_SkillDAO level_skillDAO = new Level_SkillDAO();
+            ArrayList<Level_Skills> level_skills = level_skillDAO.getAllLevel_SkillList();
 
-            req.setAttribute("skill", skills);
+            req.setAttribute("levels", levels);
+            req.setAttribute("level_skills", level_skills);
             req.setAttribute("account", account);
-            req.setAttribute("level" , level);
             req.getRequestDispatcher("../view/mentor/create_profile.jsp").forward(req, resp);
         } catch (ServletException | IOException e) {
             throw new RuntimeException(e);

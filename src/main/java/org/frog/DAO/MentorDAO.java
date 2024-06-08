@@ -119,25 +119,20 @@ public class MentorDAO {
     public void update(Mentor mentor) {
         try {
             Connection connection = JDBC.getConnection();
-            String sql = "INSERT INTO [dbo].[Mentor]\n" +
-                    "           ([account_id]\n" +
-                    "           ,[profile_detail]\n" +
-                    "           ,[price]\n" +
-                    "           ,[experience]\n" +
-                    "           ,[education])\n" +
-                    "     VALUES (\n" +
-                    "           ?\n" +
-                    "           ,?\n" +
-                    "           ,?\n" +
-                    "           ,?\n" +
-                    "           ,?)";
+            String sql = "UPDATE [dbo].[Mentor]\n" +
+                    "   SET [profile_detail] = ?\n" +
+                    "      ,[price] = ?\n" +
+                    "      ,[experience] = ?\n" +
+                    "      ,[education] = ?\n" +
+                    "      \n" +
+                    " WHERE Mentor.account_id = ?";
             assert connection != null;
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, mentor.getAccount().getId());
-            preparedStatement.setString(2, mentor.getProfileDetail());
-            preparedStatement.setInt(3, mentor.getPrice());
-            preparedStatement.setString(4, mentor.getExperience());
-            preparedStatement.setString(5, mentor.getEducation());
+            preparedStatement.setString(5, mentor.getAccount().getId());
+            preparedStatement.setString(1, mentor.getProfileDetail());
+            preparedStatement.setInt(2, mentor.getPrice());
+            preparedStatement.setString(3, mentor.getExperience());
+            preparedStatement.setString(4, mentor.getEducation());
             preparedStatement.execute();
             JDBC.closeConnection(connection);
         } catch (SQLException e) {
@@ -578,5 +573,40 @@ public class MentorDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public ArrayList<Level_Skills> getSkillMentor(String accountId) {
+        ArrayList<Level_Skills> list = new ArrayList<>();
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "select Mentor_Level_Skill.skill_level_id from Mentor_Level_Skill\n" +
+                    "where Mentor_Level_Skill.mentor_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, accountId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Level_Skills level_skills = new Level_Skills();
+                level_skills.setId(resultSet.getInt("skill_level_id"));
+                list.add(level_skills);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
+    public void deleteSkillMentor(String accountId) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "DELETE FROM [dbo].[Mentor_Level_Skill]\n" +
+                    "      WHERE mentor_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, accountId);
+            preparedStatement.executeUpdate();
+            JDBC.closeConnection(connection);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

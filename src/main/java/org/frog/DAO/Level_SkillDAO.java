@@ -1,47 +1,37 @@
 package org.frog.DAO;
 
-import org.frog.model.Category;
-import org.frog.model.Level;
-import org.frog.model.Level_Skills;
-import org.frog.model.Skill;
+import org.frog.model.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Level_SkillDAO {
 
 
-    public ArrayList<Level_Skills> getLevel_SkillList() {
+    public ArrayList<Level_Skills> getAllLevel_SkillList() {
         ArrayList<Level_Skills> list = new ArrayList<>();
         try {
             Connection connection = JDBC.getConnection();
-            String sql = "Select ls.id, ls.description, ls.skill_id, s.name as skill, s.src_icon,\n" +
-                    "\t\ts.cate_id,sc.name as category, ls.level_id\n" +
-                    "From Level_Skill ls Join Skill s On ls.skill_id = s.id\n" +
-                    "\t\tJoin Skill_Category sc On s.cate_id = sc.id";
+            String sql = "select Level_Skill.id, Level.type, Skill.name\n" +
+                    "from Level join Level_Skill on Level.id = Level_Skill.level_id\n" +
+                    "\t\tjoin Skill on Skill.id = Level_Skill.skill_id";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Level_Skills level_skills = new Level_Skills();
-                level_skills.setId(resultSet.getInt("id"));
-                level_skills.setDescription(resultSet.getString("description"));
-
                 Skill skill = new Skill();
-                skill.setId(resultSet.getInt("skill_id"));
-                skill.setName(resultSet.getString("skill"));
-                skill.setSrc_icon(resultSet.getString("src_icon"));
-
-                Category category = new Category();
-                category.setId(resultSet.getInt("cate_id"));
-                category.setName(resultSet.getString("category"));
-                skill.setCategory(category);
-                level_skills.setSkill(skill);
-
                 Level level = new Level();
-                level.setId(resultSet.getInt("level_id"));
+
+                level_skills.setId(resultSet.getInt("id"));
                 level_skills.setLevel(level);
+                skill.setName(resultSet.getString("name"));
+                level.setName(resultSet.getString("type"));
+                level_skills.setSkill(skill);
+                level_skills.setLevel(level);
+
                 list.add(level_skills);
             }
             JDBC.closeConnection(connection);
@@ -152,5 +142,41 @@ public class Level_SkillDAO {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public void insertLevelSkill(String accountId, int lsId) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "INSERT INTO [dbo].[Mentor_Level_Skill]\n" +
+                    "           ([mentor_id]\n" +
+                    "           ,[skill_level_id])\n" +
+                    "     VALUES\n" +
+                    "           (?\n" +
+                    "           ,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(2, lsId);
+            preparedStatement.setString(1, accountId);
+            preparedStatement.executeUpdate();
+            JDBC.closeConnection(connection);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void updateMentorSkill(String accountId, int lsId) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "UPDATE [dbo].[Mentor_Level_Skill]\n" +
+                    "   SET [skill_level_id] = ?\n" +
+                    " WHERE mentor_id = ?";
+            assert connection != null;
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, lsId);
+            preparedStatement.setString(2, accountId);
+            preparedStatement.executeUpdate();
+            JDBC.closeConnection(connection);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

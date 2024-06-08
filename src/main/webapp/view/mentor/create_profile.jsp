@@ -103,17 +103,16 @@
                     </div>
                     <div class="skill">
                         <div class="row">
-                            <c:forEach items="${requestScope.level}" var="l">
-                                <div class="col-4">
-                                        <div class="level">
-                                                ${l.name}
-                                        </div>
-                                    <div>
-                                        <c:forEach items="${requestScope.skill}" var="s">
-                                            <input type="checkbox" name="${s.id}">
-                                            ${s.name}
-                                        </c:forEach>
-                                    </div>
+                            <c:forEach items="${requestScope.levels}" var="l">
+                                <div class="col-md-4">
+                                    <div>${l.name}</div>
+                                    <c:forEach items="${requestScope.level_skills}" var="ls">
+                                        <c:if test="${ls.level.name == l.name}">
+                                            <label>
+                                                <input type="checkbox" value="${ls.id}" name="level_skill">${ls.skill.name}
+                                            </label>
+                                        </c:if>
+                                    </c:forEach>
                                 </div>
                             </c:forEach>
                         </div>
