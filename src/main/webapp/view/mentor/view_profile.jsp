@@ -356,7 +356,7 @@
                     <div class="skills-container">
                         <c:forEach items="${requestScope.level_skills}" var="s">
                             <div class="skill-item">
-                                <img class="icon-skill" src="${pageContext.request.contextPath}${s.skill.src_icon}" alt="${s.skill.name}">
+                                <img class="icon-skill" src="${pageContext.request.contextPath}/${s.skill.src_icon}" alt="${s.skill.name}">
                                 <span class="skill-name">${s.skill.name}</span> : <span class="skill-level">${s.level.name}</span>
                             </div>
                         </c:forEach>
@@ -464,7 +464,7 @@
                     <c:forEach items="${requestScope.level_skills}" var="s">
                         <div class="skill-item">
 
-                            <img class="icon-skill" src="Frog/${s.skill.src_icon}" alt="${s.skill.name}">
+                            <img class="icon-skill" src="${pageContext.request.contextPath}/${s.skill.src_icon}" alt="${s.skill.name}">
                             <span class="skill-name">${s.skill.name}</span> : <span class="skill-level">${s.level.name}</span>
                         </div>
                     </c:forEach>
