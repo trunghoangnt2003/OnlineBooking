@@ -83,7 +83,7 @@ public class Level_SkillDAO {
         try {
             Connection connection = JDBC.getConnection();
             String sql = "Select ls.id, ls.description, ls.skill_id, s.name as skill, s.src_icon,\n" +
-                    "                  s.cate_id,sc.name as category, ls.level_id,l.type\n" +
+                    "                  s.cate_id,sc.name as category, ls.level_id,l.type,ls.status_id\n" +
                     "                    From Level_Skill ls Join Skill s On ls.skill_id = s.id\n" +
                     "                    Join Skill_Category sc On s.cate_id = sc.id\n" +
                     "\t\t\t\t\tjoin Level l on l.id=ls.level_id\n" +
@@ -96,7 +96,7 @@ public class Level_SkillDAO {
                 Level_Skills level_skills = new Level_Skills();
                 level_skills.setId(resultSet.getInt("id"));
                 level_skills.setDescription(resultSet.getString("description"));
-
+                level_skills.setStatus(resultSet.getInt("status_id"));
                 Skill skill = new Skill();
                 skill.setId(resultSet.getInt("skill_id"));
                 skill.setName(resultSet.getString("skill"));
@@ -332,6 +332,23 @@ public class Level_SkillDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, lsId);
             preparedStatement.setString(2, accountId);
+            preparedStatement.executeUpdate();
+            JDBC.closeConnection(connection);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void updateStatus( int id, int status) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "UPDATE [dbo].[Level_Skill]\n" +
+                    "   SET\n" +
+                    "      [status_id] = ?\n" +
+                    " WHERE id = ?";
+            assert connection != null;
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, status);
+            preparedStatement.setInt(2, id);
             preparedStatement.executeUpdate();
             JDBC.closeConnection(connection);
         } catch (SQLException e) {

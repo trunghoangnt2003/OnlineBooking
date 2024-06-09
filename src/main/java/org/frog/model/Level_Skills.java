@@ -8,7 +8,15 @@ public class Level_Skills {
     private Level level;
     private String description;
     private ArrayList<Mentor> mentors;
+    private int status;
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public int getId() {
         return id;
