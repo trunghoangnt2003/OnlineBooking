@@ -1,22 +1,14 @@
-package org.frog.controller.mentor;
+package org.frog.controller.Mentor;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.frog.DAO.Booking_ScheduleDAO;
-import org.frog.DAO.JDBC;
-import org.frog.DAO.MentorDAO;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.Account;
-import org.frog.model.BookingSchedule;
-import org.frog.model.Schedule;
-import org.frog.utility.DateTimeHelper;
-import org.hibernate.Session;
 
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
 
 @WebServlet("/mentor/schedule/update")
 public class UpdateScheduleController extends AuthenticationServlet {

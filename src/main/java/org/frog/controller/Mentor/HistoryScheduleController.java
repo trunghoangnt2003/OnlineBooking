@@ -1,7 +1,5 @@
-package org.frog.controller.mentor;
+package org.frog.controller.Mentor;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,7 +9,6 @@ import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.Account;
 import org.frog.model.Booking;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 

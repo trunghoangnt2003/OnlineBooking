@@ -370,7 +370,7 @@
             <div class="card mb-4 my-account">
                 <div class="card-body text-center">
                     <div>
-                        <img src="${pageContext.request.contextPath}${requestScope.mentor.account.avatar}" class="mb-3 img">
+                        <img src="${pageContext.request.contextPath}/${requestScope.mentor.account.avatar}" class="mb-3 img">
                         <div class="price">${requestScope.mentor.price} $/hour</div>
                     </div>
                     <h3>${requestScope.mentor.account.name}</h3>
@@ -418,7 +418,7 @@
         <button onclick="hideCV()" type="button" class="btn-close close" aria-label="Close"></button>
         <div class="info">
             <div class="left-info">
-                <img src="${pageContext.request.contextPath}${requestScope.mentor.account.avatar}" class="mb-3 img-cv">
+                <img src="${pageContext.request.contextPath}/${requestScope.mentor.account.avatar}" class="mb-3 img-cv">
                 <h5 class="name">Name: ${requestScope.mentor.account.name}</h5>
                 <hr style="margin-right: 23px">
                 <h5>Rating</h5>
@@ -463,7 +463,8 @@
                 <div class="skills-container">
                     <c:forEach items="${requestScope.level_skills}" var="s">
                         <div class="skill-item">
-                            <img class="icon-skill" src="${pageContext.request.contextPath}${s.skill.src_icon}" alt="${s.skill.name}">
+
+                            <img class="icon-skill" src="Frog/${s.skill.src_icon}" alt="${s.skill.name}">
                             <span class="skill-name">${s.skill.name}</span> : <span class="skill-level">${s.level.name}</span>
                         </div>
                     </c:forEach>

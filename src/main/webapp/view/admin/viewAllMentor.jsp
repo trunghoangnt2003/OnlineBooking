@@ -196,7 +196,7 @@
 
                             <td>${count}</td>
                             <c:set var="count" value="${count+1}"/>
-                            <td><a href="../mentor/profile?mentorid=${mentor.account.id}">${mentor.account.id}</a> <!-- The button used to copy the text --></td>
+                            <td><a target="_blank" href="../mentor/profile?mentorid=${mentor.account.id}">${mentor.account.id}</a> <!-- The button used to copy the text --></td>
                             <td>${mentor.account.name}</td>
                             <td>${mentor.account.userName}</td>
                             <td style="justify-items: center;">
