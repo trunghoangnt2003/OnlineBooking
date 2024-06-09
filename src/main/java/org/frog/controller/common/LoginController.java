@@ -39,6 +39,12 @@ public class LoginController extends HttpServlet {
                 req.setAttribute("warningLogin", warningLogin);
                 req.getRequestDispatcher(url).forward(req, res);
             }
+            if (account.getStatus().getId() == StatusEnum.BAN) {
+                url = "view/public/signin.jsp";
+                warningLogin = "Your account has been banned, please contact the system to get support.";
+                req.setAttribute("warningLogin", warningLogin);
+                req.getRequestDispatcher(url).forward(req, res);
+            }
             HttpSession session = req.getSession();
             session.setAttribute("account", account);
 

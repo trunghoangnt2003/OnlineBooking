@@ -1,5 +1,9 @@
 package org.frog.model;
 
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 public class Week {
     private String dayOfWeek;
     private String dayOfMonth;
@@ -26,5 +30,16 @@ public class Week {
 
     public void setDayOfMonth(String dayOfMonth) {
         this.dayOfMonth = dayOfMonth;
+    }
+    public static Date convertStringToDateByDay(String dateString) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date utilDate;
+        try {
+            utilDate = sdf.parse(dateString);
+            return new Date(utilDate.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

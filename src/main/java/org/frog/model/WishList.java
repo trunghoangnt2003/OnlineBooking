@@ -4,17 +4,30 @@ import java.util.Date;
 import java.util.List;
 
 public class WishList {
+    private int id;
     private Mentor mentor;
     private Mentee mentee;
     private Date timeRequest;
-    private int status;
+    private Status status;
 
-    public WishList(Mentor mentor, Mentee mentee) {
+
+    public WishList(int id, Mentor mentor, Mentee mentee, Date timeRequest, Status status) {
+        this.id = id;
         this.mentor = mentor;
         this.mentee = mentee;
+        this.timeRequest = timeRequest;
+        this.status = status;
     }
 
     public WishList() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Mentor getMentor() {
@@ -41,11 +54,11 @@ public class WishList {
         this.timeRequest = timeRequest;
     }
 
-    public int getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 }

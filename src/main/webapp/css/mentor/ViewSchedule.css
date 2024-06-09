@@ -1,40 +1,20 @@
 /* CSS cho bảng */
-
-table {
-    flex-grow: 1;
-    width: 70%;
-    height: 100%;
-    border-collapse: collapse; /* Loại bỏ khoảng cách giữa các ô */
-    margin: 50px auto;
-    border: 1px solid #999999;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+.container{
+    display: flex;
+    justify-content: space-around;
 }
+
+
 body{
     background-color: rgb(245, 245, 245);
 }
-/* CSS cho các ô bảng */
-td {
-    border: 1px solid #999999; /* Viền ô có độ dày 1px và màu đen */
-}
-
-/* CSS cho ô bảng đầu tiên của mỗi hàng */
-td:first-child {
-    font-weight: bold; /* In đậm nội dung của ô đầu tiên */
-    background-color: #E6E6FA; /* Màu nội dựa cho ô bảng đầu tiên */
-}
-
-/* CSS cho ô bảng có nội dung là "Free" */
-.free {
-    background-color: #9ACD32; /* Màu nền xanh lá cây */
-    color: #FFF; /* Màu chữ trắng */
-
-}
-
-/* CSS cho ô bảng có nội dung là "Work" */
-.work {
-    background-color: #FF6347; /* Màu nền đỏ */
-    color: #FFF; /* Màu chữ trắng */
+.filter-box {
+    border: 0 solid #000;
+    border-radius: 8px;
+    padding: 10px;
+    width: 300px;
+    height: 300px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 .dayOfWeek{
     font-weight: bold;
@@ -60,7 +40,7 @@ td:first-child {
     z-index: 1; /* Sit on top */
     left: 0;
     top: 0;
-    width: 80%; /* Full width */
+    width: 100%; /* Full width */
     height: 80%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
@@ -81,9 +61,36 @@ td:first-child {
 
 
 }
+.modal-content2 {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 100px 200px;
+    border: 1px solid #888;
+    border-radius: 10px
 
+
+}
+.modal-content-time {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 100px;
+    border: 1px solid #888;
+    border-radius: 10px
+
+
+}
 /* The Close Button */
 .close {
+    margin-top: -100px;
+    margin-left: 900px;
     color: #aaa;
     float: right;
     font-size: 28px;
@@ -96,8 +103,8 @@ td:first-child {
     text-decoration: none;
     cursor: pointer;
 }
-#myBtn {
-    background-color: #42509e; /* Green background */
+#myBtn ,#confirmBtn2 ,#absentBtn2{
+    background-color: #07AD90; /* Green background */
     border: none; /* Remove borders */
     color: white; /* White text */
     padding: 15px 49px; /* Add some padding */
@@ -110,8 +117,8 @@ td:first-child {
     cursor: pointer; /* Add a pointer cursor on hover */
     border-radius: 12px; /* Rounded corners */
 }
-#myBtn2 {
-    background-color: #42509e; /* Green background */
+#myBtn2,#confirmBtn ,#absentBtn{
+    background-color: #07AD90; /* Green background */
     border: none; /* Remove borders */
     color: white; /* White text */
     padding: 15px 32px; /* Add some padding */
@@ -124,13 +131,27 @@ td:first-child {
     cursor: pointer; /* Add a pointer cursor on hover */
     border-radius: 12px; /* Rounded corners */
 }
-
-#myBtn:hover, #myBtn2:hover {
+#myBtn3{
+    background-color: #07AD90; /* Green background */
+    border: none; /* Remove borders */
+    color: white; /* White text */
+    padding: 15px 24px; /* Add some padding */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Make the container inline */
+    font-size: 16px; /* Increase font size */
+    margin: 4px 2px; /* Add some margin */
+    transition-duration: 0.4s; /* Add transition effect */
+    cursor: pointer; /* Add a pointer cursor on hover */
+    border-radius: 12px; /* Rounded corners */
+}
+#myBtn:hover, #myBtn2:hover ,#myBtn3:hover{
     background-color: white; /* White background on hover */
     color: black; /* Black text on hover */
     border: 2px solid #42509e; /* Green border on hover */
 }
 .closeInfo {
+    margin-left: 1250px;
     color: #aaa;
     float: right;
     font-size: 28px;
@@ -142,22 +163,6 @@ td:first-child {
     color: black;
     text-decoration: none;
     cursor: pointer;
-}
-.request-list {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-.request-list th, .request-list td {
-    padding: 8px;
-    text-align: left;
-    border: 1px solid #ddd;
-}
-.request-list th {
-    background-color: #f4f4f4;
-}
-.request-list tr:nth-child(even) {
-    background-color: #f9f9f9;
 }
 
 button[name="accept"] {
@@ -184,7 +189,7 @@ a.button {
 .button.reject {
     background-color: red;
 }
-
+/*css cho chinh ngay*/
 .styled-date {
     display: block;
     margin: 10px 0;
@@ -201,25 +206,349 @@ a.button {
     outline: none;
     box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
 }
-
+/*---------------*/
 label {
     font-size: 16px;
     font-weight: bold;
 }
-.error-message {
-    color: #721c24;
-    background-color: #f8d7da;
+
+#button-schedule-td{
+    border: none;
+    border-radius: 5px;
+    padding: 60px 60px;
+}
+#button-schedule-td2{
+    border: none;
+    border-radius: 5px;
+    padding: 30px 40px;
+}
+#button-schedule-td3{
+    border: none;
+    border-radius: 5px;
+    padding: 50px 50px;
+    margin-left: -7px;
+    margin-top: -7px;
+}
+#button-schedule-td1{
+    border: none;
+    border-radius: 5px;
+    padding: 38px 29px;
+    margin-left: -18px;
+    margin-top: -45px;
+}
+/*css cho bang*/
+table{
+    /*border: 2px #07AD90 solid;*/
+    /*box-shadow: #aaaaaa 0px 0px 10px;*/
+    flex-grow: 1;
+    max-width: 100%;
+    max-height: 100%;
+    border-collapse: collapse; /* Loại bỏ khoảng cách giữa các ô */
+    margin: 50px auto;
+    border: 1px solid #999999;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    overflow: auto;
+}
+
+thead tr th {
+    border-left: 1px #07AD90 solid;
+    text-align: center;
+
+}
+thead{
+    border-bottom: 2px #07AD90 solid;
+}
+
+tbody td {
+    border: 1px #07AD90 solid;
+    width: 110px;
+    height: 110px;
+}
+td:first-child{
+    font-weight: bold;
+    background-color: rgb(230, 230, 250);
+    border-color: inherit;
+    border-style: solid;
+    border-width: 0;
+}
+th:first-child{
+    font-weight: bold;
+    background-color: rgb(230, 230, 250);
+}
+/*css cho note*/
+.notes-container {
+    margin: 10px;
+    position: relative;
+}
+
+
+.pin {
+    background-color: #aaa;
+    display: block;
+    height: 20px;
+    width: 2px;
+    position: absolute;
+    left: 10%;
+    top: -10px;
+    z-index: 1;
+}
+
+.pin:after {
+    background-color: #A31;
+    /*background-image: radial-gradient(25% 25%,circle, hsla(0,0%,100%,.3), hsla(0,0%,0%,.3));*/
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px hsla(0,0%,0%,.1), inset 3px 3px 3px hsla(0,0%,100%,.2), inset -3px -3px 3px hsla(0,0%,0%,.2), 23px 20px 3px hsla(0,0%,0%,.15);
+    content: '';
+    height: 12px;
+    left: -5px;
+    position: absolute;
+    top: -10px;
+    width: 12px;
+}
+
+.pin:before {
+    background-color: hsla(0,0%,0%,0.1);
+    box-shadow: 0 0 .25em hsla(0,0%,0%,.1);
+    content: '';
+
+    height: 22px;
+    width: 2px;
+    left: 0;
+    position: absolute;
+    top: 8px;
+
+    transform: rotate(57.5deg);
+    -moz-transform: rotate(57.5deg);
+    -webkit-transform: rotate(57.5deg);
+    -o-transform: rotate(57.5deg);
+    -ms-transform: rotate(57.5deg);
+
+    transform-origin: 50% 100%;
+    -moz-transform-origin: 50% 100%;
+    -webkit-transform-origin: 50% 100%;
+    -ms-transform-origin: 50% 100%;
+    -o-transform-origin: 50% 100%;
+}
+
+.notes {
+    color: #333;
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
     padding: 10px;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    margin: 90px 0;
+    font-family: Satisfy;
+    font-size: 16px;
+    box-shadow: 0 10px 10px 2px rgba(0, 0, 0, 0.3);
 }
-.time-settings{
-    margin-bottom: -250px;
-    margin-top: 130px;
-
+.yellow {
+    background: #FFFFE0;
+    -webkit-transform: rotate(2deg);
+    -moz-transform: rotate(2deg);
+    -o-transform: rotate(2deg);
+    -ms-transform: rotate(2deg);
+    transform: rotate(2deg);
 }
-.table-settings{
-    margin-left: 100px;
+.red {
+    background: #FAAD12FF;
+    -webkit-transform: rotate(2deg);
+    -moz-transform: rotate(2deg);
+    -o-transform: rotate(2deg);
+    -ms-transform: rotate(2deg);
+    transform: rotate(2deg);
+}
+.green{
+    background: #20B2AA;
+    -webkit-transform: rotate(2deg);
+    -moz-transform: rotate(2deg);
+    -o-transform: rotate(2deg);
+    -ms-transform: rotate(2deg);
+    transform: rotate(2deg);
+}
+.grey{
+    background: #aaaaaa;
+    -webkit-transform: rotate(2deg);
+    -moz-transform: rotate(2deg);
+    -o-transform: rotate(2deg);
+    -ms-transform: rotate(2deg);
+    transform: rotate(2deg);
+}
+/* css cho table booking*/
+.request-list {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+.request-list th, .request-list td {
+    width: 100px;
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+.request-list th {
+    background-color: #f4f4f4;
+}
+.request-list tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+/* css cho table booking detail*/
+.info-card   {
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    width: 330px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+}
 
+.info-card .info-card1 ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.info-card .info-card1 li {
+    margin: 10px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.info-card .info-card1 li span {
+    font-weight: bold;
+    color: #555;
+}
+
+.info-card .info-card1 ul + ul {
+    margin-top: 20px;
+}
+.info-card1   {
+    border: 1px solid #ccc;
+    padding: 80px 20px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    width: 500px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+}
+/*-----------------*/
+.container-card {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 50px;
+}
+
+.form-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-check input[type="radio"] {
+    margin-right: 10px;
+}
+
+.form-check-label {
+    font-weight: bold;
+}
+
+#selectDOW {
+    margin-bottom: 10px;
+}
+
+.selectSlot input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.submit-button  {
+    position: absolute;
+    margin-top: 250px;
+    margin-left: -220px;
+    background-color: #07AD90;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-button2  {
+    position: absolute;
+    margin-top: -160px;
+    margin-left: 370px;
+    background-color: #07AD90;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+}
+.submit-button2:hover {
+    background-color: #0056b3;
+}
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.checkbox-container label {
+    font-weight: normal;
+}
+
+.select-container {
+    margin-bottom: 5px;
+}
+/*---------------*/
+.booking-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+}
+
+/* Styling for the list items */
+.booking-item {
+    width: 50%;
+    background-color: rgb(176, 237, 215); /* Light background color */
+    margin-bottom: 10px; /* Space between items */
+    padding: 10px; /* Padding inside the list items */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    display: flex; /* Flexbox for potential icon/text alignment */
+    align-items: center; /* Center items vertically */
+    font-size: 14px; /* Font size */
+}
+
+.booking-item:last-child {
+    margin-bottom: 0; /* Remove margin from the last item */
+}
+
+/* Optional: Styling for an icon within the list items */
+.booking-item i {
+    margin-right: 10px; /* Space between icon and text */
+    color: #07AD90; /* Icon color */
+}
+
+/* Styling for hidden input within list items */
+.booking-item input[type="text"] {
+    display: none; /* Hide the input element */
+}
+
+/* Styling for text content within list items */
+.booking-item span {
+    flex-grow: 1; /* Allow text to grow and fill the space */
 }

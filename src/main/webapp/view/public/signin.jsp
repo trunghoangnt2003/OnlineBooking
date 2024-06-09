@@ -92,7 +92,7 @@
     };
     <c:if test="${requestScope.warningLogin!=null}">
     window.onload = function() {
-        Swal.fire({
+            Swal.fire({
             icon: "error",
             title: "Oops...",
             text: "${requestScope.warningLogin}",

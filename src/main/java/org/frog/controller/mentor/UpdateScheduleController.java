@@ -4,12 +4,15 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.frog.DAO.Booking_ScheduleDAO;
+import org.frog.DAO.JDBC;
 import org.frog.DAO.MentorDAO;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.Account;
 import org.frog.model.BookingSchedule;
 import org.frog.model.Schedule;
-import org.frog.utility.MentorUtils.DateTimeHelper;
+import org.frog.utility.DateTimeHelper;
+import org.hibernate.Session;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -27,60 +30,34 @@ public class UpdateScheduleController extends AuthenticationServlet {
 
         try {
             String opt = req.getParameter("option");
-            String start = req.getParameter("start");
-            String end = req.getParameter("end");
-            String id = req.getParameter("id");
-            String menteeID = req.getParameter("menteeID");
-            if(start == null && end == null && id == null && opt == null ){
-                req.setAttribute("errorNull", "the data is null please enter data again");
-                req.getRequestDispatcher("/view/mentor/schedule/ViewSchedule.jsp").forward(req, resp);
+            String bookingID = req.getParameter("bookingID");
+            Booking_ScheduleDAO bsDAO = new Booking_ScheduleDAO();
+            if(opt.equals("true")){
+                 boolean checkDBs = bsDAO.updateScheduleBookings(Integer.parseInt(bookingID), 11);
+                 if(checkDBs){
+                     bsDAO.updateBooking(Integer.parseInt(bookingID), 11);
+                     req.getSession().setAttribute("updateStatus", "schedule confirmed");
+                     resp.sendRedirect("/Frog/mentor/schedule");
+                 }
+                 else{
+                     req.getSession().setAttribute("updateStatus", "schedule not confirmed");
+                     resp.sendRedirect("/Frog/mentor/schedule");
+                 }
             }else{
-                if(opt.equals("true")){
-                    Timestamp startT = Timestamp.valueOf(start);
-                    Timestamp endT = Timestamp.valueOf(end);
-                    MentorDAO mentorDAO = new MentorDAO();
-                    BookingSchedule bs = new BookingSchedule();
-                    bs = mentorDAO.getBookNScheID(startT, endT, id,menteeID);
-                    if(bs.getSchedule().getStatus() == true){
-                        mentorDAO.updateBusyMentorSchedule(bs.getSchedule().getId());
-                        mentorDAO.updateResultsForMenteeRequest(bs.getBooking().getId(),3);
-                        req.getSession().removeAttribute("existError");
-
-                        resp.sendRedirect("/Frog/mentor/schedule");
-                    }
-                    else{
-                        int bookingID = bs.getSchedule().getId();
-                        ArrayList<Schedule> menteeBookedTime = new ArrayList<>();
-                        menteeBookedTime = mentorDAO.getBookedScheduleMentee(id,bookingID);
-                       boolean check = DateTimeHelper.compareTimeMenteeBook(menteeBookedTime,startT,endT);
-                       if(check == true){
-                           mentorDAO.updateResultsForMenteeRequest(bs.getBooking().getId(),3);
-                           req.getSession().removeAttribute("existError");
-
-                           resp.sendRedirect("/Frog/mentor/schedule");
-                       }
-                       else{
-                           req.getSession().setAttribute("existError", "This time is not free. Please add free time or reject.");
-                           resp.sendRedirect("/Frog/mentor/schedule");
-
-
-                       }
-                    }
-
+                boolean checkDBs = bsDAO.deleteScheduleBookings(Integer.parseInt(bookingID));
+                if(checkDBs){
+                    bsDAO.updateBooking(Integer.parseInt(bookingID), 2);
+                    req.getSession().setAttribute("rejectStatus", "schedule rejected");
+                    resp.sendRedirect("/Frog/mentor/schedule");
                 }
-               else{
-                    Timestamp startT = Timestamp.valueOf(start);
-                    Timestamp endT = Timestamp.valueOf(end);
-                    MentorDAO mentorDAO = new MentorDAO();
-                    BookingSchedule bs = new BookingSchedule();
-                    bs = mentorDAO.getBookNScheID(startT, endT, id,menteeID);
-                    mentorDAO.updateResultsForMenteeRequest(bs.getBooking().getId(),2);
-                    req.getSession().removeAttribute("existError");
+                else{
+                    req.getSession().setAttribute("rejectStatus", "schedule not rejected");
                     resp.sendRedirect("/Frog/mentor/schedule");
                 }
             }
-        } catch (Exception e) {
+        }catch (Exception e){
             e.printStackTrace();
         }
+
     }
 }

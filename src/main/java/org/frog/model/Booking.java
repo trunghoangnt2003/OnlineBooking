@@ -2,12 +2,13 @@ package org.frog.model;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 public class Booking {
     private int id;
     private Status status;
-    private float amount;
-    private Date date;
+    private int amount;
+    private Timestamp date;
     private Mentor mentor;
     private Mentee mentee;
     private Date startDate;
@@ -15,7 +16,8 @@ public class Booking {
     private String description;
     private Level_Skills level_skills;
 
-    public Booking(int id, Status status, float amount, Date date, Mentor mentor, Mentee mentee, Date startDate, Date endDate) {
+
+    public Booking(int id, Status status, int amount, Timestamp date, Mentor mentor, Mentee mentee, Date startDate, Date endDate) {
         this.id = id;
         this.status = status;
         this.amount = amount;
@@ -61,19 +63,19 @@ public class Booking {
         this.status = status;
     }
 
-    public float getAmount() {
+    public int getAmount() {
         return amount;
     }
 
-    public void setAmount(float amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 
-    public Date getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 
@@ -109,4 +111,6 @@ public class Booking {
     public void setLevel_skills(Level_Skills level_skills) {
         this.level_skills = level_skills;
     }
+
+
 }

@@ -38,6 +38,7 @@ public class AccountDAO {
             }
             JDBC.closeConnection(connection);
         } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
         return list;
     }
@@ -46,7 +47,7 @@ public class AccountDAO {
         Account account = null;
         try {
             Connection connection = JDBC.getConnection();
-            String sql = "select * from [Account]"
+            String sql = "select * from [account]"
                     + "where [username]=? AND [password]=?";
             assert connection != null;
             PreparedStatement preparedStatement = connection.prepareCall(sql);
@@ -83,6 +84,7 @@ public class AccountDAO {
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
+                System.out.println(resultSet.getString("mail"));
                 String id = resultSet.getString("id");
                 String name = resultSet.getString("name");
                 String avatar = resultSet.getString("avatar");
@@ -99,6 +101,7 @@ public class AccountDAO {
                 user.setName(name);
                 user.setAvatar(avatar);
                 user.setRole(new Role(role,""));
+                System.out.println(user.getRole().getId());
             }
             JDBC.closeConnection(connection);
         } catch (SQLException ignored) {
@@ -193,6 +196,22 @@ public class AccountDAO {
         }
         return null;
     }
+    public boolean checkExitsId (String id) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "select * from Account where id = ?";
+            PreparedStatement preparedStatement = connection.prepareCall(sql);
+            preparedStatement.setString(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+
+                return false;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return true;
+    }
     // add thuoc tinh can dang ki
     public int register() {
         int kq = 0;
@@ -272,8 +291,8 @@ public class AccountDAO {
             kq = preparedStatement.executeUpdate();
 
             JDBC.closeConnection(connection);
-        } catch (SQLException ignored) {
-            System.out.println(ignored.getMessage());
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
         return kq;
     }
@@ -302,9 +321,12 @@ public class AccountDAO {
             PreparedStatement preparedStatement = null;
             if (connection != null) {
                 preparedStatement = connection.prepareStatement(sql);
+                System.out.println("pass 1");
                 preparedStatement.setString(1, newPass);
                 preparedStatement.setString(2, email);
+                System.out.println("pass 2");
                 preparedStatement.executeUpdate();
+                System.out.println("pass 3");
                 JDBC.closeConnection(connection);
             }
 
@@ -320,10 +342,35 @@ public class AccountDAO {
                     + "where mail= ?\n";
             PreparedStatement preparedStatement = null;
             if (connection != null) {
+                System.out.println("update status 1 ");
                 preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setInt(1, status);
                 preparedStatement.setString(2, email);
+                System.out.println("update status 2");
                 preparedStatement.executeUpdate();
+                System.out.println("update status 3");
+            }
+
+            JDBC.closeConnection(connection);
+        } catch (SQLException ignored) {
+            System.out.println(ignored.getMessage());
+        }
+    }
+    public void updateStatusById(String id,int status) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "update [account]\n"
+                    + "set status= ?\n"
+                    + "where id= ?\n";
+            PreparedStatement preparedStatement = null;
+            if (connection != null) {
+
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, status);
+                preparedStatement.setString(2, id);
+
+                preparedStatement.executeUpdate();
+
             }
 
             JDBC.closeConnection(connection);
