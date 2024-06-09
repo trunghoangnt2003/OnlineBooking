@@ -13,10 +13,10 @@ import java.util.ArrayList;
 
 
 @WebServlet("/Home")
-public class HomeController extends AuthenticationServlet {
+public class HomeController extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         MentorDAO mentorDAO = new MentorDAO();
         ArrayList<Mentor> mentors = mentorDAO.getAllMentorFollowRate();
         req.setAttribute("mentor", mentors);
@@ -24,7 +24,7 @@ public class HomeController extends AuthenticationServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
     }
 

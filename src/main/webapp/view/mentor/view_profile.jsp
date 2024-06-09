@@ -171,6 +171,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 1000;
+            padding: 10px 20px;
         }
         .overlay {
             display: none; /* Initially hidden */
@@ -507,5 +508,10 @@
         window.location.href = "http://localhost:8080/Frog/mentor/update_profile";
     }
 </script>
+<!-- MDB -->
+<script
+        type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.0/mdb.umd.min.js"
+></script>
 </body>
 </html>

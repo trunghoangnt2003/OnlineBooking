@@ -10,6 +10,44 @@ import java.util.ArrayList;
 
 public class Level_SkillDAO {
 
+    public ArrayList<Level_Skills> getLevel_SkillList() {
+        ArrayList<Level_Skills> list = new ArrayList<>();
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "Select ls.id, ls.description, ls.skill_id, s.name as skill, s.src_icon,\n" +
+                    "\t\ts.cate_id,sc.name as category, ls.level_id\n" +
+                    "From Level_Skill ls Join Skill s On ls.skill_id = s.id\n" +
+                    "\t\tJoin Skill_Category sc On s.cate_id = sc.id";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Level_Skills level_skills = new Level_Skills();
+                level_skills.setId(resultSet.getInt("id"));
+                level_skills.setDescription(resultSet.getString("description"));
+
+                Skill skill = new Skill();
+                skill.setId(resultSet.getInt("skill_id"));
+                skill.setName(resultSet.getString("skill"));
+                skill.setSrc_icon(resultSet.getString("src_icon"));
+
+                Category category = new Category();
+                category.setId(resultSet.getInt("cate_id"));
+                category.setName(resultSet.getString("category"));
+                skill.setCategory(category);
+                level_skills.setSkill(skill);
+
+                Level level = new Level();
+                level.setId(resultSet.getInt("level_id"));
+                level_skills.setLevel(level);
+
+                list.add(level_skills);
+            }
+            JDBC.closeConnection(connection);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
     public ArrayList<Level_Skills> getAllLevel_SkillList() {
         ArrayList<Level_Skills> list = new ArrayList<>();
