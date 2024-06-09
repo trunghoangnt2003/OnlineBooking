@@ -31,7 +31,6 @@ public class DeleteScheduleController extends AuthenticationServlet {
                 Slot id = slDAO.getTimeSlot(Integer.parseInt(infoSlotID[1]));
                 if(DateTimeHelper.compareDayIDtoNow(infoSlotID[0], id.getStart_at(), id.getEnd_at())){
                     scheduleDAO.deleteDayFreeByMentor(account.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]));
-
                 }
                 else{
                     req.getSession().setAttribute("DeleteSlotError", "Can not delete slot in passed");

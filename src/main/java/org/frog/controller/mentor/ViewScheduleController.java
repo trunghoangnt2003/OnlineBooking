@@ -56,18 +56,18 @@ public class ViewScheduleController extends AuthenticationServlet {
                 req.setAttribute("bookInfo", bookInfo);
 
             }
-            String slotID = req.getParameter("slotID");
-            if (slotID != null) {
-                String[] infoSlotID = slotID.split("_");
-                SlotDAO slDAO = new SlotDAO();
-                Slot id = slDAO.getTimeSlot(Integer.parseInt(infoSlotID[1]));
-                if (DateTimeHelper.compareDayIDtoNow(infoSlotID[0], id.getStart_at(), id.getEnd_at())) {
-                    scheduleDAO.insertDayFreeByMentor(account.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]));
-
-                } else {
-                    req.getSession().setAttribute("AddSlotError", "slot in passed");
-                }
-            }
+//            String slotID = req.getParameter("slotID");
+//            if (slotID != null) {
+//                String[] infoSlotID = slotID.split("_");
+//                SlotDAO slDAO = new SlotDAO();
+//                Slot id = slDAO.getTimeSlot(Integer.parseInt(infoSlotID[1]));
+//                if (DateTimeHelper.compareDayIDtoNow(infoSlotID[0], id.getStart_at(), id.getEnd_at())) {
+//                    scheduleDAO.insertDayFreeByMentor(account.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]));
+//
+//                } else {
+//                    req.getSession().setAttribute("AddSlotError", "slot in passed");
+//                }
+//            }
 
             slots = scheduleDAO.getSlots();
             schedules = scheduleDAO.getSchedulesByIDnDay(account.getId(), DateTimeHelper.convertStringToDateByDay(weeks.get(0).getDayOfMonth()), DateTimeHelper.convertStringToDateByDay(weeks.get(6).getDayOfMonth()));

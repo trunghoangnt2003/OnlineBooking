@@ -55,7 +55,6 @@
         <!-- Nút mở modal mới -->
         <button id="myBtn2">View Request</button>
         <button id="myBtn3" onclick="history_request()">History Request</button>
-
         <c:if test="${param.viewID != null}">
             <div>
                 <h5 style="text-align: center; color: #07AD90;width: 50%;">Slot Detail </h5>
@@ -323,10 +322,8 @@
                                                     data-schedule-id="${week.dayOfMonth}_${t.id}"
                                                     data-today-id="${week.dayOfMonth}"
                                                     style=" background: transparent; "
-                                                    data-set-error="${sessionScope.DeleteSlotError}"
                                                     onclick="deleteFreeDay()">
                                             </button>
-
                                         </blockquote>
                                     </div>
                                 </c:when>
@@ -369,6 +366,10 @@
             </c:forEach>
             </tbody>
         </table>
+            <%--lay ra session cho delete--%>
+        <input type="hidden" id="deleteButtonSession" value="${sessionScope.DeleteSlotError}">
+
+
 
         <div id="tdModal" class="modal">
             <!-- Modal content -->
@@ -536,7 +537,7 @@
                         var today = this.getAttribute('data-today-id');
                         localStorage.setItem('isSuccess', 'yes');
 
-                        newURL = "schedule?slotID=" + slotID + "&today=" + today;
+                        newURL = "schedule/insert?slotID=" + slotID + "&today=" + today;
 
 
                         // Redirect to the new URL
@@ -597,7 +598,7 @@
         }
         ;
     }
-    var errorDelete = document.getElementById('button-schedule-td3').getAttribute('data-set-error');
+    var errorDelete = document.getElementById('deleteButtonSession').value;
     if (errorDelete) {
         localStorage.removeItem('isDelete');
         localStorage.setItem('failToDelete', errorDelete);
@@ -781,6 +782,7 @@
     }
     // set free day
     window.onload = function () {
+
         var isSuccess = localStorage.getItem('isSuccess');
         // Nếu modal được lưu là mở, mở modal
         var isDelete = localStorage.getItem('isDelete');
@@ -880,7 +882,6 @@
             localStorage.removeItem('isAbsent');
         }
         removeSession();
-
     };
     const history_request = () => {
         window.location.href = 'schedule/history';
