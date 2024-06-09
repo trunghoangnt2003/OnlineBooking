@@ -38,6 +38,7 @@ public class ViewScheduleController extends AuthenticationServlet {
             ScheduleDAO scheduleDAO = new ScheduleDAO();
             Booking_ScheduleDAO bs = new Booking_ScheduleDAO();
             ArrayList<Booking> bookings = new ArrayList<>();
+
             if (day == null) {
                 LocalDate date = LocalDate.now();
                 day = DateTimeHelper.convertDateToString(date);
