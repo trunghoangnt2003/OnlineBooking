@@ -27,16 +27,30 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mentor/createcv.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mentor/create_profile.css">
 </head>
 <body>
 <jsp:include page="../common/header.jsp"></jsp:include>
 <div class="container mt-4">
     <div class="box frame row">
-        <div class="avatar col-md-3"><img src="${pageContext.request.contextPath}/img/profile.jpg" alt="image avatar"></div>
         <div class="form col-md-9">
             <div class="title">Create CV of Mentor</div>
-            <form action="createcv" method="post" onsubmit="return validateForm()">
+            <form action="create_profile" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
+                <div class="col-md-3">
+                    <div class="upload">
+                        <div class="img">
+                            <img id="avatar-preview" src="${pageContext.request.contextPath}/${requestScope.mentor.account.avatar}" alt="">
+                        </div>
+                        <div class="round">
+                            <input type="file" name="photo" id="file-input" onchange="previewImage();"/>
+                            <div class="camera">
+                                                        <label for="file-input" class="camera-icon">
+                                                            <i class="fa fa-camera fa-sm" style="color: white;"></i>
+                                                        </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
@@ -83,43 +97,63 @@
                         </div>
                         <div class="mb-3">
                             <label for="detail" class="form-label">Profile Detail:</label>
-                            <textarea class="form-control" id="detail" name="detail" rows="4" placeholder="Detail about yourself" required></textarea>
+                            <textarea class="form-control box-detail" id="detail" name="detail" rows="8" placeholder="Detail about yourself" required></textarea>
                         </div>
-                        <div class="mb-3">
-                            <label for="category" class="form-label">Category:</label>
-                            <select class="form-select" id="category" name="category" required>
-                                <c:forEach items="${requestScope.cate}" var="c">
-                                    <option value="${c.id}" ${c.id == param.category ? 'selected' : ''}>${c.name}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="skill" class="form-label">Skill:</label>
-                            <select class="form-select" id="skill" name="skill" required>
-                                <c:forEach items="${requestScope.skill}" var="s">
-                                    <option>${s.name}</option>
-                                </c:forEach>
-                            </select>
+
+                    </div>
+                    <div class="skill">
+                        <div class="row">
+                            <c:forEach items="${requestScope.levels}" var="l">
+                                <div class="col-md-4">
+                                    <div>${l.name}</div>
+                                    <c:forEach items="${requestScope.level_skills}" var="ls">
+                                        <c:if test="${ls.level.name == l.name}">
+                                            <label>
+                                                <input type="checkbox" value="${ls.id}" name="level_skill">${ls.skill.name}
+                                            </label>
+                                        </c:if>
+                                    </c:forEach>
+                                </div>
+                            </c:forEach>
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Save</button>
+                <div class="button">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
             </form>
         </div>
     </div>
 </div>
 <script>
     function validateForm() {
+        let image = document.getElementById('file-input').value.trim();
         let edu = document.getElementById('edu').value.trim();
         let price = document.getElementById('price').value.trim();
         let exp = document.getElementById('exp').value.trim();
         let detail = document.getElementById('detail').value.trim();
-        if (edu === '' || price === '' || exp === '' || detail === '') {
+        if (edu === '' || price === '' || exp === '' || detail === '' || image === '') {
             alert('Please fill out all required fields.');
             return false;
         }
         return true;
     }
+
+    function previewImage() {
+        const file = document.getElementById('file-input').files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                document.getElementById('avatar-preview').src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
 </script>
+<!-- MDB -->
+<script
+        type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.0/mdb.umd.min.js"
+></script>
 </body>
 </html>

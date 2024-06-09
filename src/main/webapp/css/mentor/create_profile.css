@@ -40,10 +40,21 @@
     font-weight: bold;
 }
 
-.mb-3 {
-    margin-bottom: 1rem;
+.button {
+    margin-top: 30px;
 }
 
-.btn {
-    margin-left: 35vw;
+.choose_skill {
+    font-weight: bold;
+    font-size: 15px;
+    color: grey;
+    margin-top: 10px;
+}
+
+.name_skill {
+    margin-top: 10px;
+}
+
+.box-detail {
+    height: 290px;
 }
