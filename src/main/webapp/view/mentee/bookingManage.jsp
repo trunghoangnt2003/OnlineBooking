@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>List of requests</title>
+    <title>Booking Manage</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
     <!-- Google Fonts -->
@@ -57,7 +57,7 @@
             <tbody>
             <c:forEach items="${requestScope.bookingList}" var="booking">
                 <tr>
-                    <td>${booking.mentor.account.name}</td>
+                    <td><a href="${pageContext.request.contextPath}/mentor/profile?mentorid=${booking.mentor.account.id}" >${booking.mentor.account.name}</a></td>
                     <td>${booking.amount}$</td>
                     <td>${booking.startDate}</td>
                     <td>${booking.endDate}</td>
@@ -91,7 +91,7 @@
             <tbody>
             <c:forEach items="${requestScope.bookingListC}" var="booking">
                 <tr>
-                    <td>${booking.mentor.account.name}</td>
+                    <td><a href="${pageContext.request.contextPath}/mentor/profile?mentorid=${booking.mentor.account.id}" >${booking.mentor.account.name}</a></td>
                     <td>${booking.amount}$</td>
                     <td>${booking.startDate}</td>
                     <td>${booking.endDate}</td>

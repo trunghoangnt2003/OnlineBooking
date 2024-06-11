@@ -27,7 +27,6 @@ public class BookingController extends AuthenticationServlet {
         req.setAttribute("bookingListC", bookingListC);
         req.setAttribute("bookingList", bookingList);
         String bookingID = req.getParameter("idb");
-        System.out.println("id b " + bookingID);
         if (bookingID != null) {
             try {
                 bookingDAO.deleteBooking(bookingID);
@@ -39,7 +38,7 @@ public class BookingController extends AuthenticationServlet {
             }
 
         }
-        req.getRequestDispatcher("../view/booking/bookingRequest.jsp").forward(req, resp);
+        req.getRequestDispatcher("../view/mentee/bookingManage.jsp").forward(req, resp);
     }
 
     @Override

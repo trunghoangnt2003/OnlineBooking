@@ -12,6 +12,7 @@ import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.*;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 @WebServlet("/mentor/profile")
@@ -36,12 +37,16 @@ public class ViewProfileController extends AuthenticationServlet {
                 ReviewDAO reviewDAO = new ReviewDAO();
                 ArrayList<Review> reviews = reviewDAO.getMenteeReviewByMentorId(mentorId);
                 WishListDAO dao = new WishListDAO();
+                //đếm booking
                 ArrayList<WishList> wishLists = dao.getWishListByMentorId(mentorId);
-
+                // list wishlist
+                ArrayList<WishList> wish = dao.getByMentorId(mentorId);
                 boolean isAuthor = false;
                 if(mentorId.equals(account.getId())){
                     isAuthor = true;
                 }
+                req.setAttribute("account", account);
+                req.setAttribute("list_follow", wish);
                 req.setAttribute("isAuthor", isAuthor);
                 req.setAttribute("numberFollower", wishLists.size());
                 req.setAttribute("level_skills", level_skills);
@@ -54,4 +59,6 @@ public class ViewProfileController extends AuthenticationServlet {
             throw new RuntimeException(e);
         }
     }
+
+
 }

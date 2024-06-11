@@ -34,16 +34,30 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <style>
+        .body{
+            display: flex;
+            margin: 60px 60px;
+            justify-content: space-between;
+
+        }
+
+        .left-side{
+            width: 16%;
+            margin-top: 10px;
+        }
+        .right-side{
+            width: 83%;
+        }
 
     </style>
 </head>
 <body>
 <jsp:include page="/view/common/header.jsp"></jsp:include>
-<div class="container">
-    <div>
+<div class="body">
+    <div class="left-side">
         <form action="schedule" method="GET" id="getForm">
             <div>
-                <label for="today">Select Date:</label>
+                <label for="today" style="color:#07AD90;">Select Date:</label>
                 <input type="date" class="styled-date" name="today" id="today" value="${param.today}"
                        data-viewID="${param.viewID}"
                        onchange="updateURL()">
@@ -74,7 +88,7 @@
             <div class="modal-content-time" style="width: 60%">
                 <span class="close" style="margin-left: 750px">&times;</span>
                 <!-- Form để gửi yêu cầu POST -->
-                <p style="font-weight: bold;">SET FREE DAY</p>
+                <h4 style="color:#07AD90;">Set free day</h4>
 
                 <div class="container-card">
                     <div class="form-container">
@@ -162,7 +176,7 @@
             <!-- Modal content -->
             <div class="modal-content" style="width: 80%">
                 <span class="closeInfo">&times;</span>
-                <p>Request List </p>
+                <h4 style="color: #07AD90" >Request List </h4>
                 <table class="request-list" style="width: 100%">
                     <tr>
                         <td>Number</td>
@@ -221,7 +235,8 @@
     </div>
 
 
-    <div>
+    <div class="right-side">
+        <h1 style="color: #07AD90" class="text-center">Time table </h1>
         <table>
             <thead>
             <tr>
@@ -291,7 +306,7 @@
                                     <div class="notes-container">
                                         <i class="pin"></i>
                                         <blockquote class="notes red">
-                                            <img width="30px" src="${pageContext.request.contextPath}${avatarSkill}" style="margin-bottom: 10px;">
+                                            <img width="30px" src="${pageContext.request.contextPath}/${avatarSkill}" style="margin-bottom: 10px;">
 
 
                                             <button id="button-schedule-td1" class="info-link"
@@ -373,40 +388,40 @@
 
         <div id="tdModal" class="modal">
             <!-- Modal content -->
-            <div class="modal-content2" style="width: 70%">
+            <div class="modal-content2">
                 <span class="close">&times;</span>
                 <!-- Your modal content here -->
-                <p style=" margin-left: -150px;">Schedule details</p>
-                <p> (Note: If the lesson has been finished,please confirm slot)</p>
-                <div style="display: block;order: 1;margin-left: -550px;">
+                <h4 style="color: #07AD90">Schedule details</h4>
+                <span style="color: red; font-size: 12px"> (Note: If the lesson has been finished,please confirm slot)</span>
+                <div class="d-flex justify-content-around">
+                    <div>
+                        <div class="info-card">
+                            <ul>
+                                <li style="list-style-type: none">Name : ${bookInfo[0].booking.mentee.account.name}</li>
+                                <li style="list-style-type: none">Mail : ${bookInfo[0].booking.mentee.account.email}</li>
+                                <li style="list-style-type: none">Phone : ${bookInfo[0].booking.mentee.account.phone}</li>
+                            </ul>
+                        </div>
+                        <div class="info-card">
 
-                    <div class="info-card">
-                        <ul>
-                            <li style="list-style-type: none">Name : ${bookInfo[0].booking.mentee.account.name}</li>
-                            <li style="list-style-type: none">Mail : ${bookInfo[0].booking.mentee.account.email}</li>
-                            <li style="list-style-type: none">Phone : ${bookInfo[0].booking.mentee.account.phone}</li>
-                        </ul>
+                            <ul>
+
+                                <li style="list-style-type: none">Skill name : <img width="30px"
+                                                                                    src="${pageContext.request.contextPath}/${bookInfo[0].booking.level_skills.skill.src_icon}">
+                                    ${bookInfo[0].booking.level_skills.skill.name}</li>
+                                <li style="list-style-type: none">Skill level
+                                    : ${bookInfo[0].booking.level_skills.level.name}</li>
+                            </ul>
+                            <ul>
+                                <li style="list-style-type: none">Day:${bookInfo[0].schedule.date} </li>
+                                <li style="list-style-type: none">Time
+                                    : ${bookInfo[0].schedule.slot.start_at}-${bookInfo[0].schedule.slot.end_at}</li>
+                                <li style="list-style-type: none">Slot Booked : ${bookInfo[0].schedule.slot.id}</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="info-card">
 
-                        <ul>
-
-                            <li style="list-style-type: none">Skill name : <img width="30px"
-                                                                                src="${pageContext.request.contextPath}${bookInfo[0].booking.level_skills.skill.src_icon}">
-                                ${bookInfo[0].booking.level_skills.skill.name}</li>
-                            <li style="list-style-type: none">Skill level
-                                : ${bookInfo[0].booking.level_skills.level.name}</li>
-                        </ul>
-                        <ul>
-                            <li style="list-style-type: none">Day:${bookInfo[0].schedule.date} </li>
-                            <li style="list-style-type: none">Time
-                                : ${bookInfo[0].schedule.slot.start_at}-${bookInfo[0].schedule.slot.end_at}</li>
-                            <li style="list-style-type: none">Slot Booked : ${bookInfo[0].schedule.slot.id}</li>
-                        </ul>
-                    </div>
-
-
-                    <div class="info-card1" style="margin-left: 850px; margin-top: -370px ">
+                    <div class="info-card1" >
 
                         <ul>
                             <li style="list-style-type: none">Created date : ${bookInfo[0].booking.date}</li>

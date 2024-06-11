@@ -23,7 +23,11 @@
 </head>
 <body>
 <jsp:include page="../common/header.jsp"></jsp:include>
+
 <div class="container">
+    <div style="margin-top: 30px">
+        <jsp:include page="../common/backBtn.jsp"></jsp:include>
+    </div>
     <h2>Update Information</h2>
     <form action="update_profile" method="post" enctype="multipart/form-data">
         <div class="image">

@@ -318,7 +318,7 @@
                                                                 <c:forEach items="${requestScope.bookingList}" var="booking">
                                                                     ${booking.schedule.id == bs.schedule.id ? 'checked' : ''}
                                                                 </c:forEach>
-                                                               onchange="handleCheckboxChange(this, ${bs.schedule.id}, ${slot.id}, '${date}')"
+                                                               onchange="handleCheckboxChange(this, ${bs.schedule.id}, ${slot.id}, '${date}','${slot.end_at}')"
                                                         />
                                                         <svg class="checkbox__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
                                                             <rect width="21" height="21" x=".5" y=".5" fill="#FFF" stroke="#006F94" rx="3" />
@@ -469,8 +469,9 @@
         document.getElementById('frm').submit();
     }
 
-    function handleCheckboxChange(checkbox, scheduleId, slotId, date) {
-        if(new Date(date) < new Date()){
+    function handleCheckboxChange(checkbox, scheduleId, slotId, date, time) {
+        const datetime = new Date(date + " " + time);
+        if(datetime < new Date()){
             checkbox.checked = false;
             Swal.fire({
                 icon: "error",

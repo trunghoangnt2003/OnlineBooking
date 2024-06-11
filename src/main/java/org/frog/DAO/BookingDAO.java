@@ -36,7 +36,7 @@ public class BookingDAO {
         try {
 
             Connection connection = JDBC.getConnection();
-            String sql = "select Account.[name],Booking.id,Booking.amount, Booking.from_date, Booking.to_date, Booking.[description], Skill.[name] as skill,Level.type,Booking.create_date \n" +
+            String sql = "select Account.[name],Booking.id,Booking.mentor_id ,Booking.amount, Booking.from_date, Booking.to_date, Booking.[description], Skill.[name] as skill,Level.type,Booking.create_date \n" +
                     "                                        from Booking join [dbo].[Level_Skill]\n" +
                     "                                        on Booking.level_skill_id = [dbo].[Level_Skill].id\n" +
                     "                                        join [dbo].[Level]\n" +
@@ -54,8 +54,8 @@ public class BookingDAO {
             while (resultSet.next()) {
                 Account account = new Account();
                 account.setName(resultSet.getString("name"));
+                account.setId(resultSet.getString("mentor_id"));
                 Mentor mentor = new Mentor(account);
-
                 Skill skill = new Skill();
                 skill.setName(resultSet.getString("skill"));
                 Level level = new Level();
@@ -246,7 +246,7 @@ public class BookingDAO {
         try {
 
             Connection connection = JDBC.getConnection();
-            String sql = "select Account.[name],Booking.amount,Booking.id, Booking.from_date, Booking.to_date, Booking.[description], Skill.[name] as skill,Level.type,Booking.create_date \n" +
+            String sql = "select Account.[name],Booking.mentor_id ,Booking.amount,Booking.id, Booking.from_date, Booking.to_date, Booking.[description], Skill.[name] as skill,Level.type,Booking.create_date \n" +
                     "                                        from Booking join [dbo].[Level_Skill]\n" +
                     "                                        on Booking.level_skill_id = [dbo].[Level_Skill].id\n" +
                     "                                        join [dbo].[Level]\n" +
@@ -264,6 +264,7 @@ public class BookingDAO {
             while (resultSet.next()) {
                 Account account = new Account();
                 account.setName(resultSet.getString("name"));
+                account.setId(resultSet.getString("mentor_id"));
                 Mentor mentor = new Mentor(account);
 
                 Skill skill = new Skill();

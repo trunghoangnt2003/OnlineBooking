@@ -211,17 +211,21 @@
             justify-content: space-between;
         }
         .left-info {
-            width: 300px;
+            position: relative;
+            margin-right: 10px;
+            /*width: 300px;*/
         }
         .right-info {
-            width: 500px;
+            /*width: 500px;*/
+            margin-left: 10px;
         }
         .close {
             position: absolute;
-            top: 5px;
+            top: 3px;
+            right: 3px;
             width: 15px;
             height: 15px;
-            margin-left: 713px;
+            /*margin-left: 713px;*/
             font-size: 15px;
             border-radius: 50%;
             border: 1px solid;
@@ -355,8 +359,8 @@
                     <h5>My Skills</h5>
                     <div class="skills-container">
                         <c:forEach items="${requestScope.level_skills}" var="s">
-                            <div class="skill-item">
-                                <img class="icon-skill" src="${pageContext.request.contextPath}${s.skill.src_icon}" alt="${s.skill.name}">
+                            <div class="skill-item" style="cursor: pointer" onclick="bookingHandle('${requestScope.id}','${s.skill.name}','${s.level.name}','${account.role.id}')">
+                                <img class="icon-skill" src="${pageContext.request.contextPath}/${s.skill.src_icon}" alt="${s.skill.name}">
                                 <span class="skill-name">${s.skill.name}</span> : <span class="skill-level">${s.level.name}</span>
                             </div>
                         </c:forEach>
@@ -370,19 +374,40 @@
             <div class="card mb-4 my-account">
                 <div class="card-body text-center">
                     <div>
-                        <img src="${pageContext.request.contextPath}${requestScope.mentor.account.avatar}" class="mb-3 img">
+                        <img src="${pageContext.request.contextPath}/${requestScope.mentor.account.avatar}" width="200px" height="200px" class="mb-3 img">
                         <div class="price">${requestScope.mentor.price} $/hour</div>
                     </div>
-                    <h3>${requestScope.mentor.account.name}</h3>
-                    <p>${requestScope.mentor.account.dob}</p>
-                    <div class="row-rate">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <h3>${requestScope.mentor.account.name}</h3>
+                    </div>
+                    <div class=" d-flex align-items-center justify-content-around">
                         <div class="item">
                             <div class="stars-outer">
                                 <div class="stars-inner" data-rating="${requestScope.mentor.rating}"></div>
                             </div>
                         </div>
-                        <div class="item">
-                            <a href="view_follower?id=${requestScope.id}">${requestScope.numberFollower} <i class="fa-solid fa-user-graduate"></i></a>
+                        <div class="item d-flex align-items-center">
+                            <div>
+                                <a href="view_follower?id=${requestScope.id}">${requestScope.numberFollower} <i class="fa-solid fa-user-graduate"></i></a>
+                            </div>
+
+                            <div style="margin-left: 10px">
+                                <c:if test="${sessionScope.account.role.id == 1}">
+                                    <div class="btn-wish" onclick="wishHandle('${requestScope.mentor.account.id}','${sessionScope.account.id}')" style="cursor: pointer">
+                                        <c:set var="isWish" value="0"/>
+
+                                        <c:forEach items="${requestScope.list_follow}" var="follow">
+                                            <c:if test="${follow.mentee.account.id == sessionScope.account.id}">
+                                                <i class="fa-solid fa-heart fa-xl" style="color: #ff0000;"></i>
+                                                <c:set var="isWish" value="1"/>
+                                            </c:if>
+                                        </c:forEach>
+                                        <c:if test="${isWish == 0}">
+                                            <i class="fa-regular fa-heart fa-xl"></i>
+                                        </c:if>
+                                    </div>
+                                </c:if>
+                            </div>
                         </div>
                     </div>
 
@@ -414,11 +439,13 @@
 <%--POP-UP--%>
 <div id="cv-popup" class="container card col-md-6 pop-up">
     <div>
-        <h1 class="header-cv">Mentor CV</h1>
+
         <button onclick="hideCV()" type="button" class="btn-close close" aria-label="Close"></button>
+        <h1 class="header-cv">Mentor CV</h1>
+
         <div class="info">
             <div class="left-info">
-                <img src="${pageContext.request.contextPath}${requestScope.mentor.account.avatar}" class="mb-3 img-cv">
+                <img src="${pageContext.request.contextPath}/${requestScope.mentor.account.avatar}" class="mb-3 img-cv">
                 <h5 class="name">Name: ${requestScope.mentor.account.name}</h5>
                 <hr style="margin-right: 23px">
                 <h5>Rating</h5>
@@ -463,7 +490,7 @@
                 <div class="skills-container">
                     <c:forEach items="${requestScope.level_skills}" var="s">
                         <div class="skill-item">
-                            <img class="icon-skill" src="${pageContext.request.contextPath}${s.skill.src_icon}" alt="${s.skill.name}">
+                            <img class="icon-skill" src="${pageContext.request.contextPath}/${s.skill.src_icon}" alt="${s.skill.name}">
                             <span class="skill-name">${s.skill.name}</span> : <span class="skill-level">${s.level.name}</span>
                         </div>
                     </c:forEach>
@@ -506,6 +533,46 @@
 
     function goToUpdate() {
         window.location.href = "http://localhost:8080/Frog/mentor/update_profile";
+    }
+
+    function wishHandle(mentorId,account) {
+        if(account == ''){
+            Swal.fire({
+                icon: "error",
+                title: "Somthing wrong!",
+                text: "Please login",
+                showConfirmButton: false,
+                timer: 2000
+            });
+            return;
+        }
+        fetch("../mentee/follow", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({mentorId: mentorId}),
+        }).then( response => {
+            if(response.ok) {
+                location.reload();
+            } else {
+                throw new Error('Network response was not ok.');
+            }
+
+        }).catch(
+            error => {
+                console.error('There has been a problem with your fetch operation:', error);
+            }
+        )
+        // window.location.href = 'mentee/wish?mentorId='+ mentorId;
+    }
+
+    function bookingHandle(mentorId, skill_name, level,role) {
+        if(role != 1 ){
+            return;
+        }
+        const skill = encodeURIComponent(skill_name);
+        window.location.href = '../mentee/booking-schedule?mentorId='+ mentorId +'&skill='+ skill +'&level='+ level;
     }
 </script>
 <!-- MDB -->

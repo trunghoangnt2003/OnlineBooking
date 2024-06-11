@@ -143,7 +143,7 @@
                 <td>${book.amount}</td>
                 <td>${book.description} </td>
                 <td><img width="20px"
-                         src="${pageContext.request.contextPath}${book.level_skills.skill.src_icon}">
+                         src="${pageContext.request.contextPath}/${book.level_skills.skill.src_icon}">
                         ${book.level_skills.skill.name}</td>
                 <td>${book.level_skills.level.name} </td>
                 <td>${book.startDate}</td>

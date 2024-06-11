@@ -140,6 +140,7 @@
     height: 50%;
 }
 .image-content{
+    cursor: pointer;
     position: relative;
     row-gap: 5px;
     padding: 25px 0;

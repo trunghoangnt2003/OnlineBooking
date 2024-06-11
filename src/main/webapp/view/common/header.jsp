@@ -86,6 +86,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="<%=url%>/Search_Skills">Search</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<%=url%>/mentee/schedule">Schedule</a>
+                            </li>
 
                         </c:if>
                         <c:if test="${sessionScope.account.role.id == 2}">
@@ -140,15 +143,15 @@
                                         role="button"
                                         aria-expanded="false"
                                 >
-                        <c:if test="${sessionScope.account.avatar == null}">
-                                    <img
-                                            src="https://www.logolynx.com/images/logolynx/4b/4beebce89d681837ba2f4105ce43afac.png"
-                                            class="rounded-circle"
-                                            height="25"
-                                            alt="Logo user"
-                                            loading="lazy"
-                                    />
-                        </c:if>
+                                <c:if test="${sessionScope.account.avatar == null}">
+                                            <img
+                                                    src="https://www.logolynx.com/images/logolynx/4b/4beebce89d681837ba2f4105ce43afac.png"
+                                                    class="rounded-circle"
+                                                    height="25"
+                                                    alt="Logo user"
+                                                    loading="lazy"
+                                            />
+                                </c:if>
                                     <c:if test="${sessionScope.account.avatar != null}">
                                         <img
                                                 src="${pageContext.request.contextPath}/${sessionScope.account.avatar}"
@@ -165,10 +168,10 @@
                                 >
                                     <li>
                                         <c:if test="${sessionScope.account.role.id == 1}">
-                                        <a class="dropdown-item" href="<%=url%>/mentee/profile">Information</a>
+                                        <a class="dropdown-item" href="<%=url%>/mentee/profile?menteeid=${sessionScope.account.id}">Information</a>
                                         </c:if>
                                         <c:if test="${sessionScope.account.role.id == 2}">
-                                            <a class="dropdown-item" href="<%=url%>/mentor/view_profile">Information</a>
+                                            <a class="dropdown-item" href="<%=url%>/mentor/profile?mentorid=${sessionScope.account.id}">Information</a>
                                         </c:if>
                                         <c:if test="${sessionScope.account.role.id == 3}">
                                             <a class="dropdown-item" href="<%=url%>/admin/profile">Information</a>

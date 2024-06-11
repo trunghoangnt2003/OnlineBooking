@@ -168,7 +168,7 @@ public class ViewMentorScheduleController extends AuthenticationServlet {
 
         booking_scheduleDAO.makeBooking_Schedule(book, scheduleList);
 
-        response.sendRedirect("../Search_Skills");
+        response.sendRedirect("../mentee/viewBooking");
     }
 
 

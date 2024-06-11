@@ -38,7 +38,7 @@ body{
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
-    left: 0;
+    right: 15px;
     top: 0;
     width: 100%; /* Full width */
     height: 80%; /* Full height */
@@ -50,7 +50,7 @@ body{
 /* Modal Content/Box */
 .modal-content {
     position: relative;
-    display: flex;
+    /*display: flex;*/
     flex-direction: column;
     width: 90%;
     background-color: #fefefe;
@@ -65,10 +65,10 @@ body{
     position: relative;
     display: flex;
     flex-direction: column;
-    width: 90%;
+    width: 75%;
     background-color: #fefefe;
     margin: 15% auto; /* 15% from the top and centered */
-    padding: 100px 200px;
+    padding: 30px;
     border: 1px solid #888;
     border-radius: 10px
 
@@ -81,7 +81,7 @@ body{
     width: 90%;
     background-color: #fefefe;
     margin: 15% auto; /* 15% from the top and centered */
-    padding: 100px;
+    padding: 50px;
     border: 1px solid #888;
     border-radius: 10px
 
@@ -89,8 +89,9 @@ body{
 }
 /* The Close Button */
 .close {
-    margin-top: -100px;
-    margin-left: 900px;
+    position: absolute;
+    right: 10px;
+    top: 0;
     color: #aaa;
     float: right;
     font-size: 28px;
@@ -151,7 +152,10 @@ body{
     border: 2px solid #42509e; /* Green border on hover */
 }
 .closeInfo {
-    margin-left: 1250px;
+    /*margin-left: 1250px;*/
+    position: absolute;
+    right: 10px;
+    top: 0;
     color: #aaa;
     float: right;
     font-size: 28px;
@@ -244,7 +248,7 @@ table{
     max-width: 100%;
     max-height: 100%;
     border-collapse: collapse; /* Loại bỏ khoảng cách giữa các ô */
-    margin: 50px auto;
+    margin: 0 auto;
     border: 1px solid #999999;
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
@@ -427,7 +431,7 @@ th:first-child{
     border: 1px solid #ccc;
     padding: 80px 20px;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    margin: 20px auto;
+    margin: 20px 0;
     width: 500px;
     background-color: #f9f9f9;
     border-radius: 10px;
@@ -436,7 +440,7 @@ th:first-child{
 .container-card {
     display: flex;
     justify-content: space-around;
-    margin-top: 50px;
+    margin-top: 30px;
 }
 
 .form-container {
@@ -451,7 +455,7 @@ th:first-child{
 }
 
 .form-check-label {
-    font-weight: bold;
+    font-weight: normal;
 }
 
 #selectDOW {
@@ -476,9 +480,9 @@ th:first-child{
 }
 
 .submit-button2  {
-    position: absolute;
-    margin-top: -160px;
-    margin-left: 370px;
+    /*position: absolute;*/
+    /*margin-top: -160px;*/
+    /*margin-left: 370px;*/
     background-color: #07AD90;
     color: #fff;
     border: none;
