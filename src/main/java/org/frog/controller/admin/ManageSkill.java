@@ -20,6 +20,19 @@ import java.util.ArrayList;
 public class ManageSkill extends AuthenticationServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+        boolean isChecked = Boolean.parseBoolean(req.getParameter("isChecked"));
+        String value = req.getParameter("value");
+        int id = Integer.parseInt(value);
+        Level_SkillDAO skillDAO = new Level_SkillDAO();
+        // Xử lý dữ liệu
+        if (isChecked) {
+            System.out.println("Hello 1 "+id);
+            skillDAO.updateStatus(id,7);
+        } else {
+            System.out.println("Hello 2 "+id);
+            skillDAO.updateStatus(id,8);
+        }
+
 
     }
 

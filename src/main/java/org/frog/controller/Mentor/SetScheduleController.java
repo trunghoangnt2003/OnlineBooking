@@ -1,4 +1,4 @@
-package org.frog.controller.mentor;
+package org.frog.controller.Mentor;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.frog.DAO.ScheduleDAO;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.Account;
-import org.frog.model.Schedule;
 import org.frog.model.Week;
 import org.frog.utility.DateTimeHelper;
 

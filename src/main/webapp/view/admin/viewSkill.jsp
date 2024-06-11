@@ -45,6 +45,8 @@
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
     </head>
 </head>
 <body>
@@ -81,7 +83,7 @@
                         <td>
                             <div class="d-flex align-items-center">
                                 <img
-                                        src="${pageContext.request.contextPath}${list.skill.src_icon}"
+                                        src="${pageContext.request.contextPath}/${list.skill.src_icon}"
                                         alt=""
                                         style="width: 45px; height: 45px"
                                         class="rounded-circle"
@@ -97,12 +99,30 @@
 <%--                            <p class="text-muted mb-0">ID :${list.level.id}</p>--%>
                         </td>
                         <td>
-                            <span class="badge badge-success rounded-pill d-inline">ENABLE</span>
+                            <c:if test="${list.status == 7}">
+                                <span class="badge badge-success rounded-pill d-inline">ENABLE</span>
+                            </c:if>
+                            <c:if test="${list.status == 8}">
+                                <span class="badge badge-warning rounded-pill d-inline">HIDDEN</span>
+                            </c:if>
+
                         </td>
                         <td>${list.skill.category.name}</td>
                         <td>
 <%--                            <button type="button" class="btn btn-success" style="padding: 5px; margin: 5px" value="${list.id}">ACTIVE</button>--%>
-                            <button type="button" class="btn btn-warning" style="padding: 5px;margin: 5px" value="${list.id}">EDIT</button>
+<%--                            <button type="button" class="btn btn-warning" style="padding: 5px;margin: 5px" value="${list.id}" data-bs-toggle="modal" data-bs-target="#updateModal">EDIT</button>--%>
+                                <div class="form-check form-switch">
+
+                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" onchange="handleCheckboxChange(this)"
+                                    <c:if test="${list.status == 7}">
+                                        checked
+                                    </c:if>
+                                            value="${list.id}"
+                                    />
+                                    <label class="form-check-label" for="flexSwitchCheckChecked">
+                                        ENABLE
+                                    </label>
+                                </div>
 
                         </td>
                     </tr>
@@ -202,15 +222,51 @@
                         <label for="skillDescription" class="form-label">Mô tả</label>
                         <textarea class="form-control" id="skillDescription" rows="3" placeholder="Nhập mô tả kỹ năng"></textarea>
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                    </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary">Lưu thay đổi</button>
-            </div>
+
         </div>
     </div>
 </div>
+<!-- Modal -->
+<%--<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">--%>
+<%--    <div class="modal-dialog">--%>
+<%--        <div class="modal-content">--%>
+<%--            <div class="modal-header">--%>
+<%--                <h5 class="modal-title" id="updateModalLabel">Update Skill</h5>--%>
+<%--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>--%>
+<%--            </div>--%>
+
+<%--            <div class="modal-body">--%>
+<%--                <form>--%>
+<%--                    <div class="">--%>
+<%--                        <div class="form-check form-switch">--%>
+<%--                            <label class="form-check-label" for="flexSwitchCheckChecked">Enable Skill : </label>--%>
+<%--                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked />--%>
+
+<%--                        </div>--%>
+<%--                    </div>--%>
+
+<%--                    <div>--%>
+<%--                        <label for="description" class="form-label">Description</label>--%>
+<%--                        <textarea class="form-control" id="description" rows="3">--%>
+<%--                            ${list.}--%>
+<%--                        </textarea>--%>
+<%--                    </div>--%>
+<%--                    <div class="modal-footer">--%>
+<%--                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>--%>
+<%--                        <button type="button" class="btn btn-primary">Save</button>--%>
+<%--                    </div>--%>
+<%--                </form>--%>
+<%--            </div>--%>
+
+<%--        </div>--%>
+<%--    </div>--%>
+<%--</div>--%>
 <!-- container-scroller -->
 <!-- plugins:js -->
 <script src="${pageContext.request.contextPath}/view/admin/assets/vendors/js/vendor.bundle.base.js"></script>
@@ -297,7 +353,31 @@
             preview.src = "#";
         }
     }
+    function handleCheckboxChange(checkbox) {
+        const isChecked = checkbox.checked;
+        const value = checkbox.value;
+        sendRequestToServlet(isChecked, value);
+    }
 
+    async function sendRequestToServlet(isChecked, value) {
+        try {
+            const response = await fetch('../admin/skill', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'isChecked='+isChecked+'&value='+value
+            });
+
+            if (response.ok) {
+                location.reload();
+            } else {
+                console.error('Lỗi khi gửi request:', response.status);
+            }
+        } catch (error) {
+            console.error('Lỗi khi thực hiện request:', error);
+        }
+    }
 
 
 </script>

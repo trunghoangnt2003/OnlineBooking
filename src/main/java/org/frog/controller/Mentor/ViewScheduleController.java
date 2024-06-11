@@ -1,4 +1,4 @@
-package org.frog.controller.mentor;
+package org.frog.controller.Mentor;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.frog.DAO.Booking_ScheduleDAO;
 import org.frog.DAO.MentorDAO;
 import org.frog.DAO.ScheduleDAO;
-import org.frog.DAO.SlotDAO;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.*;
 import org.frog.utility.DateTimeHelper;
