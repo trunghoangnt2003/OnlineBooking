@@ -29,7 +29,10 @@ public class ViewProfileController extends AuthenticationServlet {
             String mentorId = req.getParameter("mentorid");
             MentorDAO mentorDAO = new MentorDAO();
             Mentor mentor = mentorDAO.getMentorById(mentorId);
-            if ( mentor == null) {
+            if (mentor.getEducation() == null &&
+                    mentor.getExperience() == null &&
+                    mentor.getProfileDetail() == null &&
+                    mentor.getPrice() == 0) {
                 resp.sendRedirect("/Frog/mentor/create_profile");
             }else {
                 Level_SkillDAO level_skillDAO = new Level_SkillDAO();

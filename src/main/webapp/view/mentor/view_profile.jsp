@@ -213,11 +213,12 @@
         .left-info {
             position: relative;
             margin-right: 10px;
-            /*width: 300px;*/
+            width: 40%;
         }
         .right-info {
             /*width: 500px;*/
             margin-left: 10px;
+            width: 60%;
         }
         .close {
             position: absolute;

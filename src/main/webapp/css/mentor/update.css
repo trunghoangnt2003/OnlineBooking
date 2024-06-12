@@ -35,6 +35,7 @@ h2 {
 
 .info {
     margin: auto;
+    margin-top: 20px;
 }
 
 .skill {
@@ -46,4 +47,8 @@ h2 {
 
 .skill-name {
     font-weight: bold;
+}
+
+.detail {
+    margin-bottom: 10px;
 }

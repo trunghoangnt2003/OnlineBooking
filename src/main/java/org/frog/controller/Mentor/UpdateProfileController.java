@@ -82,6 +82,7 @@ public class UpdateProfileController extends AuthenticationServlet {
         mentor.setProfileDetail(profile_detail);
         mentor.setEducation(education);
         mentor.setExperience(experience);
+        mentor.setPrice(Integer.parseInt(raw_price));
         mentorDAO.updateMentor(mentor, account.getId());
 
         String[] levelSkills = req.getParameterValues("level_skill");
@@ -91,6 +92,8 @@ public class UpdateProfileController extends AuthenticationServlet {
                 Level_SkillDAO level_skillDAO = new Level_SkillDAO();
                 level_skillDAO.insertLevelSkill(account.getId(), Integer.parseInt(s));
             }
+        } else {
+            mentorDAO.deleteSkillMentor(account.getId());
         }
         if(avatar != null) {
             account.setAvatar(avatar);

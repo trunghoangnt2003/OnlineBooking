@@ -61,7 +61,7 @@
     <a href="youtube.com"><img src="${pageContext.request.contextPath}/img/home/2.png"></a>
     <img src="${pageContext.request.contextPath}/img/home/3.png">
 </section>
-<%--editiusahjdkjcbksjdbkc jbjkcdsbkj bckjb shcjsbchbc s--%>
+
 <div class="show-top-mentor">
     <h1>Top Mentor</h1>
     <div class="wrapper">
@@ -291,7 +291,7 @@
         window.location.href = 'mentor/profile?mentor' +
             'id='+ id;
     }
-    
+
 </script>
 <!-- MDB -->
 <script
