@@ -1,4 +1,4 @@
-package org.frog.controller.Mentor;
+package org.frog.controller.mentor;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,7 +12,6 @@ import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.*;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 @WebServlet("/mentor/profile")
