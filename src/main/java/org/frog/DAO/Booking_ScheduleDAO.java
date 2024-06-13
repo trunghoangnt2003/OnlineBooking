@@ -918,4 +918,64 @@ public class Booking_ScheduleDAO {
         return bookings;
     }
 
+
+    public ArrayList<BookingSchedule> getLogs(int booking_id){
+        ArrayList<BookingSchedule> list = new ArrayList<>();
+        String sql = "SELECT sbl.id, sbl.booking_id, b.mentee_id, b.level_skill_id, sbl.schedule_id, " +
+                "s.account_id AS mentor_id, s.date, s.slot_id " +
+                "FROM Booking b " +
+                "INNER JOIN Schedule_Booking_Logs sbl ON b.id = sbl.booking_id " +
+                "INNER JOIN Schedule s ON s.id = sbl.schedule_id " +
+                "WHERE b.id = ? " +
+                "ORDER BY s.date DESC";
+
+        try (Connection connection = JDBC.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+
+            preparedStatement.setInt(1, booking_id);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    BookingSchedule bookingSchedule = new BookingSchedule();
+                    bookingSchedule.setId(resultSet.getInt("id"));
+
+                    Schedule schedule = new Schedule();
+                    schedule.setId(resultSet.getInt("schedule_id"));
+                    schedule.setDate(resultSet.getDate("date"));
+
+                    Slot slot = new Slot();
+                    slot.setId(resultSet.getInt("slot_id"));
+                    schedule.setSlot(slot);
+
+                    Mentor mentor = new Mentor();
+                    Account account_mentor = new Account();
+                    account_mentor.setId(resultSet.getString("mentor_id"));
+                    mentor.setAccount(account_mentor);
+                    schedule.setMentor(mentor);
+                    bookingSchedule.setSchedule(schedule);
+
+                    Booking booking = new Booking();
+                    booking.setId(resultSet.getInt("booking_id"));
+
+                    Level_Skills level_skills = new Level_Skills();
+                    level_skills.setId(resultSet.getInt("level_skill_id"));
+                    booking.setLevel_skills(level_skills);
+
+                    Mentee mentee = new Mentee();
+                    Account account_mentee = new Account();
+                    account_mentee.setId(resultSet.getString("mentee_id"));
+                    mentee.setAccount(account_mentee);
+                    booking.setMentee(mentee);
+
+                    bookingSchedule.setBooking(booking);
+
+                    list.add(bookingSchedule);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return list;
+    }
 }

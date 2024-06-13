@@ -15,7 +15,7 @@ public class Booking {
     private Date endDate;
     private String description;
     private Level_Skills level_skills;
-
+    private String reason;
 
     public Booking(int id, Status status, int amount, Timestamp date, Mentor mentor, Mentee mentee, Date startDate, Date endDate) {
         this.id = id;
@@ -112,5 +112,11 @@ public class Booking {
         this.level_skills = level_skills;
     }
 
+    public String getReason() {
+        return reason;
+    }
 
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
 }

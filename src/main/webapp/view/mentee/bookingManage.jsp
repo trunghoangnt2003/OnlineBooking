@@ -86,6 +86,7 @@
                 <th style="background:  #179b81">Description</th>
                 <th style="background:  #179b81">Skill</th>
                 <th style="background: #179b81">Create Date</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -98,6 +99,7 @@
                     <td>${booking.description}</td>
                     <td>${booking.level_skills.skill.name} for ${booking.level_skills.level.name}</td>
                     <td>${booking.date}</td>
+                    <td><button onclick="editHandle('${booking.mentor.account.id}','${booking.level_skills.skill.name}','${booking.level_skills.level.name}', '${booking.id}')">Edit</button></td>
                 </tr>
             </c:forEach>
             </tbody>
@@ -132,6 +134,12 @@
                 }, 2000);
             }
         });
+    }
+
+    function editHandle(mentorId, skill_name, level, bookId) {
+        console.log(mentorId);
+        const skill = encodeURIComponent(skill_name);
+        window.location.href = 'booking-schedule?mentorId='+ mentorId +'&skill='+ skill +'&level='+ level+'&bookId=' + bookId ;
     }
 </script>
 <script

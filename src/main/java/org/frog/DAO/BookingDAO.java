@@ -257,7 +257,8 @@ public class BookingDAO {
                     "                                       on Booking.mentor_id = Mentor.account_id\n" +
                     "                                        join Account\n" +
                     "                                        on Account.id = Mentor.account_id\n" +
-                    "                    where Booking.mentee_id = ? and Booking.status_id = 12";
+                    "                    where Booking.mentee_id = ? and( Booking.status_id = 12 or Booking.status_id = 2) "+
+                    "                    Order By create_date desc";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();

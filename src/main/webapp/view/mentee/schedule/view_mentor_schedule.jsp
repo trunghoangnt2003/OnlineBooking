@@ -523,7 +523,6 @@
 
         numbook.innerHTML = 'Number of booking: ' + number_booking;
         amount.innerHTML = 'Total amount: ' + number_booking * price + " $";
-
         const total_amount = document.createElement('input');
         total_amount.type = 'text';
         total_amount.name = 'total_amount';

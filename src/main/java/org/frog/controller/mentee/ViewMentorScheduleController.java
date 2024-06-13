@@ -24,19 +24,26 @@ public class ViewMentorScheduleController extends AuthenticationServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response,Account account) throws ServletException, IOException {
-        if(account.getRole().getId() != 1) {
-            response.sendRedirect("/Frog/Search_Skills");
-            return;
-        }
         String ymd_raw = request.getParameter("ymd");
         String mentor_id = request.getParameter("mentorId"); // get mentor by id day qua lai giua controller va jsp
         String skill = request.getParameter("skill");
         String level = request.getParameter("level");
+        String bookings_raw = request.getParameter("bookId");
 
+        SlotDAO slotDAO = new SlotDAO();
+        Booking_ScheduleDAO booking_scheduleDAO = new Booking_ScheduleDAO();
+        MentorDAO mentorDAO = new MentorDAO();
+        ArrayList<Slot> slots = slotDAO.selectAll();
+        Level_SkillDAO level_skillDAO = new Level_SkillDAO();
 
+        int bookId = 0;
+        if (bookings_raw != null) {
+            bookId = Integer.parseInt(bookings_raw);
+        }
         String mentee_id = account.getId();
         String[] bookings = request.getParameterValues("booking-schedule");
 
+        ArrayList<BookingSchedule> bookingLogs = booking_scheduleDAO.getLogs(bookId);
         ArrayList<BookingSchedule> bookingList = new ArrayList<>();
         if(bookings != null) {
             for (String booking : bookings) {
@@ -57,14 +64,12 @@ public class ViewMentorScheduleController extends AuthenticationServlet {
 
                 bookingList.add(bs);
             }
-            
         }
 
-        SlotDAO slotDAO = new SlotDAO();
-        Booking_ScheduleDAO booking_scheduleDAO = new Booking_ScheduleDAO();
-        MentorDAO mentorDAO = new MentorDAO();
-        ArrayList<Slot> slots = slotDAO.selectAll();
-        Level_SkillDAO level_skillDAO = new Level_SkillDAO();
+        if(bookingLogs != null) {
+            bookingList.addAll(bookingLogs);
+            ymd_raw = bookingLogs.get(0).getSchedule().getDate().toString();
+        }
 
         Date toDay = new Date();
         java.sql.Date from = null;
