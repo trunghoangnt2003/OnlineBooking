@@ -28,7 +28,7 @@ public class ViewMentorScheduleController extends AuthenticationServlet {
         String mentor_id = request.getParameter("mentorId"); // get mentor by id day qua lai giua controller va jsp
         String skill = request.getParameter("skill");
         String level = request.getParameter("level");
-        String bookings_raw = request.getParameter("bookId");
+        String booking_Logs_raw = request.getParameter("bookId");
 
         SlotDAO slotDAO = new SlotDAO();
         Booking_ScheduleDAO booking_scheduleDAO = new Booking_ScheduleDAO();
@@ -36,15 +36,18 @@ public class ViewMentorScheduleController extends AuthenticationServlet {
         ArrayList<Slot> slots = slotDAO.selectAll();
         Level_SkillDAO level_skillDAO = new Level_SkillDAO();
 
-        int bookId = 0;
-        if (bookings_raw != null) {
-            bookId = Integer.parseInt(bookings_raw);
+        int bookinngsLogsID = 0;
+        if (booking_Logs_raw != null) {
+            bookinngsLogsID = Integer.parseInt(booking_Logs_raw);
         }
         String mentee_id = account.getId();
         String[] bookings = request.getParameterValues("booking-schedule");
-
-        ArrayList<BookingSchedule> bookingLogs = booking_scheduleDAO.getLogs(bookId);
+        String[] bookConflict = request.getParameterValues("booking-conflict");
+        ArrayList<BookingSchedule> bookingLogs = booking_scheduleDAO.getLogs(bookinngsLogsID);
+        ArrayList<BookingSchedule> bookingListAccepted = booking_scheduleDAO.getBookingScheduleMentorAccepted(mentor_id);
+        ArrayList<BookingSchedule> bookingConflict = new ArrayList<>();
         ArrayList<BookingSchedule> bookingList = new ArrayList<>();
+
         if(bookings != null) {
             for (String booking : bookings) {
                 String[] array_bookings = booking.split("_");
@@ -66,7 +69,41 @@ public class ViewMentorScheduleController extends AuthenticationServlet {
             }
         }
 
-        if(bookingLogs != null) {
+        if(bookConflict != null){
+            for (String booking : bookConflict) {
+                String[] array_bookings = booking.split("_");
+                int scheduledId = Integer.parseInt(array_bookings[0]);
+                int slotId = Integer.parseInt(array_bookings[1]);
+                String date = array_bookings[2];
+
+                Schedule s = new Schedule();
+                s.setId(scheduledId);
+                Slot slot = new Slot();
+                slot.setId(slotId);
+                s.setSlot(slot);
+                s.setDate(java.sql.Date.valueOf(date));
+
+                BookingSchedule bs = new BookingSchedule();
+                bs.setSchedule(s);
+
+                bookingConflict.add(bs);
+            }
+        }
+
+
+        if(!bookingListAccepted.isEmpty()){
+                for (BookingSchedule bsDone : bookingListAccepted) {
+                    for (BookingSchedule bsLogs : bookingLogs) {
+                        if (bsLogs.getSchedule().getId() == bsDone.getSchedule().getId()) {
+                            bookingConflict.add(bsLogs);
+                            bookingLogs.remove(bsLogs);
+                            break;
+                        }
+                }
+            }
+        }
+
+        if(!bookingLogs.isEmpty()) {
             bookingList.addAll(bookingLogs);
             ymd_raw = bookingLogs.get(0).getSchedule().getDate().toString();
         }
@@ -93,7 +130,7 @@ public class ViewMentorScheduleController extends AuthenticationServlet {
         Mentor mentor = mentorDAO.getMentorById(mentor_id);
         Level_Skills level_skills = level_skillDAO.getBySkillAndLevel(skill, level);
 
-
+        request.setAttribute("bookingConflict", bookingConflict);
         request.setAttribute("level_skills", level_skills);
         request.setAttribute("mentor", mentor);
         request.setAttribute("bookingList", bookingList);

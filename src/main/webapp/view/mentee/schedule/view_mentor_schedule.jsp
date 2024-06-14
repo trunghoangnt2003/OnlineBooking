@@ -237,6 +237,15 @@
             border-radius: 10%;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2)
         }
+
+
+        .booking-list-conflict {
+            list-style-type: none;
+            padding: 0;
+            margin: 0 0 10px;
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+        }
     </style>
 </head>
 
@@ -306,6 +315,7 @@
                                     <c:if test="${ (bs.schedule.slot.id == slot.id) && (bs.schedule.date == date) }">
                                         <div class="notes-container text-center ">
                                             <i class="pin"></i>
+                                            <%--Free And Proccessing                                      --%>
                                             <c:if test="${bs.status.id == 0}">
                                                 <blockquote class="notes color-note font-monospace" style="background-color: #32cd32; text-align: center">
                                                         <div class="text-center fw-bold fs-4  ">
@@ -326,8 +336,11 @@
                                                         </svg>
                                                 </blockquote>
                                             </c:if>
+                                            <%--Not Free                                           --%>
                                             <c:if test="${bs.status.id != 0}">
+                                                <%--My book                                         --%>
                                                 <c:if test="${bs.booking.mentee.account.id.equals(requestScope.mentee_id)}">
+                                                    <%--Processing                                           --%>
                                                     <c:if test="${bs.status.id == 1}">
                                                         <blockquote class="notes color-note font-monospace" style="background-color: #F4E0B9">
 
@@ -341,6 +354,7 @@
                                                             </div>
                                                         </blockquote>
                                                     </c:if>
+                                                    <%--Accepted                                           --%>
                                                     <c:if test="${bs.status.id == 11}">
                                                         <blockquote class="notes color-note font-monospace" style="background-color: #fff142">
 
@@ -355,6 +369,7 @@
                                                             </div>
                                                         </blockquote>
                                                     </c:if>
+                                                    <%--Done                                           --%>
                                                     <c:if test="${bs.status.id == 3}">
                                                         <blockquote class="notes color-note font-monospace" style="background-color: #faad12">
 
@@ -369,15 +384,41 @@
                                                         </blockquote>
                                                     </c:if>
                                                 </c:if>
+                                                <%--Not My book                                           --%>
                                                 <c:if test="${bs.booking.mentee.account.id ne requestScope.mentee_id}">
-                                                    <blockquote class="notes color-note font-monospace" style="background-color: #FF6347">
-                                                        <div class="text-center fw-bold fs-5">
-                                                            <span >Busy </span>
-                                                        </div>
-                                                        <div class="text-center mt-2" style="font-size: 12px">
-                                                            <span> Booking are not possible</span>
-                                                        </div>
-                                                    </blockquote>
+                                                    <%--Done or Accepted                                           --%>
+                                                    <c:if test="${bs.status.id != 1}">
+                                                        <blockquote class="notes color-note font-monospace" style="background-color: #FF6347">
+                                                            <div class="text-center fw-bold fs-5">
+                                                                <span >Busy </span>
+                                                            </div>
+                                                            <div class="text-center mt-2" style="font-size: 12px">
+                                                                <span> Booking are not possible</span>
+                                                            </div>
+                                                        </blockquote>
+                                                    </c:if>
+
+                                                    <%--Processing Can book                                           --%>
+                                                    <c:if test="${bs.status.id == 1}">
+                                                        <blockquote class="notes color-note font-monospace" style="background-color: #32cd32; text-align: center">
+                                                            <div class="text-center fw-bold fs-4  ">
+                                                                <span > Free</span>
+                                                            </div>
+                                                            <div class="mt-1" style="font-size: 14px">
+                                                                <span>book here</span>
+                                                            </div>
+                                                            <input type="checkbox" class="checkbox__input"
+                                                                    <c:forEach items="${requestScope.bookingList}" var="booking">
+                                                                        ${booking.schedule.id == bs.schedule.id ? 'checked' : ''}
+                                                                    </c:forEach>
+                                                                   onchange="handleCheckboxChange(this, ${bs.schedule.id}, ${slot.id}, '${date}','${slot.end_at}')"
+                                                            />
+                                                            <svg class="checkbox__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
+                                                                <rect width="21" height="21" x=".5" y=".5" fill="#FFF" stroke="#006F94" rx="3" />
+                                                                <path class="tick" stroke="#6EA340" fill="none" stroke-linecap="round" stroke-width="4" d="M4 10l5 5 9-9" />
+                                                            </svg>
+                                                        </blockquote>
+                                                    </c:if>
                                                 </c:if>
                                             </c:if>
                                         </div>
@@ -412,6 +453,19 @@
 
                 <h4 style="text-align: center; color: #07AD90">Your Booking</h4>
                 <hr style="margin: 10px 0; border: 1px #1BB295 solid; opacity: 100%"/>
+                <c:if test="${requestScope.bookingConflict.size() gt 0}">
+                    <div style="text-align: center">
+                        <ul class="booking-list-conflict">
+                            <c:forEach items="${requestScope.bookingConflict}" var="bcf">
+                                <input type="text" hidden="hidden" name="booking-conflict" value="${bcf.schedule.id}_${bcf.schedule.slot.id}_${bcf.schedule.date}"/>
+                                <li class="booking-item" style="font-size: 14px; background-color: #FF6347">${bcf.schedule.date} - Slot: ${bcf.schedule.slot.id}</li>
+                            </c:forEach>
+
+                        </ul>
+                        <i style="font-size: 10px; color: #FF6347">< Your bookings above have conflict! ></i>
+                        <hr style="margin: 5px 0; color: #FF6347; opacity: 80%; border: none;">
+                    </div>
+                </c:if>
                 <div id="bookingList1">
                     <c:forEach items="${requestScope.bookingList}" var="booking">
                         <input type="text" hidden="hidden"
@@ -449,6 +503,8 @@
         window.history.back();
     }
 
+
+    //auto load booking list from controller ( select before )
     document.addEventListener("DOMContentLoaded", function() {
         const bookingList1 = document.getElementById('bookingList1');
         const inputs = bookingList1.getElementsByTagName('input');

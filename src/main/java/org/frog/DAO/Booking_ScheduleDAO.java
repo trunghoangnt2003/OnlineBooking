@@ -918,7 +918,6 @@ public class Booking_ScheduleDAO {
         return bookings;
     }
 
-
     public ArrayList<BookingSchedule> getLogs(int booking_id){
         ArrayList<BookingSchedule> list = new ArrayList<>();
         String sql = "SELECT sbl.id, sbl.booking_id, b.mentee_id, b.level_skill_id, sbl.schedule_id, " +
@@ -975,6 +974,51 @@ public class Booking_ScheduleDAO {
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+        return list;
+    }
+
+    public ArrayList<BookingSchedule> getBookingScheduleMentorAccepted(String mentor_id){
+        ArrayList<BookingSchedule> list = new ArrayList<>();
+        try{
+            Connection connection = JDBC.getConnection();
+            String sql = "Select bs.id, bs.booking_id,bs.schedule_id,s.account_id as mentor_id,s.date, s.slot_id\n" +
+                    "from Booking_Schedule bs join Schedule s ON bs.schedule_id = s.id\n" +
+                    "Where (status_id = ? or status_id = ?) and s.account_id = ? \n"+
+                    "Order by [date] Desc";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1,StatusEnum.ACCEPTED);
+            preparedStatement.setInt(2,StatusEnum.DONE);
+            preparedStatement.setString(3,mentor_id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                BookingSchedule bookingSchedule = new BookingSchedule();
+                bookingSchedule.setId(resultSet.getInt("id"));
+
+                Booking booking = new Booking();
+                booking.setId(resultSet.getInt("booking_id"));
+                bookingSchedule.setBooking(booking);
+
+                Schedule schedule = new Schedule();
+                schedule.setId(resultSet.getInt("schedule_id"));
+
+                Mentor mentor = new Mentor();
+                Account account_mentor = new Account();
+                account_mentor.setId(resultSet.getString("mentor_id"));
+                mentor.setAccount(account_mentor);
+                schedule.setMentor(mentor);
+
+                schedule.setDate(resultSet.getDate("date"));
+                Slot slot = new Slot();
+                slot.setId(resultSet.getInt("slot_id"));
+                schedule.setSlot(slot);
+
+
+                bookingSchedule.setSchedule(schedule);
+                list.add(bookingSchedule);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return list;
     }
