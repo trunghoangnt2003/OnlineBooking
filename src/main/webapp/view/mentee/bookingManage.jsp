@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Booking Manage</title>
+    <title>List of requests</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
     <!-- Google Fonts -->
@@ -35,74 +35,76 @@
 <body class="body">
 <jsp:include page="../common/header.jsp"></jsp:include>
 <div class="back">
-<jsp:include page="../common/backBtn.jsp"></jsp:include>
+    <jsp:include page="../common/backBtn.jsp"></jsp:include>
 </div>
 <div class="container">
     <div style="height: 70%">
-    <h1 style="color: #179b81; display: flex; justify-content: center">Processing</h1>
-    <div class="table-container">
-        <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
-            <thead>
-            <tr>
-                <th style="background:  #179b81">Mentor</th>
-                <th style="background:  #179b81">Price</th>
-                <th style="background:  #179b81">From Date</th>
-                <th style="background:  #179b81">To Date</th>
-                <th style="background:  #179b81">Description</th>
-                <th style="background:  #179b81">Skill</th>
-                <th style="background: #179b81">Create Date</th>
-                <th style="background: #179b81">Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach items="${requestScope.bookingList}" var="booking">
+        <h1 style="color: #179b81; display: flex; justify-content: center">Processing</h1>
+        <div class="table-container">
+            <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                <thead>
                 <tr>
-                    <td><a href="${pageContext.request.contextPath}/mentor/profile?mentorid=${booking.mentor.account.id}" >${booking.mentor.account.name}</a></td>
-                    <td>${booking.amount}$</td>
-                    <td>${booking.startDate}</td>
-                    <td>${booking.endDate}</td>
-                    <td>${booking.description}</td>
-                    <td>${booking.level_skills.skill.name} for ${booking.level_skills.level.name}</td>
-                    <td>${booking.date}</td>
-                    <td style="display: flex; justify-content: center; margin-top: 8px">
-                        <i class="fa-solid fa-delete-left fa-rotate-180 fa-2xl" onclick="confirmDelete(${booking.id})" style="color: #ff0000;"></i>
-                    </td>
+                    <th style="background:  #179b81">Mentor</th>
+                    <th style="background:  #179b81">Price</th>
+                    <th style="background:  #179b81">From Date</th>
+                    <th style="background:  #179b81">To Date</th>
+                    <th style="background:  #179b81">Description</th>
+                    <th style="background:  #179b81">Skill</th>
+                    <th style="background: #179b81">Create Date</th>
+                    <th style="background: #179b81">Actions</th>
                 </tr>
-            </c:forEach>
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                <c:forEach items="${requestScope.bookingList}" var="booking">
+                    <tr>
+                        <td>${booking.mentor.account.name}</td>
+                        <td>${booking.amount}$</td>
+                        <td>${booking.startDate}</td>
+                        <td>${booking.endDate}</td>
+                        <td>${booking.description}</td>
+                        <td>${booking.level_skills.skill.name} for ${booking.level_skills.level.name}</td>
+                        <td>${booking.date}</td>
+                        <td style="display: flex; justify-content: center; margin-top: 8px">
+                            <i class="fa-solid fa-delete-left fa-rotate-180 fa-2xl" onclick="confirmDelete(${booking.id})" style="color: #ff0000;"></i>
+                        </td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div style="height: 70%">
-    <h1 style="color: #179b81; display: flex; justify-content: center">Cancel History</h1>
-    <div class="table-container">
-        <table id="example2" class="table table-striped table-bordered" cellspacing="0" width="100%">
-            <thead>
-            <tr>
-                <th style="background:  #179b81">Mentor</th>
-                <th style="background:  #179b81">Price</th>
-                <th style="background:  #179b81">From Date</th>
-                <th style="background:  #179b81">To Date</th>
-                <th style="background:  #179b81">Description</th>
-                <th style="background:  #179b81">Skill</th>
-                <th style="background: #179b81">Create Date</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach items="${requestScope.bookingListC}" var="booking">
+        <h1 style="color: #179b81; display: flex; justify-content: center">Cancel And Reject History</h1>
+        <div class="table-container">
+            <table id="example2" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                <thead>
                 <tr>
-                    <td><a href="${pageContext.request.contextPath}/mentor/profile?mentorid=${booking.mentor.account.id}" >${booking.mentor.account.name}</a></td>
-                    <td>${booking.amount}$</td>
-                    <td>${booking.startDate}</td>
-                    <td>${booking.endDate}</td>
-                    <td>${booking.description}</td>
-                    <td>${booking.level_skills.skill.name} for ${booking.level_skills.level.name}</td>
-                    <td>${booking.date}</td>
+                    <th style="background:  #179b81">Mentor</th>
+                    <th style="background:  #179b81">Price</th>
+                    <th style="background:  #179b81">From Date</th>
+                    <th style="background:  #179b81">To Date</th>
+                    <th style="background:  #179b81">Description</th>
+                    <th style="background:  #179b81">Skill</th>
+                    <th style="background:  #179b81">Status</th>
+                    <th style="background: #179b81">Create Date</th>
                 </tr>
-            </c:forEach>
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                <c:forEach items="${requestScope.bookingListC}" var="booking">
+                    <tr>
+                        <td>${booking.mentor.account.name}</td>
+                        <td>${booking.amount}$</td>
+                        <td>${booking.startDate}</td>
+                        <td>${booking.endDate}</td>
+                        <td>${booking.description}</td>
+                        <td>${booking.level_skills.skill.name} for ${booking.level_skills.level.name}</td>
+                        <td>${booking.status.type}</td>
+                        <td>${booking.date}</td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <!-- Modal -->

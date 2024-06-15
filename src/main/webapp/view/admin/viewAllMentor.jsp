@@ -219,8 +219,6 @@
                                                     <td><p>${skill.skill.name}</p></td>
                                                     <td><p>${skill.level.name}</p></td>
                                                 </tr>
-
-
                                             </c:forEach>
                                         </table>
                                     </div>
