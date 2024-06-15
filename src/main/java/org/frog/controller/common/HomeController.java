@@ -19,6 +19,7 @@ public class HomeController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         MentorDAO mentorDAO = new MentorDAO();
         ArrayList<Mentor> mentors = mentorDAO.getAllMentorFollowRate();
+
         req.setAttribute("mentor", mentors);
         req.getRequestDispatcher("view/common/home.jsp").forward(req, resp);
     }

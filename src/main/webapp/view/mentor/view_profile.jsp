@@ -431,6 +431,9 @@
                             </li>
                         </c:forEach>
                     </ul>
+                    <c:if test="${requestScope.numberReview > 3}">
+                        <div><button onclick="viewFeedback('${requestScope.id}')" type="button" class="btn btn-success" data-mdb-ripple-init>View More Feedback</button></div>
+                    </c:if>
                 </div>
             </div>
         </div>
@@ -574,6 +577,11 @@
         }
         const skill = encodeURIComponent(skill_name);
         window.location.href = '../mentee/booking-schedule?mentorId='+ mentorId +'&skill='+ skill +'&level='+ level;
+    }
+
+    function viewFeedback(id) {
+        console.log(window.location.href)
+        window.location.href = 'feedback?mentorid=' + id;
     }
 </script>
 <!-- MDB -->

@@ -38,6 +38,7 @@ public class ViewProfileController extends AuthenticationServlet {
                 ArrayList<Level_Skills> level_skills = level_skillDAO.getLevel_SkillByMentorId(mentorId);
                 ReviewDAO reviewDAO = new ReviewDAO();
                 ArrayList<Review> reviews = reviewDAO.getMenteeReviewByMentorId(mentorId);
+                ArrayList<Review> allReviews = reviewDAO.getAllReview(mentorId);
                 WishListDAO dao = new WishListDAO();
                 //đếm booking
                 ArrayList<WishList> wishLists = dao.getWishListByMentorId(mentorId);
@@ -47,6 +48,8 @@ public class ViewProfileController extends AuthenticationServlet {
                 if(mentorId.equals(account.getId())){
                     isAuthor = true;
                 }
+
+                req.setAttribute("numberReview", allReviews.size());
                 req.setAttribute("account", account);
                 req.setAttribute("list_follow", wish);
                 req.setAttribute("isAuthor", isAuthor);
