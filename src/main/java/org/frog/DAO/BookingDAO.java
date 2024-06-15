@@ -175,20 +175,46 @@ public class BookingDAO {
         try{
 
             Connection connection = JDBC.getConnection();
-            String sql = "SELECT Booking.id,  Booking.amount, Booking.create_date,\n" +
-                    "\t\tBooking.mentor_id, Booking.mentee_id, Booking.from_date, Booking.to_date,\n" +
-                    "\t\tBooking.level_skill_id, Level_Skill.skill_id, Skill.name as skill_name, Skill.src_icon , Level_Skill.level_id, [Level].[type] , Account.name as mentor_name, Account.mail\n" +
-                    "FROM  Booking INNER JOIN\n" +
-                    "      Mentor ON Booking.mentor_id = Mentor.account_id INNER JOIN\n" +
-                    "      Account ON Mentor.account_id = Account.id\n" +
-                    "\t  JOIN Level_Skill ON Booking.level_skill_id = Level_Skill.id\n" +
-                    "\t  LEFT JOIN Skill ON Level_Skill.skill_id = Skill.id \n" +
-                    "\t  LEFT JOIN [Level] ON Level_Skill.level_id =  [Level].id  \n" +
-                    "WHERE Booking.status_id = ? AND Booking.mentee_id = ? \n" +
-                    "Order By create_date desc";
+            String sql = "SELECT \n" +
+                    "    Booking.id, \n" +
+                    "\tBooking.status_id,\n" +
+                    "\ts.type,\n" +
+                    "    Booking.amount, \n" +
+                    "    Booking.create_date,\n" +
+                    "    Booking.mentor_id, \n" +
+                    "    Booking.mentee_id, \n" +
+                    "    Booking.from_date, \n" +
+                    "    Booking.to_date,\n" +
+                    "    Booking.level_skill_id, \n" +
+                    "    Level_Skill.skill_id, \n" +
+                    "    Skill.name AS skill_name, \n" +
+                    "    Skill.src_icon, \n" +
+                    "    Level_Skill.level_id, \n" +
+                    "    [Level].[type], \n" +
+                    "    Account.name AS mentor_name, \n" +
+                    "    Account.mail\n" +
+                    "FROM  \n" +
+                    "    Booking \n" +
+                    "INNER JOIN\n" +
+                    "    Mentor ON Booking.mentor_id = Mentor.account_id \n" +
+                    "INNER JOIN\n" +
+                    "    Account ON Mentor.account_id = Account.id\n" +
+                    "JOIN \n" +
+                    "    Level_Skill ON Booking.level_skill_id = Level_Skill.id\n" +
+                    "JOIN \n" +
+                    "    Skill ON Level_Skill.skill_id = Skill.id \n" +
+                    "JOIN \n" +
+                    "    [Level] ON Level_Skill.level_id = [Level].id  \n" +
+                    "JOIN Status s ON Booking.status_id = s.id\n" +
+                    "WHERE \n" +
+                    "    (Booking.status_id = ? OR Booking.status_id = ?) \n" +
+                    "    AND Booking.mentee_id = ?\n" +
+                    "ORDER BY \n" +
+                    "    create_date DESC;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, StatusEnum.DONE);
-            preparedStatement.setString(2, mentee_id);
+            preparedStatement.setInt(2, StatusEnum.ACCEPTED);
+            preparedStatement.setString(3, mentee_id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -196,6 +222,11 @@ public class BookingDAO {
                 booking.setId(resultSet.getInt("id"));
                 booking.setAmount(resultSet.getInt("amount"));
                 booking.setDate(resultSet.getTimestamp("create_date"));
+
+                Status status = new Status();
+                status.setId(resultSet.getInt("status_id"));
+                status.setType(resultSet.getString("type"));
+                booking.setStatus(status);
 
                 Account acc_mentor = new Account();
                 acc_mentor.setId(resultSet.getString("mentor_id"));

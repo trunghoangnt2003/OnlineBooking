@@ -249,6 +249,7 @@
 
 
     </style>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
 <jsp:include page="../../common/header.jsp"></jsp:include>
@@ -317,6 +318,9 @@
     <input type="text" value="${requestScope.success}" id="success" hidden="hidden"/>
     <div class="d-flex justify-content-between top-content">
         <div class="statistic">
+            <div
+                    id="myChart" style="width:100%; max-width:600px; height:500px;">
+            </div>
         </div>
         <div class="list-mentor">
             <h4 style="color: #07AD90" class="text-center">Rating mentor</h4>
@@ -365,11 +369,11 @@
                 <th>No</th>
                 <th>Create Time</th>
                 <th >Mentor</th>
-                <th>Email</th>
                 <th >Amount</th>
                 <th >Skill </th>
                 <th>From</th>
                 <th>To</th>
+                <th>Status</th>
 
             </tr>
             </thead>
@@ -380,13 +384,17 @@
             <tr>
                 <td >${i.index+1}</td>
                 <td >${booking.date}</td>
-                <td >${booking.mentor.account.name}</td>
-                <td>${booking.mentor.account.email}</td>
+                <td >
+                        ${booking.mentor.account.name}
+                        <br/>
+                       <i>${booking.mentor.account.email}</i>
+                </td>
                 <td >${booking.amount} $</td>
                 <td > <img width="20px" src="${pageContext.request.contextPath}/${booking.level_skills.skill.src_icon}" alt=""/>
-                        ${booking.level_skills.skill.name} for ${booking.level_skills.level.name}</td>
+                       &nbsp ${booking.level_skills.skill.name} for ${booking.level_skills.level.name}</td>
                 <td >${booking.startDate}</td>
                 <td >${booking.endDate}</td>
+                <td>${booking.status.type}</td>
 
 
             </tr>
@@ -596,7 +604,34 @@
 
     }
 
+</script>
 
+<script>
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+// Set Data
+        const data = google.visualization.arrayToDataTable([
+            ['Contry', 'Mhl'],
+            ['Italy',54.8],
+            ['France',48.6],
+            ['Spain',44.4],
+            ['USA',23.9],
+            ['Argentina',14.5]
+        ]);
+
+// Set Options
+        const options = {
+            title:'World Wide Wine Production'
+        };
+
+// Draw
+        const chart = new google.visualization.PieChart(document.getElementById('myChart'));
+        chart.draw(data, options);
+
+    }
 </script>
 
 <script
