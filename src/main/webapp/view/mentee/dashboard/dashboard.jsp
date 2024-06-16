@@ -43,7 +43,9 @@
 
         .statistic{
             width: 60%;
-            border: 1px solid #07AD90;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            padding: 15px;
         }
         .list-mentor{
             width: 35%;
@@ -293,9 +295,7 @@
 <div class="report-modal" id="report-modal">
     <div class="blur-bg"></div>
     <div class="content-modal">
-
         <div class="titlemodal" style="color: darkred">Report Mentor </div>
-
         <div class="to-mentor" id="to-mentor"></div>
         <div class="input-reason">
                <div class="d-flex label_reason">
@@ -317,14 +317,19 @@
 <div class="">
     <input type="text" value="${requestScope.success}" id="success" hidden="hidden"/>
     <div class="d-flex justify-content-between top-content">
-        <div class="statistic d-flex justify-content-between">
-            <div>
-                <h5>Total request </h5>
-                <span id="total-slot">Total slot: </span>
-                <br/>
-                <span id="total-money">Total spend money: </span>
-            </div>
-            <div id="myChart" style="width:70%; max-width:600px; height:400px;">
+        <div class="statistic ">
+            <h3 style="color: #07AD90" class="text-center">Dashboard</h3>
+            <div class="d-flex justify-content-between">
+                <div class="mt-4">
+                    <h5 id="total-booking">Total request: </h5>
+                    <span id="total-slot">Total slot: </span>
+                    <br/>
+                    <span>Total mentor: ${requestScope.mentorList.size()}</span>
+                    <br/>
+                    <span id="total-money">Total spend money: </span>
+                </div>
+                <div id="myChart" style="width:70%; max-width:400px; height:300px;">
+                </div>
             </div>
         </div>
         <div class="list-mentor">
@@ -441,15 +446,25 @@
             })
             .then(data => {
                 const mapStatistic = new Map();
+                var total_booking =0
                 for (const [key, value] of Object.entries(data.statistic)) {
                     mapStatistic.set(key.trim(), value);
+                    total_booking = total_booking + value
                 }
 
+                const booking = document.getElementById('total-booking');
+                if(total_booking > 0){
+                    booking.innerHTML += total_booking ;
+                }else{
+                    booking.innerHTML += "you have no booking";
+                }
+
+
                 const slot = document.getElementById('total-slot');
-                slot.innerHTML = "Total slot:  " + Object.entries(data.total)[1][1];
+                slot.innerHTML +=  Object.entries(data.total)[1][1] + " slot learning";
 
                 const money = document.getElementById('total-money');
-                money.innerHTML = "Total money:  " + Object.entries(data.total)[0][1] + " $";
+                money.innerHTML +=  Object.entries(data.total)[0][1] + " $";
                 drawChart(mapStatistic);
             })
             .catch(error => {
@@ -467,10 +482,8 @@
             ['Reject',statistic.get("Reject") || 0],
             ['Cancel',statistic.get("Cancel") || 0],
             ['Accept',statistic.get("Accept") || 0],
+            ['Processing',statistic.get("Processing") || 0]
         ]);
-
-
-
 
 // Set Options
         const options = {

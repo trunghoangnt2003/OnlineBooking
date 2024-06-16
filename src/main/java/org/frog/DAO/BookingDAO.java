@@ -143,13 +143,6 @@ public class BookingDAO {
             preparedStatement.setDate(4, b.getEndDate());
             preparedStatement.setInt(5, b.getLevel_skills().getId());
 
-            System.out.println("SQL: " + preparedStatement.toString());
-            System.out.println("Mentor ID: " + b.getMentor().getAccount().getId());
-            System.out.println("Mentee ID: " + b.getMentee().getAccount().getId());
-            System.out.println("Start Date: " + b.getStartDate());
-            System.out.println("End Date: " + b.getEndDate());
-            System.out.println("Level Skills ID: " + b.getLevel_skills().getId());
-
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 booking = new Booking();
@@ -349,7 +342,6 @@ public class BookingDAO {
         try{
             String sql = "Select b.status_id,s.type,Count(b.status_id) as sum_per_req\n" +
                     "From Booking b JOIN [Status] s on b.status_id = s.id\n" +
-                    "\t\tLEFT JOIN Booking_Schedule bs ON b.id = bs.booking_id \n" +
                     "Where mentee_id = ?\n" +
                     "Group By b.status_id, s.type";
 
@@ -388,5 +380,23 @@ public class BookingDAO {
             e.printStackTrace();
         }
         return statistic;
+    }
+
+    public int totalRequestBook(String id){
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "Select count(id) as total\n" +
+                    "From Booking "+
+                    "WHERE mentee_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

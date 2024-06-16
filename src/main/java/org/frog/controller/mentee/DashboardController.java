@@ -27,10 +27,9 @@ public class DashboardController extends AuthenticationServlet {
 
         ArrayList<Mentor> mentorList = mentorDAO.getByBookDone(mentee_id);
         ArrayList<Booking> bookingList = bookingDAO.getHistoryDone(mentee_id);
-        Map<String,Integer> statistic = bookingDAO.statisticByMentee(mentee_id);
-        Map<String,Integer> total = bookingDAO.getTotalBookByMentee(mentee_id);
+        int total =  bookingDAO.totalRequestBook(mentee_id);
 
-
+        request.setAttribute("total", total);
         request.setAttribute("bookingList", bookingList);
         request.setAttribute("mentorList", mentorList);
         request.getRequestDispatcher("../view/mentee/dashboard/dashboard.jsp").forward(request, response);
