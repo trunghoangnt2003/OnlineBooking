@@ -1,5 +1,7 @@
 package org.frog.controller.mentee;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,6 +14,7 @@ import org.frog.model.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 @WebServlet("/mentee/dashboard")
 public class DashboardController extends AuthenticationServlet {
@@ -24,49 +27,50 @@ public class DashboardController extends AuthenticationServlet {
 
         ArrayList<Mentor> mentorList = mentorDAO.getByBookDone(mentee_id);
         ArrayList<Booking> bookingList = bookingDAO.getHistoryDone(mentee_id);
+        Map<String,Integer> statistic = bookingDAO.statisticByMentee(mentee_id);
+        Map<String,Integer> total = bookingDAO.getTotalBookByMentee(mentee_id);
+
 
         request.setAttribute("bookingList", bookingList);
         request.setAttribute("mentorList", mentorList);
         request.getRequestDispatcher("../view/mentee/dashboard/dashboard.jsp").forward(request, response);
     }
 
+    private void sendFetch(HttpServletRequest request, HttpServletResponse response, Account account) throws ServletException, IOException {
+        BookingDAO bookingDAO = new BookingDAO();
+        String mentee_id = account.getId();
+        Gson gson = new Gson();
+        try {
+            Map<String, Integer> statistic = bookingDAO.statisticByMentee(mentee_id);
+            Map<String, Integer> total = bookingDAO.getTotalBookByMentee(mentee_id);
+
+
+            JsonObject jsonResponse = new JsonObject();
+            jsonResponse.addProperty("status", "success");
+            
+            JsonObject statisticJson = gson.toJsonTree(statistic).getAsJsonObject();
+            jsonResponse.add("statistic", statisticJson);
+
+
+            JsonObject totalJson = gson.toJsonTree(total).getAsJsonObject();
+            jsonResponse.add("total", totalJson);
+
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(gson.toJson(jsonResponse));
+        } catch (Exception e) {
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            JsonObject jsonResponse = new JsonObject();
+            jsonResponse.addProperty("status", "error");
+            jsonResponse.addProperty("message", e.getMessage());
+            response.getWriter().write(gson.toJson(jsonResponse));
+        }
+    }
+
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response, Account account) throws ServletException, IOException {
-//        BookingDAO bookingDAO = new BookingDAO();
-//        MentorDAO mentorDAO = new MentorDAO();
-//        String mentee_id ="e8fd47ed-dec2-49bf-829c-b182230ea49d";
-//        String mentor_id = request.getParameter("mentor_id");
-//
-//        boolean isReport = request.getParameter("isReason").equals("reason");
-//        if(isReport ){
-//            ReportDAO reportDAO = new ReportDAO();
-//            String reason = request.getParameter("reason");
-//            Report report = new Report();
-//
-//            Account menter_acc = new Account();
-//            menter_acc.setId(mentor_id);
-//            Mentor mentor = new Mentor();
-//            mentor.setAccount(menter_acc);
-//            report.setMentor(mentor);
-//
-//            Account mentee_acc = new Account();
-//            mentee_acc.setId(mentee_id);
-//            Mentee mentee = new Mentee();
-//            mentee.setAccount(mentee_acc);
-//            report.setMentee(mentee);
-//
-//            report.setReason(reason);
-//            reportDAO.insert(report);
-//
-//            request.setAttribute("success", "success");
-//        }
-//
-//        ArrayList<Mentor> mentorList = mentorDAO.getByBookDone(mentee_id);
-//        ArrayList<Booking> bookingList = bookingDAO.getHistoryDone(mentee_id);
-//
-//        request.setAttribute("bookingList", bookingList);
-//        request.setAttribute("mentorList", mentorList);
-//        request.getRequestDispatcher("../view/mentee/dashboard/dashboard.jsp").forward(request, response);
+        sendFetch(request, response, account);
     }
 }

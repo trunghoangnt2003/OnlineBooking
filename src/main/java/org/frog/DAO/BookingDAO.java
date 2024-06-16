@@ -8,7 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BookingDAO {
 
@@ -339,5 +341,52 @@ public class BookingDAO {
         }catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+
+    public Map<String,Integer> statisticByMentee(String id){
+        Map<String,Integer> statistic = new HashMap<>();
+        try{
+            String sql = "Select b.status_id,s.type,Count(b.status_id) as sum_per_req\n" +
+                    "From Booking b JOIN [Status] s on b.status_id = s.id\n" +
+                    "\t\tLEFT JOIN Booking_Schedule bs ON b.id = bs.booking_id \n" +
+                    "Where mentee_id = ?\n" +
+                    "Group By b.status_id, s.type";
+
+            Connection connection = JDBC.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                statistic.put(resultSet.getString("type"),resultSet.getInt("sum_per_req"));
+            }
+        }catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return statistic;
+    }
+
+    public Map<String,Integer> getTotalBookByMentee(String id){
+        Map<String,Integer> statistic = new HashMap<>();
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "Select count(Booking_Schedule.id) as number_slot, sum(amount) total_amount\n" +
+                    "From Booking JOIN Booking_Schedule ON Booking.id = Booking_Schedule.booking_id\n" +
+                    "WHERE mentee_id = ?\n" +
+                    "And Booking_Schedule.status_id = ?\n" +
+                    "or Booking_Schedule.status_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, id);
+            preparedStatement.setInt(2, StatusEnum.DONE);
+            preparedStatement.setInt(3, StatusEnum.ACCEPTED);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                statistic.put("number_slot",resultSet.getInt("number_slot"));
+                statistic.put("total_amount",resultSet.getInt("total_amount"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return statistic;
     }
 }

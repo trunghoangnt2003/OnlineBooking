@@ -317,9 +317,14 @@
 <div class="">
     <input type="text" value="${requestScope.success}" id="success" hidden="hidden"/>
     <div class="d-flex justify-content-between top-content">
-        <div class="statistic">
-            <div
-                    id="myChart" style="width:100%; max-width:600px; height:500px;">
+        <div class="statistic d-flex justify-content-between">
+            <div>
+                <h5>Total request </h5>
+                <span id="total-slot">Total slot: </span>
+                <br/>
+                <span id="total-money">Total spend money: </span>
+            </div>
+            <div id="myChart" style="width:70%; max-width:600px; height:400px;">
             </div>
         </div>
         <div class="list-mentor">
@@ -404,8 +409,9 @@
         </table>
     </div>
 </div>
+<script src="${pageContext.request.contextPath}/js/mentee/rating.js"></script>
+<script src="${pageContext.request.contextPath}/js/mentee/report.js"></script>
 <script>
-
     document.addEventListener("DOMContentLoaded", function() {
         const success = document.getElementById("success").value;
         if (success) {
@@ -419,212 +425,56 @@
         }
     })
 
-    const stars = document.querySelectorAll('.star');
-    let rating ;
-
-    function ratingHandle(mentor_id,mentor){
-        document.getElementById("rating-modal").classList.toggle("active");
-        const to = document.getElementById("rating-to-mentor");
-        const comment = document.getElementById('comment');
-        comment.value = "";
-        highlightStars(5);
-        to.innerHTML = "<span class='text-start' style='font-size: 16px'> <b>"+mentor+"</b></span>";
-        const input_id = document.createElement('input');
-        input_id.type = 'text';
-        input_id.name = "mentor_id";
-        input_id.value = mentor_id;
-        input_id.id = "mentor_id";
-        input_id.style.display = "none";
-
-        to.appendChild(input_id);
-    }
-    stars.forEach(star => {
-        star.addEventListener('mouseenter', handleHover);
-        star.addEventListener('click', handleClick);
-        star.addEventListener('mouseleave', handleLeave);
-
-    });
-
-    function highlightStars(rating) {
-        stars.forEach((star, index) => {
-            if(index < rating) {
-                star.classList.add('selected');
-            } else {
-                star.classList.remove('selected');
-            }
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch('dashboard', {
+            method: 'POST',
+           /* headers: {
+                "Content-Type": "application/json",
+            },*/
         })
-    }
-
-    function handleHover(e) {
-        const rating = e.currentTarget.getAttribute('data-value');
-        highlightStars(rating);
-    }
-
-    function  handleLeave(e) {
-        highlightStars(rating);
-    }
-
-    function handleClick(e) {
-        // btn.style.display = "block";
-        rating = e.currentTarget.getAttribute('data-value');
-        highlightStars(rating);
-    }
-
-    function fetchRating(mentor_id,comment){
-        fetch("../mentee/review", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({mentor_id:mentor_id,comment:comment,rating:rating}),
-        }).then( response => {
-            if (response.ok) {
-                console.log(response);
-                Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "Your work has been saved",
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            }else {
-                console.log(response);
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Something went wrong!",
-                });
-            }
-        }).catch(
-            error => {
-                console.log('Error',error);
-            }
-        )
-    }
-
-    function sendRating(){
-        const mentor_id = document.getElementById("mentor_id").value;
-        const comment = document.getElementById('comment').value;
-        console.log(mentor_id);
-        console.log(comment);
-        console.log(rating);
-
-        if(mentor_id && comment)
-        {
-            fetchRating(mentor_id,comment);
-            document.getElementById("rating-modal").classList.toggle("active");
-        }
-        else
-        {
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: " Please rating stars and comment!",
-            });
-        }
-    }
-
-
-    function reportHandle(mentor_id,mentor){
-        document.getElementById("report-modal").classList.toggle("active");
-        const to = document.getElementById("to-mentor");
-        const reason = document.getElementById('reason');
-        reason.value = "";
-
-        to.innerHTML = "<span class='text-center'>Report mentor: <b>"+mentor+"</b></span>";
-        const input_id = document.createElement('input');
-        input_id.type = 'text';
-        input_id.name = "mentor_id";
-        input_id.value = mentor_id;
-        input_id.id = "mentor_id";
-        input_id.style.display = "none";
-
-        to.appendChild(input_id);
-    }
-
-
-    function fetchReport(mentor_id,reason){
-        fetch("../mentee/report", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({mentor_id:mentor_id,reason:reason}),
-        }).then( response => {
-            if (response.ok) {
-                console.log(response);
-                Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "Your work has been saved",
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-                document.getElementById("report-modal").classList.toggle("active");
-            } else {
-                throw new Error('Network response was not ok.');
-            }
-        }).catch(
-            error => {
-                console.error('Error:', error);
-            }
-        )
-
-    }
-
-
-
-    function sendReport(){
-        Swal.fire({
-            title: "Are you sure?",
-            text: "Do you want to report this mentor?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const reason = document.getElementById("reason").value;
-                if(reason == ""){
-                    Swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        text: " Please input reason!",
-                    });
-                }else{
-                    const mentor_id = document.getElementById("mentor_id").value;
-                    fetchReport(mentor_id,reason);
-                    // document.getElementById("frm-report").submit();
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.statusText);
                 }
 
-            }
-        });
+                return response.json();
+            })
+            .then(data => {
+                const mapStatistic = new Map();
+                for (const [key, value] of Object.entries(data.statistic)) {
+                    mapStatistic.set(key.trim(), value);
+                }
 
+                const slot = document.getElementById('total-slot');
+                slot.innerHTML = "Total slot:  " + Object.entries(data.total)[1][1];
 
-    }
+                const money = document.getElementById('total-money');
+                money.innerHTML = "Total money:  " + Object.entries(data.total)[0][1] + " $";
+                drawChart(mapStatistic);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    });
 
-</script>
-
-<script>
     google.charts.load('current', {'packages':['corechart']});
     google.charts.setOnLoadCallback(drawChart);
 
-    function drawChart() {
-
-// Set Data
+    function drawChart(statistic) {
         const data = google.visualization.arrayToDataTable([
-            ['Contry', 'Mhl'],
-            ['Italy',54.8],
-            ['France',48.6],
-            ['Spain',44.4],
-            ['USA',23.9],
-            ['Argentina',14.5]
+            ['Booking', 'Status'],
+            ['Done',statistic.get("Done") || 0],
+            ['Reject',statistic.get("Reject") || 0],
+            ['Cancel',statistic.get("Cancel") || 0],
+            ['Accept',statistic.get("Accept") || 0],
         ]);
+
+
+
 
 // Set Options
         const options = {
-            title:'World Wide Wine Production'
+            title:'Statistic booking',
         };
 
 // Draw
