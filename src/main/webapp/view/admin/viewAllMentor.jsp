@@ -193,7 +193,6 @@
                     <c:set var="count" value="1"/>
                     <c:forEach items="${requestScope.list}" var="mentor" varStatus="loop">
                         <tr>
-
                             <td>${count}</td>
                             <c:set var="count" value="${count+1}"/>
                             <td><a target="_blank" href="../mentor/profile?mentorid=${mentor.account.id}">${mentor.account.id}</a> <!-- The button used to copy the text --></td>
