@@ -29,6 +29,10 @@ public class Transaction {
         this.walletOpposite = walletOpposite;
     }
 
+    public Transaction() {
+
+    }
+
     public int getId() {
         return id;
     }
