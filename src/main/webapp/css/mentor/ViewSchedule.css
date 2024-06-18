@@ -4,7 +4,6 @@
     justify-content: space-around;
 }
 
-
 body{
     background-color: rgb(245, 245, 245);
 }
@@ -146,11 +145,16 @@ body{
     cursor: pointer; /* Add a pointer cursor on hover */
     border-radius: 12px; /* Rounded corners */
 }
+#myRequest{
+    background-color: red;
+}
 #myBtn:hover, #myBtn2:hover ,#myBtn3:hover{
     background-color: white; /* White background on hover */
     color: black; /* Black text on hover */
     border: 2px solid #42509e; /* Green border on hover */
 }
+
+
 .closeInfo {
     /*margin-left: 1250px;*/
     position: absolute;
@@ -555,4 +559,9 @@ th:first-child{
 /* Styling for text content within list items */
 .booking-item span {
     flex-grow: 1; /* Allow text to grow and fill the space */
+}
+#myRequest:hover{
+    background-color: white; /* White background on hover */
+    color: black; /* Black text on hover */
+    border: 2px solid #42509e; /* Green border on hover */
 }

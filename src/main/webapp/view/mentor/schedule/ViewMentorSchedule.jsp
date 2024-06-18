@@ -10,6 +10,7 @@
 <html>
 <head>
     <title>Title</title>
+
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mentor/ViewSchedule.css">
 
     <!-- Fontawesome CDN Link -->
@@ -40,7 +41,6 @@
             justify-content: space-between;
 
         }
-
         .left-side{
             width: 16%;
             margin-top: 10px;
@@ -68,6 +68,7 @@
         <br/>
         <!-- Nút mở modal mới -->
         <button id="myBtn2">View Request</button>
+        <button id="myBtn3" onclick="openMyRequestWork()" style="padding: 15px 20px">Manage Request</button>
         <button id="myBtn3" onclick="history_request()">History Request</button>
         <c:if test="${param.viewID != null}">
             <div>
@@ -474,6 +475,9 @@
 </div>
 
 <script>
+    const openMyRequestWork = () => {
+        window.location.href = "schedule/manage"
+    }
     function updateURL() {
         var todayElement = document.getElementById('today');
         var selectedDate = todayElement.value;
