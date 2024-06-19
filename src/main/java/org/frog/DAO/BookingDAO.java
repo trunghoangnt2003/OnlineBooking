@@ -29,8 +29,8 @@ public class BookingDAO {
         return 0;
     }
 
-    public List<BookingSchedule> getBookingScheduleById(int id) {
-        List<BookingSchedule> list = new ArrayList<>();
+    public ArrayList<BookingSchedule> getBookingScheduleById(int id) {
+        ArrayList<BookingSchedule> list = new ArrayList<>();
         try {
         Connection connection = JDBC.getConnection();
         String sql = "select Booking.id as bId, Slot.id as sId, Slot.time_start,Slot.time_end,Schedule.date,Skill.src_icon, Level.type as lvType,Status.type as stType from Booking join Booking_Schedule\n" +
@@ -186,8 +186,8 @@ public class BookingDAO {
         }
     }
 
-    public List<BookingSchedule> getBookingScheduleLogById(int id) {
-        List<BookingSchedule> list = new ArrayList<>();
+    public ArrayList<BookingSchedule> getBookingScheduleLogById(int id) {
+        ArrayList<BookingSchedule> list = new ArrayList<>();
         try {
             Connection connection = JDBC.getConnection();
             String sql = "select Booking.id as bId, Slot.id as sId, Slot.time_start,Slot.time_end,Schedule.date,Skill.src_icon, Level.type as lvType,Status.type as stType from Booking join Schedule_Booking_Logs\n" +
@@ -579,7 +579,14 @@ public class BookingDAO {
         return total;
     }
 
+    public static void main(String[] args) {
+        BookingDAO bookingDAO = new BookingDAO();
+        List<BookingSchedule> bookingList = bookingDAO.getBookingScheduleById(58);
 
+        for (BookingSchedule bookingSchedule : bookingList) {
+            System.out.println(bookingSchedule.getBooking().getDate());
+        }
+    }
 
 }
 

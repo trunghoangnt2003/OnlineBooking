@@ -8,8 +8,11 @@ import org.frog.DAO.BookingDAO;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.Account;
 import org.frog.model.Booking;
+import org.frog.model.BookingSchedule;
+import org.frog.utility.StatusEnum;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/manager/request")
@@ -26,6 +29,7 @@ public class ManageRequestMentee extends AuthenticationServlet {
         String status = req.getParameter("status");
         String stDate = req.getParameter("stDate");
         String endDate = req.getParameter("endDate");
+        String bkId = req.getParameter("bkId");
         String isOpen = req.getParameter("isOpenModal");
         String book_status = req.getParameter("book_status");
         int stId = 0;
@@ -47,11 +51,25 @@ public class ManageRequestMentee extends AuthenticationServlet {
                 page = 1;
             }
         }
+        BookingDAO bookingDAO = new BookingDAO();
+        ArrayList<BookingSchedule> listSchedule = new ArrayList<>();
+
+        if (bkId != null && !bkId.isEmpty()) {
+            int id = Integer.parseInt(bkId);
+            if(book_status != null || book_status != "") {
+                int bk_status = Integer.parseInt(book_status);
+                if(bk_status == StatusEnum.DONE || bk_status == StatusEnum.ACCEPTED || bk_status == StatusEnum.PROCESSING) {
+                  listSchedule =  bookingDAO.getBookingScheduleById(id);
+                } else if (bk_status == StatusEnum.CANCEL || bk_status == StatusEnum.REJECT) {
+                    listSchedule =  bookingDAO.getBookingScheduleLogById(id);
+                }
+            }
+        }
 
         int numberPage = 10;
         int offset = (page - 1) * numberPage;
 
-        BookingDAO bookingDAO = new BookingDAO();
+
         List<Booking> listBooking;
         int size;
             listBooking = bookingDAO.getBookingByName(stDate,endDate,stId,name, offset, numberPage);
@@ -69,6 +87,7 @@ public class ManageRequestMentee extends AuthenticationServlet {
         req.setAttribute("stDate",stDate);
         req.setAttribute("endDate",endDate);
         req.setAttribute("isOpenModal",isOpen);
+        req.setAttribute("listSchedule",listSchedule);
         req.getRequestDispatcher("../view/manager/viewRequestMentee.jsp").forward(req, resp);
     }
 }

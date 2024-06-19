@@ -112,14 +112,25 @@
             transform:translate(-50%,-50%) scale(1);
         }
     </style>
+    <style></style>
 </head>
 <body>
 <div class="nenmodal" id="nenmodal-1">
     <div class="nenmodal2"></div>
     <div class="ndmodal">
         <div class="closemodal"><button onclick="momodal()">×</button></div>
-        <div class="titlemodal">Tiêu đề của Modal</div>
-        Nội dung hiển thị trong Modal của bạn
+        <div class="titlemodal">Slot Booking Detail</div>
+        <div class="contentmodal">
+            <c:forEach items="${requestScope.listSchedule}" var="listsch">
+                <div style="border-radius: 8px; margin-top: 20px; padding: 20px 0; box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.2); background-color: #66cdbb">
+                   Slot: ${listsch.schedule.slot.id}&ensp;
+                   (${listsch.schedule.slot.start_at}
+                        ${listsch.schedule.slot.end_at})&ensp;
+                    Date: ${listsch.schedule.date}&ensp;
+                    <img style="width: 25px" src="${pageContext.request.contextPath}/${listsch.booking.level_skills.skill.src_icon}"> ${listsch.booking.level_skills.level.name}
+                </div>
+            </c:forEach>
+        </div>
     </div>
 </div>
 
@@ -174,7 +185,7 @@
             <tr>
                 <td>${count}</td>
                 <c:set var="count" value="${count+1}"/>
-                <td><span onclick="momodal(${page}, ${request.status.id},  ${request.id})">${request.id}</span></td>
+                <td><a onclick="momodal(${page}, ${request.status.id},  ${request.id})">${request.id}</a></td>
                 <td>${request.mentee.account.name}</td>
                 <td>${request.status.type}</td>
                 <td>${request.description}</td>
@@ -231,7 +242,7 @@
             //write code here
                 const mainStatus = document.getElementById('filter-status').value;
 
-              window.location.href = "request?page=+" + page + "&name=" + name + "&status=" + mainStatus + "&stDate=" + stdate + "&endDate=" + endate +"&book_status=" + stId  +"&bkId="  + bkId + "&isOpenModal=true";
+              window.location.href = "request?page=" + page + "&name=" + name + "&status=" + mainStatus + "&stDate=" + stdate + "&endDate=" + endate +"&book_status=" + stId  +"&bkId="  + bkId + "&isOpenModal=true";
 
         }else{
             document.getElementById("nenmodal-1").classList.toggle("active");
