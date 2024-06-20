@@ -1022,4 +1022,66 @@ public class Booking_ScheduleDAO {
         }
         return list;
     }
+
+    public void saveLog(ArrayList<BookingSchedule> bookingScheduless ){
+        try{
+            Connection connection = JDBC.getConnection();
+            String sql = "INSERT INTO [dbo].[Schedule_Booking_Logs]\n" +
+                    "           ([booking_id]\n" +
+                    "           ,[schedule_id]\n" +
+                    "           ,[status_id])\n" +
+                    "     VALUES\n" +
+                    "           (? \n" +
+                    "           ,? \n" +
+                    "           ,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            for(BookingSchedule bs : bookingScheduless){
+                preparedStatement.setInt(1,bs.getBooking().getId());
+                preparedStatement.setInt(2, bs.getSchedule().getId());
+                preparedStatement.setInt(3, bs.getStatus().getId());
+
+                preparedStatement.executeUpdate();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public ArrayList<BookingSchedule> getAllByBookingId(int id){
+        ArrayList<BookingSchedule> list = new ArrayList<>();
+        try{
+            Connection connection = JDBC.getConnection();
+            String sql = "SELECT [id]\n" +
+                    "      ,[booking_id]\n" +
+                    "      ,[schedule_id]\n" +
+                    "      ,[isAtend]\n" +
+                    "      ,[status_id]\n" +
+                    "  FROM [dbo].[Booking_Schedule]\n" +
+                    "  Where booking_id = ?\n";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                BookingSchedule bookingSchedule = new BookingSchedule();
+                bookingSchedule.setId(resultSet.getInt("id"));
+
+                Schedule schedule = new Schedule();
+                schedule.setId(resultSet.getInt("schedule_id"));
+                bookingSchedule.setSchedule(schedule);
+
+                Booking booking = new Booking();
+                booking.setId(resultSet.getInt("booking_id"));
+                bookingSchedule.setBooking(booking);
+
+                Status status = new Status();
+                status.setId(resultSet.getInt("status_id"));
+                bookingSchedule.setStatus(status);
+
+                list.add(bookingSchedule);
+            }
+        }catch (Exception e ){
+            e.printStackTrace();
+        }
+        return list;
+    }
 }

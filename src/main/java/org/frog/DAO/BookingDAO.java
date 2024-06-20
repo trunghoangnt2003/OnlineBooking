@@ -321,15 +321,16 @@ public class BookingDAO {
         return null;
     }
 
-    public void deleteBooking(String id){
+    public void cancelBooking(String id){
         try {
             Connection connection = JDBC.getConnection();
             String sql = "UPDATE [dbo].[Booking]\n" +
-                    "   SET [status_id] = 12\n" +
+                    "   SET [status_id] = ?\n" +
                     "      ,[create_date] = GETDATE()\n" +
                     " WHERE Booking.id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, id);
+            preparedStatement.setInt(1,StatusEnum.CANCEL);
+            preparedStatement.setString(2, id);
             preparedStatement.executeUpdate();
         }catch (SQLException e) {
             throw new RuntimeException(e);

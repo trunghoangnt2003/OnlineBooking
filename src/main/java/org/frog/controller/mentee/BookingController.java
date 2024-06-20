@@ -9,8 +9,10 @@ import org.frog.DAO.Booking_ScheduleDAO;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.Account;
 import org.frog.model.Booking;
+import org.frog.model.BookingSchedule;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/mentee/viewBooking")
@@ -19,6 +21,7 @@ public class BookingController extends AuthenticationServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+        String bookingID = req.getParameter("idb");
 
         BookingDAO bookingDAO = new BookingDAO();
         Booking_ScheduleDAO bsDAO = new Booking_ScheduleDAO();
@@ -26,11 +29,14 @@ public class BookingController extends AuthenticationServlet {
         List<Booking> bookingListC = bookingDAO.getAllRequestCancelOfBooking(account.getId());
         req.setAttribute("bookingListC", bookingListC);
         req.setAttribute("bookingList", bookingList);
-        String bookingID = req.getParameter("idb");
         if (bookingID != null) {
             try {
-                bookingDAO.deleteBooking(bookingID);
+                int id = Integer.parseInt(bookingID);
+                ArrayList<BookingSchedule> bookingSchedules = bsDAO.getAllByBookingId(id);
+                bsDAO.saveLog(bookingSchedules);
+                bookingDAO.cancelBooking(bookingID);
                 bsDAO.deleteScheduleBookings(Integer.parseInt(bookingID));
+
                 resp.sendRedirect("viewBooking");
                 return;
             } catch (Exception e) {
