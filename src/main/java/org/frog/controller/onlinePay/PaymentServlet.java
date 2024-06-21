@@ -52,8 +52,7 @@ public class PaymentServlet extends AuthenticationServlet {
                 TransactionDAO transactionDAO = new TransactionDAO();
                 Transaction transaction = new Transaction();
                 int check = transactionDAO.insertPayment(transaction);
-                //int check = paymentDAO.insertPayment(id, user.getId(), money/100);
-                //if(check == 1) System.out.println("Da add giao dich vao data");
+                if(check == 1) System.out.println("Da add giao dich vao data");
                 resp.sendRedirect("home");
             } else {
                 resp.getWriter().print("Không thành công");
@@ -71,6 +70,6 @@ public class PaymentServlet extends AuthenticationServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
-
+        req.getRequestDispatcher("view/onlinePay/payment.jsp").forward(req, resp);
     }
 }

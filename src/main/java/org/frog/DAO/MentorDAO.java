@@ -502,7 +502,7 @@ public class MentorDAO {
         ArrayList<Mentor> mentors = new ArrayList<>();
         try {
             Connection connection = JDBC.getConnection();
-            String sql = "select Account.name, Account.id, Account.avatar, Mentor.rating\n" +
+            String sql = "select TOP 10 Account.name, Account.id, Account.avatar, Mentor.rating\n" +
                     "from Mentor join Account on Mentor.account_id = Account.id\n" +
                     "order by Mentor.rating desc";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -515,6 +515,8 @@ public class MentorDAO {
                 Mentor mentor = new Mentor();
                 mentor.setAccount(account);
                 mentor.setRating(resultSet.getFloat("rating"));
+                BookingDAO bookingDAO = new BookingDAO();
+                mentor.setTotalBookings(bookingDAO.CalcBookByMentor(account.getId()));
                 mentors.add(mentor);
             }
         } catch (SQLException e) {

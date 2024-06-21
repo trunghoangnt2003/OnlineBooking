@@ -19,6 +19,6 @@
 //
 //    @Override
 //    protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
-//        req.getRequestDispatcher("view/onlinePay/online_banking.jsp").forward(req,resp);
+//        req.getRequestDispatcher("view/onlinePay/payment.jsp").forward(req,resp);
 //    }
 //}

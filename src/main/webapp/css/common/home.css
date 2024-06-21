@@ -296,12 +296,19 @@ body {
 
 .rate-follower {
     display: flex;
-    justify-content: space-around;
-    margin-top: 30px;
+    justify-content: space-between;
+    align-items: start;
+    margin-top: 4vh;
+    margin-right: 4vw;
+
 }
 
 .rate {
-    margin-left: 10px;
+    margin-right: 3.5vw;
+}
+
+.booking {
+    margin-left: 1vw;
 }
 
 .follower {

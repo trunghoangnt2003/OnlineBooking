@@ -75,8 +75,8 @@
                         <div class="stars-outer rate col-md-9">
                             <div class="stars-inner" data-rating="${m.rating}"></div>
                         </div>
-                        <div class="col-md-9">
-                            <i class="fa-solid fa-user-graduate"></i> 100
+                        <div class="col-md-9 booking">
+                            <i class="fa-solid fa-user-graduate"></i> ${m.totalBookings}
                         </div>
                     </div>
                 </li>

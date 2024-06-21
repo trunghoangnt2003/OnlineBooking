@@ -19,6 +19,8 @@ public class Transaction {
 
     private Wallet walletOpposite;
 
+    private Account account;
+
     public Transaction(int id, Date date, float amount, float fee, TypeTransaction typeTransaction, Wallet wallet, Wallet walletOpposite) {
         this.id = id;
         this.date = date;
@@ -87,5 +89,13 @@ public class Transaction {
 
     public void setWalletOpposite(Wallet walletOpposite) {
         this.walletOpposite = walletOpposite;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }
