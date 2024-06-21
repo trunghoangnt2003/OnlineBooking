@@ -27,73 +27,251 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/wallet.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .dashboard {
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .profile {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile img {
+            width: 100px;
+            border-radius: 50%;
+        }
+
+        .balance, .help {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .balance h3 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .balance p {
+            color: #888;
+        }
+        .balance button,
+        .help button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .balance button:first-of-type {
+            background-color: #4CAF50; /* Green */
+            color: white;
+        }
+
+        .balance button:last-of-type {
+            background-color: #008CBA; /* Blue */
+            color: white;
+        }
+
+        .help {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .profile-completeness {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .profile-completeness h3 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .profile-completeness .steps {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .profile-completeness .step {
+            text-align: center;
+            width: 100px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .recent-activity {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .recent-activity table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .recent-activity th, .recent-activity td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .recent-activity th {
+            background-color: #f4f4f4;
+        }
+
+        .recent-activity .status {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .recent-activity .status.green {
+            background-color: #4CAF50;
+        }
+
+        .recent-activity .status.yellow {
+            background-color: #FFEB3B;
+        }
+
+        .recent-activity .status.red {
+            background-color: #F44336;
+        }
+
+        .recent-activity a {
+            display: block;
+            text-align: center;
+            color: #008CBA;
+            text-decoration: none;
+        }
+        .status-processing {
+            color: rgba(255,214,47,0.6);
+        }
+
+        .status-done {
+            color: green;
+        }
+
+        .status-reject {
+            color: red;
+        }
+
+    </style>
 </head>
 <body>
 <jsp:include page="../common/header.jsp"></jsp:include>
 
-<div class="container mt-5">
-    <div class="row mb-4">
-        <div class="col">
-            <h2>Hello, ${requestScope.name}</h2>
+<div class="dashboard">
+    <div class="sidebar">
+        <div class="profile">
+            <img src="${pageContext.request.contextPath}/${requestScope.account.avatar}" alt="Profile Picture">
+            <h2>Hello, ${requestScope.account.name}</h2>
+        </div>
+        <div class="balance">
+            <h3>$${requestScope.wallet.balance}</h3>
+            <p>Available: ${requestScope.wallet.available}</p>
+            <button>Withdraw</button>
+            <button>Deposit</button>
+        </div>
+        <div class="help">
+            <p>Need Help?</p>
+            <p>Have questions or concerns regarding your account?</p>
+            <button>Chat with Us</button>
         </div>
     </div>
-
-    <div class="row">
-        <!-- Sidebar Menu -->
-        <div class="col-md-3">
-            <div class="list-group">
-                <a href="wallet.jsp" class="list-group-item list-group-item-action">
-                    <i class="fa-solid fa-chart-pie me-2"></i>Dashboard
-                </a>
-                <a href="dashboard.jsp" class="list-group-item list-group-item-action active">
-                    <i class="fa-solid fa-wallet me-2"></i>My Wallet
-                </a>
+    <div class="main-content">
+        <div class="profile-completeness">
+            <div class="steps">
+                <div class="step">Add Card</div>
+                <div class="step">Add Bank Account</div>
             </div>
         </div>
+        <div class="recent-activity">
+            <h3>Recent Activity</h3>
+            <table>
+                <thead>
+                <tr>
+                    <th>Receiver</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Fee</th>
+                    <th>Type</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${requestScope.transactions}" var="t">
+                    <tr>
+                        <td>${t.account.name}</td>
+                        <td>${t.description}</td>
+                        <td>
+                            <span class="status">
+                                <c:if test="${t.status.id == 13}">
+                                    <span class="status-done">Done</span>
+                                </c:if>
+                                <c:if test="${t.status.id == 1}">
+                                    <span class="status-processing">Processing</span>
+                                </c:if>
 
-        <div class="col-md-5">
-            <div class="card history">
-                <div class="card-body">
-                    <h3 class="card-title">My Wallet</h3>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p class="card-text balance">Balance: ${requestScope.wallet.balance} <i class="fa-solid fa-dollar-sign"></i></p>
-                            <p class="card-text available">Available: ${requestScope.wallet.available} <i class="fa-solid fa-dollar-sign"></i></p>
-                        </div>
-                        <div class="col-md-6">
-                            <button type="button" class="btn btn-primary" data-mdb-ripple-init>Deposit</button>
-                            <button type="button" class="btn btn-primary" data-mdb-ripple-init>Withdraw</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Transaction History -->
-        <div class="col-md-4">
-            <div class="card history">
-                <div class="card-body">
-                    <h3 class="card-title">Transaction History</h3>
-
-                    <div id="transactionDetails" class="collapse">
-                        <c:forEach items="${requestScope.transactions}" var="t">
-                            <div class="transaction mb-3">
-                                <p><strong>Receiver:</strong> ${t.account.name}</p>
-                                <p><strong>Amount:</strong> ${t.amount}</p>
-                                <p><strong>Date:</strong> ${t.date}</p>
-                                <p><strong>Type:</strong> ${t.typeTransaction.name}</p>
-                                <p><strong>Fee:</strong> ${t.fee}</p>
-                                <hr>
-                            </div>
-                        </c:forEach>
-                    </div>
-                    <button class="btn btn-primary" id="showMoreBtn" onclick="toggleTransactionDetails()">Show More</button>
-                </div>
-            </div>
+                                <c:if test="${t.status.id == 2}">
+                                    <span class="status-reject">Reject</span>
+                                </c:if>
+                            </span>
+                        </td>
+                        <td>
+                            <c:if test="${t.typeTransaction.name == 'Deposit'}">
+                                <span><i class="fa-solid fa-download"></i></span>
+                            </c:if>
+                            <c:if test="${t.typeTransaction.name == 'Withdrawl'}">
+                                <span><i class="fa-solid fa-upload"></i></span>
+                            </c:if>
+                            <span>$</span>${t.amount}
+                        </td>
+                        <td>${t.date}</td>
+                        <td>${t.fee}</td>
+                        <td>${t.typeTransaction.name}</td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+            <a href="#">View all</a>
         </div>
     </div>
-</div>
 
 <!-- MDB -->
 <script
@@ -116,6 +294,25 @@
             showMoreBtn.textContent = 'Show Less';
         }
     }
+    document.addEventListener("DOMContentLoaded", function() {
+        // Example: Update profile completeness
+        const profileCompleteness = document.querySelector('.profile-completeness h3 span');
+        let completeness = 50; // Example percentage
+
+        function updateProfileCompleteness(newPercentage) {
+            completeness = newPercentage;
+            profileCompleteness.textContent = ${completeness}%;
+        }
+
+        // Example: Handle chat button click
+        const chatButton = document.querySelector('.help button');
+        chatButton.addEventListener('click', function() {
+            alert('Chat with Us feature coming soon!');
+        });
+
+        // Example usage: update profile completeness
+        updateProfileCompleteness(75); // Update to 75% for demonstration
+    });
 </script>
 
 </body>

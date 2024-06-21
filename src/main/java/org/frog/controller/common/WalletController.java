@@ -32,7 +32,7 @@ public class WalletController extends AuthenticationServlet {
 
         req.setAttribute("transactions", transactions);
         req.setAttribute("wallet", wallet);
-        req.setAttribute("name", account.getName());
+        req.setAttribute("account", account);
         req.getRequestDispatcher("../view/common/wallet.jsp").forward(req, resp);
     }
 }

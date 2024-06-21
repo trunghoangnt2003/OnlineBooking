@@ -21,7 +21,11 @@ public class Transaction {
 
     private Account account;
 
-    public Transaction(int id, Date date, float amount, float fee, TypeTransaction typeTransaction, Wallet wallet, Wallet walletOpposite) {
+    private String description;
+
+    private Status status;
+
+    public Transaction(int id, Date date, float amount, float fee, TypeTransaction typeTransaction, Wallet wallet, Wallet walletOpposite, Account account, String description) {
         this.id = id;
         this.date = date;
         this.amount = amount;
@@ -29,6 +33,8 @@ public class Transaction {
         this.typeTransaction = typeTransaction;
         this.wallet = wallet;
         this.walletOpposite = walletOpposite;
+        this.account = account;
+        this.description = description;
     }
 
     public Transaction() {
@@ -97,5 +103,21 @@ public class Transaction {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }
