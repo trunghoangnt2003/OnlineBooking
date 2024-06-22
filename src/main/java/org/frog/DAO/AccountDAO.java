@@ -3,6 +3,7 @@ package org.frog.DAO;
 import org.frog.model.Account;
 import org.frog.model.Role;
 import org.frog.model.Status;
+import org.frog.model.Wallet;
 import org.frog.utility.StatusEnum;
 
 import java.util.ArrayList;
@@ -47,8 +48,28 @@ public class AccountDAO {
         Account account = null;
         try {
             Connection connection = JDBC.getConnection();
-            String sql = "select * from [account]"
-                    + "where [username]=? AND [password]=?";
+            String sql = "SELECT \n" +
+                    "    Account.id, \n" +
+                    "    Account.username, \n" +
+                    "    Account.password, \n" +
+                    "    Account.name, \n" +
+                    "    Account.mail, \n" +
+                    "    Account.avatar, \n" +
+                    "    Account.wallet_id, \n" +
+                    "    Account.status, \n" +
+                    "    Account.role_id,\n" +
+                    "    Wallet.balance, \n" +
+                    "    Wallet.available\n" +
+                    "FROM \n" +
+                    "    Account\n" +
+                    "JOIN \n" +
+                    "    Wallet \n" +
+                    "ON \n" +
+                    "    Account.wallet_id = Wallet.id\n" +
+                    "WHERE \n" +
+                    "    Account.username = ?\n" +
+                    "AND \n" +
+                    "    Account.password = ?";
             assert connection != null;
             PreparedStatement preparedStatement = connection.prepareCall(sql);
             preparedStatement.setString(1, userName);
@@ -67,6 +88,13 @@ public class AccountDAO {
                 String avatar = resultSet.getString("avatar");
                 account.setAvatar(avatar);
                 account.setName(name);
+
+                Wallet wallet = new Wallet();
+                wallet.setId(resultSet.getInt("wallet_id"));
+                wallet.setBalance(resultSet.getInt("balance"));
+                wallet.setAvailable(resultSet.getInt("available"));
+                account.setWallet(wallet);
+
             }
             JDBC.closeConnection(connection);
         } catch (SQLException ignored) {

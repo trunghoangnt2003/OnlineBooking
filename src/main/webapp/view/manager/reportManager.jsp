@@ -36,10 +36,7 @@
             rel="stylesheet"
     />
     <!-- MDB -->
-    <link
-            href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.2/mdb.min.css"
-            rel="stylesheet"
-    />
+
     <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
     <!-- Fontawesome CDN Link For Icons -->
@@ -64,7 +61,7 @@
             left:50%;
             transform:translate(-50%,-50%) scale(0);
             background:#fff;
-            width:600px;
+           /*width:600px;*/
             z-index:2;
             text-align:center;
             padding:20px;
@@ -190,6 +187,56 @@
             font-weight: bold;
         }
 
+        .btn-blue{
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white; /* White text color */
+            background-color: #007bff; /* Blue background color */
+            border: none; /* No border */
+            border-radius: 20px; /* Rounded edges */
+            text-align: center;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .btn-blue:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        .btn-red {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: rgba(255, 0, 0, 0.3); /* Light red color */
+            background-color: transparent;
+            border: 2px solid rgba(255, 0, 0, 0.5); /* Red border */
+            border-radius: 20px; /* Rounded edges */
+            text-align: center;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .btn-red:hover {
+            background-color: rgba(255, 0, 0, 0.1); /* Slightly red background on hover */
+        }
+
+        .btn-accept{
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white; /* White text color */
+            background-color: #007bff; /* Blue background color */
+            border: none; /* No border */
+            border-radius: 20px; /* Rounded edges */
+            text-align: center;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .btn-accept:hover{
+            background-color: #0056b3; /* Darker blue on hover */
+        }
     </style>
 </head>
 <body>
@@ -213,8 +260,7 @@
             <span style="font-size: 12px">(Please check carefully before making decisions)</span>
         </div>
         <div class="m-3">
-            <button onclick="handleAccepted()" type="button" class="btn btn-success" data-mdb-ripple-init>Accepted</button>
-            <button onclick="momodal()" type="button" class="btn btn-danger" data-mdb-ripple-init>Reject</button>
+            <button onclick="handleAccepted()" type="button" class="btn-accept"  >Accepted</button>
         </div>
     </div>
 </div>
@@ -241,10 +287,10 @@
                                  From <input id="from" name="from" type="date" value="${requestScope.from}" /> - <input id="to" name="to" type="date" value="${requestScope.to}" />
                             </div>
                             <div class="d-flex">
-                                <button type="submit" class="btn btn-outline-primary btn-rounded d-flex align-items-center" style="height: 30px" data-mdb-ripple-init  data-mdb-ripple-color="dark" >
+                                <button type="submit"  class=" d-flex align-items-center btn-blue" style="height: 30px"  >
                                     Search <i class="fa-solid fa-magnifying-glass fa-xs"  style="margin-left: 10px"></i>
                                 </button>
-                                <button type="button" onclick="clearHandler()" class="btn btn-outline-danger btn-rounded d-flex align-items-center" style="height: 30px ; margin-left: 10px" data-mdb-ripple-init  data-mdb-ripple-color="dark" >
+                                <button type="button" onclick="clearHandler()" class="d-flex align-items-center btn-red" style="height: 30px ; margin-left: 10px" >
                                     Clear
                                 </button>
                             </div>
@@ -275,9 +321,14 @@
 
                         <c:forEach items="${requestScope.reports}" var="report">
                             <tr>
-                                <td style="cursor: pointer" onclick="momodal('${report.id}','${report.reason}','${report.mentee.account.name}','${report.mentor.account.name}')" >
-                                    <i class="text-decoration-underline text-primary" >${report.id}</i>
-                                </td>
+                                <c:if test="${report.status.id == 1}">
+                                    <td style="cursor: pointer" onclick="momodal('${report.id}','${report.reason}','${report.mentee.account.name}','${report.mentor.account.name}')" >
+                                        <i class="text-decoration-underline text-primary" >${report.id}</i>
+                                    </td>
+                                </c:if>
+                                <c:if test="${report.status.id == 3}">
+                                    <td>${report.id}</td>
+                                </c:if>
                                 <td>${report.date}</td>
                                 <td>${report.mentee.account.id}</td>
                                 <td>${report.mentee.account.name}</td>
@@ -337,7 +388,7 @@
         if(isOpen == false){
             document.getElementById('report_id').value= id;
             document.getElementById('reason').value=reason;
-            document.getElementById('mentee').innerHTML = "Report detail: " +  mentee;
+            document.getElementById('mentee').innerHTML = "Reporter: " +  mentee;
             document.getElementById('mentor').innerHTML = "Person being reported: " +  mentor;
             document.getElementById("nenmodal-1").classList.toggle("active");
             isOpen = true;

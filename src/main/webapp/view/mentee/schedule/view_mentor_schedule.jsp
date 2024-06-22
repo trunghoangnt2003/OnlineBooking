@@ -25,8 +25,16 @@
         }
 
         .info-container{
-            width: 80%;
-            margin: 20px 40px;
+            width:83%;
+            margin: 20px 0;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 7px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .wallet{
+            width: 15%;
+            margin: 20px 0;
             border-radius: 10px;
             padding: 25px;
             box-shadow: 0 5px 7px 2px rgba(0, 0, 0, 0.05);
@@ -255,24 +263,32 @@
     <div style="margin: 20px 0 40px 40px;">
         <jsp:include page="../../common/backBtn.jsp"></jsp:include>
     </div>
-    <div class="info-container">
-        <c:set var="level_skill" value="${requestScope.level_skills}"></c:set>
-        <input type="text" hidden="hidden" name="mentorId" value="${requestScope.mentor.account.id}"/>
-        <input type="text" hidden="hidden" name="skill" value="${level_skill.skill.name}"/>
-        <input type="text" hidden="hidden" name="level" value="${level_skill.level.name}">
-        <div>
-            <div class="category">
-                <span class="category_name">${level_skill.skill.category.name} </span>
+    <div class="d-flex justify-content-between" style="margin: 0 40px" >
+        <div class="info-container">
+            <c:set var="level_skill" value="${requestScope.level_skills}"></c:set>
+            <input type="text" hidden="hidden" name="mentorId" value="${requestScope.mentor.account.id}"/>
+            <input type="text" hidden="hidden" name="skill" value="${level_skill.skill.name}"/>
+            <input type="text" hidden="hidden" name="level" value="${level_skill.level.name}">
+            <div>
+                <div class="category">
+                    <span class="category_name">${level_skill.skill.category.name} </span>
+                </div>
+                <div class="d-flex align-items-center mt-4">
+                    <img style="width: 40px" src="${pageContext.request.contextPath}/${level_skill.skill.src_icon}">
+                    <h5 style="color: #07ad90; margin: 0 0 0 10px">${level_skill.skill.name} for ${level_skill.level.name} </h5>
+                </div>
             </div>
-            <div class="d-flex align-items-center mt-4">
-                <img style="width: 40px" src="${pageContext.request.contextPath}/${level_skill.skill.src_icon}">
-                <h5 style="color: #07ad90; margin: 0 0 0 10px">${level_skill.skill.name} for ${level_skill.level.name} </h5>
+            <div  class="d-flex justify-content-between mt-3">
+                <span class="fs-4"> Mentor: ${requestScope.mentor.account.name}</span>
+                <span class="fs-5">${requestScope.mentor.price}$/per slot</span>
+
             </div>
         </div>
-        <div  class="d-flex justify-content-between mt-3">
-            <span class="fs-4"> Mentor: ${requestScope.mentor.account.name}</span>
-            <span class="fs-5">${requestScope.mentor.price}$/per slot</span>
-
+        <div class="wallet">
+            <h3 style="color: #07AD90; text-align: center" class="mb-4" > <i class="fa-solid fa-wallet" style="color: #07AD90;"></i> Wallet</h3>
+            <h6>Total: ${requestScope.wallet.balance}$</h6>
+            <h6>Available: ${requestScope.wallet.available}$</h6>
+            <input id="available" type="text" hidden="hidden" name="available" value="${requestScope.wallet.available}"/>
         </div>
     </div>
     <div class="d-flex main">
@@ -582,6 +598,7 @@
         const total_amount = document.createElement('input');
         total_amount.type = 'text';
         total_amount.name = 'total_amount';
+        total_amount.id = 'total_amount';
         total_amount.value = (number_booking * price);
         total_amount.style.display = 'none';
         amount.appendChild(total_amount);
@@ -617,19 +634,32 @@
         }).then((result) => {
             if (result.isConfirmed ) {
                 if(number_booking > 0){
-                    Swal.fire({
-                        title: "Done!",
-                        text: "Your booking has been booked.",
-                        icon: "success",
-                        showConfirmButton: false,
-                    });
+                    const price = document.getElementById('price').value
+                    const total_amount = price * number_booking;
+                    const  available = document.getElementById('available').value;
+                    console.log(total_amount > available);
+                    if( total_amount > available) {
+                        Swal.fire({
+                            title: "Error!",
+                            text: "Insufficient balance.",
+                            icon: "error",
+                            showConfirmButton: false,
 
-
-                    setTimeout(() => {
-                        const  form = document.getElementById('frm');
-                        form.method = 'POST';
-                        form.submit();
-                    }, 1500);
+                        })
+                        console.log("ádadasd");
+                    }else {
+                        Swal.fire({
+                            title: "Done!",
+                            text: "Your booking has been booked.",
+                            icon: "success",
+                            showConfirmButton: false,
+                        });
+                        setTimeout(() => {
+                            const form = document.getElementById('frm');
+                            form.method = 'POST';
+                            form.submit();
+                        }, 1500);
+                    }
                 }else{
                     Swal.fire({
                         title: "Error!",
@@ -639,6 +669,8 @@
                         timer: 2000
                     });
                 }
+
+
 
             }
         });

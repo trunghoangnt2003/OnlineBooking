@@ -13,7 +13,7 @@ import org.frog.model.Report;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet("/manager/report")
+@WebServlet("/admin/report")
 public class ReportManager extends AuthenticationServlet {
 
     @Override

@@ -35,6 +35,7 @@ public class ViewMentorScheduleController extends AuthenticationServlet {
         MentorDAO mentorDAO = new MentorDAO();
         ArrayList<Slot> slots = slotDAO.selectAll();
         Level_SkillDAO level_skillDAO = new Level_SkillDAO();
+        WalletDAO walletDAO = new WalletDAO();
 
         int bookinngsLogsID = 0;
         if (booking_Logs_raw != null) {
@@ -129,7 +130,10 @@ public class ViewMentorScheduleController extends AuthenticationServlet {
         ArrayList<BookingSchedule> bookingSchedules = booking_scheduleDAO.getBookingScheduleByMentor(mentor_id);
         Mentor mentor = mentorDAO.getMentorById(mentor_id);
         Level_Skills level_skills = level_skillDAO.getBySkillAndLevel(skill, level);
+        Wallet wallet = walletDAO.getByAccountId(account.getId());
 
+
+        request.setAttribute("wallet", wallet);
         request.setAttribute("bookingConflict", bookingConflict);
         request.setAttribute("level_skills", level_skills);
         request.setAttribute("mentor", mentor);
@@ -175,7 +179,7 @@ public class ViewMentorScheduleController extends AuthenticationServlet {
         BookingDAO bookingDAO = new BookingDAO();
         Level_SkillDAO level_skillDAO = new Level_SkillDAO();
         Booking_ScheduleDAO booking_scheduleDAO = new Booking_ScheduleDAO();
-
+        WalletDAO walletDAO = new WalletDAO();
 
         Booking booking = new Booking();
 
@@ -210,6 +214,9 @@ public class ViewMentorScheduleController extends AuthenticationServlet {
 
         booking_scheduleDAO.makeBooking_Schedule(book, scheduleList);
 
+        Wallet wallet = walletDAO.getByAccountId(account.getId());
+        float available = wallet.getAvailable() - amount;
+        walletDAO.updateAvailable(wallet, available);
         response.sendRedirect("../mentee/viewBooking");
     }
 

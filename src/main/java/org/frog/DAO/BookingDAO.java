@@ -400,4 +400,48 @@ public class BookingDAO {
         }
         return 0;
     }
+
+    public Booking getById(int id) {
+        try{
+            Connection connection = JDBC.getConnection();
+            String sql = "Select * from Booking where id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+               Booking booking = new Booking();
+               booking.setId(resultSet.getInt("id"));
+               booking.setAmount(resultSet.getInt("amount"));
+               booking.setDate(resultSet.getTimestamp("create_date"));
+               booking.setStartDate(resultSet.getDate("from_date"));
+               booking.setEndDate(resultSet.getDate("to_date"));
+               booking.setDescription(resultSet.getString("description"));
+
+
+               Account accMentee = new Account();
+                accMentee.setId(resultSet.getString("mentee_id"));
+                Mentee mentee = new Mentee(accMentee);
+               booking.setMentee(mentee);
+
+               Account accMenter = new Account();
+               accMenter.setId(resultSet.getString("mentor_id"));
+               Mentor mentor = new Mentor(accMenter);
+               booking.setMentor(mentor);
+
+               Level_Skills level_skills = new Level_Skills();
+               level_skills.setId(resultSet.getInt("level_skill_id"));
+               booking.setLevel_skills(level_skills);
+
+               Status status = new Status();
+               status.setId(resultSet.getInt("status_id"));
+               booking.setStatus(status);
+
+               return booking;
+            }
+        }catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
 }

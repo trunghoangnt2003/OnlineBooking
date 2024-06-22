@@ -6,10 +6,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.frog.DAO.BookingDAO;
 import org.frog.DAO.Booking_ScheduleDAO;
+import org.frog.DAO.WalletDAO;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.Account;
 import org.frog.model.Booking;
 import org.frog.model.BookingSchedule;
+import org.frog.model.Wallet;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ public class BookingController extends AuthenticationServlet {
 
         BookingDAO bookingDAO = new BookingDAO();
         Booking_ScheduleDAO bsDAO = new Booking_ScheduleDAO();
+        WalletDAO walletDAO = new WalletDAO();
         List<Booking> bookingList = bookingDAO.getAllRequestProcessOfBooking(account.getId());
         List<Booking> bookingListC = bookingDAO.getAllRequestCancelOfBooking(account.getId());
         req.setAttribute("bookingListC", bookingListC);
@@ -33,10 +36,14 @@ public class BookingController extends AuthenticationServlet {
             try {
                 int id = Integer.parseInt(bookingID);
                 ArrayList<BookingSchedule> bookingSchedules = bsDAO.getAllByBookingId(id);
+                Booking booking = bookingDAO.getById(id);
                 bsDAO.saveLog(bookingSchedules);
                 bookingDAO.cancelBooking(bookingID);
                 bsDAO.deleteScheduleBookings(Integer.parseInt(bookingID));
 
+                Wallet wallet = walletDAO.getByAccountId(account.getId());
+                float available = (wallet.getAvailable() + booking.getAmount());
+                walletDAO.updateAvailable(account.getWallet(), available);
                 resp.sendRedirect("viewBooking");
                 return;
             } catch (Exception e) {
