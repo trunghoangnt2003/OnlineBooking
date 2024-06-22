@@ -1,4 +1,4 @@
-package org.frog.controller.Mentor;
+package org.frog.controller.mentor;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

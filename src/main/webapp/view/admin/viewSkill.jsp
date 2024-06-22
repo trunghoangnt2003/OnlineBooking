@@ -178,7 +178,7 @@
             </div>
 
             <div class="modal-body">
-                <form>
+                <form method="post">
                     <div class="mb-3">
                         <label for="imageInput" class="form-label">Ảnh kỹ năng</label>
                         <div class="form-group">
@@ -192,14 +192,13 @@
                         </div>
 
                     </div>
-                    <form>
+
                         <div class="form-group">
                             <label for="skillInput">Nhập tên kỹ năng:</label>
                             <input type="text" id="skillInput" class="form-control">
                             <div id="skillCheckResult"></div>
                         </div>
-                        <button type="button" onclick="checkSkill()">Kiểm tra kỹ năng</button>
-                    </form>
+
                     <div class="mb-3">
                         <label for="skillCategory" class="form-label">Category</label>
                         <select class="form-select" id="skillCategory">
