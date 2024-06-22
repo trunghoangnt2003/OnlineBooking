@@ -86,6 +86,11 @@
             color: white;
         }
 
+        .btn2 {
+            background-color: yellowgreen;
+            color: white;
+        }
+
         .balance button:last-of-type {
             background-color: #008CBA; /* Blue */
             color: white;
@@ -204,8 +209,14 @@
         <div class="balance">
             <h3>$${requestScope.wallet.balance}</h3>
             <p>Available: ${requestScope.wallet.available}</p>
-            <button>Withdraw</button>
-            <button>Deposit</button>
+            <c:if test="${requestScope.role == 1}">
+                <button>Withdraw</button>
+                <button class="btn2">Deposit</button>
+                <button>Payment</button>
+            </c:if>
+            <c:if test="${requestScope.role == 2}">
+                <button>Withdraw</button>
+            </c:if>
         </div>
         <div class="help">
             <p>Need Help?</p>
@@ -214,45 +225,31 @@
         </div>
     </div>
     <div class="main-content">
-        <div class="profile-completeness">
-            <div class="steps">
-                <div class="step">Add Card</div>
-                <div class="step">Add Bank Account</div>
-            </div>
-        </div>
+<%--        <div class="profile-completeness">--%>
+<%--            <div class="steps">--%>
+<%--                <div class="step">Add Card</div>--%>
+<%--                <div class="step">Add Bank Account</div>--%>
+<%--            </div>--%>
+<%--        </div>--%>
         <div class="recent-activity">
             <h3>Recent Activity</h3>
             <table>
                 <thead>
                 <tr>
-                    <th>Receiver</th>
-                    <th>Description</th>
-                    <th>Status</th>
+                    <th>ID Transaction</th>
                     <th>Amount</th>
+                    <c:if test="${requestScope.role == 2}">
+                        <th>Fee</th>
+                    </c:if>
                     <th>Date</th>
-                    <th>Fee</th>
                     <th>Type</th>
+                    <th>Receiver</th>
                 </tr>
                 </thead>
                 <tbody>
                 <c:forEach items="${requestScope.transactions}" var="t">
                     <tr>
-                        <td>${t.account.name}</td>
-                        <td>${t.description}</td>
-                        <td>
-                            <span class="status">
-                                <c:if test="${t.status.id == 13}">
-                                    <span class="status-done">Done</span>
-                                </c:if>
-                                <c:if test="${t.status.id == 1}">
-                                    <span class="status-processing">Processing</span>
-                                </c:if>
-
-                                <c:if test="${t.status.id == 2}">
-                                    <span class="status-reject">Reject</span>
-                                </c:if>
-                            </span>
-                        </td>
+                        <td>${t.id}</td>
                         <td>
                             <c:if test="${t.typeTransaction.name == 'Deposit'}">
                                 <span><i class="fa-solid fa-download"></i></span>
@@ -260,11 +257,28 @@
                             <c:if test="${t.typeTransaction.name == 'Withdrawl'}">
                                 <span><i class="fa-solid fa-upload"></i></span>
                             </c:if>
+                            <c:if test="${t.typeTransaction.name == 'Payment'}">
+                                <span><i class="fa-solid fa-money-bill-trend-up"></i></span>
+                            </c:if>
+
                             <span>$</span>${t.amount}
                         </td>
+                        <c:if test="${requestScope.role == 2}">
+                            <td>${t.fee}</td>
+                        </c:if>
                         <td>${t.date}</td>
-                        <td>${t.fee}</td>
                         <td>${t.typeTransaction.name}</td>
+                        <td>
+                            <c:if test="${t.typeTransaction.name == 'Deposit'}">
+                                <span>${requestScope.account.name}</span>
+                            </c:if>
+                            <c:if test="${t.typeTransaction.name == 'Withdrawl'}">
+                                <span>Banking Account</span>
+                            </c:if>
+                            <c:if test="${t.typeTransaction.name == 'Payment'}">
+                                <span>${t.account.name}</span>
+                            </c:if>
+                        </td>
                     </tr>
                 </c:forEach>
                 </tbody>

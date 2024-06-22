@@ -8,8 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class WallletDAO {
-    public Wallet getInfoWalletById(String id) {
+public class WalletDAO {
+    public Wallet getByAccountId(String id) {
         Wallet wallet = new Wallet();
         try {
             Connection connection = JDBC.getConnection();
@@ -35,7 +35,7 @@ public class WallletDAO {
         ArrayList<Transaction> transactions = new ArrayList<>();
         try {
             Connection connection = JDBC.getConnection();
-            String sql = "select A.name, T.description, T.amount, T.fee, TT.name as type_name, T.date, S.type, S.id as status_id\n" +
+            String sql = "select A.name, T.id, T.amount, T.fee, TT.name as type_name, T.date\n" +
                     "                    from Account A join Wallet W on A.wallet_id = W.id\n" +
                     "                    join [Transaction] T on W.id = T.wallet_opposite\n" +
                     "                    join Type_Transaction TT on TT.id = T.type_id\n" +
@@ -48,17 +48,12 @@ public class WallletDAO {
                 Transaction transaction = new Transaction();
                 TypeTransaction typeTransaction = new TypeTransaction();
                 Account account = new Account();
-                Status status = new Status();
+                transaction.setId(resultSet.getInt("id"));
                 transaction.setDate(resultSet.getDate("date"));
                 transaction.setAmount(resultSet.getFloat("amount"));
                 transaction.setFee(resultSet.getFloat("fee"));
-                transaction.setDescription(resultSet.getString("description"));
                 typeTransaction.setName(resultSet.getString("type_name"));
                 account.setName(resultSet.getString("name"));
-                status.setType(resultSet.getString("type"));
-                status.setId(resultSet.getInt("status_id"));
-
-                transaction.setStatus(status);
                 transaction.setTypeTransaction(typeTransaction);
                 transaction.setAccount(account);
                 transactions.add(transaction);
