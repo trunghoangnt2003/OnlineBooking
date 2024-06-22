@@ -19,10 +19,4 @@ public class SHA1 {
         }
         return res;
     }
-
-    public static void main(String[] args) {
-        UUID id = UUID.randomUUID();
-        System.out.println(id);
-        System.out.println(SHA1.toSHA1("123456789"));
-    }
 }

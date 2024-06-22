@@ -122,10 +122,10 @@ position: sticky; top:0; z-index: 999">
                     <c:if test="${sessionScope.account==null}">
                         <div class="d-flex align-items-center">
                             <button data-mdb-ripple-init type="button" class="btn px-3 me-2" style='background-color: #07ad90;'>
-                                <a href="login" style="text-decoration: none">Sign in </a>
+                                <a href="<%=url%>/login" style="text-decoration: none">Sign in </a>
                             </button>
                             <button data-mdb-ripple-init type="button" class="btn me-3" style='background-color: #07ad90;'>
-                                <a href="register" style="text-decoration: none">Sign up for free</a>
+                                <a href="<%=url%>/register" style="text-decoration: none">Sign up for free</a>
                             </button>
                         </div>
                     </c:if>

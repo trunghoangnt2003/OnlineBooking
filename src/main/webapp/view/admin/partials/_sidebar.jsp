@@ -1,11 +1,13 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
   <ul class="nav">
-    <li class="nav-item">
-      <a class="nav-link" href="../dash.jsp">
-        <i class="mdi mdi-grid-large menu-icon"></i>
-        <span class="menu-title">Dashboard</span>
-      </a>
-    </li>
+    <c:if test="${sessionScope.account.role.id == 3}">
+      <li class="nav-item">
+        <a class="nav-link" href="../dash.jsp">
+          <i class="mdi mdi-grid-large menu-icon"></i>
+          <span class="menu-title">Dashboard</span>
+        </a>
+      </li>
+    </c:if>
 
     <li class="nav-item">
       <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
@@ -16,7 +18,9 @@
       <div class="collapse" id="auth">
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"> <a class="nav-link" href="../admin/mentor"> Mentor Management</a></li>
-          <li class="nav-item"> <a class="nav-link" href="#"> Mentee Management</a></li>
+          <c:if test="${sessionScope.account.role.id == 3}">
+            <li class="nav-item"> <a class="nav-link" href="#"> Mentee Management</a></li>
+          </c:if>
           <li class="nav-item"> <a class="nav-link" href="#"> Request Management</a></li>
 
         </ul>
@@ -30,7 +34,7 @@
       </a>
       <div class="collapse" id="auth1">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="#">Banner Management</a></li>
+
           <li class="nav-item"> <a class="nav-link" href="../admin/skill">Skills Management</a></li>
         </ul>
       </div>

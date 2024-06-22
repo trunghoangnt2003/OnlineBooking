@@ -53,7 +53,7 @@ public class Level_SkillDAO {
         ArrayList<Level_Skills> list = new ArrayList<>();
         try {
             Connection connection = JDBC.getConnection();
-            String sql = "select Level_Skill.id, Level.type, Skill.name\n" +
+            String sql = "select Level_Skill.id, Level.type, Skill.name,Skill.cate_id\n" +
                     "from Level join Level_Skill on Level.id = Level_Skill.level_id\n" +
                     "\t\tjoin Skill on Skill.id = Level_Skill.skill_id";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -66,6 +66,9 @@ public class Level_SkillDAO {
                 level_skills.setId(resultSet.getInt("id"));
                 level_skills.setLevel(level);
                 skill.setName(resultSet.getString("name"));
+                Category category = new Category();
+                category.setId(resultSet.getInt("cate_id"));
+                skill.setCategory(category);
                 level.setName(resultSet.getString("type"));
                 level_skills.setSkill(skill);
                 level_skills.setLevel(level);
@@ -78,7 +81,7 @@ public class Level_SkillDAO {
         }
         return list;
     }
-    public ArrayList<Level_Skills> getLevel_SkillListPagitaion(int page) {
+    public ArrayList<Level_Skills> getLevel_SkillListPagitaion(int page,int cate) {
         ArrayList<Level_Skills> list = new ArrayList<>();
         try {
             Connection connection = JDBC.getConnection();
@@ -86,11 +89,19 @@ public class Level_SkillDAO {
                     "                  s.cate_id,sc.name as category, ls.level_id,l.type,ls.status_id\n" +
                     "                    From Level_Skill ls Join Skill s On ls.skill_id = s.id\n" +
                     "                    Join Skill_Category sc On s.cate_id = sc.id\n" +
-                    "\t\t\t\t\tjoin Level l on l.id=ls.level_id\n" +
-                    "\t\t\t\t\torder by ls.id\n" +
-                    "\t\t\t\t\tOFFSET ? ROWS FETCH NEXT 10 ROWS ONLY";
+                    "join Level l on l.id=ls.level_id\n";
+                    if(cate != 0 ){
+                        sql += "where sc.id = ?\n";
+                    }
+                    sql +=   "order by ls.id\n";
+                    sql +=       "OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, (page - 1) * 10);
+            if(cate != 0 ){
+                preparedStatement.setInt(1, cate);
+                preparedStatement.setInt(2, (page - 1) * 10);
+            }else {
+                preparedStatement.setInt(1, (page - 1) * 10);
+            }
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Level_Skills level_skills = new Level_Skills();
@@ -353,6 +364,29 @@ public class Level_SkillDAO {
             JDBC.closeConnection(connection);
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+    public void addNewLevelSkill(int skill_id, int level_id,String description) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "INSERT INTO [dbo].[Level_Skill]\n" +
+                    "           ([skill_id]\n" +
+                    "           ,[level_id]\n" +
+                    "           ,[description]\n" +
+                    "           ,[status_id])\n" +
+                    "     VALUES\n" +
+                    "           (?\n" +
+                    "           ,?\n" +
+                    "           ,?\n" +
+                    "           ,7)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1,skill_id);
+            preparedStatement.setInt(2,level_id);
+            preparedStatement.setString(3,description);
+            preparedStatement.executeUpdate();
+            JDBC.closeConnection(connection);
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

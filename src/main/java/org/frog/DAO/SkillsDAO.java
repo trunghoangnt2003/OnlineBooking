@@ -126,5 +126,26 @@ public class SkillsDAO {
         }
         return skills;
     }
+    public void insertSkill(String name,int cate_id,String src_icon) {
+        try{
+            Connection connection = JDBC.getConnection();
+            String sql = "INSERT INTO [dbo].[Skill]\n" +
+                    "           ([name]\n" +
+                    "           ,[cate_id]\n" +
+                    "           ,[src_icon])\n" +
+                    "     VALUES\n" +
+                    "           (?\n" +
+                    "           ,?\n" +
+                    "           ,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1,name);
+            preparedStatement.setInt(2,cate_id);
+            preparedStatement.setString(3,src_icon);
+            preparedStatement.executeUpdate();
+            JDBC.closeConnection(connection);
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

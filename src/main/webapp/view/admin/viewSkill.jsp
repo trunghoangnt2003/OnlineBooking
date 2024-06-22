@@ -61,9 +61,28 @@
         <div class="main-panel">
             <div class="content-wrapper">
                 <!-- Nút kích hoạt modal -->
-                <button type="button" style="margin-bottom: 20px" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#skillModal">
-                    ADD NEW SKILL
-                </button>
+                <div class="row">
+                    <div class="col-md">
+                        <button type="button" style="margin-bottom: 20px" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#skillModal">
+                            ADD NEW SKILL
+                        </button>
+                    </div>
+                    <div class="col-md">
+                        <select id="mySelect" class="form-select" aria-label="Default select example" onchange="redirectToPage()">
+                            <option value="all"
+                                    <c:if test="${requestScope.cate == 0}"> selected </c:if>
+                            >All Category</option>
+                            <c:forEach items="${requestScope.categories}" var="c">
+                                <option value="${c.id}"
+                                        <c:if test="${requestScope.cate == c.id}"> selected </c:if>
+                                >${c.name}</option>
+                            </c:forEach>
+
+
+                        </select>
+                    </div>
+
+                </div>
 
                 <table class="table align-middle mb-0 bg-white table-hover">
                     <thead class="bg-light">
@@ -136,7 +155,7 @@
                     <nav aria-label="Page navigation example" >
                         <ul class="pagination justify-content-end">
                             <li class="page-item <c:if test="${requestScope.page==1}"> disabled </c:if>">
-                                <a class="page-link" href="?page=${requestScope.page-1}"
+                                <a class="page-link" href="?page=${requestScope.page-1}&cate=${requestScope.cate}"
                                         <c:if test="${requestScope.page==1}"> tabindex="-1" </c:if>
                                 >Previous</a>
                             </li>
@@ -145,11 +164,11 @@
                                     <li class="page-item"><a class="page-link active">${count}</a></li>
                                 </c:if>
                                 <c:if test="${requestScope.page != count}">
-                                    <li class="page-item"><a class="page-link" href="?page=${count}">${count}</a></li>
+                                    <li class="page-item"><a class="page-link" href="?page=${count}&cate=${requestScope.cate}">${count}</a></li>
                                 </c:if>
                             </c:forEach>
                             <li class="page-item">
-                                <a class="page-link <c:if test="${requestScope.page==requestScope.end_page  or requestScope.end_page == 0}"> disabled </c:if>" href="?page=${requestScope.page+1}"
+                                <a class="page-link <c:if test="${requestScope.page==requestScope.end_page  or requestScope.end_page == 0}"> disabled </c:if>" href="?page=${requestScope.page+1}&cate=${requestScope.cate}"
                                         <c:if test="${requestScope.page==requestScope.end_page or requestScope.end_page == 0 }"> tabindex="-1" </c:if>
                                 >Next</a>
                             </li>
@@ -178,49 +197,61 @@
             </div>
 
             <div class="modal-body">
-                <form method="post">
+                <form method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="action" value="add">
                     <div class="mb-3">
-                        <label for="imageInput" class="form-label">Ảnh kỹ năng</label>
+                        <label for="imageInput" class="form-label">Image for skill</label>
                         <div class="form-group">
-                            <input type="file" class="form-control" id="imageInput" onchange="previewImage()">
+                            <input type="file" name="img" class="form-control" id="imageInput" onchange="previewImage()">
 
                             <div id="imagePreviewContainer" style="display: none; text-align: center;">
                                 <br>
                                 <img id="imagePreview" src="#" alt="Ảnh xem trước" style="max-width: 50%; height: auto;">
-                                <div id="skillImageHelp" class="form-text">Tải lên ảnh đại diện cho kỹ năng.</div>
+                                <div id="skillImageHelp" class="form-text">Skill Image</div>
                             </div>
                         </div>
 
                     </div>
 
                         <div class="form-group">
-                            <label for="skillInput">Nhập tên kỹ năng:</label>
-                            <input type="text" id="skillInput" class="form-control">
+                            <label for="skillInput">Skill Name:</label>
+                            <input type="text" id="skillInput" class="form-control" name="name">
                             <div id="skillCheckResult"></div>
                         </div>
 
                     <div class="mb-3">
                         <label for="skillCategory" class="form-label">Category</label>
-                        <select class="form-select" id="skillCategory">
-                            <option disabled selected>Chọn danh mục</option>
+                        <select class="form-select" id="skillCategory" name="skillCategory">
+                            <option disabled selected>Category</option>
                             <c:forEach items="${requestScope.categories}" var="c">
                                 <option value="${c.id}">${c.name}</option>
                             </c:forEach>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="skillLevel" class="form-label">Level</label>
-                        <select class="form-select" id="skillLevel">
-                            <option disabled selected>Chọn cấp độ</option>
-                            <c:forEach items="${requestScope.levels}" var="c">
-                                <option value="${c.id}">${c.name}</option>
-                            </c:forEach>
-                        </select>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="col">Level</th>
+                                    <th class="col">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach items="${requestScope.levels}" var="c">
+                                    <tr>
+                                        <td>
+                                           ${c.name}
+                                        </td>
+                                        <td>
+                                            <textarea class="form-control" id="skillDescription_${c.id}" name="skillDescription_${c.id}" rows="3" placeholder="Enter skill description"></textarea>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+
                     </div>
-                    <div class="mb-3">
-                        <label for="skillDescription" class="form-label">Mô tả</label>
-                        <textarea class="form-control" id="skillDescription" rows="3" placeholder="Nhập mô tả kỹ năng"></textarea>
-                    </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                         <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
@@ -333,6 +364,12 @@
     //             swal("An error occurred while inactive. Please try again later.");
     //         });
     // }
+    function redirectToPage() {
+        var selectedValue = document.getElementById("mySelect").value;
+        if (selectedValue) {
+            window.location.href = "?cate="+selectedValue;
+        }
+    }
     function previewImage() {
         var input = document.getElementById("imageInput");
         var previewContainer = document.getElementById("imagePreviewContainer");
@@ -365,18 +402,52 @@
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                body: 'isChecked='+isChecked+'&value='+value
+                body: 'action=update&isChecked='+isChecked+'&value='+value
             });
 
             if (response.ok) {
                 location.reload();
             } else {
-                console.error('Lỗi khi gửi request:', response.status);
+                swal(" Please try again later.");
             }
         } catch (error) {
             console.error('Lỗi khi thực hiện request:', error);
         }
     }
+
+
+
+    // Lắng nghe sự kiện submit của biểu mẫu
+    document.querySelector('form').addEventListener('submit', async (event) => {
+        event.preventDefault(); // Ngăn chặn hành vi mặc định của biểu mẫu
+
+        // Lấy dữ liệu từ các trường input
+        const formData = new FormData(event.target);
+
+        try {
+            const response = await fetch('../admin/skill', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                swal("Add skill successfully!").then(() => {
+                    // Reload the page
+                    location.reload();
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Skill Name Exits In System !",
+                })
+            }
+        } catch (error) {
+            // Xử lý lỗi kết nối
+            console.error('Lỗi kết nối:', error);
+        }
+    });
+
 
 
 </script>
