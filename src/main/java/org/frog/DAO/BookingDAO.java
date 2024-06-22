@@ -164,7 +164,7 @@ public class BookingDAO {
         return booking;
     }
 
-    public ArrayList<Booking> getHistoryDone(String mentee_id ){
+    public ArrayList<Booking> getHistoryDoneAndAccept(String mentee_id ){
         ArrayList<Booking> bookingList = new ArrayList<>();
 
         try{
@@ -363,7 +363,7 @@ public class BookingDAO {
         Map<String,Integer> statistic = new HashMap<>();
         try {
             Connection connection = JDBC.getConnection();
-            String sql = "Select count(Booking_Schedule.id) as number_slot, sum(amount) total_amount\n" +
+            String sql = "Select count(Booking_Schedule.id) as number_slot\n" +
                     "From Booking JOIN Booking_Schedule ON Booking.id = Booking_Schedule.booking_id\n" +
                     "WHERE mentee_id = ?\n" +
                     "And Booking_Schedule.status_id = ?\n" +
@@ -375,7 +375,6 @@ public class BookingDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 statistic.put("number_slot",resultSet.getInt("number_slot"));
-                statistic.put("total_amount",resultSet.getInt("total_amount"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

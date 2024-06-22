@@ -26,9 +26,14 @@ public class DashboardController extends AuthenticationServlet {
         String mentee_id = account.getId();
 
         ArrayList<Mentor> mentorList = mentorDAO.getByBookDone(mentee_id);
-        ArrayList<Booking> bookingList = bookingDAO.getHistoryDone(mentee_id);
+        ArrayList<Booking> bookingList = bookingDAO.getHistoryDoneAndAccept(mentee_id);
         int total =  bookingDAO.totalRequestBook(mentee_id);
+        int total_amount = 0;
+        for (Booking booking : bookingList) {
+            total_amount += booking.getAmount();
+        }
 
+        request.setAttribute("total_amount", total_amount);
         request.setAttribute("total", total);
         request.setAttribute("bookingList", bookingList);
         request.setAttribute("mentorList", mentorList);

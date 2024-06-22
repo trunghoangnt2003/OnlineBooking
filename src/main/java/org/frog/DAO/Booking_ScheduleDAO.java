@@ -921,10 +921,11 @@ public class Booking_ScheduleDAO {
     public ArrayList<BookingSchedule> getLogs(int booking_id){
         ArrayList<BookingSchedule> list = new ArrayList<>();
         String sql = "SELECT sbl.id, sbl.booking_id, b.mentee_id, b.level_skill_id, sbl.schedule_id, " +
-                "s.account_id AS mentor_id, s.date, s.slot_id " +
+                "s.account_id AS mentor_id, s.date, s.slot_id, sl.time_start, sl.time_end " +
                 "FROM Booking b " +
                 "INNER JOIN Schedule_Booking_Logs sbl ON b.id = sbl.booking_id " +
                 "INNER JOIN Schedule s ON s.id = sbl.schedule_id " +
+                "INNER JOIN Slot sl ON sl.id = s.slot_id " +
                 "WHERE b.id = ? " +
                 "ORDER BY s.date DESC";
 
@@ -945,6 +946,8 @@ public class Booking_ScheduleDAO {
 
                     Slot slot = new Slot();
                     slot.setId(resultSet.getInt("slot_id"));
+                    slot.setStart_at(resultSet.getString("time_start"));
+                    slot.setEnd_at(resultSet.getString("time_end"));
                     schedule.setSlot(slot);
 
                     Mentor mentor = new Mentor();

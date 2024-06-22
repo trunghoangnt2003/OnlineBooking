@@ -13,6 +13,8 @@ import org.frog.utility.StatusEnum;
 
 import javax.mail.Session;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -49,6 +51,8 @@ public class ViewMentorScheduleController extends AuthenticationServlet {
         ArrayList<BookingSchedule> bookingConflict = new ArrayList<>();
         ArrayList<BookingSchedule> bookingList = new ArrayList<>();
 
+
+        //convert booking array string to ArrayList
         if(bookings != null) {
             for (String booking : bookings) {
                 String[] array_bookings = booking.split("_");
@@ -70,6 +74,7 @@ public class ViewMentorScheduleController extends AuthenticationServlet {
             }
         }
 
+        //convert booking_conflict array string to ArrayList
         if(bookConflict != null){
             for (String booking : bookConflict) {
                 String[] array_bookings = booking.split("_");
@@ -92,6 +97,11 @@ public class ViewMentorScheduleController extends AuthenticationServlet {
         }
 
 
+        if(!bookingLogs.isEmpty()) {
+            ymd_raw = bookingLogs.get(0).getSchedule().getDate().toString();
+        }
+
+        //check booking conflict between booking has accepted and booking_log
         if(!bookingListAccepted.isEmpty()){
                 for (BookingSchedule bsDone : bookingListAccepted) {
                     for (BookingSchedule bsLogs : bookingLogs) {
@@ -104,9 +114,38 @@ public class ViewMentorScheduleController extends AuthenticationServlet {
             }
         }
 
+
+
+        //check booking conflict between booking has accepted and booking_log
+        if(!bookingList.isEmpty()){
+            for (BookingSchedule bsDone : bookingList) {
+                for (BookingSchedule bsLogs : bookingLogs) {
+                    if (bsLogs.getSchedule().getId() == bsDone.getSchedule().getId()) {
+                        bookingConflict.add(bsLogs);
+                        bookingLogs.remove(bsLogs);
+                        break;
+                    }
+                }
+            }
+        }
+        Timestamp now = Timestamp.valueOf(java.time.LocalDateTime.now());
+        //check the booking log is out date
+
+        for (int i = 0; i < bookingLogs.size();) {
+            BookingSchedule bs = bookingLogs.get(i);
+            Timestamp end_at =DateTimeHelper.convertToTimestamp(bs.getSchedule().getDate().toString(), bs.getSchedule().getSlot().getEnd_at());
+            Timestamp end_after = DateTimeHelper.AddingHoursToDate(end_at, 1);
+            if( now.after(end_after)) {
+                bookingConflict.add(bs);
+                bookingLogs.remove(i);
+            }else {
+                i++;
+            }
+        }
+
+        //add booking log not conflict to bookingList
         if(!bookingLogs.isEmpty()) {
             bookingList.addAll(bookingLogs);
-            ymd_raw = bookingLogs.get(0).getSchedule().getDate().toString();
         }
 
         Date toDay = new Date();

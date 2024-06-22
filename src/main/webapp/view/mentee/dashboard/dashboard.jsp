@@ -326,7 +326,7 @@
                     <br/>
                     <span>Total mentor: ${requestScope.mentorList.size()}</span>
                     <br/>
-                    <span id="total-money">Total spend money: </span>
+                    <span >Total spend money: ${requestScope.total_amount} $ </span>
                 </div>
                 <div id="myChart" style="width:70%; max-width:400px; height:300px;">
                 </div>
@@ -463,8 +463,6 @@
                 const slot = document.getElementById('total-slot');
                 slot.innerHTML +=  Object.entries(data.total)[1][1] + " slot learning";
 
-                const money = document.getElementById('total-money');
-                money.innerHTML +=  Object.entries(data.total)[0][1] + " $";
                 drawChart(mapStatistic);
             })
             .catch(error => {
