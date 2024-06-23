@@ -18,7 +18,7 @@
           <li class="nav-item"> <a class="nav-link" href="../admin/mentor"> Mentor Management</a></li>
           <li class="nav-item"> <a class="nav-link" href="#"> Mentee Management</a></li>
           <li class="nav-item"> <a class="nav-link" href="#"> Request Management</a></li>
-
+          <li class="nav-item"> <a class="nav-link" href="/Frog/manager/paymentBooking"> Booking Payment</a></li>
         </ul>
       </div>
     </li>

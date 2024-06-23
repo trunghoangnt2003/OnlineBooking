@@ -80,7 +80,7 @@
         }
 
         .pagination li.active a {
-            background-color: #4CAF50;
+            background-color: #0d6efd;
             color: white;
         }
 
@@ -116,7 +116,7 @@
         <!-- partial:partials/_sidebar.jsp -->
         <jsp:include page="../admin/partials/_sidebar.jsp"></jsp:include>
         <!-- partial -->
-        <div style="width: 100%">
+        <div style="width: 100%;margin-left: 30px">
         <h2 style="font-weight: bold; margin-bottom: 5px;position: relative">Manage Payment Booking </h2>
             <div class="table-containers">
                 <c:if test="${param.page >=2 }">
@@ -127,6 +127,7 @@
                     <thead class="table-dark">
                     <tr>
                         <th>Name</th>
+                        <th>ID</th>
                         <th>Create Date</th>
                         <th>Amount</th>
                         <th>Description</th>
@@ -142,6 +143,7 @@
                     <c:forEach items="${bookingsHistory}" var="book">
                         <tr>
                             <td>${count}</td>
+                            <td>${book.id}</td>
                             <td>${book.date}</td>
                             <td>${book.amount}</td>
                             <td>${book.description} </td>
@@ -162,21 +164,25 @@
 
                     </c:forEach>
                     </tbody>
-                    <p>Total: ${bookingsHistory.size()}</p>
+
                 </table>
 
 
             </div>
+            <div>
+                <h5>Total: ${bookingsHistory.size()}</h5>
+            </div>
+
             <c:if test="${not empty bookingsHistory}">
                 <ul class="pagination">
                     <c:set var="total" value="${totalBookings}"/>
                     <c:set var="totalPages" value="${(total / 20) + (total % 20 == 0 ? 0 : 1)}"/>
                     <li class="<c:if test="${param.page==1 || param.page == null}">active</c:if>">
-                        <a href="history?page=1">1</a>
+                        <a href="paymentBooking?page=1">1</a>
                     </li>
                     <c:forEach begin="${2}" end="${totalPages}" step="${1}" var="i">
                         <li class="<c:if test="${param.page==i }">active</c:if>">
-                            <a href="history?page=${i}">${i}</a>
+                            <a href="paymentBooking?page=${i}">${i}</a>
                         </li>
                     </c:forEach>
 

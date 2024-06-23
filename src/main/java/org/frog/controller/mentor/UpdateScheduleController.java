@@ -32,6 +32,10 @@ public class UpdateScheduleController extends AuthenticationServlet {
             if(opt.equals("true")){
                 // accept booking
                  boolean checkDBs = bsDAO.updateScheduleBookings(Integer.parseInt(bookingID), 11);
+                if(checkDBs){
+                    bsDAO.updateBooking(Integer.parseInt(bookingID), 11);
+
+                }
                  // check another booking has duplicate slot
                  ArrayList<Booking> bookingIdSaveLogs = new ArrayList<>();
                  bookingIdSaveLogs = bsDAO.getBookingIdDuplicateSlotByBookingID(Integer.parseInt(bookingID));
@@ -55,10 +59,7 @@ public class UpdateScheduleController extends AuthenticationServlet {
                      bsDAO.rejectBooking(b.getId(), 2, "booking has book by another mentee");
                  }
                  // update status booking to accept
-                 if(checkDBs){
-                     bsDAO.updateBooking(Integer.parseInt(bookingID), 11);
-                     resp.sendRedirect("/Frog/mentor/schedule?today="+today);
-                 }
+                resp.sendRedirect("/Frog/mentor/schedule?today="+today);
             }else{
                 String reason = req.getParameter("description");
                 BookingDAO bookingDAO = new BookingDAO();

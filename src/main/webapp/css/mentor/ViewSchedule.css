@@ -118,7 +118,7 @@ body{
     border-radius: 12px; /* Rounded corners */
 }
 #confirmBtn ,#absentBtn{
-    background-color: #8a9deb; /* Green background */
+    background-color: #42509e; /* Green background */
     border: none; /* Remove borders */
     color: white; /* White text */
     padding: 15px 32px; /* Add some padding */
@@ -240,7 +240,7 @@ label {
 #button-schedule-td1{
     border: none;
     border-radius: 5px;
-    padding: 38px 29px;
+    padding: 38px 22px;
     margin-left: -18px;
     margin-top: -45px;
 }

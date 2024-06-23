@@ -63,14 +63,14 @@
                 <td>${book.endDate}</td>
                 <td>${book.mentee.account.name}</td>
                 <td><c:if test="${book.status.id ==1 }">
-                    <button name="accept"  style="background-color: #1BB295;border-radius: 5px;padding: 5px;color: whitesmoke" id="btnAccept"
-                            data-id="${book.id}_${book.startDate}" onclick="updateStatus()">
+                    <button name="accept"  style="background-color: #1BB295;border-radius: 5px;padding: 5px;color: whitesmoke" id="btnAccept_${book.id}"
+                            data-id="${book.id}_${book.startDate}" onclick="updateStatus(${book.id})">
                         Accept
                     </button>
                 </c:if>
                     <c:if test="${book.status.id ==1 }">
-                        <button name="reject"  style="background-color: #ff2222;border-radius: 5px;padding: 5px;color: whitesmoke" id="btnReject"
-                                data-id="${book.id}_${book.startDate}"  onclick="rejectStatus()">
+                        <button name="reject"  style="background-color: #ff2222;border-radius: 5px;padding: 5px;color: whitesmoke" id="btnReject_${book.id}"
+                                data-id="${book.id}_${book.startDate}"  onclick="rejectStatus(${book.id})">
                             Reject
                         </button>
                     </c:if>
@@ -90,8 +90,8 @@
 </div>
 <!-- MDB -->
 <script>
-    const updateStatus = () => {
-        var btnOnclick = document.getElementById("btnAccept");
+    const updateStatus = (id) => {
+        var btnOnclick = document.getElementById("btnAccept_"+id);
         var newURL = "";
         btnOnclick.onclick = function (event) {
             event.preventDefault();
@@ -117,8 +117,8 @@
             });
         };
     }
-    const rejectStatus = () => {
-        var btnOnclick = document.getElementById("btnReject");
+    const rejectStatus = (id) => {
+        var btnOnclick = document.getElementById("btnReject_"+id);
 
         btnOnclick.onclick = function (event) {
             event.preventDefault();
