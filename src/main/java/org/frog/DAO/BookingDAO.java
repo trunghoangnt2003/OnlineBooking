@@ -1,12 +1,10 @@
 package org.frog.DAO;
 
+import com.sun.jdi.PathSearchingVirtualMachine;
 import org.frog.model.*;
 import org.frog.utility.StatusEnum;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +29,69 @@ public class BookingDAO {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public ArrayList<BookingSchedule> getBookingScheduleById(int id) {
+        ArrayList<BookingSchedule> list = new ArrayList<>();
+        try {
+        Connection connection = JDBC.getConnection();
+        String sql = "select Booking.id as bId, Slot.id as sId, Slot.time_start,Slot.time_end,Schedule.date,Skill.src_icon, Level.type as lvType,Status.type as stType from Booking join Booking_Schedule\n" +
+                "on Booking_Schedule.booking_id = Booking.id\n" +
+                "join Schedule\n" +
+                "on Booking_Schedule.schedule_id = Schedule.id\n" +
+                "join Slot\n" +
+                "on\n" +
+                "Schedule.slot_id = Slot.id\n" +
+                "join Level_Skill\n" +
+                "on Booking.level_skill_id = Level_Skill.id\n" +
+                "join Skill\n" +
+                "on Level_Skill.skill_id = Skill.id\n" +
+                "join Level\n" +
+                "on Level_Skill.level_id = Level.id\n" +
+                "join Status\n" +
+                "on Status.id = Booking.status_id\n" +
+                "where Booking_Schedule.booking_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Slot slot = new Slot();
+                slot.setId(resultSet.getInt("sId"));
+                slot.setStart_at(resultSet.getString("time_start"));
+                slot.setEnd_at(resultSet.getString("time_end"));
+
+                Schedule schedule = new Schedule();
+                schedule.setSlot(slot);
+                schedule.setDate(Date.valueOf(resultSet.getString("date")));
+
+                Level level = new Level();
+                level.setName(resultSet.getString("lvType"));
+                Skill skill = new Skill();
+                skill.setSrc_icon(resultSet.getString("src_icon"));
+
+                Level_Skills level_skills = new Level_Skills();
+                level_skills.setLevel(level);
+                level_skills.setSkill(skill);
+
+                Status status = new Status();
+                status.setType(resultSet.getString("stType"));
+
+
+
+                Booking booking = new Booking();
+                booking.setId(resultSet.getInt("bId"));
+                booking.setLevel_skills(level_skills);
+                booking.setStatus(status);
+
+                BookingSchedule bookingSchedule = new BookingSchedule();
+                bookingSchedule.setSchedule(schedule);
+                bookingSchedule.setBooking(booking);
+               list.add(bookingSchedule);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 
     public List<Booking> getAllRequestProcessOfBooking( String id) {
@@ -125,6 +186,69 @@ public class BookingDAO {
         }catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public ArrayList<BookingSchedule> getBookingScheduleLogById(int id) {
+        ArrayList<BookingSchedule> list = new ArrayList<>();
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "select Booking.id as bId, Slot.id as sId, Slot.time_start,Slot.time_end,Schedule.date,Skill.src_icon, Level.type as lvType,Status.type as stType from Booking join Schedule_Booking_Logs\n" +
+                    "on Schedule_Booking_Logs.booking_id = Booking.id\n" +
+                    "join Schedule\n" +
+                    "on Schedule_Booking_Logs.schedule_id = Schedule.id\n" +
+                    "join Slot\n" +
+                    "on\n" +
+                    "Schedule.slot_id = Slot.id\n" +
+                    "join Level_Skill\n" +
+                    "on Booking.level_skill_id = Level_Skill.id\n" +
+                    "join Skill\n" +
+                    "on Level_Skill.skill_id = Skill.id\n" +
+                    "join Level\n" +
+                    "on Level_Skill.level_id = Level.id\n" +
+                    "join Status\n" +
+                    "on Status.id = Booking.status_id\n" +
+                    "where Schedule_Booking_Logs.booking_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Slot slot = new Slot();
+                slot.setId(resultSet.getInt("sId"));
+                slot.setStart_at(resultSet.getString("time_start"));
+                slot.setEnd_at(resultSet.getString("time_end"));
+
+                Schedule schedule = new Schedule();
+                schedule.setSlot(slot);
+                schedule.setDate(Date.valueOf(resultSet.getString("date")));
+
+                Level level = new Level();
+                level.setName(resultSet.getString("lvType"));
+                Skill skill = new Skill();
+                skill.setSrc_icon(resultSet.getString("src_icon"));
+
+                Level_Skills level_skills = new Level_Skills();
+                level_skills.setLevel(level);
+                level_skills.setSkill(skill);
+
+                Status status = new Status();
+                status.setType(resultSet.getString("stType"));
+
+
+
+                Booking booking = new Booking();
+                booking.setId(resultSet.getInt("bId"));
+                booking.setLevel_skills(level_skills);
+                booking.setStatus(status);
+
+                BookingSchedule bookingSchedule = new BookingSchedule();
+                bookingSchedule.setSchedule(schedule);
+                bookingSchedule.setBooking(booking);
+                list.add(bookingSchedule);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 
     public Booking findByInfo(Booking b) {
@@ -272,19 +396,21 @@ public class BookingDAO {
         try {
 
             Connection connection = JDBC.getConnection();
-            String sql = "select Account.[name],Booking.mentor_id ,Booking.amount,Booking.id, Booking.from_date, Booking.to_date, Booking.[description], Skill.[name] as skill,Level.type,Booking.create_date \n" +
-                    "                                        from Booking join [dbo].[Level_Skill]\n" +
-                    "                                        on Booking.level_skill_id = [dbo].[Level_Skill].id\n" +
-                    "                                        join [dbo].[Level]\n" +
-                    "                                        on [dbo].[Level_Skill].level_id=[dbo].[Level].id\n" +
-                    "                                        join Skill \n" +
-                    "                                        on Skill.id = [dbo].[Level_Skill].skill_id\n" +
-                    "                                        join Mentor\n" +
-                    "                                       on Booking.mentor_id = Mentor.account_id\n" +
-                    "                                        join Account\n" +
-                    "                                        on Account.id = Mentor.account_id\n" +
-                    "                    where Booking.mentee_id = ? and( Booking.status_id = 12 or Booking.status_id = 2) "+
-                    "                    Order By create_date desc";
+            String sql = "select Account.[name],Booking.mentor_id,Status.type as status_Name,Booking.amount,Booking.id, Booking.from_date, Booking.to_date, Booking.[description], Skill.[name] as skill,Level.type,Booking.create_date \n" +
+                    "                                                           from Booking join [dbo].[Level_Skill]\n" +
+                    "                                                          on Booking.level_skill_id = [dbo].[Level_Skill].id\n" +
+                    "                                                            join [dbo].[Level]\n" +
+                    "                                                            on [dbo].[Level_Skill].level_id=[dbo].[Level].id\n" +
+                    "                                                            join Skill \n" +
+                    "                                                            on Skill.id = [dbo].[Level_Skill].skill_id\n" +
+                    "                                                           join Mentor\n" +
+                    "                                                          on Booking.mentor_id = Mentor.account_id\n" +
+                    "                                                            join Account\n" +
+                    "                                                            on Account.id = Mentor.account_id\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tjoin Status\n" +
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\ton Status.id = Booking.status_id\n" +
+                    "                                        where Booking.mentee_id = ? and ((Booking.status_id = 2) or (Booking.status_id = 12))"+
+                    "  Order By create_date desc";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -302,7 +428,11 @@ public class BookingDAO {
                 levelSkills.setSkill(skill);
                 levelSkills.setLevel(level);
 
+                Status status = new Status();
+                status.setType(resultSet.getString("status_Name"));
+
                 Booking booking = new Booking();
+                booking.setStatus(status);
                 booking.setMentor(mentor);
                 booking.setLevel_skills(levelSkills);
                 booking.setId(resultSet.getInt("id"));
@@ -359,27 +489,26 @@ public class BookingDAO {
         return statistic;
     }
 
-    public Map<String,Integer> getTotalBookByMentee(String id){
-        Map<String,Integer> statistic = new HashMap<>();
+    public int getTotalBookByMentee(String id){
         try {
             Connection connection = JDBC.getConnection();
             String sql = "Select count(Booking_Schedule.id) as number_slot\n" +
                     "From Booking JOIN Booking_Schedule ON Booking.id = Booking_Schedule.booking_id\n" +
                     "WHERE mentee_id = ?\n" +
-                    "And Booking_Schedule.status_id = ?\n" +
-                    "or Booking_Schedule.status_id = ?";
+                    "And (Booking_Schedule.status_id = ?\n" +
+                    "or Booking_Schedule.status_id = ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, id);
             preparedStatement.setInt(2, StatusEnum.DONE);
             preparedStatement.setInt(3, StatusEnum.ACCEPTED);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                statistic.put("number_slot",resultSet.getInt("number_slot"));
+                return resultSet.getInt("number_slot");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return statistic;
+        return 0;
     }
 
     public int totalRequestBook(String id){
@@ -443,4 +572,147 @@ public class BookingDAO {
 
         return null;
     }
+
+    public List<Booking> getBookingByName(String stDate, String endDate,int stId,String name, int offset, int limit) {
+        if(name == null) name = "";
+        List<Booking> requestListOfMentee = new ArrayList<>();
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "SELECT   Booking.id,\n" +
+                    "                       AcMT.[name] AS nameMT, \n" +
+                    "                        AcMO.[name] AS nameMO,Status.id AS statusId, \n" +
+                    "                       Booking.description, \n" +
+                    "                        Status.[type] AS statusType, \n" +
+                    "                       Booking.amount,\n" +
+                    "                        Booking.create_date, \n" +
+                    "                        Level.type AS levelType, \n" +
+                    "                        Skill.name \n" +
+                    "                    from Booking\n" +
+                    "join Status\n" +
+                    "on Status.id = Booking.status_id\n" +
+                    "join Mentor \n" +
+                    "on Mentor.account_id = Booking.mentor_id\n" +
+                    "join Account as AcMo\n" +
+                    "on AcMo.id = Mentor.account_id\n" +
+                    "join Mentee\n" +
+                    "on Booking.mentee_id = Mentee.account_id\n" +
+                    "join Account as AcMT\n" +
+                    "on AcMT.id = Mentee.account_id\n" +
+                    "join Level_Skill\n" +
+                    "on Level_Skill.id = Booking.level_skill_id\n" +
+                    "join Skill\n" +
+                    "on Skill.id = Level_Skill.skill_id\n" +
+                    "join Level\n" +
+                    "on Level.id = Level_Skill.level_id\n" +
+                    "                    WHERE \n" +
+                    "                        (AcMT.[name] LIKE ? \n" +
+                    "                        OR AcMO.[name] LIKE ?) ";
+
+            if(stId != 0){
+                sql = sql + " AND Status.id = " + stId;
+            }
+            if (stDate != null && endDate != null) {
+               if(stDate != "" && endDate != ""){
+                   sql = sql + " and Booking.create_date >= '" + stDate + "' and Booking.create_date <= '" + endDate + "'";
+               }
+            }
+            sql += " ORDER BY Booking.create_date DESC \n" +
+                    "                    OFFSET ? ROWS \n" +
+                    "                    FETCH NEXT ? ROWS ONLY";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+               String searchPattern = "%" + name + "%";
+
+            preparedStatement.setString(1, searchPattern);
+            preparedStatement.setString(2, searchPattern);
+            preparedStatement.setInt(3, offset);
+            preparedStatement.setInt(4, limit);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Account account = new Account();
+                account.setName(resultSet.getString("nameMT"));
+
+                Account accountMentor = new Account();
+                accountMentor.setName(resultSet.getString("nameMO"));
+
+                Mentee mentee = new Mentee(account);
+                mentee.setAccount(account);
+
+                Mentor mentor = new Mentor();
+                mentor.setAccount(accountMentor);
+
+                Skill skill = new Skill();
+                skill.setName(resultSet.getString("name"));
+                Level level = new Level();
+                level.setName(resultSet.getString("levelType"));
+                Level_Skills level_skills = new Level_Skills();
+                level_skills.setSkill(skill);
+                level_skills.setLevel(level);
+
+                Status status = new Status();
+                status.setId(resultSet.getInt("statusId"));
+                status.setType(resultSet.getString("statusType"));
+
+                Booking booking = new Booking();
+                booking.setLevel_skills(level_skills);
+                booking.setMentor(mentor);
+                booking.setStatus(status);
+                booking.setMentee(mentee);
+                booking.setAmount(resultSet.getInt("amount"));
+                booking.setDate(resultSet.getTimestamp("create_date"));
+                booking.setId(resultSet.getInt("id"));
+                booking.setDescription(resultSet.getString("description"));
+                requestListOfMentee.add(booking);
+            }
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return requestListOfMentee;
+    }
+
+    public int getTotalBookingsCountByName(String stDate, String endDate,String name, int status) {
+        if(name == null){
+            name = "";
+        }
+        int total = 0;
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "SELECT COUNT(*) AS total FROM Booking " +
+                    "JOIN Mentee ON Mentee.account_id = Booking.mentee_id " +
+                    "JOIN Account AS AccMT ON Mentee.account_id = AccMT.id " +
+                    "JOIN Mentor ON Mentor.account_id = Booking.mentor_id " +
+                    "JOIN Account AS AcMO ON Mentor.account_id = AcMO.id " +
+                    "join Status\n" +
+                    "on Status.id = Booking.status_id\n" +
+                    "WHERE (AccMT.name LIKE ? OR AcMO.name LIKE ?)";
+            if(status != 0){
+                sql = sql + " AND Status.id = " + status;
+            }
+            if (stDate != null && endDate != null) {
+                if(stDate != "" && endDate != ""){
+                    sql = sql + " and Booking.create_date >= '" + stDate + "' and Booking.create_date <= '" + endDate + "'";
+                }
+            }
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            String searchPattern = "%" + name + "%";
+            preparedStatement.setString(1, searchPattern);
+            preparedStatement.setString(2, searchPattern);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                total = resultSet.getInt("total");
+            }
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return total;
+    }
+
 }
+

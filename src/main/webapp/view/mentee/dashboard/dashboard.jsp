@@ -321,8 +321,8 @@
             <h3 style="color: #07AD90" class="text-center">Dashboard</h3>
             <div class="d-flex justify-content-between">
                 <div class="mt-4">
-                    <h5 id="total-booking">Total request: </h5>
-                    <span id="total-slot">Total slot: </span>
+                    <h5 id="total-booking">Total request: ${requestScope.total_book} </h5>
+                    <span id="total-slot">Total slot: ${requestScope.total_slot}</span>
                     <br/>
                     <span>Total mentor: ${requestScope.mentorList.size()}</span>
                     <br/>
@@ -446,22 +446,10 @@
             })
             .then(data => {
                 const mapStatistic = new Map();
-                var total_booking =0
+
                 for (const [key, value] of Object.entries(data.statistic)) {
                     mapStatistic.set(key.trim(), value);
-                    total_booking = total_booking + value
                 }
-
-                const booking = document.getElementById('total-booking');
-                if(total_booking > 0){
-                    booking.innerHTML += total_booking ;
-                }else{
-                    booking.innerHTML += "you have no booking";
-                }
-
-
-                const slot = document.getElementById('total-slot');
-                slot.innerHTML +=  Object.entries(data.total)[1][1] + " slot learning";
 
                 drawChart(mapStatistic);
             })

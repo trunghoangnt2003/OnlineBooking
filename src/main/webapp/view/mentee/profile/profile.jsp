@@ -64,7 +64,9 @@
                                     <img class="avatar" src="${pageContext.request.contextPath}/${requestScope.mentee.account.avatar}" alt="">
                                 </div>
                                 <h4 class="f-w-600" style="margin-top: 10px">${requestScope.mentee.account.name}</h4>
+                            <c:if test="${requestScope.acc_id == requestScope.url_id}">
                                 <a href="update" style="color: white"><i class="fa-solid fa-pen-to-square fa-xl" style="margin-top: 10px"></i></a>
+                            </c:if>
                             </div>
                         </div>
                         <div class="col-sm-8" style="height: 500px; padding: 50px">

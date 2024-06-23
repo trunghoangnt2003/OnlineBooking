@@ -27,14 +27,17 @@ public class DashboardController extends AuthenticationServlet {
 
         ArrayList<Mentor> mentorList = mentorDAO.getByBookDone(mentee_id);
         ArrayList<Booking> bookingList = bookingDAO.getHistoryDoneAndAccept(mentee_id);
-        int total =  bookingDAO.totalRequestBook(mentee_id);
+        int total_slot = bookingDAO.getTotalBookByMentee(mentee_id);
+        int total_book =  bookingDAO.totalRequestBook(mentee_id);
         int total_amount = 0;
         for (Booking booking : bookingList) {
             total_amount += booking.getAmount();
         }
 
+
+        request.setAttribute("total_slot", total_slot);
         request.setAttribute("total_amount", total_amount);
-        request.setAttribute("total", total);
+        request.setAttribute("total_book", total_book);
         request.setAttribute("bookingList", bookingList);
         request.setAttribute("mentorList", mentorList);
         request.getRequestDispatcher("../view/mentee/dashboard/dashboard.jsp").forward(request, response);
@@ -46,7 +49,7 @@ public class DashboardController extends AuthenticationServlet {
         Gson gson = new Gson();
         try {
             Map<String, Integer> statistic = bookingDAO.statisticByMentee(mentee_id);
-            Map<String, Integer> total = bookingDAO.getTotalBookByMentee(mentee_id);
+
 
 
             JsonObject jsonResponse = new JsonObject();
@@ -54,10 +57,6 @@ public class DashboardController extends AuthenticationServlet {
             
             JsonObject statisticJson = gson.toJsonTree(statistic).getAsJsonObject();
             jsonResponse.add("statistic", statisticJson);
-
-
-            JsonObject totalJson = gson.toJsonTree(total).getAsJsonObject();
-            jsonResponse.add("total", totalJson);
 
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
