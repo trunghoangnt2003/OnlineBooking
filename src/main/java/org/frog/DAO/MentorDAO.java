@@ -254,6 +254,31 @@ public class MentorDAO {
         }
 
     }
+
+    public void updateMentorLog(Mentor_CV_Log mentor) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "UPDATE [dbo].[Mentor]\n" +
+                    "   SET [profile_detail] = ?\n" +
+                    "      ,[price] = ?\n" +
+                    "      ,[experience] = ?\n" +
+                    "      ,[education] = ?\n" +
+                    "      \n" +
+                    " WHERE Mentor.account_id = ?";
+            assert connection != null;
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(5, mentor.getAccount().getId());
+            preparedStatement.setString(1, mentor.getProfileDetail());
+            preparedStatement.setInt(2, mentor.getPrice());
+            preparedStatement.setString(3, mentor.getExperience());
+            preparedStatement.setString(4, mentor.getEducation());
+            preparedStatement.execute();
+            JDBC.closeConnection(connection);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
     public void register(Account account) {
         try {
             Connection connection = JDBC.getConnection();
@@ -524,7 +549,7 @@ public class MentorDAO {
         }
         return mentors;
     }
-    public void updateMentor(Mentor mentor, String id) {
+    public void updateMentor(Mentor_CV_Log mentor, String id) {
         try {
             Connection connection = JDBC.getConnection();
             String sql = "UPDATE [dbo].[Mentor]\n" +
@@ -539,6 +564,57 @@ public class MentorDAO {
             preparedStatement.setInt(2, mentor.getPrice());
             preparedStatement.setString(3, mentor.getExperience());
             preparedStatement.setString(4, mentor.getEducation());
+            preparedStatement.executeUpdate();
+            JDBC.closeConnection(connection);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void updateMentorLog(Mentor_CV_Log mentorCVLog, int status_id) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "UPDATE [dbo].[Mentor_CV_Logs]\n" +
+                    "   SET [profile_detail] = ?\n" +
+                    "      ,[price] = ?\n" +
+                    "      ,[experience] = ?\n" +
+                    "      ,[education] = ?\n" +
+                    "      ,[status_id] = ?\n" +
+                    " WHERE [account_id] = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, mentorCVLog.getProfileDetail());
+            preparedStatement.setInt(2, mentorCVLog.getPrice());
+            preparedStatement.setString(3, mentorCVLog.getExperience());
+            preparedStatement.setString(4, mentorCVLog.getEducation());
+            preparedStatement.setString(6, mentorCVLog.getAccount().getId());
+            preparedStatement.setInt(5, status_id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void updateMentorCVLog(Mentor mentor, String id, String status) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "INSERT INTO [dbo].[Mentor_CV_Logs]\n" +
+                    "           ([profile_detail]\n" +
+                    "           ,[price]\n" +
+                    "           ,[experience]\n" +
+                    "           ,[education]\n" +
+                    "           ,[account_id])\n" +
+                    "     VALUES\n" +
+                    "           (?\n" +
+                    "           ,?\n" +
+                    "           ,?\n" +
+                    "           ,?\n" +
+                    "           ,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, mentor.getProfileDetail());
+            preparedStatement.setInt(2, mentor.getPrice());
+            preparedStatement.setString(3, mentor.getExperience());
+            preparedStatement.setString(4, mentor.getEducation());
+            preparedStatement.setString(5, id);
             preparedStatement.executeUpdate();
             JDBC.closeConnection(connection);
         } catch (SQLException e) {
@@ -581,21 +657,39 @@ public class MentorDAO {
 
     }
 
-    public ArrayList<Mentor> getAllMentor() {
-        ArrayList<Mentor> mentors = new ArrayList<>();
+    public ArrayList<Mentor_CV_Log> getAllMentor() {
+        ArrayList<Mentor_CV_Log> mentors = new ArrayList<>();
         try {
             Connection connection = JDBC.getConnection();
-            String sql = "select A.id, A.name, A.username\n" +
-                    "from Mentor M join Account A on M.account_id = A.id";
+            String sql = "select A.name, A.id, A.username, A.mail, A.avatar,\n" +
+                    "                    A.dob, A.gender, A.phone, A.address,\n" +
+                    "                    ML.profile_detail, ML.education, ML.experience, ML.price, S.id as status_id, S.type\n" +
+                    "                    from Account A join Mentor_CV_Logs ML on A.id = ML.account_id\n" +
+                    "\t\t\t\t\t\t\t\tjoin Status S on S.id = ML.status_id";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                Mentor mentor = new Mentor();
+                Mentor_CV_Log mentor = new Mentor_CV_Log();
                 Account account = new Account();
+                Status status = new Status();
+                status.setId(resultSet.getInt("status_id"));
+                status.setType(resultSet.getString("type"));
+                mentor.setStatus(status);
                 account.setId(resultSet.getString("id"));
                 account.setName(resultSet.getString("name"));
                 account.setUserName(resultSet.getString("username"));
+                account.setEmail(resultSet.getString("mail"));
+                account.setAvatar(resultSet.getString("avatar"));
+                account.setDob(resultSet.getDate("dob"));
+                account.setGender(resultSet.getInt("gender"));
+                account.setPhone(resultSet.getString("phone"));
+                account.setAddress(resultSet.getString("address"));
+                mentor.setProfileDetail(resultSet.getString("profile_detail"));
+                mentor.setPrice(resultSet.getInt("price"));
+                mentor.setExperience(resultSet.getString("experience"));
+                mentor.setEducation(resultSet.getString("education"));
+
                 mentor.setAccount(account);
                 mentors.add(mentor);
             }
