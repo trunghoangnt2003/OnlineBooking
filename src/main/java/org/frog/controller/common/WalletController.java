@@ -25,13 +25,12 @@ public class WalletController extends AuthenticationServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
-        String id = req.getParameter("id");
         WalletDAO walletDAO = new WalletDAO();
-        Wallet wallet = walletDAO.getByAccountId(id);
+        Wallet wallet = walletDAO.getByAccountId(account.getId());
         ArrayList<Transaction> transactions = walletDAO.getAllTransactionByWalletId(wallet.getId());
         AccountDAO accountDAO = new AccountDAO();
-        Account user = accountDAO.getAccountById(id);
-        int role = accountDAO.getRole(id);
+        Account user = accountDAO.getAccountById(account.getId());
+        int role = accountDAO.getRole(account.getId());
 
         req.setAttribute("role", role);
         req.setAttribute("transactions", transactions);

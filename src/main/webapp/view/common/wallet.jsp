@@ -216,6 +216,7 @@
             </c:if>
             <c:if test="${requestScope.role == 2}">
                 <button>Withdraw</button>
+                <button class="btn2">Deposit</button>
             </c:if>
         </div>
         <div class="help">
@@ -243,7 +244,7 @@
                     </c:if>
                     <th>Date</th>
                     <th>Type</th>
-                    <th>Receiver</th>
+                    <th>Opposite Wallet</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -264,16 +265,23 @@
                             <span>$</span>${t.amount}
                         </td>
                         <c:if test="${requestScope.role == 2}">
-                            <td>${t.fee}</td>
+                            <td>
+                                <c:if test="${t.fee == 0}">
+                                    -
+                                </c:if>
+                                <c:if test="${t.fee != 0}">
+                                    ${t.fee}
+                                </c:if>
+                            </td>
                         </c:if>
                         <td>${t.date}</td>
                         <td>${t.typeTransaction.name}</td>
                         <td>
                             <c:if test="${t.typeTransaction.name == 'Deposit'}">
-                                <span>${requestScope.account.name}</span>
+                                <span>-</span>
                             </c:if>
                             <c:if test="${t.typeTransaction.name == 'Withdrawl'}">
-                                <span>Banking Account</span>
+                                <span>-</span>
                             </c:if>
                             <c:if test="${t.typeTransaction.name == 'Payment'}">
                                 <span>${t.account.name}</span>
