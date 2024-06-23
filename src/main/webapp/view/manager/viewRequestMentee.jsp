@@ -124,6 +124,21 @@
             transition:all 300ms ease-in-out;
             transform:translate(-50%,-50%) scale(1);
         }
+        .green-background {
+            background-color: green;
+        }
+
+        .red-background {
+            background-color: red;
+        }
+
+        .request-id-link {
+            color: blue;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+
     </style>
 </head>
 <body>
@@ -140,20 +155,46 @@
             <div class="ndmodal">
                 <div class="closemodal"><button onclick="momodal()">×</button></div>
                 <div class="titlemodal">Slot Booking Detail</div>
+
                 <div class="contentmodal">
                     <c:forEach items="${requestScope.listSchedule}" var="listsch">
+                        <c:if test="${listsch.booking.status.id == 1 || listsch.booking.status.id == 11 || listsch.booking.status.id == 3}">
+                            <c:if test="${listsch.attend}">
                         <div style="border-radius: 8px; margin-top: 20px; padding: 20px 0; box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.2); background-color: #66cdbb">
+                              Slot: ${listsch.schedule.slot.id}&ensp;
+                            ${listsch.schedule.slot.start_at}
+                               ${listsch.schedule.slot.end_at})&ensp;
+                            Date: ${listsch.schedule.date}&ensp;
+                            <img style="width: 25px" src="${pageContext.request.contextPath}/${listsch.booking.level_skills.skill.src_icon}" >
+                             ${listsch.booking.level_skills.level.name}
+                            Status: attended
+                        </div>
+                            </c:if>
+                            <c:if test="${!listsch.attend}">
+                        <div style="border-radius: 8px; margin-top: 20px; padding: 20px 0; box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.2); background-color: #e37f5a">
                             Slot: ${listsch.schedule.slot.id}&ensp;
                             (${listsch.schedule.slot.start_at}
                                 ${listsch.schedule.slot.end_at})&ensp;
                             Date: ${listsch.schedule.date}&ensp;
                             <img style="width: 25px" src="${pageContext.request.contextPath}/${listsch.booking.level_skills.skill.src_icon}"> ${listsch.booking.level_skills.level.name}
+                            Status: absent
                         </div>
+                            </c:if>
+                        </c:if>
+                        <c:if test="${listsch.booking.status.id == 2 || listsch.booking.status.id == 12}">
+                            <div style="border-radius: 8px; margin-top: 20px; padding: 20px 0; box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.2); background-color: #ffcc00">
+                                Slot: ${listsch.schedule.slot.id}&ensp;
+                                (${listsch.schedule.slot.start_at}
+                                    ${listsch.schedule.slot.end_at})&ensp;
+                                Date: ${listsch.schedule.date}&ensp;
+                                <img style="width: 25px" src="${pageContext.request.contextPath}/${listsch.booking.level_skills.skill.src_icon}"> ${listsch.booking.level_skills.level.name}
+                            </div>
+                        </c:if>
                     </c:forEach>
+
                 </div>
             </div>
         </div>
-
         <input id="isOpenModal" value="${requestScope.isOpenModal}" type="hidden" />
 
         <div>
@@ -205,7 +246,7 @@
                         <tr>
                             <td>${count}</td>
                             <c:set var="count" value="${count+1}"/>
-                            <td><a onclick="momodal(${page}, ${request.status.id},  ${request.id})">${request.id}</a></td>
+                            <td><a  class="request-id-link" onclick="momodal(${page}, ${request.status.id},  ${request.id})">${request.id}</a></td>
                             <td>${request.mentee.account.name}</td>
                             <td>${request.status.type}</td>
                             <td>${request.description}</td>

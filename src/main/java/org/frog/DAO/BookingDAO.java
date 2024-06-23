@@ -33,7 +33,7 @@ public class BookingDAO {
         ArrayList<BookingSchedule> list = new ArrayList<>();
         try {
         Connection connection = JDBC.getConnection();
-        String sql = "select Booking.id as bId, Slot.id as sId, Slot.time_start,Slot.time_end,Schedule.date,Skill.src_icon, Level.type as lvType,Status.type as stType from Booking join Booking_Schedule\n" +
+        String sql = "select Booking.id as bId, Slot.id as sId,Booking_Schedule.isAtend, Slot.time_start,Slot.time_end,Schedule.date,Skill.src_icon, Level.type as lvType,Status.id,Status.type as stType from Booking join Booking_Schedule\n" +
                 "on Booking_Schedule.booking_id = Booking.id\n" +
                 "join Schedule\n" +
                 "on Booking_Schedule.schedule_id = Schedule.id\n" +
@@ -72,6 +72,7 @@ public class BookingDAO {
                 level_skills.setSkill(skill);
 
                 Status status = new Status();
+                status.setId(resultSet.getInt("id"));
                 status.setType(resultSet.getString("stType"));
 
 
@@ -84,6 +85,7 @@ public class BookingDAO {
                 BookingSchedule bookingSchedule = new BookingSchedule();
                 bookingSchedule.setSchedule(schedule);
                 bookingSchedule.setBooking(booking);
+                bookingSchedule.setAttend(resultSet.getBoolean("isAtend"));
                list.add(bookingSchedule);
             }
         } catch (SQLException e) {
@@ -190,7 +192,7 @@ public class BookingDAO {
         ArrayList<BookingSchedule> list = new ArrayList<>();
         try {
             Connection connection = JDBC.getConnection();
-            String sql = "select Booking.id as bId, Slot.id as sId, Slot.time_start,Slot.time_end,Schedule.date,Skill.src_icon, Level.type as lvType,Status.type as stType from Booking join Schedule_Booking_Logs\n" +
+            String sql = "select Booking.id as bId, Slot.id as sId,Schedule_Booking_Logs.status_id,Booking.status_id as bStatus, Slot.time_start,Slot.time_end,Schedule.date,Skill.src_icon, Level.type as lvType,Status.type as stType from Booking join Schedule_Booking_Logs\n" +
                     "on Schedule_Booking_Logs.booking_id = Booking.id\n" +
                     "join Schedule\n" +
                     "on Schedule_Booking_Logs.schedule_id = Schedule.id\n" +
@@ -229,6 +231,7 @@ public class BookingDAO {
                 level_skills.setSkill(skill);
 
                 Status status = new Status();
+                status.setId(resultSet.getInt("status_id"));
                 status.setType(resultSet.getString("stType"));
 
 
@@ -584,7 +587,7 @@ public class BookingDAO {
         List<BookingSchedule> bookingList = bookingDAO.getBookingScheduleById(58);
 
         for (BookingSchedule bookingSchedule : bookingList) {
-            System.out.println(bookingSchedule.getBooking().getDate());
+            System.out.println(bookingSchedule.isAttend());
         }
     }
 

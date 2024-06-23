@@ -140,7 +140,7 @@
                         </td>
                         <td>
                             <c:forEach begin="0" end="${w.mentor.level_skills.size() - 1}" items="${w.mentor.level_skills}" varStatus="i" var="ls">
-                                <span class="fw-normal mb-1">${ls.skill.name}</span>
+                                <span class="fw-normal mb-1">${ls.skill.name} for level ${ls.level.name}</span>
                                 <c:if test="${i.index < w.mentor.level_skills.size() - 1}">, </c:if>
                             </c:forEach>
                         </td>
