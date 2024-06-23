@@ -13,6 +13,12 @@ public class Wallet {
         this.balance = balance;
     }
 
+    public Wallet(int id, float available, float balance) {
+        this.id = id;
+        this.available = available;
+        this.balance = balance;
+    }
+
     public Wallet() {
     }
 

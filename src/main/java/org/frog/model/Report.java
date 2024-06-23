@@ -1,25 +1,17 @@
 package org.frog.model;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Report {
     private int id;
     private String reason;
-    private Date date;
+    private Timestamp date;
     private Status status;
     private Mentee mentee;
     private Mentor mentor;
     private Administrator administrator;
 
-    public Report(int id, String reason, Date date, Status status, Mentee mentee, Mentor mentor, Administrator administrator) {
-        this.id = id;
-        this.reason = reason;
-        this.date = date;
-        this.status = status;
-        this.mentee = mentee;
-        this.mentor = mentor;
-        this.administrator = administrator;
-    }
 
     public Report() {
     }
@@ -64,11 +56,11 @@ public class Report {
         this.status = status;
     }
 
-    public Date getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 

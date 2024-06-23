@@ -1,0 +1,310 @@
+
+table{
+    /*border: 2px #07AD90 solid;*/
+    /*box-shadow: #aaaaaa 0px 0px 10px;*/
+    flex-grow: 1;
+    max-width: 100%;
+    max-height: 100%;
+    border-collapse: collapse; /* Loại bỏ khoảng cách giữa các ô */
+    margin: 0 auto;
+    border: 1px solid #999999;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    overflow: auto;
+}
+
+thead tr th {
+    border-left: 1px #07AD90 solid;
+    text-align: center;
+}
+thead{
+    border-bottom: 2px #07AD90 solid;
+}
+
+tbody td {
+    border: 1px #07AD90 solid;
+    width: 110px;
+    height: 110px;
+}
+td:first-child{
+    font-weight: bold;
+    background-color: rgb(230, 230, 250);
+    border-color: inherit;
+    border-style: solid;
+    border-width: 0;
+}
+th:first-child{
+    font-weight: bold;
+    background-color: rgb(230, 230, 250);
+}
+/*css cho note*/
+.notes-container {
+    margin: 10px;
+    position: relative;
+}
+.pin {
+    background-color: #aaa;
+    display: block;
+    height: 20px;
+    width: 2px;
+    position: absolute;
+    left: 10%;
+    top: -10px;
+    z-index: 1;
+}
+
+.pin:after {
+    background-color: #A31;
+    /*background-image: radial-gradient(25% 25%,circle, hsla(0,0%,100%,.3), hsla(0,0%,0%,.3));*/
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px hsla(0,0%,0%,.1), inset 3px 3px 3px hsla(0,0%,100%,.2), inset -3px -3px 3px hsla(0,0%,0%,.2), 23px 20px 3px hsla(0,0%,0%,.15);
+    content: '';
+    height: 12px;
+    left: -5px;
+    position: absolute;
+    top: -10px;
+    width: 12px;
+}
+
+.pin:before {
+    background-color: hsla(0,0%,0%,0.1);
+    box-shadow: 0 0 .25em hsla(0,0%,0%,.1);
+    content: '';
+
+    height: 22px;
+    width: 2px;
+    left: 0;
+    position: absolute;
+    top: 8px;
+
+    transform: rotate(57.5deg);
+    -moz-transform: rotate(57.5deg);
+    -webkit-transform: rotate(57.5deg);
+    -o-transform: rotate(57.5deg);
+    -ms-transform: rotate(57.5deg);
+
+    transform-origin: 50% 100%;
+    -moz-transform-origin: 50% 100%;
+    -webkit-transform-origin: 50% 100%;
+    -ms-transform-origin: 50% 100%;
+    -o-transform-origin: 50% 100%;
+}
+
+.notes {
+    color: #333;
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    padding: 10px;
+    font-family: Satisfy;
+    font-size: 16px;
+    box-shadow: 0 10px 10px 2px rgba(0, 0, 0, 0.3);
+}
+
+.red {
+    background: #FAAD12FF;
+    -webkit-transform: rotate(2deg);
+    -moz-transform: rotate(2deg);
+    -o-transform: rotate(2deg);
+    -ms-transform: rotate(2deg);
+    transform: rotate(2deg);
+}
+/*-----------*/
+body {
+    color: #2e3e50;
+    background: #FFFFFF;
+}
+
+.X {
+    margin-top: 25px;
+    padding: 1% 2%;
+    max-width: 1440px;
+    border-radius: 5px;
+    background: #ecf0f1;
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .3);
+}
+
+h2 {
+    text-align: center;
+    color: #07ad90;
+}
+    /*font-family: 'Baloo Tamma', cursive;*/
+
+
+h3 {
+    text-align: start;
+    text-decoration: none;
+    font-weight: bold;
+    color: #07ad90;
+}
+
+li {
+    color: #2c3e50;
+    font-size: 16px;
+    text-align: justify;
+
+}
+
+/*SG = style grid*/
+.SG {
+    margin: 0;
+    padding: 60px;
+    text-align: center;
+}
+
+.SG .sgLi {
+    min-width: 24%;
+    margin: 2% .35%;
+    display: inline-flex;
+    transition: box-shadow 0.2s ease;
+}
+
+.SG .sgLi:hover {
+    box-shadow: 4px 4px 4px 2px rgba(144, 238, 144, .5);
+}
+
+.SG .box {
+    width: 100%;
+    height: 100vh;
+    padding: 1% 2%;
+    background: #fff;
+    min-height: 200px;
+    max-height: 220px;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+
+/*Styles */
+.df {
+    list-style-type: disc;
+}
+
+.s18 li:before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    margin-right: 15px;
+    display: inline-block;
+    background: url(//goo.gl/lcPSVD);
+    background-position: 50%;
+}
+
+
+.s19 li:before {
+    content: '\f0a9';
+    margin-right: 15px;
+
+}
+
+/* responsive grid*/
+@media (max-width: 970px) {
+    .SG .sgLi {
+        width: 180px;
+    }
+}
+
+@media (max-width: 425px) {
+    .SG .sgLi {
+        width: 100%;
+    }
+}
+#confirmBtn2 ,#absentBtn2{
+    background-color: #07AD90; /* Green background */
+    border: none; /* Remove borders */
+    color: white; /* White text */
+    padding: 15px 49px; /* Add some padding */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Make the container inline */
+    font-size: 16px; /* Increase font size */
+    margin: 4px 2px; /* Add some margin */
+    transition-duration: 0.4s; /* Add transition effect */
+    cursor: pointer; /* Add a pointer cursor on hover */
+    border-radius: 12px; /* Rounded corners */
+}
+#confirmBtn ,#absentBtn{
+    background-color: #07AD90; /* Green background */
+    border: none; /* Remove borders */
+    color: white; /* White text */
+    padding: 15px 49px; /* Add some padding */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Make the container inline */
+    font-size: 16px; /* Increase font size */
+    margin: 4px 2px; /* Add some margin */
+    transition-duration: 0.4s; /* Add transition effect */
+    cursor: pointer; /* Add a pointer cursor on hover */
+    border-radius: 12px; /* Rounded corners */
+}
+.BtnButton{
+    background-color: #42509e; /* Green background */
+    border: none; /* Remove borders */
+    color: white; /* White text */
+    padding: 15px 49px; /* Add some padding */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Make the container inline */
+    font-size: 16px; /* Increase font size */
+    margin: 4px 2px; /* Add some margin */
+    transition-duration: 0.4s; /* Add transition effect */
+    cursor: pointer; /* Add a pointer cursor on hover */
+    border-radius: 12px; /* Rounded corners */
+}
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.liSub  {
+    background: #f9f9f9;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+}
+
+li img {
+    margin-right: 10px;
+    border-radius: 3px;
+}
+
+li span {
+    font-weight: bold;
+    color: #333;
+}
+
+.list-title {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #4CAF50;
+    text-align: center;
+    font-weight: bold;
+}
+.styled-date {
+    display: block;
+    margin: 10px 0;
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    transition: border-color 0.1s, box-shadow 0.1s;
+}
+.btn{
+    background-color: #8a9deb; /* Green background */
+    color: white; /* White text */
+    padding: 15px 49px; /* Add some padding */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Make the container inline */
+    font-size: 16px; /* Increase font size */
+    margin: 4px 2px; /* Add some margin */
+    transition-duration: 0.4s; /* Add transition effect */
+    cursor: pointer; /* Add a pointer cursor on hover */
+    border-radius: 12px; /* Rounded corners */
+}
