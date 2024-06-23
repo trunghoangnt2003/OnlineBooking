@@ -12,13 +12,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.format.TextStyle;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
-import java.util.Calendar;
+import java.util.*;
 
 public class DateTimeHelper {
     public static List<Week> getWeekDates(String dateStr) {
@@ -42,13 +39,17 @@ public class DateTimeHelper {
         return date.format(formatter);
     }
 
-    public static java.sql.Timestamp convertToTimestamp(String date, String time) throws ParseException {
+    public static java.sql.Timestamp convertToTimestamp(String date, String time) {
         String dateTime = date + " " + time;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Timestamp timestamp = null;
 
+        try {
             java.util.Date parsedDate = dateFormat.parse(dateTime);
             timestamp = new Timestamp(parsedDate.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         return timestamp;
     }
@@ -173,6 +174,12 @@ public class DateTimeHelper {
         LocalDate futureDate = today.plusWeeks(weeksAhead);
 
         return futureDate.toString();
+    }
+
+    public static Timestamp minusHoursToDate(Timestamp date, int hours) {
+        LocalDateTime dateTime = date.toLocalDateTime();
+        LocalDateTime newDateTime = dateTime.minusHours(hours);
+        return Timestamp.valueOf(newDateTime);
     }
 
 }

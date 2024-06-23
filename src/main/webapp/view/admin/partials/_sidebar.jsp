@@ -32,6 +32,7 @@
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"> <a class="nav-link" href="#">Banner Management</a></li>
           <li class="nav-item"> <a class="nav-link" href="../admin/skill">Skills Management</a></li>
+          <li class="nav-item"> <a class="nav-link" href="../admin/report">Report Management</a></li>
         </ul>
       </div>
     </li>

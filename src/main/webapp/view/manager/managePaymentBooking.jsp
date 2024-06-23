@@ -169,26 +169,27 @@
 
 
             </div>
-            <div>
+            <div class="d-flex justify-content-between mx-3 mt-2">
                 <h5>Total: ${bookingsHistory.size()}</h5>
+                <c:if test="${not empty bookingsHistory}">
+                    <ul class="pagination">
+                        <c:set var="total" value="${totalBookings}"/>
+                        <c:set var="totalPages" value="${(total / 20) + (total % 20 == 0 ? 0 : 1)}"/>
+                        <li class="<c:if test="${param.page==1 || param.page == null}">active</c:if>">
+                            <a href="paymentBooking?page=1">1</a>
+                        </li>
+                        <c:forEach begin="${2}" end="${totalPages}" step="${1}" var="i">
+                            <li class="<c:if test="${param.page==i }">active</c:if>">
+                                <a href="paymentBooking?page=${i}">${i}</a>
+                            </li>
+                        </c:forEach>
+
+                    </ul>
+
+                </c:if>
             </div>
 
-            <c:if test="${not empty bookingsHistory}">
-                <ul class="pagination">
-                    <c:set var="total" value="${totalBookings}"/>
-                    <c:set var="totalPages" value="${(total / 20) + (total % 20 == 0 ? 0 : 1)}"/>
-                    <li class="<c:if test="${param.page==1 || param.page == null}">active</c:if>">
-                        <a href="paymentBooking?page=1">1</a>
-                    </li>
-                    <c:forEach begin="${2}" end="${totalPages}" step="${1}" var="i">
-                        <li class="<c:if test="${param.page==i }">active</c:if>">
-                            <a href="paymentBooking?page=${i}">${i}</a>
-                        </li>
-                    </c:forEach>
 
-                </ul>
-
-            </c:if>
         </div>
         </div>
 

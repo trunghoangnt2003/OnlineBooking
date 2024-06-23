@@ -934,6 +934,177 @@ public class Booking_ScheduleDAO {
         }
         return bookings;
     }
+
+    public ArrayList<BookingSchedule> getLogs(int booking_id){
+        ArrayList<BookingSchedule> list = new ArrayList<>();
+        String sql = "SELECT sbl.id, sbl.booking_id, b.mentee_id, b.level_skill_id, sbl.schedule_id, " +
+                "s.account_id AS mentor_id, s.date, s.slot_id, sl.time_start, sl.time_end " +
+                "FROM Booking b " +
+                "INNER JOIN Schedule_Booking_Logs sbl ON b.id = sbl.booking_id " +
+                "INNER JOIN Schedule s ON s.id = sbl.schedule_id " +
+                "INNER JOIN Slot sl ON sl.id = s.slot_id " +
+                "WHERE b.id = ? " +
+                "ORDER BY s.date DESC";
+
+        try (Connection connection = JDBC.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+
+            preparedStatement.setInt(1, booking_id);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    BookingSchedule bookingSchedule = new BookingSchedule();
+                    bookingSchedule.setId(resultSet.getInt("id"));
+
+                    Schedule schedule = new Schedule();
+                    schedule.setId(resultSet.getInt("schedule_id"));
+                    schedule.setDate(resultSet.getDate("date"));
+
+                    Slot slot = new Slot();
+                    slot.setId(resultSet.getInt("slot_id"));
+                    slot.setStart_at(resultSet.getString("time_start"));
+                    slot.setEnd_at(resultSet.getString("time_end"));
+                    schedule.setSlot(slot);
+
+                    Mentor mentor = new Mentor();
+                    Account account_mentor = new Account();
+                    account_mentor.setId(resultSet.getString("mentor_id"));
+                    mentor.setAccount(account_mentor);
+                    schedule.setMentor(mentor);
+                    bookingSchedule.setSchedule(schedule);
+
+                    Booking booking = new Booking();
+                    booking.setId(resultSet.getInt("booking_id"));
+
+                    Level_Skills level_skills = new Level_Skills();
+                    level_skills.setId(resultSet.getInt("level_skill_id"));
+                    booking.setLevel_skills(level_skills);
+
+                    Mentee mentee = new Mentee();
+                    Account account_mentee = new Account();
+                    account_mentee.setId(resultSet.getString("mentee_id"));
+                    mentee.setAccount(account_mentee);
+                    booking.setMentee(mentee);
+
+                    bookingSchedule.setBooking(booking);
+
+                    list.add(bookingSchedule);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return list;
+    }
+
+    public ArrayList<BookingSchedule> getBookingScheduleMentorAccepted(String mentor_id){
+        ArrayList<BookingSchedule> list = new ArrayList<>();
+        try{
+            Connection connection = JDBC.getConnection();
+            String sql = "Select bs.id, bs.booking_id,bs.schedule_id,s.account_id as mentor_id,s.date, s.slot_id\n" +
+                    "from Booking_Schedule bs join Schedule s ON bs.schedule_id = s.id\n" +
+                    "Where (status_id = ? or status_id = ?) and s.account_id = ? \n"+
+                    "Order by [date] Desc";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1,StatusEnum.ACCEPTED);
+            preparedStatement.setInt(2,StatusEnum.DONE);
+            preparedStatement.setString(3,mentor_id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                BookingSchedule bookingSchedule = new BookingSchedule();
+                bookingSchedule.setId(resultSet.getInt("id"));
+
+                Booking booking = new Booking();
+                booking.setId(resultSet.getInt("booking_id"));
+                bookingSchedule.setBooking(booking);
+
+                Schedule schedule = new Schedule();
+                schedule.setId(resultSet.getInt("schedule_id"));
+
+                Mentor mentor = new Mentor();
+                Account account_mentor = new Account();
+                account_mentor.setId(resultSet.getString("mentor_id"));
+                mentor.setAccount(account_mentor);
+                schedule.setMentor(mentor);
+
+                schedule.setDate(resultSet.getDate("date"));
+                Slot slot = new Slot();
+                slot.setId(resultSet.getInt("slot_id"));
+                schedule.setSlot(slot);
+
+
+                bookingSchedule.setSchedule(schedule);
+                list.add(bookingSchedule);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public void saveLog(ArrayList<BookingSchedule> bookingScheduless ){
+        try{
+            Connection connection = JDBC.getConnection();
+            String sql = "INSERT INTO [dbo].[Schedule_Booking_Logs]\n" +
+                    "           ([booking_id]\n" +
+                    "           ,[schedule_id]\n" +
+                    "           ,[status_id])\n" +
+                    "     VALUES\n" +
+                    "           (? \n" +
+                    "           ,? \n" +
+                    "           ,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            for(BookingSchedule bs : bookingScheduless){
+                preparedStatement.setInt(1,bs.getBooking().getId());
+                preparedStatement.setInt(2, bs.getSchedule().getId());
+                preparedStatement.setInt(3, bs.getStatus().getId());
+
+                preparedStatement.executeUpdate();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public ArrayList<BookingSchedule> getAllByBookingId(int id){
+        ArrayList<BookingSchedule> list = new ArrayList<>();
+        try{
+            Connection connection = JDBC.getConnection();
+            String sql = "SELECT [id]\n" +
+                    "      ,[booking_id]\n" +
+                    "      ,[schedule_id]\n" +
+                    "      ,[isAtend]\n" +
+                    "      ,[status_id]\n" +
+                    "  FROM [dbo].[Booking_Schedule]\n" +
+                    "  Where booking_id = ?\n";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                BookingSchedule bookingSchedule = new BookingSchedule();
+                bookingSchedule.setId(resultSet.getInt("id"));
+
+                Schedule schedule = new Schedule();
+                schedule.setId(resultSet.getInt("schedule_id"));
+                bookingSchedule.setSchedule(schedule);
+
+                Booking booking = new Booking();
+                booking.setId(resultSet.getInt("booking_id"));
+                bookingSchedule.setBooking(booking);
+
+                Status status = new Status();
+                status.setId(resultSet.getInt("status_id"));
+                bookingSchedule.setStatus(status);
+
+                list.add(bookingSchedule);
+            }
+        }catch (Exception e ){
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     public ArrayList<BookingSchedule> getDetailBookingMentee(int booking_id) throws SQLException {
         ArrayList<BookingSchedule> bs = new ArrayList<>();
         try{
@@ -1050,29 +1221,7 @@ public class Booking_ScheduleDAO {
         }
         return number;
     }
-    public void saveLog(ArrayList<BookingSchedule> bookingScheduless ){
-        try{
-            Connection connection = JDBC.getConnection();
-            String sql = "INSERT INTO [dbo].[Schedule_Booking_Logs]\n" +
-                    "           ([booking_id]\n" +
-                    "           ,[schedule_id]\n" +
-                    "           ,[status_id])\n" +
-                    "     VALUES\n" +
-                    "           (? \n" +
-                    "           ,? \n" +
-                    "           ,?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            for(BookingSchedule bs : bookingScheduless){
-                preparedStatement.setInt(1,bs.getBooking().getId());
-                preparedStatement.setInt(2, bs.getSchedule().getId());
-                preparedStatement.setInt(3, bs.getStatus().getId());
 
-                preparedStatement.executeUpdate();
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
     public ArrayList<BookingSchedule> getBookingSchedulesById(int bookingId){
         ArrayList<BookingSchedule> bookingSchedules = new ArrayList<>();
         try{

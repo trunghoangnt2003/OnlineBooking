@@ -32,6 +32,7 @@
     width: 100%;
     scrollbar-width: thin;
     scrollbar-color: rgb(148, 232, 204) #f3f3f3;
+
 }
 
 
@@ -43,6 +44,8 @@
 
 .table-fixed tbody td {
     /*border: 1px solid #07AD90;*/
+    display: flex;
+    align-items: center;
     background-color: rgb(246, 255, 253);
     padding: 8px;
     text-align: left;
@@ -60,29 +63,35 @@
 
 .table-fixed thead th:nth-child(1),
 .table-fixed tbody td:nth-child(1) {
-    flex: 0 0 40px;
+    flex: 0 0 50px;
 }
 
 .table-fixed thead th:nth-child(2),
-.table-fixed tbody td:nth-child(2),
+.table-fixed tbody td:nth-child(2)
+{
+    flex: 0 0 200px;
+}
+
 .table-fixed thead th:nth-child(3),
 .table-fixed tbody td:nth-child(3)
 {
-    flex: 0 0 170px;
+    flex: 0 0 250px;
+    display: block;
 }
 
 .table-fixed thead th:nth-child(4),
 .table-fixed tbody td:nth-child(4),
 .table-fixed thead th:nth-child(6),
-.table-fixed tbody td:nth-child(6){
-    flex: 0 0 250px;
+.table-fixed tbody td:nth-child(6),
+.table-fixed thead th:nth-child(7),
+.table-fixed tbody td:nth-child(7){
+    flex: 0 0 120px;
 }
 
 .table-fixed thead th:nth-child(5),
-.table-fixed tbody td:nth-child(5),
-.table-fixed thead th:nth-child(7),
-.table-fixed tbody td:nth-child(7){
-    flex: 0 0 100px;
+.table-fixed tbody td:nth-child(5)
+{
+    flex: 0 0 250px;
 }
 
 
