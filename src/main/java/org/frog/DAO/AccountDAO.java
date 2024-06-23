@@ -411,5 +411,22 @@ public class AccountDAO {
             throw new RuntimeException(e);
         }
     }
+    public int getRole(String id) {
+        int role = 0;
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "select R.id from Account A join Role R on A.role_id = R.id \n" +
+                    "where A.id = ?";
+            PreparedStatement preparedStatement = connection.prepareCall(sql);
+            preparedStatement.setString(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                role = resultSet.getInt("id");
+            }
+            JDBC.closeConnection(connection);
+        } catch (SQLException ignored) {
+        }
+        return role;
+    }
 
 }
