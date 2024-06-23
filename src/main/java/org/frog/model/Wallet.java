@@ -4,10 +4,18 @@ public class Wallet {
 
     private int id;
 
+    private float available;
+
     private float balance;
 
     public Wallet(int id, float balance) {
         this.id = id;
+        this.balance = balance;
+    }
+
+    public Wallet(int id, float available, float balance) {
+        this.id = id;
+        this.available = available;
         this.balance = balance;
     }
 
@@ -28,5 +36,13 @@ public class Wallet {
 
     public void setBalance(float balance) {
         this.balance = balance;
+    }
+
+    public float getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(float available) {
+        this.available = available;
     }
 }

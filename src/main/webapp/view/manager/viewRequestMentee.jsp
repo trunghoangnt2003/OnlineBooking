@@ -55,7 +55,7 @@
             justify-content: center;
         }
         .table-containers {
-            width: 95%;
+            width: 100%;
             border-radius: 5px;
             margin-left: 50px;
         }

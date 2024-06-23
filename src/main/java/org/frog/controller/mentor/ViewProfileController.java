@@ -28,13 +28,17 @@ public class ViewProfileController extends AuthenticationServlet {
             String mentorId = req.getParameter("mentorid");
             MentorDAO mentorDAO = new MentorDAO();
             Mentor mentor = mentorDAO.getMentorById(mentorId);
-            if ( mentor == null) {
+            if (mentor.getEducation() == null &&
+                    mentor.getExperience() == null &&
+                    mentor.getProfileDetail() == null &&
+                    mentor.getPrice() == 0) {
                 resp.sendRedirect("/Frog/mentor/create_profile");
             }else {
                 Level_SkillDAO level_skillDAO = new Level_SkillDAO();
                 ArrayList<Level_Skills> level_skills = level_skillDAO.getLevel_SkillByMentorId(mentorId);
                 ReviewDAO reviewDAO = new ReviewDAO();
                 ArrayList<Review> reviews = reviewDAO.getMenteeReviewByMentorId(mentorId);
+                ArrayList<Review> allReviews = reviewDAO.getAllReview(mentorId);
                 WishListDAO dao = new WishListDAO();
                 //đếm booking
                 ArrayList<WishList> wishLists = dao.getWishListByMentorId(mentorId);
@@ -44,6 +48,8 @@ public class ViewProfileController extends AuthenticationServlet {
                 if(mentorId.equals(account.getId())){
                     isAuthor = true;
                 }
+
+                req.setAttribute("numberReview", allReviews.size());
                 req.setAttribute("account", account);
                 req.setAttribute("list_follow", wish);
                 req.setAttribute("isAuthor", isAuthor);

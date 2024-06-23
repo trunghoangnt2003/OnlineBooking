@@ -15,14 +15,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <style>
         .table-container {
-            max-height: 400px; /* Adjust the height as needed */
+            max-height: 400px;
             overflow-y: auto;
             margin-top: 20px;
         }
         thead th {
             position: sticky;
             top: 0;
-            background-color: #f8f9fa; /* Background color to make the header stand out */
+            background-color: #f8f9fa;
             z-index: 1;
         }
         .back{
@@ -87,6 +87,7 @@
                     <th style="background:  #179b81">Skill</th>
                     <th style="background:  #179b81">Status</th>
                     <th style="background: #179b81">Create Date</th>
+                    <th style="background: #179b81">Re-Booking</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -100,6 +101,11 @@
                         <td>${booking.level_skills.skill.name} for ${booking.level_skills.level.name}</td>
                         <td>${booking.status.type}</td>
                         <td>${booking.date}</td>
+                        <td>
+                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                    onclick="editHandle('${booking.mentor.account.id}','${booking.level_skills.skill.name}','${booking.level_skills.level.name}', '${booking.id}')"
+                            >Re-Book</button>
+                        </td>
                     </tr>
                 </c:forEach>
                 </tbody>
@@ -107,7 +113,6 @@
         </div>
     </div>
 </div>
-<!-- Modal -->
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
@@ -134,6 +139,12 @@
                 }, 2000);
             }
         });
+    }
+
+    function editHandle(mentorId, skill_name, level, bookId) {
+        console.log(mentorId);
+        const skill = encodeURIComponent(skill_name);
+        window.location.href = 'booking-schedule?mentorId='+ mentorId +'&skill='+ skill +'&level='+ level+'&bookId=' + bookId ;
     }
 </script>
 <script

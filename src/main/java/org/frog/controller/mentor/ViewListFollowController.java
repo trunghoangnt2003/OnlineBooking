@@ -25,7 +25,7 @@ public class ViewListFollowController extends AuthenticationServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
-        String id = account.getId();
+        String id = req.getParameter("id");
         WishListDAO dao = new WishListDAO();
         ArrayList<WishList> wishLists = dao.getWishListByMentorId(id);
 

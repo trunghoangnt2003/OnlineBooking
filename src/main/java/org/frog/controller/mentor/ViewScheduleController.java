@@ -73,14 +73,14 @@ public class ViewScheduleController extends AuthenticationServlet {
             schedules = scheduleDAO.getSchedulesByIDnDay(account.getId(), DateTimeHelper.convertStringToDateByDay(weeks.get(0).getDayOfMonth()), DateTimeHelper.convertStringToDateByDay(weeks.get(6).getDayOfMonth()));
             bookings = bs.getBookingByMenteeBookMentor(account.getId());
             // kiem tra booking het han (sau 1 ngay)
-            for (Booking b : bookings) {
-                if (DateTimeHelper.checkExpiredBooking(b.getDate())) {
-                    bs.deleteScheduleBookings(b.getId());
-                    bs.updateBooking(b.getId(), 2);
-                    bookings.remove(b);
-
-                }
-            }
+//            for (Booking b : bookings) {
+//                if (DateTimeHelper.checkExpiredBooking(b.getDate())) {
+//                    bs.deleteScheduleBookings(b.getId());
+//                    bs.updateBooking(b.getId(), 2);
+//                    bookings.remove(b);
+//
+//                }
+//            }
             BookingSlots = bs.getDetailBookings(account.getId());
             req.setAttribute("BookingSlots", BookingSlots);
             req.setAttribute("bookings", bookings);
