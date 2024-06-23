@@ -21,6 +21,7 @@ public class ConfirmScheduleController extends AuthenticationServlet {
         try{
             String id = req.getParameter("ID").trim();
             String opt = req.getParameter("option");
+            String manage = req.getParameter("manage");
             Booking_ScheduleDAO bsDAO = new Booking_ScheduleDAO();
             if(!id.isEmpty() || !opt.isEmpty()){
                 if(opt.equals("present")){
@@ -29,10 +30,14 @@ public class ConfirmScheduleController extends AuthenticationServlet {
                     bsDAO.updateBookingDetail(Integer.parseInt(id),false);
                 }
             }
-
+            if(manage != null ){
+                resp.sendRedirect("/Frog/mentor/schedule/manage");
+            }else{
+                resp.sendRedirect("/Frog/mentor/schedule");
+            }
         }catch(Exception e){
             e.printStackTrace();
         }
-        resp.sendRedirect("/Frog/mentor/schedule");
+
     }
 }

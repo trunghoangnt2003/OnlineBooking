@@ -137,23 +137,30 @@
         </thead>
         <tbody>
         <c:forEach items="${bookingsHistory}" var="book">
-            <tr>
-                <td>${count}</td>
-                <td>${book.date}</td>
-                <td>${book.amount}</td>
-                <td>${book.description} </td>
-                <td><img width="20px"
-                         src="${pageContext.request.contextPath}/${book.level_skills.skill.src_icon}">
-                        ${book.level_skills.skill.name}</td>
-                <td>${book.level_skills.level.name} </td>
-                <td>${book.startDate}</td>
-                <td>${book.endDate}</td>
-                <td>${book.mentee.account.name}</td>
-                <td>${book.status.type }
-                </td>
+                <tr>
+                    <td>${count}</td>
+                    <td>${book.date}</td>
+                    <td>${book.amount}</td>
+                    <td>${book.description} </td>
+                    <td><img width="20px"
+                             src="${pageContext.request.contextPath}/${book.level_skills.skill.src_icon}">
+                            ${book.level_skills.skill.name}</td>
+                    <td>${book.level_skills.level.name} </td>
+                    <td>${book.startDate}</td>
+                    <td>${book.endDate}</td>
+                    <td>${book.mentee.account.name}</td>
+                    <c:if test="${book.status.id == 2}">
+                        <td>${book.status.type }
+                        </td>
+                    </c:if>
+                    <c:if test="${book.status.id == 13}">
+                        <td> <a href="/Frog/mentor/schedule/manage?id=${book.id}&action=1" style="text-decoration: none">${book.status.type }<a/>
+                        </td>
+                    </c:if>
 
-                <c:set var="count" value="${count=  1 + count}"></c:set>
-            </tr>
+                    <c:set var="count" value="${count=  1 + count}"></c:set>
+                </tr>
+
         </c:forEach>
         </tbody>
     </table>

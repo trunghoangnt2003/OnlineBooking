@@ -19,6 +19,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <!-- Custom CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/rating.css">
 </head>
 <style>
@@ -122,13 +123,13 @@
 <jsp:include page="/view/common/header.jsp"></jsp:include>
 <div class="container">
     <c:if test="${param.id == null}">
-    <div style="margin: 25px 10px  20px 50px ">
-        <a href="${pageContext.request.contextPath}/mentor/schedule" style="text-decoration: none">
-            <i class="fa-solid fa-arrow-right-to-bracket fa-rotate-180 fa-xl" style="color: #07ad90"></i>
-            &nbsp;<span
-                style="color: #07ad90; font-weight: 500; font-size: 20px; margin-top: 10px">Back to schedule</span>
-        </a>
-    </div>
+        <div style="margin: 25px 10px  20px 50px ">
+            <a href="${pageContext.request.contextPath}/mentor/schedule" style="text-decoration: none">
+                <i class="fa-solid fa-arrow-right-to-bracket fa-rotate-180 fa-xl" style="color: #07ad90"></i>
+                &nbsp;<span
+                    style="color: #07ad90; font-weight: 500; font-size: 20px; margin-top: 10px">Back to schedule</span>
+            </a>
+        </div>
     </c:if>
     <c:if test="${param.id != null}">
         <div style="margin: 25px 10px  20px 50px ">
@@ -148,16 +149,23 @@
                        href="/Frog/mentor/schedule/manage?id=${param.id}&action=1"
                        aria-controls="home">Schedule</a>
                     <a class="list-group-item list-group-item-action  <c:if test="${param.action == 2}">list-group-item-success</c:if>"
-                       href="/Frog/mentor/schedule/manage?id=${param.id}&action=2"  aria-controls="profile">Attendance</a>
+                       href="/Frog/mentor/schedule/manage?id=${param.id}&action=2"
+                       aria-controls="profile">Attendance</a>
                     <a class="list-group-item list-group-item-action  <c:if test="${param.action == 3}">list-group-item-success</c:if>"
-                       href="/Frog/mentor/schedule/manage?id=${param.id}&action=3"  aria-controls="messages">Messages</a>
+                       href="/Frog/mentor/schedule/manage?id=${param.id}&action=3" aria-controls="messages">Payment</a>
                     <a class="list-group-item list-group-item-action  <c:if test="${param.action == 4}">list-group-item-success</c:if>"
-                       href="/Frog/mentor/schedule/manage?id=${param.id}&action=4"  aria-controls="settings">Booking Detail</a>
+                       href="/Frog/mentor/schedule/manage?id=${param.id}&action=4" aria-controls="settings">Booking
+                        Detail</a>
                 </div>
             </div>
-            <div class="col-8" >
+            <div class="col-8">
                 <c:if test="${param.action == 1}">
-                    <h3 style="text-decoration: none;color: #07ad90;">Table</h3>
+                    <div style="display: inline">
+                        <div> <h3 style="text-decoration: none;color: #07ad90;">Table</h3></div>
+                    <div> <input type="date" class="styled-date" name="today" id="today" value="${today}"
+                               data-viewID="${param.viewID}"  style="width: 20%"
+                               onchange="updateURL()"> </div>
+                    </div>
                     <table>
                         <thead>
                         <tr>
@@ -177,20 +185,42 @@
                                             ${t.start_at} - ${t.end_at}
                                     </div>
                                 </td>
+
                                 <c:forEach items="${weeks}" var="week">
-                                    <c:set var="countCheck" value="${count = 0}" />
-                                    <c:set var="foundBusy" value="false" />
-                                    <c:set var="icon" value="false" />
-                                    <c:set var="waitingIcon" value="false" />
+                                    <c:set var="countCheck" value="${count = 0}"/>
+                                    <c:set var="foundBusy" value="false"/>
+                                    <c:set var="icon" value="false"/>
+                                    <c:set var="waitingIcon" value="false"/>
                                     <td>
                                         <c:forEach items="${schedules}" var="sche">
                                             <c:if test="${sche.schedule.date == week.convertStringToDateByDay(week.dayOfMonth) && sche.schedule.slot.id == t.id}">
                                                 <c:if test="${sche.status.id == 11 && param.id == sche.booking.id}">
-                                                    <c:set var="countCheck" value="${count = 1}" />
-                                                    <c:set var="foundBusy" value="true" />
-                                                    <c:set var="nameSkill" value="${sche.booking.level_skills.skill.name}" />
-                                                    <c:set var="avatarSkill" value="${sche.booking.level_skills.skill.src_icon}" />
-                                                    <c:set var="nameType" value="${sche.booking.level_skills.level.name}" />
+                                                    <c:set var="countCheck" value="${count = 1}"/>
+                                                    <c:set var="foundBusy" value="true"/>
+                                                    <c:set var="nameSkill"
+                                                           value="${sche.booking.level_skills.skill.name}"/>
+                                                    <c:set var="avatarSkill"
+                                                           value="${sche.booking.level_skills.skill.src_icon}"/>
+                                                    <c:set var="nameType"
+                                                           value="${sche.booking.level_skills.level.name}"/>
+                                                </c:if>
+                                                <c:if test="${sche.status.id == 3 && param.id == sche.booking.id}">
+                                                    <c:set var="countCheck" value="${count = 2}"/>
+                                                    <c:set var="foundBusy" value="true"/>
+                                                    <c:set var="nameSkill"
+                                                           value="${sche.booking.level_skills.skill.name}"/>
+                                                    <c:set var="avatarSkill"
+                                                           value="${sche.booking.level_skills.skill.src_icon}"/>
+                                                    <c:set var="nameType"
+                                                           value="${sche.booking.level_skills.level.name}"/>
+                                                    <c:if test="${sche.attend}">
+                                                        <c:set var="present" value="present"></c:set>
+                                                        <c:set var="icon" value="true"></c:set>
+                                                    </c:if>
+                                                    <c:if test="${!sche.attend}">
+                                                        <c:set var="present" value="absent"></c:set>
+                                                        <c:set var="icon" value="true"></c:set>
+                                                    </c:if>
                                                 </c:if>
                                             </c:if>
                                         </c:forEach>
@@ -198,20 +228,33 @@
                                             <div class="notes-container">
                                                 <i class="pin"></i>
                                                 <blockquote class="notes red">
-                                                    <img width="30px" src="${pageContext.request.contextPath}/${avatarSkill}" style="margin-bottom: 10px;" />
-                                                    <button id="button-schedule-td1" class="info-link"
-                                                            data-book-id="${week.dayOfMonth}_${t.id}"
-                                                            data-today-id="${week.dayOfMonth}"
-                                                            style="background: transparent" onclick="informationMentee()">
-                                                            ${nameType}
-                                                    </button>
+                                                    <img width="30px"
+                                                         src="${pageContext.request.contextPath}/${avatarSkill}"
+                                                         style="margin-bottom: 10px;"/>
+                                                        ${nameType}
+
+                                                </blockquote>
+
+                                            </div>
+                                        </c:if>
+                                        <c:if test="${countCheck == 2}">
+                                            <div class="notes-container">
+                                                <i class="pin"></i>
+                                                <blockquote class="notes red">
+                                                    <img width="30px"
+                                                         src="${pageContext.request.contextPath}/${avatarSkill}"
+                                                         style="margin-bottom: 10px;"/>
+                                                        ${nameType}
                                                     <c:if test="${present.equals('present') && icon}">
-                                                        <i class="fa-solid fa-frog fa-xl" style="color: #02b23c; margin-top: -20px; margin-left: 40px"></i>
+                                                        <i class="fa-solid fa-frog fa-xl"
+                                                           style="color: #02b23c; margin-top: -25px; margin-left: 40px"></i>
                                                     </c:if>
                                                     <c:if test="${present.equals('absent') && icon}">
-                                                        <i class="fa-solid fa-face-sad-tear fa-xl" style="color: #f25452; margin-top: -20px; margin-left: 40px"></i>
+                                                        <i class="fa-solid fa-face-sad-tear fa-xl"
+                                                           style="color: #f25452; margin-top: -25px; margin-left: 40px"></i>
                                                     </c:if>
                                                 </blockquote>
+
                                             </div>
                                         </c:if>
                                     </td>
@@ -222,12 +265,103 @@
                     </table>
 
                 </c:if>
+                <c:if test="${param.action == 2}">
+                    <c:forEach items="${bookingSlots}" var="bookSlot">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title"> Day: ${bookSlot.schedule.date}
+                                    Slot ${bookSlot.schedule.slot.id} (${bookSlot.schedule.slot.start_at}-${bookSlot.schedule.slot.end_at})
+                                </h5>
+                                <p class="card-text">
+                                    <img width="30px"
+                                         src="${pageContext.request.contextPath}/${bookSlot.booking.level_skills.skill.src_icon}"
+                                         style="margin-bottom: 10px;"/>
+                                        ${bookSlot.booking.level_skills.skill.name} ${bookSlot.booking.level_skills.level.name} </p>
+                                <c:if test="${bookSlot.status.id == 3}">
+                                    <c:if test="${bookSlot.attend}">
+                                        <p><input type="button" value="Present" id="confirmBtn2" style=" background: #28a745;display: inline">  </p>
+                                    </c:if>
+                                    <c:if test="${!bookSlot.attend}">
+                                        <p>  <input type="button" value="Absent" id="absentBtn2" style=" background: #ff2222;display: inline">
+                                        </p>
+                                    </c:if>
+                                </c:if>
+                                <c:if test="${bookSlot.status.id == 11 }">
+                                    <li style="list-style-type: none; display: inline">
+                                        <input type="button" value="Present" id="confirmBtn"
+                                               data-id=" ${bookSlot.id}"
+                                               onclick="confirmSlot()">
+                                    </li>
+                                    <li style="list-style-type: none;display: inline">
+                                        <input type="button" value="Absent" id="absentBtn"
+                                               data-id=" ${bookSlot.id}"
+                                               onclick="absentSlot()">
+                                    </li>
+                                </c:if>
+
+                            </div>
+                        </div>
+
+                    </c:forEach>
+
+                </c:if>
+
+                <c:if test="${param.action == 4}">
+                    <div class="list-container">
+                        <div class="list-title">Booking Details</div>
+                        <ul style=" list-style: none;
+    padding: 0;
+    margin: 0;
+    font-family: Arial, sans-serif;">
+                            <li class="liSub"><span>Name : </span>  ${bookingSlots[0].booking.mentee.account.name}</li>
+                            <li class="liSub"><span>Mail : </span>  ${bookingSlots[0].booking.mentee.account.email}</li>
+                            <li class="liSub"><span>Phone : </span>  ${bookingSlots[0].booking.mentee.account.phone}</li>
+                            <li class="liSub">
+                                <span>Skill name:</span>
+                                <img width="30px" src="${pageContext.request.contextPath}/${bookingSlots[0].booking.level_skills.skill.src_icon}">
+                                    ${bookingSlots[0].booking.level_skills.skill.name}
+                            </li>
+                            <li class="liSub"><span>Skill level : </span>  ${bookingSlots[0].booking.level_skills.level.name}</li>
+                            <li class="liSub"><span>Day Start : </span>  ${bookingSlots[0].booking.startDate}</li>
+                            <li class="liSub"><span>Day End : </span>  ${bookingSlots[0].booking.endDate}</li>
+                            <li class="liSub"><span>Slot Booked : </span>  ${bookingSlots[0].schedule.slot.id}</li>
+                            <li class="liSub"><span>Created date : </span>  ${bookingSlots[0].booking.date}</li>
+                            <li class="liSub"><span>Total amount request : </span>  ${bookingSlots[0].booking.amount}</li>
+                        </ul>
+                    </div>
+
+                </c:if>
+                <c:if test="${param.action == 3}">
+                        <ul>
+                            <li style="color: red">(Note: If the lesson has been finished,please confirm slot)</li>
+                            <li><span style="font-weight: bold">Number of Slots confirm: ${slotConfirmedNumber}/${bookingSlotsNumber}</span></li>
+                            <c:if test="${slotConfirmedNumber == bookingSlotsNumber}">
+                                <c:if test="${bookingSlots[0].booking.status.id != 13 }">
+                                <li><span style="font-weight: bold">All lessons are finished,wait ${bookingSlots[0].booking.mentee.account.name} confirms...</span></li>
+                                <li>
+                                <input type="button" class="btn" id="btn" value="Send Mail" onclick="sendMail()" data-id="${bookingSlots[0].booking.mentee.account.id}_${bookingSlots[0].booking.id}" >
+
+                                </li>
+                                </c:if>
+                            </c:if>
+                        </ul>
+                         <ul style="margin-top: 20px">
+                            <li style="list-style-type: none">Status payment :
+                                <span style="color: #f8ce0b"> <c:if
+                                        test="${bookingSlots[0].booking.status.id != 13  }">Payment Not Confirm Yet</c:if> </span>
+                                <span style="color: #28a745"><c:if
+                                        test="${bookingSlots[0].booking.status.id == 13 }">Payment Confirmed</c:if></span>
+                            </li>
+
+                        </ul>
+                </c:if>
             </div>
         </div>
     </c:if>
+
     <%--    view id--%>
     <c:if test="${param.id == null}">
-        <div >
+        <div>
             <div class="X">
                 <h2>Manage Request booking</h2>
                 <h3>My Mentee booking</h3>
@@ -252,19 +386,181 @@
                             </div>
                         </li>
                     </c:forEach>
-
-
                 </ul>
             </div>
         </div>
     </c:if>
 </div>
 <script>
-    const openMenteeBookings = (id) =>{
+    const updateURL = ()=>{
         var currentURL = window.location.href;
-        var newURL = currentURL + "?id=" + id+"&action=1";
+        var url = new URL(currentURL);
+        selectedDate = document.getElementById('today').value;
+        // Cập nhật hoặc thêm tham số 'today' vào URL
+        url.searchParams.set('today', selectedDate);
+        window.location.href = url.toString();
+
+    }
+    const openMenteeBookings = (id) => {
+        var currentURL = window.location.href;
+        var newURL = currentURL + "?id=" + id + "&action=1";
         window.location.href = newURL;
     }
+    const sendMail = () => {
+        var btnOnclick = document.getElementById("btn");
+        var newURL = "";
+        btnOnclick.onclick = function (event) {
+            event.preventDefault();
+            Swal.fire({
+                title: "Are you want to send mail ?",
+                text: "Ensure that all slot has happened",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Successfully",
+                        text: "Mail sent",
+                        icon: "success"
+                    });
+                    var menteeId = this.getAttribute('data-id').split("_")[0];
+                    var bookingId =this.getAttribute('data-id').split("_")[1];
+                    newURL = '/Frog/confirmMail?menteeId=' + menteeId + '&bookingId='+bookingId;
+                    window.location.href = newURL;
+                }
+            });
+        };
+    }
+    const absentSlot = () => {
+        var btnOnclick = document.getElementById("absentBtn");
+        var newURL = "";
+        btnOnclick.onclick = function (event) {
+            event.preventDefault();
+            Swal.fire({
+                title: "Is the mentee ABSENT a slot ?",
+                text: "Ensure that the slot has happened",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, absent !"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var ID = this.getAttribute('data-id');
+                    newURL = '/Frog/mentor/schedule/confirm?ID=' + ID + '&option=absent&manage=true';
+                    localStorage.setItem('isAbsent', 'yes');
+                    // Redirect to the new URL
+                    window.location.href = newURL;
+                }
+            });
+        };
+    }
+    const confirmSlot = () => {
+        var btnOnclick = document.getElementById("confirmBtn");
+        var newURL = "";
+        btnOnclick.onclick = function (event) {
+            event.preventDefault();
+            Swal.fire({
+                title: "Are you want to PRESENT slot?",
+                text: "Ensure that the slot has happened",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, I confirm it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var ID = this.getAttribute('data-id');
+                    newURL = '/Frog/mentor/schedule/confirm?ID=' + ID + '&option=present&manage=true';
+                    localStorage.setItem('isConfirmSlot', 'yes');
+                    // Redirect to the new URL
+                    window.location.href = newURL;
+                }
+            });
+        };
+    }
+        window.onload = function () {
+            var isSuccess = localStorage.getItem('isSuccess');
+            // Nếu modal được lưu là mở, mở modal
+            var isDelete = localStorage.getItem('isDelete');
+            var update_status = localStorage.getItem('update_status');
+            var reject_status = localStorage.getItem('reject_status');
+            var modalToOpen = localStorage.getItem('modalToOpen');
+            var isConfirmSlot = localStorage.getItem('isConfirmSlot');
+            var isAbsent = localStorage.getItem('isAbsent');
+            var failToSet = localStorage.getItem('failToSet');
+            var failToDelete = localStorage.getItem('failToDelete');
+            var numberFreeTime = localStorage.getItem('numberFreeTime');
+            if (numberFreeTime) {
+                Toast.fire({
+                    icon: "success",
+                    title: numberFreeTime + " slots added "
+                });
+                localStorage.removeItem('numberFreeTime');
+            }
+            if (failToSet) {
+                Toast.fire({
+                    icon: "error",
+                    title: failToSet
+                });
+                localStorage.removeItem('failToSet');
+            }
+            if (failToDelete) {
+                Toast.fire({
+                    icon: "error",
+                    title: failToDelete
+                });
+                localStorage.removeItem('failToDelete');
+            }
+            if (isSuccess) {
+                Toast.fire({
+                    icon: "success",
+                    title: "set day in successfully"
+                });
+                localStorage.removeItem('isSuccess');
+            }
+            if (isDelete) {
+                Toast.fire({
+                    icon: "success",
+                    title: "Delete in successfully"
+                });
+                localStorage.removeItem('isDelete');
+            }
+            if (update_status) {
+                let icon;
+                if (update_status === 'schedule confirmed') {
+                    icon = "success";
+                } else {
+                    icon = "error";
+                }
+
+                Toast.fire({
+                    icon: icon,
+                    title: update_status
+                });
+
+                localStorage.removeItem('update_status');
+            }
+            if (reject_status) {
+                let icon;
+                if (reject_status === 'schedule rejected') {
+                    icon = "success";
+                } else {
+                    icon = "error";
+                }
+
+                Toast.fire({
+                    icon: icon,
+                    title: reject_status
+                });
+
+                localStorage.removeItem('reject_status');
+            }
+        }
+
 </script>
 </body>
 </html>

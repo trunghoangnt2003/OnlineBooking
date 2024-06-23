@@ -127,12 +127,16 @@ body {
 
 h2 {
     text-align: center;
-    /*font-family: 'Baloo Tamma', cursive;*/
+    color: #07ad90;
 }
+    /*font-family: 'Baloo Tamma', cursive;*/
+
 
 h3 {
     text-align: start;
-    text-decoration: underline;
+    text-decoration: none;
+    font-weight: bold;
+    color: #07ad90;
 }
 
 li {
@@ -168,6 +172,7 @@ li {
     min-height: 200px;
     max-height: 220px;
     box-sizing: border-box;
+    border-radius: 10px;
 }
 
 /*Styles */
@@ -203,4 +208,89 @@ li {
     .SG .sgLi {
         width: 100%;
     }
+}
+#confirmBtn2 ,#absentBtn2{
+    background-color: #07AD90; /* Green background */
+    border: none; /* Remove borders */
+    color: white; /* White text */
+    padding: 15px 49px; /* Add some padding */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Make the container inline */
+    font-size: 16px; /* Increase font size */
+    margin: 4px 2px; /* Add some margin */
+    transition-duration: 0.4s; /* Add transition effect */
+    cursor: pointer; /* Add a pointer cursor on hover */
+    border-radius: 12px; /* Rounded corners */
+}
+#confirmBtn ,#absentBtn{
+    background-color: #07AD90; /* Green background */
+    border: none; /* Remove borders */
+    color: white; /* White text */
+    padding: 15px 49px; /* Add some padding */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Make the container inline */
+    font-size: 16px; /* Increase font size */
+    margin: 4px 2px; /* Add some margin */
+    transition-duration: 0.4s; /* Add transition effect */
+    cursor: pointer; /* Add a pointer cursor on hover */
+    border-radius: 12px; /* Rounded corners */
+}
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.liSub  {
+    background: #f9f9f9;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+}
+
+li img {
+    margin-right: 10px;
+    border-radius: 3px;
+}
+
+li span {
+    font-weight: bold;
+    color: #333;
+}
+
+.list-title {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #4CAF50;
+    text-align: center;
+    font-weight: bold;
+}
+.styled-date {
+    display: block;
+    margin: 10px 0;
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    transition: border-color 0.1s, box-shadow 0.1s;
+}
+.btn{
+    background-color: #8a9deb; /* Green background */
+    color: white; /* White text */
+    padding: 15px 49px; /* Add some padding */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Make the container inline */
+    font-size: 16px; /* Increase font size */
+    margin: 4px 2px; /* Add some margin */
+    transition-duration: 0.4s; /* Add transition effect */
+    cursor: pointer; /* Add a pointer cursor on hover */
+    border-radius: 12px; /* Rounded corners */
 }

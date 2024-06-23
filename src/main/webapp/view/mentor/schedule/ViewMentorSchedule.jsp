@@ -67,7 +67,7 @@
         <button id="myBtn" onclick="openSetTime()">Set Time</button>
         <br/>
         <!-- Nút mở modal mới -->
-        <button id="myBtn2">View Request</button>
+        <button id="myBtn3" onclick="invited_request()" style="padding: 15px 31px">View Request</button>
         <button id="myBtn3" onclick="openMyRequestWork()" style="padding: 15px 20px">Manage Request</button>
         <button id="myBtn3" onclick="history_request()">History Request</button>
         <c:if test="${param.viewID != null}">
@@ -175,60 +175,16 @@
 
         <div id="infoModal" class="modal">
             <!-- Modal content -->
-            <div class="modal-content" style="width: 80%">
+            <div class="modal-content" style="width: 40%">
                 <span class="closeInfo">&times;</span>
-                <h4 style="color: #07AD90" >Request List </h4>
-                <table class="request-list" style="width: 100%">
-                    <tr>
-                        <td>Number</td>
-                        <td>Create Date</td>
-                        <td>Amount</td>
-                        <td>Description</td>
-                        <td>Skill Name</td>
-                        <td>Skill Level</td>
-                        <td>Start Date</td>
-                        <td>End Date</td>
-                        <td>Name</td>
-                        <td>Status</td>
-                        <td>View Slot</td>
-                    </tr>
-                    <c:forEach items="${bookings}" var="book">
-                        <tr>
-                            <td>${count}</td>
-                            <td>${book.date}</td>
-                            <td>${book.amount}</td>
-                            <td>${book.description} </td>
-                            <td><img width="20px"
-                                     src="${pageContext.request.contextPath}/${book.level_skills.skill.src_icon}">
-                                    ${book.level_skills.skill.name}</td>
-                            <td>${book.level_skills.level.name} </td>
-                            <td>${book.startDate}</td>
-                            <td>${book.endDate}</td>
-                            <td>${book.mentee.account.name}</td>
-                            <td><c:if test="${book.status.id ==1 }">
-                                <button name="accept" value="accept">
-                                    <a href="schedule/update?bookingID=${book.id}&option=true"
-                                       class="button" onclick="updateStatus('${sessionScope.updateStatus}')">Accept</a>
-                                </button>
-                            </c:if>
-                                <c:if test="${book.status.id ==1 }">
-                                    <button name="reject" value="reject">
-                                        <a href="schedule/update?bookingID=${book.id}&option=false"
-                                           class="button"
-                                           onclick="rejectStatus('${sessionScope.rejectStatus}')">Reject</a></button>
-                                </c:if>
-                            </td>
-                            <td>
-                                <button name="view" value="view" style="background-color: #f8ce0b">
-                                    <a href="schedule?viewID=${book.id}"
-                                       class="button">
-                                        View</a></button>
-                            </td>
-                            <c:set var="count" value="${count= count +1}"></c:set>
-                        </tr>
-                    </c:forEach>
-                </table>
-
+                <h4 style="color: #07AD90" >Tutorial Use </h4>
+                <p><i class="fa-solid fa-envelope fa-xl"></i> is waiting for decision with booking</p>
+                <p> <i class="fa-solid fa-frog fa-xl" style="color: #02b23c;"></i>  is present slot</p>
+                <p><i class="fa-solid fa-face-sad-tear fa-xl" style="color: #f25452;"></i> is absent slot</p>
+                <p><i class="fa-solid fa-square fa-xl" style="color: #63E6BE;"></i> is slot you set free</p>
+                <p><i class="fa-solid fa-square fa-xl" style="color: #FFD43B;"></i>is slot waiting for decision with booking</p>
+                <p><i class="fa-solid fa-square fa-xl" style="color: #ed1b0c;"></i>is slot work with mentee</p>
+                <p><i class="fa-solid fa-plus fa-flip-vertical fa-lg" style="color: #b3dfd2;"></i> is allow you set slot free when click on</p>
             </div>
         </div>
 
@@ -237,7 +193,7 @@
 
 
     <div class="right-side">
-        <h1 style="color: #07AD90" class="text-center">Time table </h1>
+        <h1 style="color: #07AD90" class="text-center">Time table <i class="fa-solid fa-circle-info fa-2xs" id="myBtn2"></i> </h1>
         <table>
             <thead>
             <tr>
@@ -339,6 +295,7 @@
                                                     data-today-id="${week.dayOfMonth}"
                                                     style=" background: transparent; "
                                                     onclick="deleteFreeDay()">
+
                                             </button>
                                         </blockquote>
                                     </div>
@@ -368,7 +325,7 @@
                                             data-today-id="${week.dayOfMonth}"
                                             data-set-error="${sessionScope.AddSlotError}"
                                             onclick="setFreeDay()">
-
+                                        <i class="fa-solid fa-plus fa-flip-vertical fa-lg" style="color: #b3dfd2;"></i>
                                     </button>
                                 </c:otherwise>
 
@@ -431,20 +388,25 @@
 
                             <li style="list-style-type: none">Status payment :
                                 <span style="color: #f8ce0b"> <c:if
-                                        test="${bookInfo[0].booking.status.id == 11 }">Payment Not Confirm Yet</c:if> </span>
+                                        test="${bookInfo[0].booking.status.id == 11 || bookInfo[0].booking.status.id == 3 }">Payment Not Confirm Yet</c:if> </span>
                                 <span style="color: #28a745"><c:if
-                                        test="${bookInfo[0].booking.status.id == 3 }">Payment Confirmed</c:if></span>
+                                        test="${bookInfo[0].booking.status.id == 13 }">Payment Confirmed</c:if></span>
                             </li>
                         </ul>
                         <ul>
                             <li style="list-style-type: none">Confirm slot:</li>
                             <c:if test="${bookInfo[0].status.id == 3 }">
-                                <li style="pointer-events: none;list-style-type: none;display: inline">
-                                    <input type="button" value="Present" id="confirmBtn2" style=" background: #919aa3">
-                                </li>
-                                <li style="pointer-events: none;list-style-type: none;display: inline">
-                                    <input type="button" value="Absent" id="absentBtn2" style=" background: #919aa3">
-                                </li>
+                                <c:if test="${bookInfo[0].attend ==  true }">
+                                    <li style="pointer-events: none;list-style-type: none;display: inline">
+                                        <input type="button" value="Present" id="confirmBtn2" style=" background: #1BB295">
+                                    </li>
+                                </c:if>
+                                <c:if test="${bookInfo[0].attend ==  false }">
+                                    <li style="pointer-events: none;list-style-type: none;display: inline">
+                                        <input type="button" value="Absent" id="absentBtn2" style=" background: #ff2222">
+                                    </li>
+                                </c:if>
+
                                 <li style="list-style-type: none">(Request was sent, money will unlock after finish all
                                     slot)
                                 </li>
@@ -626,14 +588,7 @@
     if (numberFreeTime) {
         localStorage.setItem('numberFreeTime', numberFreeTime);
     }
-    const updateStatus = (details) => {
-        localStorage.setItem('update_status', details);
 
-    }
-    const rejectStatus = (details) => {
-        localStorage.setItem('reject_status', details);
-
-    }
     const informationMentee = () => {
         var links = document.getElementsByClassName("info-link");
         for (var i = 0; i < links.length; i++) {
@@ -905,7 +860,9 @@
     const history_request = () => {
         window.location.href = 'schedule/history';
     }
-
+    const invited_request = () => {
+        window.location.href = 'schedule/invite';
+    }
 
 </script>
 <script

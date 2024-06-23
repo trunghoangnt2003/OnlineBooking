@@ -42,17 +42,13 @@ public class DateTimeHelper {
         return date.format(formatter);
     }
 
-    public static java.sql.Timestamp convertToTimestamp(String date, String time) {
+    public static java.sql.Timestamp convertToTimestamp(String date, String time) throws ParseException {
         String dateTime = date + " " + time;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Timestamp timestamp = null;
 
-        try {
             java.util.Date parsedDate = dateFormat.parse(dateTime);
             timestamp = new Timestamp(parsedDate.getTime());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
 
         return timestamp;
     }
