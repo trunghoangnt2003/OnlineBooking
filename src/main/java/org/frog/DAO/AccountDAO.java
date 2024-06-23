@@ -67,6 +67,8 @@ public class AccountDAO {
                 String avatar = resultSet.getString("avatar");
                 account.setAvatar(avatar);
                 account.setName(name);
+                WalletDAO walletDAO = new WalletDAO();
+                account.setWallet(walletDAO.getByAccountId(resultSet.getString("id")));
             }
             JDBC.closeConnection(connection);
         } catch (SQLException ignored) {
@@ -101,7 +103,10 @@ public class AccountDAO {
                 user.setName(name);
                 user.setAvatar(avatar);
                 user.setRole(new Role(role,""));
-                System.out.println(user.getRole().getId());
+                WalletDAO walletDAO = new WalletDAO();
+                user.setWallet(walletDAO.getByAccountId(resultSet.getString("id")));
+
+
             }
             JDBC.closeConnection(connection);
         } catch (SQLException ignored) {
@@ -406,4 +411,5 @@ public class AccountDAO {
             throw new RuntimeException(e);
         }
     }
+
 }

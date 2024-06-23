@@ -1,3 +1,7 @@
+<%
+  String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+          + request.getContextPath();
+%>
 <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-top flex-row">
   <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
     <div class="me-3">
@@ -33,9 +37,8 @@
             <p class="mb-1 mt-3 fw-semibold">${sessionScope.account.userName}</p>
             <p class="fw-light text-muted mb-0">${sessionScope.account.email}</p>
           </div>
-          <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-home text-primary me-2"></i> Back To Frog</a>
-          <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-wallet text-primary me-2"></i> Wallet</a>
-          <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-power text-primary me-2"></i>Sign Out</a>
+          <a href="<%=url%>/Home" class="dropdown-item"><i class="dropdown-item-icon mdi mdi-home text-primary me-2"></i> Back To Frog</a>
+          <a href="<%=url%>/logout" class="dropdown-item"><i class="dropdown-item-icon mdi mdi-power text-primary me-2"></i>Sign Out</a>
         </div>
       </li>
     </ul>

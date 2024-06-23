@@ -5,15 +5,17 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import org.frog.DAO.AccountDAO;
+import org.frog.DAO.TransactionDAO;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.Account;
 
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.text.NumberFormat;
+import java.util.*;
 
 
 /**
@@ -46,14 +48,22 @@ public class PaymentServlet extends AuthenticationServlet {
                 String id = request.getParameter("vnp_TxnRef");
                 String moneyStr = request.getParameter("vnp_Amount");
                 long money = Long.parseLong(moneyStr);
-                System.out.println(money/100);
-                System.out.println(request.getParameter("vnp_OrderInfo"));
-                //PaymentDAO paymentDAO = new PaymentDAO();
-                //int check = paymentDAO.insertPayment(id, user.getId(), money/100);
-                 System.out.println("Da add giao dich vao data");
-                resp.sendRedirect("Home");
-            } else {
-                resp.sendRedirect("Home");
+                TransactionDAO transactionDAO = new TransactionDAO();
+                int check = transactionDAO.insertDeposit(user, (float) money /100);
+
+                if(check>0) {
+                    user.getWallet().setBalance(user.getWallet().getBalance()+ (float) money /100);
+                    HttpSession session = request.getSession();
+                    session.setAttribute("account", user);
+
+                    resp.sendRedirect("paymentSuccessful");
+                }else {
+                    request.setAttribute("paymentFail","failed");
+                    request.getRequestDispatcher("Home").forward(request,resp);
+                }
+                } else {
+                request.setAttribute("paymentFail","failed");
+                request.getRequestDispatcher("Home").forward(request,resp);
             }
 
         } else {

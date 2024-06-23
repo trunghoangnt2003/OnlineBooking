@@ -6,9 +6,20 @@ public class Wallet {
 
     private float balance;
 
-    public Wallet(int id, float balance) {
+    private float available;
+
+    public Wallet(int id, float balance, float available) {
         this.id = id;
         this.balance = balance;
+        this.available = available;
+    }
+
+    public float getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(float available) {
+        this.available = available;
     }
 
     public Wallet() {

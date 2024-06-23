@@ -36,10 +36,8 @@
 <jsp:include page="../common/header.jsp"></jsp:include>
 <div class="container">
     <div class="header clearfix">
-
-        <h3 class="text-muted">VNPAY DEMO</h3>
     </div>
-    <h3>Nạp tiền vào FAP</h3>
+    <h3>Nạp tiền vào Frog</h3>
     <div class="table-responsive">
         <form action="<%=url%>/payment" id="frmCreateOrder" method="post">
             <div class="form-group">
