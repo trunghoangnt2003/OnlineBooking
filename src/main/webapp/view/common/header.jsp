@@ -109,12 +109,8 @@ position: sticky; top:0; z-index: 999">
                                 <a class="nav-link" href="<%=url%>/admin/home">Dash Board</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="<%=url%>/admin/mentor">Manage Mentor</a>
+                                <a class="nav-link" href="<%=url%>/admin/mentor">Manage</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="<%=url%>/Search_Skills">Manage Mentee</a>
-                            </li>
-
                         </c:if>
                     </ul>
                     <!-- Left links -->
@@ -193,6 +189,9 @@ position: sticky; top:0; z-index: 999">
                                     <li>
                                         <a class="dropdown-item" href="<%=url%>/mentee/viewBooking">Bookings</a>
                                     </li>
+                                        <li>
+                                            <a class="dropdown-item" href="<%=url%>/wallet/view">Wallet</a>
+                                        </li>
                                     </c:if>
                                     <c:if test="${sessionScope.account.role.id == 1}">
                                         <li>
@@ -202,6 +201,9 @@ position: sticky; top:0; z-index: 999">
                                     <c:if test="${sessionScope.account.role.id == 2}">
                                         <li>
                                             <a class="dropdown-item" href="<%=url%>/mentor/view_follower">Follower</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="<%=url%>/wallet/view">Wallet</a>
                                         </li>
                                     </c:if>
                                     <li>

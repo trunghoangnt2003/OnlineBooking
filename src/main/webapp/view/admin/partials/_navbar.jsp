@@ -10,11 +10,11 @@
       </button>
     </div>
     <div>
-      <a class="navbar-brand brand-logo" href="../dash.jsp">
+      <a class="navbar-brand brand-logo" href="<%=url%>/Home">
         <span > ADMIN </span>
         <img style="margin-bottom: 10px" src="${pageContext.request.contextPath}/view/admin/assets/images/Logo.png" alt="logo" />
       </a>
-      <a class="navbar-brand brand-logo-mini" href="../index.html">
+      <a class="navbar-brand brand-logo-mini" href="">
         <img style="margin-bottom: 10px" src="${pageContext.request.contextPath}/view/admin/assets/images/Logo.png" alt="logo" />
       </a>
     </div>

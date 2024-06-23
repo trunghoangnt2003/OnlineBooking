@@ -210,7 +210,7 @@
             <h3>$${requestScope.wallet.balance}</h3>
             <p>Available: ${requestScope.wallet.available}</p>
             <c:if test="${requestScope.role == 1}">
-                <button>Withdraw</button>
+                <button><a href="../payment" style="text-decoration: none">Withdraw</a></button>
                 <button class="btn2">Deposit</button>
                 <button>Payment</button>
             </c:if>

@@ -190,7 +190,7 @@ public class WalletDAO {
                     "                    from Account A join Wallet W on A.wallet_id = W.id\n" +
                     "                    join [Transaction] T on W.id = T.wallet_opposite\n" +
                     "                    join Type_Transaction TT on TT.id = T.type_id\n" +
-                    "\t\t\t\t\tjoin Status S on S.id = T.status_id\n" +
+                    //"\t\t\t\t\tjoin Status S on S.id = T.status_id\n" +
                     "                    where T.wallet_id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, id);
