@@ -6,6 +6,8 @@
         <entry key="file://$PROJECT_DIR$/src/main/webapp/view/Mentee/home.jsp" value="file://$PROJECT_DIR$/src/main/webapp/view/Mentee" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/view/login.jsp" value="file://$PROJECT_DIR$/src/main/webapp/view" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/view/mentee/schedule/view_mentor_schedule.jsp" value="file://$PROJECT_DIR$/src/main/webapp/view/mentee/schedule" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/view/mentor/schedule/ManageMentorSchedule.jsp" value="file://$PROJECT_DIR$/src/main/webapp/view/mentor/schedule" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/view/mentor/schedule/ViewMentorSchedule.jsp" value="file://$PROJECT_DIR$/src/main/webapp/view/mentor/schedule" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/view/mentor/schedule/ViewSchedule.jsp" value="file://$PROJECT_DIR$/src/main/webapp/view/mentor/schedule" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/view/public/changePass.jsp" value="file://$PROJECT_DIR$/src/main/webapp/view/public" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/view/public/register.jsp" value="file://$PROJECT_DIR$/src/main/webapp/view/public" />

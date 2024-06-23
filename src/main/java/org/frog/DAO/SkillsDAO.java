@@ -3,6 +3,7 @@ package org.frog.DAO;
 import org.frog.model.Category;
 import org.frog.model.Level;
 import org.frog.model.Skill;
+import org.frog.utility.StatusEnum;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,16 +14,22 @@ import java.util.ArrayList;
 public class SkillsDAO {
 
 
-    public ArrayList<Skill >getAll() {
+    public ArrayList<Skill> getAllActive() {
         ArrayList<Skill> list = new ArrayList<>();
-        try {
-            Connection connection = JDBC.getConnection();
-            String sql = "select * from [Skill]\n" +
-                    "order by name asc";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        String sql = "SELECT DISTINCT Skill.id as skill_id, Skill.name, Skill.cate_id, Skill.src_icon " +
+                "FROM Level_Skill " +
+                "INNER JOIN Skill ON Level_Skill.skill_id = Skill.id " +
+                "WHERE Level_Skill.status_id = ? " +
+                "ORDER BY Skill.name ASC";
+
+        try (Connection connection = JDBC.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, StatusEnum.ACTIVE);
             ResultSet resultSet = preparedStatement.executeQuery();
+
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
+                int id = resultSet.getInt("skill_id");
                 String name = resultSet.getString("name");
                 String src_icon = resultSet.getString("src_icon");
                 Category category = new Category();
@@ -35,12 +42,12 @@ public class SkillsDAO {
                 skill.setCategory(category);
                 list.add(skill);
             }
-            JDBC.closeConnection(connection);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return list;
     }
+
 
 
     public Skill getByName(String skillName) {

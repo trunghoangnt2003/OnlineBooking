@@ -1,6 +1,7 @@
 package org.frog.DAO;
 
 import org.frog.model.*;
+import org.frog.utility.StatusEnum;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -179,13 +180,13 @@ public class Level_SkillDAO {
 
         try {
             connection = JDBC.getConnection();
-            String sql = "SELECT Skill.id, Skill.name, Skill.src_icon, Level_Skill.id as level_skill_id, Level_Skill.level_id, Level.type, " +
+            String sql = "SELECT Skill.id, Skill.name, Skill.src_icon, Level_Skill.id as level_skill_id, Level_Skill.level_id,Level_Skill.status_id ,Level.type, " +
                     "Level_Skill.description, Skill.cate_id, Skill_Category.name as category " +
                     "FROM [Level] " +
                     "INNER JOIN Level_Skill ON [Level].id = Level_Skill.level_id " +
                     "INNER JOIN Skill ON Level_Skill.skill_id = Skill.id " +
                     "INNER JOIN Skill_Category ON Skill.cate_id = Skill_Category.id " +
-                    "WHERE Skill.name like '%" + name + "%'";
+                    "WHERE Skill.name like '%" + name + "%' AND Level_Skill.status_id = ? ";
 
             if (levels != null && levels.length > 0) {
                 sql += " AND (";
@@ -200,7 +201,7 @@ public class Level_SkillDAO {
 
             assert connection != null;
             preparedStatement = connection.prepareStatement(sql);
-//            preparedStatement.setString(1, name);
+            preparedStatement.setInt(1, StatusEnum.ACTIVE);
 
             if (levels != null && levels.length > 0) {
                 for (int i = 0; i < levels.length; i++) {
@@ -214,6 +215,7 @@ public class Level_SkillDAO {
                 Level_Skills level_skills = new Level_Skills();
                 level_skills.setId(resultSet.getInt("level_skill_id"));
                 level_skills.setDescription(resultSet.getString("description"));
+                level_skills.setStatus(resultSet.getInt("status_id"));
 
                 Level level = new Level();
                 level.setId(resultSet.getInt("level_id"));

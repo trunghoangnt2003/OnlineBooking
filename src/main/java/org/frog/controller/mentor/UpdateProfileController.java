@@ -7,15 +7,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import org.frog.DAO.AccountDAO;
-import org.frog.DAO.LevelDAO;
-import org.frog.DAO.Level_SkillDAO;
-import org.frog.DAO.MentorDAO;
+import org.frog.DAO.*;
 import org.frog.controller.auth.AuthenticationServlet;
-import org.frog.model.Account;
-import org.frog.model.Level;
-import org.frog.model.Level_Skills;
-import org.frog.model.Mentor;
+import org.frog.model.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -78,11 +72,22 @@ public class UpdateProfileController extends AuthenticationServlet {
         accountDAO.updateAccount(account);
 
         MentorDAO mentorDAO = new MentorDAO();
-        Mentor mentor = new Mentor();
-        mentor.setProfileDetail(profile_detail);
-        mentor.setEducation(education);
-        mentor.setExperience(experience);
-        mentorDAO.updateMentor(mentor, account.getId());
+        Mentor_CV_Log mentorCVLog = new Mentor_CV_Log();
+        mentorCVLog.setEducation(education);
+        mentorCVLog.setExperience(experience);
+        mentorCVLog.setProfileDetail(profile_detail);
+        mentorCVLog.setPrice(Integer.parseInt(raw_price));
+        mentorCVLog.setAccount(account);
+        mentorDAO.updateMentorLog(mentorCVLog, 1);
+
+//        Mentor mentor = new Mentor();
+//        mentor.setProfileDetail(profile_detail);
+//        mentor.setEducation(education);
+//        mentor.setExperience(experience);
+//        mentor.setPrice(Integer.parseInt(raw_price));
+//
+//        Mentor_CV_LogDAO mentor_cv_logDAO = new Mentor_CV_LogDAO();
+//        Status status = mentor_cv_logDAO.getStatusCVLog(account.getId());
 
         String[] levelSkills = req.getParameterValues("level_skill");
         if (levelSkills != null) {
@@ -91,6 +96,8 @@ public class UpdateProfileController extends AuthenticationServlet {
                 Level_SkillDAO level_skillDAO = new Level_SkillDAO();
                 level_skillDAO.insertLevelSkill(account.getId(), Integer.parseInt(s));
             }
+        } else {
+            mentorDAO.deleteSkillMentor(account.getId());
         }
         if(avatar != null) {
             account.setAvatar(avatar);

@@ -43,7 +43,9 @@
 
         .statistic{
             width: 60%;
-            border: 1px solid #07AD90;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            padding: 15px;
         }
         .list-mentor{
             width: 35%;
@@ -249,6 +251,7 @@
 
 
     </style>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
 <jsp:include page="../../common/header.jsp"></jsp:include>
@@ -292,9 +295,7 @@
 <div class="report-modal" id="report-modal">
     <div class="blur-bg"></div>
     <div class="content-modal">
-
         <div class="titlemodal" style="color: darkred">Report Mentor </div>
-
         <div class="to-mentor" id="to-mentor"></div>
         <div class="input-reason">
                <div class="d-flex label_reason">
@@ -316,7 +317,20 @@
 <div class="">
     <input type="text" value="${requestScope.success}" id="success" hidden="hidden"/>
     <div class="d-flex justify-content-between top-content">
-        <div class="statistic">
+        <div class="statistic ">
+            <h3 style="color: #07AD90" class="text-center">Dashboard</h3>
+            <div class="d-flex justify-content-between">
+                <div class="mt-4">
+                    <h5 id="total-booking">Total request: ${requestScope.total_book} </h5>
+                    <span id="total-slot">Total slot: ${requestScope.total_slot}</span>
+                    <br/>
+                    <span>Total mentor: ${requestScope.mentorList.size()}</span>
+                    <br/>
+                    <span >Total spend money: ${requestScope.total_amount} $ </span>
+                </div>
+                <div id="myChart" style="width:70%; max-width:400px; height:300px;">
+                </div>
+            </div>
         </div>
         <div class="list-mentor">
             <h4 style="color: #07AD90" class="text-center">Rating mentor</h4>
@@ -365,11 +379,11 @@
                 <th>No</th>
                 <th>Create Time</th>
                 <th >Mentor</th>
-                <th>Email</th>
                 <th >Amount</th>
                 <th >Skill </th>
                 <th>From</th>
                 <th>To</th>
+                <th>Status</th>
 
             </tr>
             </thead>
@@ -380,13 +394,17 @@
             <tr>
                 <td >${i.index+1}</td>
                 <td >${booking.date}</td>
-                <td >${booking.mentor.account.name}</td>
-                <td>${booking.mentor.account.email}</td>
+                <td >
+                        ${booking.mentor.account.name}
+                        <br/>
+                       <i>${booking.mentor.account.email}</i>
+                </td>
                 <td >${booking.amount} $</td>
                 <td > <img width="20px" src="${pageContext.request.contextPath}/${booking.level_skills.skill.src_icon}" alt=""/>
-                        ${booking.level_skills.skill.name} for ${booking.level_skills.level.name}</td>
+                       &nbsp ${booking.level_skills.skill.name} for ${booking.level_skills.level.name}</td>
                 <td >${booking.startDate}</td>
                 <td >${booking.endDate}</td>
+                <td>${booking.status.type}</td>
 
 
             </tr>
@@ -396,8 +414,9 @@
         </table>
     </div>
 </div>
+<script src="${pageContext.request.contextPath}/js/mentee/rating.js"></script>
+<script src="${pageContext.request.contextPath}/js/mentee/report.js"></script>
 <script>
-
     document.addEventListener("DOMContentLoaded", function() {
         const success = document.getElementById("success").value;
         if (success) {
@@ -411,192 +430,57 @@
         }
     })
 
-    const stars = document.querySelectorAll('.star');
-    let rating ;
-
-    function ratingHandle(mentor_id,mentor){
-        document.getElementById("rating-modal").classList.toggle("active");
-        const to = document.getElementById("rating-to-mentor");
-        const comment = document.getElementById('comment');
-        comment.value = "";
-        highlightStars(5);
-        to.innerHTML = "<span class='text-start' style='font-size: 16px'> <b>"+mentor+"</b></span>";
-        const input_id = document.createElement('input');
-        input_id.type = 'text';
-        input_id.name = "mentor_id";
-        input_id.value = mentor_id;
-        input_id.id = "mentor_id";
-        input_id.style.display = "none";
-
-        to.appendChild(input_id);
-    }
-    stars.forEach(star => {
-        star.addEventListener('mouseenter', handleHover);
-        star.addEventListener('click', handleClick);
-        star.addEventListener('mouseleave', handleLeave);
-
-    });
-
-    function highlightStars(rating) {
-        stars.forEach((star, index) => {
-            if(index < rating) {
-                star.classList.add('selected');
-            } else {
-                star.classList.remove('selected');
-            }
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch('dashboard', {
+            method: 'POST',
+           /* headers: {
+                "Content-Type": "application/json",
+            },*/
         })
-    }
-
-    function handleHover(e) {
-        const rating = e.currentTarget.getAttribute('data-value');
-        highlightStars(rating);
-    }
-
-    function  handleLeave(e) {
-        highlightStars(rating);
-    }
-
-    function handleClick(e) {
-        // btn.style.display = "block";
-        rating = e.currentTarget.getAttribute('data-value');
-        highlightStars(rating);
-    }
-
-    function fetchRating(mentor_id,comment){
-        fetch("../mentee/review", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({mentor_id:mentor_id,comment:comment,rating:rating}),
-        }).then( response => {
-            if (response.ok) {
-                console.log(response);
-                Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "Your work has been saved",
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            }else {
-                console.log(response);
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Something went wrong!",
-                });
-            }
-        }).catch(
-            error => {
-                console.log('Error',error);
-            }
-        )
-    }
-
-    function sendRating(){
-        const mentor_id = document.getElementById("mentor_id").value;
-        const comment = document.getElementById('comment').value;
-        console.log(mentor_id);
-        console.log(comment);
-        console.log(rating);
-
-        if(mentor_id && comment)
-        {
-            fetchRating(mentor_id,comment);
-            document.getElementById("rating-modal").classList.toggle("active");
-        }
-        else
-        {
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: " Please rating stars and comment!",
-            });
-        }
-    }
-
-
-    function reportHandle(mentor_id,mentor){
-        document.getElementById("report-modal").classList.toggle("active");
-        const to = document.getElementById("to-mentor");
-        const reason = document.getElementById('reason');
-        reason.value = "";
-
-        to.innerHTML = "<span class='text-center'>Report mentor: <b>"+mentor+"</b></span>";
-        const input_id = document.createElement('input');
-        input_id.type = 'text';
-        input_id.name = "mentor_id";
-        input_id.value = mentor_id;
-        input_id.id = "mentor_id";
-        input_id.style.display = "none";
-
-        to.appendChild(input_id);
-    }
-
-
-    function fetchReport(mentor_id,reason){
-        fetch("../mentee/report", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({mentor_id:mentor_id,reason:reason}),
-        }).then( response => {
-            if (response.ok) {
-                console.log(response);
-                Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "Your work has been saved",
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-                document.getElementById("report-modal").classList.toggle("active");
-            } else {
-                throw new Error('Network response was not ok.');
-            }
-        }).catch(
-            error => {
-                console.error('Error:', error);
-            }
-        )
-
-    }
-
-
-
-    function sendReport(){
-        Swal.fire({
-            title: "Are you sure?",
-            text: "Do you want to report this mentor?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const reason = document.getElementById("reason").value;
-                if(reason == ""){
-                    Swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        text: " Please input reason!",
-                    });
-                }else{
-                    const mentor_id = document.getElementById("mentor_id").value;
-                    fetchReport(mentor_id,reason);
-                    // document.getElementById("frm-report").submit();
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.statusText);
                 }
 
-            }
-        });
+                return response.json();
+            })
+            .then(data => {
+                const mapStatistic = new Map();
 
+                for (const [key, value] of Object.entries(data.statistic)) {
+                    mapStatistic.set(key.trim(), value);
+                }
+
+                drawChart(mapStatistic);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    });
+
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart(statistic) {
+        const data = google.visualization.arrayToDataTable([
+            ['Booking', 'Status'],
+            ['Done',statistic.get("Done") || 0],
+            ['Reject',statistic.get("Reject") || 0],
+            ['Cancel',statistic.get("Cancel") || 0],
+            ['Accept',statistic.get("Accept") || 0],
+            ['Processing',statistic.get("Processing") || 0]
+        ]);
+
+// Set Options
+        const options = {
+            title:'Statistic booking',
+        };
+
+// Draw
+        const chart = new google.visualization.PieChart(document.getElementById('myChart'));
+        chart.draw(data, options);
 
     }
-
-
 </script>
 
 <script

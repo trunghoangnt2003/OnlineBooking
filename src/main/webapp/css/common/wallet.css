@@ -1,0 +1,56 @@
+.menu {
+    width: 20%;
+    margin: auto;
+}
+
+.wallet-info {
+    background-color: rgb(176, 237, 215);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px;
+    color: white;
+    box-shadow: 4px 6px 8px rgba(0, 0, 0, 0.6);
+}
+
+.header {
+    margin: 3vh 5vw;
+}
+
+.content {
+    width: 35%;
+    justify-content: center;
+    /*box-shadow: 4px 6px 8px rgba(0, 0, 0, 0.6);*/
+    margin: auto;
+}
+
+.history {
+    background: rgba(230,255,255,0.6);
+}
+.balance {
+    font-weight: bold;
+}
+
+.available {
+    font-weight: bold;
+}
+
+.vertical-line {
+    border-left: 5px solid #63E6BE;
+    height: auto;
+}
+
+.icon i {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    margin-right: 1vw;
+}
+
+.icon span {
+    font-size: 1.5rem;
+    color: #1BB295;
+    font-weight: bold;
+}
+
+.icon {
+    display: flex;
+}

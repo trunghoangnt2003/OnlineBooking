@@ -4,10 +4,7 @@ import org.frog.model.Account;
 import org.frog.model.Mentee;
 import org.frog.model.Wallet;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class WalletDAO {
     public Wallet getByAccountId(String id) {
@@ -76,5 +73,15 @@ public class WalletDAO {
             }
         }
 
+    }
+
+    public Account getWalletAccountById(String id) {
+        return null;
+    }
+
+    public void payment(float v, int id) {
+    }
+
+    public void createTransaction(Timestamp timestamp, int amount, int id, int id1, float fee) {
     }
 }

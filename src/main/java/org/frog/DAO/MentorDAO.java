@@ -254,6 +254,31 @@ public class MentorDAO {
         }
 
     }
+
+    public void updateMentorLog(Mentor_CV_Log mentor) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "UPDATE [dbo].[Mentor]\n" +
+                    "   SET [profile_detail] = ?\n" +
+                    "      ,[price] = ?\n" +
+                    "      ,[experience] = ?\n" +
+                    "      ,[education] = ?\n" +
+                    "      \n" +
+                    " WHERE Mentor.account_id = ?";
+            assert connection != null;
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(5, mentor.getAccount().getId());
+            preparedStatement.setString(1, mentor.getProfileDetail());
+            preparedStatement.setInt(2, mentor.getPrice());
+            preparedStatement.setString(3, mentor.getExperience());
+            preparedStatement.setString(4, mentor.getEducation());
+            preparedStatement.execute();
+            JDBC.closeConnection(connection);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
     public void register(Account account) {
         try {
             Connection connection = JDBC.getConnection();
@@ -459,134 +484,6 @@ public class MentorDAO {
         }
     }
 
-//    public ArrayList<BookingSchedule> getBookingbyMentorID(String id) {
-//        ArrayList<BookingSchedule> bookings = new ArrayList<>();
-//        Connection connection = null;
-//        PreparedStatement preparedStatement = null;
-//        ResultSet resultSet = null;
-//
-//        try {
-//            connection = JDBC.getConnection();
-//            String sql = "SELECT b.id,b.mentee_id,create_date,amount,from_date,to_date,b.description AS des,level_id,skill.name AS skill_name,l.type AS level_type,ls.description, bs.schedule_id,bs.start_date,bs.end_date,\n" +
-//                    "b.status_id,s.type,acc.name,acc.address,acc.dob,acc.gender,acc.mail,acc.phone\n" +
-//                    "FROM Booking b INNER JOIN Booking_Schedule bs ON b.id = bs.booking_id  \n" +
-//                    "INNER JOIN Level_Skill ls ON ls.id = b.level_skill_id\n" +
-//                    "INNER JOIN Level l ON l.id = ls.level_id\n" +
-//                    "INNER JOIN Skill skill ON skill.id=ls.skill_id\n" +
-//                    "INNER JOIN Status s ON s.id = b.status_id\n" +
-//                    "INNER JOIN Mentee m ON m.account_id = b.mentee_id\n" +
-//                    "INNER JOIN Account acc ON acc.id = m.account_id\n" +
-//                    "WHERE b.mentor_id = ? \n" +
-//                    "ORDER BY start_date";
-//            preparedStatement = connection.prepareStatement(sql);
-//            preparedStatement.setString(1, id);
-//            resultSet = preparedStatement.executeQuery();
-//            while (resultSet.next()) {
-//                Account acc = new Account();
-//                acc.setId(resultSet.getString("mentee_id"));
-//                acc.setName(resultSet.getString("name"));
-//                acc.setAddress(resultSet.getString("address"));
-//                acc.setDob(resultSet.getDate("dob"));
-//                acc.setGender(resultSet.getInt("gender"));
-//                acc.setEmail(resultSet.getString("mail"));
-//                acc.setPhone(resultSet.getString("phone"));
-//
-//                Status s = new Status();
-//                s.setId(resultSet.getInt("status_id"));
-//                s.setType(resultSet.getString("type"));
-//
-//                // luu level skill trong skill
-//                Skill skill = new Skill();
-//                skill.setId(resultSet.getInt("level_id"));
-//                skill.setName(resultSet.getString("skill_name"));
-//
-//                Level lvl = new Level();
-//                lvl.setName(resultSet.getString("level_type"));
-//
-//                Level_Skills level_skills = new Level_Skills();
-//                level_skills.setSkill(skill);
-//                level_skills.setLevel(lvl);
-//                level_skills.setDescription(resultSet.getString("description"));
-//
-//                Schedule sche = new Schedule();
-//                sche.setId(resultSet.getInt("schedule_id"));
-//                sche.setDateStart(resultSet.getTimestamp("start_date"));
-//                sche.setDateEnd(resultSet.getTimestamp("end_date"));
-//
-//                Booking booking = new Booking();
-//                booking.setId(resultSet.getInt("id"));
-//                booking.setAmount(resultSet.getFloat("amount"));
-//                // get created date
-//                booking.setDate(resultSet.getDate("create_date"));
-//                booking.setStartDate(resultSet.getDate("from_date"));
-//                booking.setEndDate(resultSet.getDate("to_date"));
-//                booking.setDescription(resultSet.getString("des"));
-//
-//                BookingSchedule bs = new BookingSchedule();
-//                bs.setAccount(acc);
-//                bs.setSkill(level_skills);
-//                bs.setStatus(s);
-//                bs.setBooking(booking);
-//                bs.setSchedule(sche);
-//                bookings.add(bs);
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        } finally {
-//            try {
-//                if (resultSet != null) resultSet.close();
-//                if (preparedStatement != null) preparedStatement.close();
-//                if (connection != null) connection.close();
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        return bookings;
-//    }
-
-//    public BookingSchedule getBookNScheID(Timestamp start, Timestamp end, String id, String menteeID) {
-//        BookingSchedule bs = new BookingSchedule();
-//        Connection connection = null;
-//        PreparedStatement preparedStatement = null;
-//        ResultSet resultSet = null;
-//        try {
-//            connection = JDBC.getConnection();
-//            String sql = "SELECT s.id,bs.booking_id,s.status,b.status_id FROM Schedule s \n" +
-//                    "INNER JOIN Booking_Schedule bs ON  bs.schedule_id = s.id\n" +
-//                    "INNER JOIN Booking b ON b.id = bs.booking_id\n" +
-//                    "WHERE bs.start_date = ? AND bs.end_date = ? \n" +
-//                    "AND account_id=? \n" +
-//                    "AND b.mentee_id=?";
-//            preparedStatement = connection.prepareStatement(sql);
-//            preparedStatement.setTimestamp(1, start);
-//            preparedStatement.setTimestamp(2, end);
-//            preparedStatement.setString(3, id);
-//            preparedStatement.setString(4, menteeID);
-//            resultSet = preparedStatement.executeQuery();
-//            while (resultSet.next()) {
-//                Booking b = new Booking();
-//                b.setId(resultSet.getInt("booking_id"));
-//                Schedule s = new Schedule();
-//                s.setId(resultSet.getInt("id"));
-//                s.setStatus(resultSet.getBoolean("status"));
-//                bs.setBooking(b);
-//                bs.setSchedule(s);
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        } finally {
-//            try {
-//                if (resultSet != null) resultSet.close();
-//                if (preparedStatement != null) preparedStatement.close();
-//                if (connection != null) connection.close();
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        return bs;
-//    }
     public  void updateBusyMentorSchedule(int sche_id) {
         String sql = "UPDATE Schedule SET status = ? WHERE id = ?";
         try (Connection connection = JDBC.getConnection();
@@ -609,123 +506,6 @@ public class MentorDAO {
             e.printStackTrace();
         }
     }
-//    public ArrayList<Schedule> getBookedScheduleMentee(String id , int bookingID) {
-//        ArrayList<Schedule> schedules = new ArrayList<>();
-//        Connection connection = null;
-//        PreparedStatement preparedStatement = null;
-//        ResultSet resultSet = null;
-//        String sql = "SELECT s.id,bs.booking_id,s.status,b.status_id,bs.start_date,bs.end_date FROM Schedule s \n" +
-//                "INNER JOIN Booking_Schedule bs ON  bs.schedule_id = s.id\n" +
-//                "INNER JOIN Booking b ON b.id = bs.booking_id\n" +
-//                "WHERE account_id= ? AND s.id = ? AND b.status_id = ?";
-//        try (Connection con = JDBC.getConnection();
-//             PreparedStatement stm = con.prepareStatement(sql)) {
-//            stm.setString(1, id);
-//            stm.setInt(2, bookingID);
-//            stm.setInt(3, 3);
-//            ResultSet rs = stm.executeQuery();
-//            while (rs.next()) {
-//                Schedule schedule = new Schedule();
-//                schedule.setId(rs.getInt("id"));
-//                schedule.setDateStart(rs.getTimestamp("start_date"));
-//                schedule.setDateEnd(rs.getTimestamp("end_date"));
-//                schedules.add(schedule);
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return schedules;
-//    }
-//    public ArrayList<BookingSchedule> getInfoByDayID(String id, Timestamp start,Timestamp end ) {
-//        ArrayList<BookingSchedule> bookings = new ArrayList<>();
-//        Connection connection = null;
-//        PreparedStatement preparedStatement = null;
-//        ResultSet resultSet = null;
-//
-//        try {
-//            connection = JDBC.getConnection();
-//            String sql = "SELECT b.id,b.mentee_id,create_date,amount,from_date,to_date,b.description AS des,level_id,skill.name AS skill_name,l.type AS level_type,ls.description, bs.schedule_id,bs.start_date,bs.end_date,\n" +
-//                    "b.status_id,s.type,acc.name,acc.address,acc.dob,acc.gender,acc.mail,acc.phone\n" +
-//                    "FROM Booking b INNER JOIN Booking_Schedule bs ON b.id = bs.booking_id  \n" +
-//                    "INNER JOIN Level_Skill ls ON ls.id = b.level_skill_id\n" +
-//                    "INNER JOIN Level l ON l.id = ls.level_id\n" +
-//                    "INNER JOIN Skill skill ON skill.id=ls.skill_id\n" +
-//                    "INNER JOIN Status s ON s.id = b.status_id\n" +
-//                    "INNER JOIN Mentee m ON m.account_id = b.mentee_id\n" +
-//                    "INNER JOIN Account acc ON acc.id = m.account_id\n" +
-//                    "WHERE b.mentor_id = ? \n" +
-//                    "and bs.start_date >= ? AND bs.start_date <= ?\n" +
-//                    "AND status_id = ?\n" +
-//                    "ORDER BY start_date";
-//            preparedStatement = connection.prepareStatement(sql);
-//            preparedStatement.setString(1, id);
-//            preparedStatement.setTimestamp(2, start);
-//            preparedStatement.setTimestamp(3, end);
-//            preparedStatement.setInt(4, 3);
-//            resultSet = preparedStatement.executeQuery();
-//            while (resultSet.next()) {
-//                Account acc = new Account();
-//                acc.setId(resultSet.getString("mentee_id"));
-//                acc.setName(resultSet.getString("name"));
-//                acc.setAddress(resultSet.getString("address"));
-//                acc.setDob(resultSet.getDate("dob"));
-//                acc.setGender(resultSet.getInt("gender"));
-//                acc.setEmail(resultSet.getString("mail"));
-//                acc.setPhone(resultSet.getString("phone"));
-//
-//                Status s = new Status();
-//                s.setId(resultSet.getInt("status_id"));
-//                s.setType(resultSet.getString("type"));
-//
-//                // luu level skill trong skill
-//                Skill skill = new Skill();
-//                skill.setId(resultSet.getInt("level_id"));
-//                skill.setName(resultSet.getString("skill_name"));
-//
-//                Level lvl = new Level();
-//                lvl.setName(resultSet.getString("level_type"));
-//
-//                Level_Skills level_skills = new Level_Skills();
-//                level_skills.setSkill(skill);
-//                level_skills.setLevel(lvl);
-//                level_skills.setDescription(resultSet.getString("description"));
-//
-//                Schedule sche = new Schedule();
-//                sche.setId(resultSet.getInt("schedule_id"));
-//                sche.setDateStart(resultSet.getTimestamp("start_date"));
-//                sche.setDateEnd(resultSet.getTimestamp("end_date"));
-//
-//                Booking booking = new Booking();
-//                booking.setId(resultSet.getInt("id"));
-//                booking.setAmount(resultSet.getFloat("amount"));
-//                // get created date
-//                booking.setDate(resultSet.getDate("create_date"));
-//                booking.setStartDate(resultSet.getDate("from_date"));
-//                booking.setEndDate(resultSet.getDate("to_date"));
-//                booking.setDescription(resultSet.getString("des"));
-//
-//                BookingSchedule bs = new BookingSchedule();
-//                bs.setAccount(acc);
-//                bs.setSkill(level_skills);
-//                bs.setStatus(s);
-//                bs.setBooking(booking);
-//                bs.setSchedule(sche);
-//                bookings.add(bs);
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        } finally {
-//            try {
-//                if (resultSet != null) resultSet.close();
-//                if (preparedStatement != null) preparedStatement.close();
-//                if (connection != null) connection.close();
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        return bookings;
-//    }
 
     public void updateImage(Account account) {
         try {
@@ -747,7 +527,7 @@ public class MentorDAO {
         ArrayList<Mentor> mentors = new ArrayList<>();
         try {
             Connection connection = JDBC.getConnection();
-            String sql = "select Account.name, Account.id, Mentor.rating\n" +
+            String sql = "select TOP 10 Account.name, Account.id, Account.avatar, Mentor.rating\n" +
                     "from Mentor join Account on Mentor.account_id = Account.id\n" +
                     "order by Mentor.rating desc";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -756,9 +536,12 @@ public class MentorDAO {
                 Account account = new Account();
                 account.setId(resultSet.getString("id"));
                 account.setName(resultSet.getString("name"));
+                account.setAvatar(resultSet.getString("avatar"));
                 Mentor mentor = new Mentor();
                 mentor.setAccount(account);
                 mentor.setRating(resultSet.getFloat("rating"));
+                BookingDAO bookingDAO = new BookingDAO();
+                mentor.setTotalBookings(bookingDAO.CalcBookByMentor(account.getId()));
                 mentors.add(mentor);
             }
         } catch (SQLException e) {
@@ -766,7 +549,7 @@ public class MentorDAO {
         }
         return mentors;
     }
-    public void updateMentor(Mentor mentor, String id) {
+    public void updateMentor(Mentor_CV_Log mentor, String id) {
         try {
             Connection connection = JDBC.getConnection();
             String sql = "UPDATE [dbo].[Mentor]\n" +
@@ -781,6 +564,57 @@ public class MentorDAO {
             preparedStatement.setInt(2, mentor.getPrice());
             preparedStatement.setString(3, mentor.getExperience());
             preparedStatement.setString(4, mentor.getEducation());
+            preparedStatement.executeUpdate();
+            JDBC.closeConnection(connection);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void updateMentorLog(Mentor_CV_Log mentorCVLog, int status_id) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "UPDATE [dbo].[Mentor_CV_Logs]\n" +
+                    "   SET [profile_detail] = ?\n" +
+                    "      ,[price] = ?\n" +
+                    "      ,[experience] = ?\n" +
+                    "      ,[education] = ?\n" +
+                    "      ,[status_id] = ?\n" +
+                    " WHERE [account_id] = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, mentorCVLog.getProfileDetail());
+            preparedStatement.setInt(2, mentorCVLog.getPrice());
+            preparedStatement.setString(3, mentorCVLog.getExperience());
+            preparedStatement.setString(4, mentorCVLog.getEducation());
+            preparedStatement.setString(6, mentorCVLog.getAccount().getId());
+            preparedStatement.setInt(5, status_id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void updateMentorCVLog(Mentor mentor, String id, String status) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "INSERT INTO [dbo].[Mentor_CV_Logs]\n" +
+                    "           ([profile_detail]\n" +
+                    "           ,[price]\n" +
+                    "           ,[experience]\n" +
+                    "           ,[education]\n" +
+                    "           ,[account_id])\n" +
+                    "     VALUES\n" +
+                    "           (?\n" +
+                    "           ,?\n" +
+                    "           ,?\n" +
+                    "           ,?\n" +
+                    "           ,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, mentor.getProfileDetail());
+            preparedStatement.setInt(2, mentor.getPrice());
+            preparedStatement.setString(3, mentor.getExperience());
+            preparedStatement.setString(4, mentor.getEducation());
+            preparedStatement.setString(5, id);
             preparedStatement.executeUpdate();
             JDBC.closeConnection(connection);
         } catch (SQLException e) {
@@ -821,5 +655,48 @@ public class MentorDAO {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public ArrayList<Mentor_CV_Log> getAllMentor() {
+        ArrayList<Mentor_CV_Log> mentors = new ArrayList<>();
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "select A.name, A.id, A.username, A.mail, A.avatar,\n" +
+                    "                    A.dob, A.gender, A.phone, A.address,\n" +
+                    "                    ML.profile_detail, ML.education, ML.experience, ML.price, S.id as status_id, S.type\n" +
+                    "                    from Account A join Mentor_CV_Logs ML on A.id = ML.account_id\n" +
+                    "\t\t\t\t\t\t\t\tjoin Status S on S.id = ML.status_id";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Mentor_CV_Log mentor = new Mentor_CV_Log();
+                Account account = new Account();
+                Status status = new Status();
+                status.setId(resultSet.getInt("status_id"));
+                status.setType(resultSet.getString("type"));
+                mentor.setStatus(status);
+                account.setId(resultSet.getString("id"));
+                account.setName(resultSet.getString("name"));
+                account.setUserName(resultSet.getString("username"));
+                account.setEmail(resultSet.getString("mail"));
+                account.setAvatar(resultSet.getString("avatar"));
+                account.setDob(resultSet.getDate("dob"));
+                account.setGender(resultSet.getInt("gender"));
+                account.setPhone(resultSet.getString("phone"));
+                account.setAddress(resultSet.getString("address"));
+                mentor.setProfileDetail(resultSet.getString("profile_detail"));
+                mentor.setPrice(resultSet.getInt("price"));
+                mentor.setExperience(resultSet.getString("experience"));
+                mentor.setEducation(resultSet.getString("education"));
+
+                mentor.setAccount(account);
+                mentors.add(mentor);
+            }
+            JDBC.closeConnection(connection);
+            return mentors;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

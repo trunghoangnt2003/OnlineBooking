@@ -29,6 +29,7 @@
           <element id="library" level="project" name="Gradle: org.hibernate:hibernate-core:5.6.15.Final" />
           <element id="library" level="project" name="Gradle: javax.persistence:javax.persistence-api:2.2" />
           <element id="library" level="project" name="Gradle: com.microsoft.sqlserver:mssql-jdbc:12.3.0.jre17-preview" />
+          <element id="library" level="project" name="Gradle: org.json:json:20240303" />
           <element id="library" level="project" name="Gradle: jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:2.0.0" />
           <element id="library" level="project" name="Gradle: commons-logging:commons-logging:1.2" />
           <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpcore:4.4.13" />
@@ -54,7 +55,6 @@
           <element id="library" level="project" name="Gradle: com.sun.xml.fastinfoset:FastInfoset:1.2.15" />
           <element id="library" level="project" name="Gradle: jakarta.validation:jakarta.validation-api:2.0.2" />
           <element id="library" level="project" name="Gradle: com.sun.activation:jakarta.activation:2.0.0" />
-          <element id="library" level="project" name="Gradle: org.json:json:20240303" />
         </element>
       </element>
     </root>

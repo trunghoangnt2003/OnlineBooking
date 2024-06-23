@@ -61,7 +61,7 @@
     <a href="youtube.com"><img src="${pageContext.request.contextPath}/img/home/2.png"></a>
     <img src="${pageContext.request.contextPath}/img/home/3.png">
 </section>
-<%--editiusahjdkjcbksjdbkc jbjkcdsbkj bckjb shcjsbchbc s--%>
+
 <div class="show-top-mentor">
     <h1>Top Mentor</h1>
     <div class="wrapper">
@@ -69,14 +69,14 @@
         <ul class="carousel">
             <c:forEach items="${requestScope.mentor}" var="m">
                 <li class="card" onclick="changeToMentorProfile('${m.account.id}')">
-                    <div class="img"><img src="${pageContext.request.contextPath}/img/nobi.jpg" alt="img" draggable="false"></div>
+                    <div class="img"><img src="${pageContext.request.contextPath}/${m.account.avatar}" alt="img" draggable="false"></div>
                     <h2>${m.account.name}</h2>
                     <div class="rate-follower">
                         <div class="stars-outer rate col-md-9">
                             <div class="stars-inner" data-rating="${m.rating}"></div>
                         </div>
-                        <div class="col-md-9">
-                            <i class="fa-solid fa-user-graduate"></i> 100
+                        <div class="col-md-9 booking">
+                            <i class="fa-solid fa-user-graduate"></i> ${m.totalBookings}
                         </div>
                     </div>
                 </li>
@@ -287,11 +287,10 @@
     })
 
     function changeToMentorProfile(id) {
-        console.log(id)
         window.location.href = 'mentor/profile?mentor' +
             'id='+ id;
     }
-    
+
 </script>
 <!-- MDB -->
 <script

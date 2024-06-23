@@ -194,6 +194,11 @@ position: sticky; top:0; z-index: 999">
                                         <a class="dropdown-item" href="<%=url%>/mentee/viewBooking">Bookings</a>
                                     </li>
                                     </c:if>
+                                    <c:if test="${sessionScope.account.role.id == 1}">
+                                        <li>
+                                            <a class="dropdown-item" href="<%=url%>/mentee/dashboard">Dash Board</a>
+                                        </li>
+                                    </c:if>
                                     <c:if test="${sessionScope.account.role.id == 2}">
                                         <li>
                                             <a class="dropdown-item" href="<%=url%>/mentor/view_follower">Follower</a>
