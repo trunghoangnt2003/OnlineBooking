@@ -133,9 +133,9 @@ public class ViewMentorScheduleController extends AuthenticationServlet {
 
         for (int i = 0; i < bookingLogs.size();) {
             BookingSchedule bs = bookingLogs.get(i);
-            Timestamp end_at =DateTimeHelper.convertToTimestamp(bs.getSchedule().getDate().toString(), bs.getSchedule().getSlot().getEnd_at());
-            Timestamp end_after = DateTimeHelper.AddingHoursToDate(end_at, 1);
-            if( now.after(end_after)) {
+            Timestamp start_at =DateTimeHelper.convertToTimestamp(bs.getSchedule().getDate().toString(), bs.getSchedule().getSlot().getStart_at());
+            Timestamp started = DateTimeHelper.minusHoursToDate(start_at, 1);
+            if( now.after(started)) {
                 bookingConflict.add(bs);
                 bookingLogs.remove(i);
             }else {

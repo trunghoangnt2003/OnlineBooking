@@ -176,9 +176,9 @@ public class DateTimeHelper {
         return futureDate.toString();
     }
 
-    public static Timestamp AddingHoursToDate(Timestamp date, int hours) {
+    public static Timestamp minusHoursToDate(Timestamp date, int hours) {
         LocalDateTime dateTime = date.toLocalDateTime();
-        LocalDateTime newDateTime = dateTime.plusHours(hours);
+        LocalDateTime newDateTime = dateTime.minusHours(hours);
         return Timestamp.valueOf(newDateTime);
     }
 
