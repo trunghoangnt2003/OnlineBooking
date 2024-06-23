@@ -19,8 +19,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <!-- Custom CSS -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/rating.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <style>
     body {
@@ -288,14 +288,16 @@
                                 </c:if>
                                 <c:if test="${bookSlot.status.id == 11 }">
                                     <li style="list-style-type: none; display: inline">
-                                        <input type="button" value="Present" id="confirmBtn"
-                                               data-id=" ${bookSlot.id}"
-                                               onclick="confirmSlot()">
+                                        <input type="button" value="Present" id="confirmBtn_${bookSlot.id}" class="BtnButton"
+                                               data-id=" ${bookSlot.id}" data-time="${bookSlot.schedule.date}_${bookSlot.schedule.slot.start_at}"
+                                               data-slot="${param.id}_${param.action}"
+                                               onclick="confirmSlot(${bookSlot.id})">
                                     </li>
                                     <li style="list-style-type: none;display: inline">
-                                        <input type="button" value="Absent" id="absentBtn"
-                                               data-id=" ${bookSlot.id}"
-                                               onclick="absentSlot()">
+                                        <input type="button" value="Absent" id="absentBtn_${bookSlot.id}" class="BtnButton"
+                                               data-id=" ${bookSlot.id}"  data-time="${bookSlot.schedule.date}_${bookSlot.schedule.slot.start_at}"
+                                               data-slot="${param.id}_${param.action}"
+                                               onclick="absentSlot(${bookSlot.id})">
                                     </li>
                                 </c:if>
 
@@ -434,38 +436,66 @@
             });
         };
     }
-    const absentSlot = () => {
-        var btnOnclick = document.getElementById("absentBtn");
-        var newURL = "";
-        btnOnclick.onclick = function (event) {
-            event.preventDefault();
+    const absentSlot = (id) => {
+        var dataTime = document.getElementById("absentBtn_"+id).getAttribute('data-time');
+        var date = dataTime.split("_")[0];
+        var time = dataTime.split("_")[1];
+        var currentDate = new Date();
+        var dateTimeString= date + " " + time;
+        var dateTimeValue = new Date(dateTimeString);
+        if (currentDate < dateTimeValue) {
             Swal.fire({
-                title: "Is the mentee ABSENT a slot ?",
-                text: "Ensure that the slot has happened",
-                icon: "question",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, absent !"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var ID = this.getAttribute('data-id');
-                    newURL = '/Frog/mentor/schedule/confirm?ID=' + ID + '&option=absent&manage=true';
-                    localStorage.setItem('isAbsent', 'yes');
-                    // Redirect to the new URL
-                    window.location.href = newURL;
-                }
+                icon: "error",
+                title: "Oops...",
+                text: "Slot has not occurred yet.",
             });
-        };
+        }
+        else{
+            var btnOnclick = document.getElementById("absentBtn_"+id);
+            var newURL = "";
+            btnOnclick.onclick = function (event) {
+                event.preventDefault();
+                Swal.fire({
+                    title: "Is the mentee ABSENT a slot ?",
+                    text: "Ensure that the slot has happened",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, absent !"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var ID = this.getAttribute('data-id');
+                        var dataSlot = this.getAttribute('data-slot');
+                        newURL = '/Frog/mentor/schedule/confirm?ID=' + ID + '&option=absent&manage=true&dataSlot='+dataSlot;
+                        localStorage.setItem('isAbsentManage', 'yes');
+                        // Redirect to the new URL
+                        window.location.href = newURL;
+                    }
+                });
+            };
+        }
+
     }
-    const confirmSlot = () => {
-        var btnOnclick = document.getElementById("confirmBtn");
-        var newURL = "";
-        btnOnclick.onclick = function (event) {
-            event.preventDefault();
+    const confirmSlot = (id) => {
+        var dataTime = document.getElementById("confirmBtn_"+id).getAttribute('data-time');
+        var date = dataTime.split("_")[0];
+        var time = dataTime.split("_")[1];
+        var currentDate = new Date();
+        var dateTimeString= date + " " + time;
+        var dateTimeValue = new Date(dateTimeString);
+        console.log(dateTimeValue);
+        console.log(currentDate);
+        if (currentDate < dateTimeValue) {
             Swal.fire({
-                title: "Are you want to PRESENT slot?",
-                text: "Ensure that the slot has happened",
+                icon: "error",
+                title: "Oops...",
+                text: "Slot has not occurred yet.",
+            });
+        } else {
+            Swal.fire({
+                title: "Are you sure you want to PRESENT slot?",
+                text: "Ensure that the slot has happened.",
                 icon: "question",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
@@ -473,94 +503,44 @@
                 confirmButtonText: "Yes, I confirm it!"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    var ID = this.getAttribute('data-id');
-                    newURL = '/Frog/mentor/schedule/confirm?ID=' + ID + '&option=present&manage=true';
-                    localStorage.setItem('isConfirmSlot', 'yes');
+                    var ID = document.getElementById("confirmBtn_"+id).getAttribute('data-id');
+                    var dataSlot = document.getElementById("confirmBtn_"+id).getAttribute('data-slot');
+                    var newURL = '/Frog/mentor/schedule/confirm?ID=' + ID + '&option=present&manage=true&dataSlot='+dataSlot;
+                    localStorage.setItem('isConfirmSlotManage', 'yes');
                     // Redirect to the new URL
                     window.location.href = newURL;
                 }
             });
-        };
-    }
-        window.onload = function () {
-            var isSuccess = localStorage.getItem('isSuccess');
-            // Nếu modal được lưu là mở, mở modal
-            var isDelete = localStorage.getItem('isDelete');
-            var update_status = localStorage.getItem('update_status');
-            var reject_status = localStorage.getItem('reject_status');
-            var modalToOpen = localStorage.getItem('modalToOpen');
-            var isConfirmSlot = localStorage.getItem('isConfirmSlot');
-            var isAbsent = localStorage.getItem('isAbsent');
-            var failToSet = localStorage.getItem('failToSet');
-            var failToDelete = localStorage.getItem('failToDelete');
-            var numberFreeTime = localStorage.getItem('numberFreeTime');
-            if (numberFreeTime) {
+        }
+    };
+
+    window.onload = function () {
+            var isConfirmSlotManage = localStorage.getItem('isConfirmSlotManage');
+            var isAbsentManage = localStorage.getItem('isAbsentManage');
+            if (isConfirmSlotManage) {
                 Toast.fire({
                     icon: "success",
-                    title: numberFreeTime + " slots added "
+                    title:  " take present successfully  "
                 });
-                localStorage.removeItem('numberFreeTime');
+                localStorage.removeItem('isConfirmSlotManage');
             }
-            if (failToSet) {
-                Toast.fire({
-                    icon: "error",
-                    title: failToSet
-                });
-                localStorage.removeItem('failToSet');
-            }
-            if (failToDelete) {
-                Toast.fire({
-                    icon: "error",
-                    title: failToDelete
-                });
-                localStorage.removeItem('failToDelete');
-            }
-            if (isSuccess) {
-                Toast.fire({
-                    icon: "success",
-                    title: "set day in successfully"
-                });
-                localStorage.removeItem('isSuccess');
-            }
-            if (isDelete) {
-                Toast.fire({
-                    icon: "success",
-                    title: "Delete in successfully"
-                });
-                localStorage.removeItem('isDelete');
-            }
-            if (update_status) {
-                let icon;
-                if (update_status === 'schedule confirmed') {
-                    icon = "success";
-                } else {
-                    icon = "error";
-                }
+        if (isAbsentManage) {
+            Toast.fire({
+                icon: "success",
+                title: numberFreeTime + "take absent successfully "
+            });
+            localStorage.removeItem('isAbsentManage');
+        }
 
-                Toast.fire({
-                    icon: icon,
-                    title: update_status
-                });
-
-                localStorage.removeItem('update_status');
-            }
-            if (reject_status) {
-                let icon;
-                if (reject_status === 'schedule rejected') {
-                    icon = "success";
-                } else {
-                    icon = "error";
-                }
-
-                Toast.fire({
-                    icon: icon,
-                    title: reject_status
-                });
-
-                localStorage.removeItem('reject_status');
-            }
         }
 
 </script>
+<!-- Bootstrap JS and dependencies -->
+<script
+        type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.0/mdb.umd.min.js"
+></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </body>
 </html>

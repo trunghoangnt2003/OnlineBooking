@@ -8,6 +8,7 @@ import org.frog.DAO.Booking_ScheduleDAO;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.Account;
 import org.frog.model.Booking;
+import org.frog.utility.DateTimeHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,10 +47,37 @@ public class HistoryScheduleController extends AuthenticationServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
         int ITEMS_PER_PAGE = 20;
         try{
+            String opt = req.getParameter("opt");
+            String filter = req.getParameter("filter");
             ArrayList<Booking> bookingsHistory = new ArrayList<>();
             ArrayList<Booking> bookingsHistoryList = new ArrayList<>();
             Booking_ScheduleDAO bs = new Booking_ScheduleDAO();
-            bookingsHistoryList = bs.getBookingsHistory(account.getId());
+            if(opt == null && filter == null){
+                bookingsHistoryList = bs.getBookingsHistory(account.getId());
+            }
+            if(opt != null && filter == null){
+                if(opt.equals("1")){
+                    bookingsHistoryList=bs.filterBookingsHistoryByStatus(account.getId(),2);
+                }
+                if(opt.equals("2")){
+                    bookingsHistoryList=bs.filterBookingsHistoryByStatus(account.getId(),13);
+                }
+            }
+            if(opt != null && filter != null){
+                String start = req.getParameter("StartDate");
+                String end = req.getParameter("EndDate");
+                if(opt.equals("1")){
+                    bookingsHistoryList=bs.filterBookingsHistoryByStatusAndDate(account.getId(),2, DateTimeHelper.convertStringToDateByDay(start), DateTimeHelper.convertStringToDateByDay(end));
+                }
+                if(opt.equals("2")){
+                    bookingsHistoryList=bs.filterBookingsHistoryByStatusAndDate(account.getId(),13, DateTimeHelper.convertStringToDateByDay(start), DateTimeHelper.convertStringToDateByDay(end));
+                }
+            }
+            if(filter != null && opt == null){
+                String start = req.getParameter("StartDate");
+                String end = req.getParameter("EndDate");
+                bookingsHistoryList = bs.filterBookingsHistoryByDate(account.getId(),DateTimeHelper.convertStringToDateByDay(start), DateTimeHelper.convertStringToDateByDay(end));
+            }
             // phan trang
             int currentPage = 1;
             String page = req.getParameter("page");
@@ -80,6 +108,9 @@ public class HistoryScheduleController extends AuthenticationServlet {
             req.setAttribute("bookingsHistory",bookingsHistory);
             req.setAttribute("rating",rating);
             req.setAttribute("count", 1);
+            String currentUrl = req.getRequestURL().toString() + "?" + req.getQueryString();
+            req.setAttribute("currentUrl", currentUrl);
+
             req.getRequestDispatcher("/view/mentor/schedule/ViewHistoryBooking.jsp").forward(req, resp);
         }catch (Exception e){
             e.printStackTrace();

@@ -415,12 +415,12 @@
                             <c:if test="${bookInfo[0].status.id == 11 }">
                                 <li style="list-style-type: none; display: inline">
                                     <input type="button" value="Present" id="confirmBtn"
-                                           data-id=" ${bookInfo[0].id}"
+                                           data-id=" ${bookInfo[0].id}" data-time="${bookInfo[0].schedule.date}_${bookInfo[0].schedule.slot.start_at}"
                                            onclick="confirmSlot()">
                                 </li>
                                 <li style="list-style-type: none;display: inline">
                                     <input type="button" value="Absent" id="absentBtn"
-                                           data-id=" ${bookInfo[0].id}"
+                                           data-id=" ${bookInfo[0].id}" data-time="${bookInfo[0].schedule.date}_${bookInfo[0].schedule.slot.start_at}"
                                            onclick="absentSlot()">
                                 </li>
                             </c:if>
@@ -615,13 +615,22 @@
 
     }
     const confirmSlot = () => {
-        var btnOnclick = document.getElementById("confirmBtn");
-        var newURL = "";
-        btnOnclick.onclick = function (event) {
-            event.preventDefault();
+        var dataTime = document.getElementById("confirmBtn").getAttribute('data-time');
+        var date = dataTime.split("_")[0];
+        var time = dataTime.split("_")[1];
+        var currentDate = new Date();
+        var dateTimeString= date + " " + time;
+        var dateTimeValue = new Date(dateTimeString);
+        if (currentDate < dateTimeValue) {
             Swal.fire({
-                title: "Are you want to CONFIRM a slot ?",
-                text: "Ensure that the slot has happened",
+                icon: "error",
+                title: "Oops...",
+                text: "Slot has not occurred yet.",
+            });
+        } else {
+            Swal.fire({
+                title: "Are you sure you want to PRESENT slot?",
+                text: "Ensure that the slot has happened.",
                 icon: "question",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
@@ -629,38 +638,54 @@
                 confirmButtonText: "Yes, I confirm it!"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    var ID = this.getAttribute('data-id');
-                    newURL = 'schedule/confirm?ID=' + ID + '&option=present';
+                    var ID = document.getElementById("confirmBtn").getAttribute('data-id');
+                    var newURL = '/Frog/mentor/schedule/confirm?ID=' + ID + '&option=present';
                     localStorage.setItem('isConfirmSlot', 'yes');
                     // Redirect to the new URL
                     window.location.href = newURL;
                 }
             });
-        };
-    }
+        }
+    };
     const absentSlot = () => {
-        var btnOnclick = document.getElementById("absentBtn");
-        var newURL = "";
-        btnOnclick.onclick = function (event) {
-            event.preventDefault();
+        var dataTime = document.getElementById("absentBtn").getAttribute('data-time');
+        var date = dataTime.split("_")[0];
+        var time = dataTime.split("_")[1];
+        var currentDate = new Date();
+        var dateTimeString= date + " " + time;
+        var dateTimeValue = new Date(dateTimeString);
+        if (currentDate < dateTimeValue) {
             Swal.fire({
-                title: "is the mentee ABSENT a slot ?",
-                text: "Ensure that the slot has happened",
-                icon: "question",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, absent !"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var ID = this.getAttribute('data-id');
-                    newURL = 'schedule/confirm?ID=' + ID + '&option=absent';
-                    localStorage.setItem('isAbsent', 'yes');
-                    // Redirect to the new URL
-                    window.location.href = newURL;
-                }
+                icon: "error",
+                title: "Oops...",
+                text: "Slot has not occurred yet.",
             });
-        };
+        }
+        else{
+            var btnOnclick = document.getElementById("absentBtn");
+            var newURL = "";
+            btnOnclick.onclick = function (event) {
+                event.preventDefault();
+                Swal.fire({
+                    title: "Is the mentee ABSENT a slot ?",
+                    text: "Ensure that the slot has happened",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, absent !"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var ID = this.getAttribute('data-id');
+                        newURL = '/Frog/mentor/schedule/confirm?ID=' + ID + '&option=absent';
+                        localStorage.setItem('isAbsent', 'yes');
+                        // Redirect to the new URL
+                        window.location.href = newURL;
+                    }
+                });
+            };
+        }
+
     }
     let counter = 0;
     let countSlots = 0;

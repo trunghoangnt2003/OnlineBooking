@@ -24,6 +24,20 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common/rating.css">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mentor/ViewHistoryBoking.css">
+    <style>
+        #myCheckbox {
+            position: relative;
+            width: 15px;
+            height: 15px;
+            background-color: #f0f0f0;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+
+    </style>
 </head>
 <body>
 <jsp:include page="/view/common/header.jsp"></jsp:include>
@@ -55,23 +69,27 @@
                     margin-left: -10px;
                     justify-content: space-around;">
                     <!-- Thêm nội dung tùy ý vào đây -->
-                    <p>
-                        <button style="background: transparent;border: none;outline: none; cursor: pointer;">
-                            <i class="fa-solid fa-arrow-up-wide-short">
 
-                            </i></button>
-                    </p>
                     <p>
-                        <button style="background: transparent;border: none;outline: none; cursor: pointer;"><i
-                                class="fa-solid fa-arrow-down-wide-short"></i></button>
+                        <button style="background: transparent;border: none;outline: none; cursor: pointer;" value="1"
+                                onclick="filterByStatusReject()" id="filterByStatusReject"><i
+                                class="fa-solid fa-filter-circle-xmark"></i></button>
                     </p>
                     <p>
                         <button style="background: transparent;border: none;outline: none; cursor: pointer;"
-                                id="filterBtn" value="money" onclick="filterByAmount()">
-                            <i class="fa-solid fa-filter-circle-dollar"></i>
+                                id="fiterByStatusPaid" value="2" onclick="fiterByStatusPaid()">
+                            <i class="fa-solid fa-filter-circle-dollar "></i>
                         </button>
                     </p>
-
+                    <p>
+                    <div style="display: flex;justify-content: space-around;margin-bottom: 20px">
+                    <input type="checkbox" id="myCheckbox" <c:if test="${param.filter != null}">checked</c:if> >
+                        <button <c:if test="${param.filter == null}">disabled</c:if> class="btCheck"
+                                style="background: transparent;border: none;outline: none; cursor: pointer;" onclick="selectStartEndDate()
+                            " id="selectDate">
+                            <i class="fa-regular fa-calendar-days "></i></button>
+                    </div>
+                    </p>
                 </div>
             </div>
 
@@ -137,29 +155,30 @@
         </thead>
         <tbody>
         <c:forEach items="${bookingsHistory}" var="book">
-                <tr>
-                    <td>${count}</td>
-                    <td>${book.date}</td>
-                    <td>${book.amount}</td>
-                    <td>${book.description} </td>
-                    <td><img width="20px"
-                             src="${pageContext.request.contextPath}/${book.level_skills.skill.src_icon}">
-                            ${book.level_skills.skill.name}</td>
-                    <td>${book.level_skills.level.name} </td>
-                    <td>${book.startDate}</td>
-                    <td>${book.endDate}</td>
-                    <td>${book.mentee.account.name}</td>
-                    <c:if test="${book.status.id == 2}">
-                        <td>${book.status.type }
-                        </td>
-                    </c:if>
-                    <c:if test="${book.status.id == 13}">
-                        <td> <a href="/Frog/mentor/schedule/manage?id=${book.id}&action=1" style="text-decoration: none">${book.status.type }<a/>
-                        </td>
-                    </c:if>
+            <tr>
+                <td>${count}</td>
+                <td>${book.date}</td>
+                <td>${book.amount}</td>
+                <td>${book.description} </td>
+                <td><img width="20px"
+                         src="${pageContext.request.contextPath}/${book.level_skills.skill.src_icon}">
+                        ${book.level_skills.skill.name}</td>
+                <td>${book.level_skills.level.name} </td>
+                <td>${book.startDate}</td>
+                <td>${book.endDate}</td>
+                <td>${book.mentee.account.name}</td>
+                <c:if test="${book.status.id == 2}">
+                    <td>${book.status.type }
+                    </td>
+                </c:if>
+                <c:if test="${book.status.id == 13}">
+                    <td><a href="/Frog/mentor/schedule/manage?id=${book.id}&action=1"
+                           style="text-decoration: none">${book.status.type }<a/>
+                    </td>
+                </c:if>
 
-                    <c:set var="count" value="${count=  1 + count}"></c:set>
-                </tr>
+                <c:set var="count" value="${count=  1 + count}"></c:set>
+            </tr>
 
         </c:forEach>
         </tbody>
@@ -170,20 +189,26 @@
             <c:set var="total" value="${totalBookings}"/>
             <c:set var="totalPages" value="${(total / 20) + (total % 20 == 0 ? 0 : 1)}"/>
             <li class="<c:if test="${param.page==1 || param.page == null}">active</c:if>">
-                <a href="history?page=1">1</a>
+                <a onclick="pagUrl(1)">1</a>
             </li>
             <c:forEach begin="${2}" end="${totalPages}" step="${1}" var="i">
                 <li class="<c:if test="${param.page==i }">active</c:if>">
-                    <a href="history?page=${i}">${i}</a>
+                    <a onclick="pagUrl(${i})" >${i}</a>
                 </li>
             </c:forEach>
             <li><h6 style="right: 0;position: absolute;">
-                Total bookings: ${numberOfInvited}</h6></li>
+                Total : ${bookingsHistory.size()}</h6></li>
         </ul>
 
     </c:if>
 </div>
 <script>
+    const pagUrl = (i) => {
+        var currentURL = window.location.href;
+        var url = new URL(currentURL);
+        url.searchParams.set('page', i);
+        window.location.href = url.toString();
+    }
     document.getElementById('filterButton').addEventListener('click', function () {
         // Hiển thị thanh khung hình chữ nhật
         document.getElementById('filterBox').style.display = 'block';
@@ -204,6 +229,97 @@
         span.onclick = function () {
             modal.style.display = "none";
         }
+    }
+    const checkbox = document.getElementById('myCheckbox');
+    const buttons = document.querySelectorAll('.btCheck');
+
+    checkbox.addEventListener('change', function () {
+        buttons.forEach(button => button.disabled = !checkbox.checked);
+    });
+    const selectStartEndDate = () => {
+        var btnOnclick = document.getElementById("selectDate");
+        btnOnclick.onclick = function (event) {
+            event.preventDefault();
+            const {value: formValues} = Swal.fire({
+                title: "Enter date to filter",
+                html: `
+                Start Date<input id="swal-input1" type="date" class="swal2-input"><br/>
+                End Date<input id="swal-input2" type="date" class="swal2-input"> `,
+                focusConfirm: false,
+                preConfirm: () => {
+                    return [
+                        document.getElementById("swal-input1").value,
+                        document.getElementById("swal-input2").value
+                    ];
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const [startDate, endDate] = result.value;
+                    if (startDate && endDate) {
+                        var currentURL = window.location.href;
+                        var url = new URL(currentURL);
+                        if (url.searchParams.has('page')) {
+                            url.searchParams.delete('page');
+                        }
+                        url.searchParams.set('filter', 1);
+                        url.searchParams.set('StartDate', startDate);
+                        url.searchParams.set('EndDate', endDate);
+                        window.location.href = url.toString();
+                    } else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Both dates must be selected.',
+                            icon: 'error'
+                        });
+                    }
+                }
+            });
+        };
+
+    }
+    const filterByStatusReject = () => {
+        var currentURL = window.location.href;
+        var url = new URL(currentURL);
+        if (url.searchParams.has('page')) {
+            url.searchParams.delete('page');
+        }
+        var check = document.getElementById('myCheckbox').checked;
+        if(!check){
+            if (url.searchParams.has('StartDate')) {
+                url.searchParams.delete('StartDate');
+            }
+            if (url.searchParams.has('filter')) {
+                url.searchParams.delete('filter');
+            }
+            if (url.searchParams.has('EndDate')) {
+                url.searchParams.delete('EndDate');
+            }
+        }
+        var dataAction = document.getElementById('filterByStatusReject').value;
+        url.searchParams.set('opt', dataAction);
+        window.location.href = url.toString();
+    }
+    const fiterByStatusPaid = () => {
+        var currentURL = window.location.href;
+        var url = new URL(currentURL);
+        if (url.searchParams.has('page')) {
+            url.searchParams.delete('page');
+        }
+        var check = document.getElementById('myCheckbox').checked;
+        if(!check){
+            if (url.searchParams.has('StartDate')) {
+                url.searchParams.delete('StartDate');
+            }
+            if (url.searchParams.has('filter')) {
+                url.searchParams.delete('filter');
+            }
+            if (url.searchParams.has('EndDate')) {
+                url.searchParams.delete('EndDate');
+            }
+        }
+        var dataAction = document.getElementById('fiterByStatusPaid').value;
+        url.searchParams.set('opt', dataAction);
+        window.location.href = url.toString();
     }
     const filterByAmount = () => {
         // var filterValue = document.getElementById('filterBtn').value;
@@ -246,6 +362,8 @@
     Plotly.newPlot("myPlot", data, layout);
 </script>
 <!-- Bootstrap JS and Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
         crossorigin="anonymous"></script>

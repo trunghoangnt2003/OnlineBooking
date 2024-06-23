@@ -1050,4 +1050,291 @@ public class Booking_ScheduleDAO {
         }
         return number;
     }
-}
+    public void saveLog(ArrayList<BookingSchedule> bookingScheduless ){
+        try{
+            Connection connection = JDBC.getConnection();
+            String sql = "INSERT INTO [dbo].[Schedule_Booking_Logs]\n" +
+                    "           ([booking_id]\n" +
+                    "           ,[schedule_id]\n" +
+                    "           ,[status_id])\n" +
+                    "     VALUES\n" +
+                    "           (? \n" +
+                    "           ,? \n" +
+                    "           ,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            for(BookingSchedule bs : bookingScheduless){
+                preparedStatement.setInt(1,bs.getBooking().getId());
+                preparedStatement.setInt(2, bs.getSchedule().getId());
+                preparedStatement.setInt(3, bs.getStatus().getId());
+
+                preparedStatement.executeUpdate();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    public ArrayList<BookingSchedule> getBookingSchedulesById(int bookingId){
+        ArrayList<BookingSchedule> bookingSchedules = new ArrayList<>();
+        try{
+            Connection connection = JDBC.getConnection();
+            String sql = "SELECT id,booking_id,schedule_id,status_id FROM Booking_Schedule WHERE booking_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1,bookingId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                BookingSchedule bs = new BookingSchedule();
+                Status s = new Status();
+                s.setId(resultSet.getInt("status_id"));
+
+                Booking b = new Booking();
+                b.setId(resultSet.getInt("booking_id"));
+
+                Schedule sche = new Schedule();
+                sche.setId(resultSet.getInt("schedule_id"));
+                bs.setBooking(b);
+                bs.setSchedule(sche);
+                bs.setStatus(s);
+                bookingSchedules.add(bs);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return bookingSchedules;
+    }
+    public ArrayList<Booking> getBookingIdDuplicateSlotByBookingID(int bookingId){
+        ArrayList<Booking> bookings = new ArrayList<>();
+        try{
+            String sql ="WITH T1 AS(\n" +
+                    "SELECT b.id,schedule_id FROM Booking b\n" +
+                    "INNER JOIN Booking_Schedule bs ON b.id = bs.booking_id\n" +
+                    "WHERE booking_id = ?\n" +
+                    "),\n" +
+                    "T2 AS (\n" +
+                    "SELECT b.id,bs.schedule_id FROM Booking b\n" +
+                    "INNER JOIN Booking_Schedule bs ON b.id = bs.booking_id\n" +
+                    "WHERE b.status_id=1\n" +
+                    ")\n" +
+                    "SELECT DISTINCT T2.id AS BookingDuplicateId\n" +
+                    "FROM T1 \n" +
+                    "INNER JOIN T2 ON T1.schedule_id = T2.schedule_id\n";
+            PreparedStatement stm = JDBC.getConnection().prepareStatement(sql);
+            stm.setInt(1,bookingId);
+            ResultSet resultSet = stm.executeQuery();
+            while (resultSet.next()){
+                Booking booking = new Booking();
+                booking.setId(resultSet.getInt("BookingDuplicateId"));
+                bookings.add(booking);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return bookings;
+    }
+    public ArrayList<Booking> filterBookingsHistoryByStatus(String id, int statusId ){
+        ArrayList<Booking> bookings = new ArrayList<>();
+        try{
+            Connection connection = JDBC.getConnection();
+            String sql = "  Select  b.id,b.status_id,status.type,\n" +
+                    "\t\t\t\t\tb.amount,b.create_date,b.description,b.from_date,b.to_date,\n" +
+                    "                    level_skill_id,skill_id, sk.name as skill_name, sk.src_icon, ls.level_id, l.type as typeS,b.mentee_id,\n" +
+                    "\t\t\t\t\tacc.name,acc.address,acc.dob,acc.gender,acc.mail,acc.phone \n" +
+                    "FROM Booking b\n" +
+                    " INNER Join Level_Skill ls on b.level_skill_id = ls.id\n" +
+                    "                    INNER Join [Level] l On ls.level_id = l.id\n" +
+                    "                    INNER Join Skill sk On ls.skill_id = sk.id\n" +
+                    "\t\t\t\t\tINNER JOIN Mentee m ON b.mentee_id = m.account_id\n" +
+                    "\t\t\t\t\tINNER JOIN Account acc ON acc.id = m.account_id\n" +
+                    "\t\t\t\t\tINNER JOIN Status status ON status.id = b.status_id\n" +
+                    "WHERE b.mentor_id = ? AND b.status_id = ?  ";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1,id);
+            preparedStatement.setInt(2,statusId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+
+                Status status = new Status();
+                status.setId(resultSet.getInt("status_id"));
+                status.setType(resultSet.getString("type"));
+
+
+                Level_Skills level_skill = new Level_Skills();
+                level_skill.setId(resultSet.getInt("level_skill_id"));
+
+                Skill skill = new Skill();
+                skill.setId(resultSet.getInt("skill_id"));
+                skill.setName(resultSet.getString("skill_name"));
+                skill.setSrc_icon(resultSet.getString("src_icon"));
+                level_skill.setSkill(skill);
+
+                org.frog.model.Level level = new org.frog.model.Level();
+                level.setId(resultSet.getInt("level_id"));
+                level.setName(resultSet.getString("typeS"));
+                level_skill.setLevel(level);
+
+                Mentee mentee = new Mentee();
+                Account account_mentee = new Account();
+                account_mentee.setId(resultSet.getString("mentee_id"));
+                account_mentee.setEmail(resultSet.getString("mail"));
+                account_mentee.setName(resultSet.getString("name"));
+                account_mentee.setGender(resultSet.getInt("gender"));
+                account_mentee.setPhone(resultSet.getString("phone"));
+                account_mentee.setAddress(resultSet.getString("address"));
+                mentee.setAccount(account_mentee);
+
+                Booking booking = new Booking();
+                booking.setId(resultSet.getInt("id"));
+                booking.setAmount(resultSet.getInt("amount"));
+                booking.setDate(resultSet.getTimestamp("create_date"));
+                booking.setDescription(resultSet.getString("description"));
+                booking.setStartDate(resultSet.getDate("from_date"));
+                booking.setEndDate(resultSet.getDate("to_date"));
+                booking.setMentee(mentee);
+                booking.setLevel_skills(level_skill);
+                booking.setStatus(status);
+                bookings.add(booking);
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return bookings;
+    }
+    public ArrayList<Booking> filterBookingsHistoryByStatusAndDate(String id, int statusId , Date start , Date end){
+        ArrayList<Booking> bookings = new ArrayList<>();
+        try{
+            Connection connection = JDBC.getConnection();
+            String sql = "  Select  b.id,b.status_id,status.type,\n" +
+                    "\t\t\t\t\tb.amount,b.create_date,b.description,b.from_date,b.to_date,\n" +
+                    "                    level_skill_id,skill_id, sk.name as skill_name, sk.src_icon, ls.level_id, l.type as typeS,b.mentee_id,\n" +
+                    "\t\t\t\t\tacc.name,acc.address,acc.dob,acc.gender,acc.mail,acc.phone \n" +
+                    "FROM Booking b\n" +
+                    " INNER Join Level_Skill ls on b.level_skill_id = ls.id\n" +
+                    "                    INNER Join [Level] l On ls.level_id = l.id\n" +
+                    "                    INNER Join Skill sk On ls.skill_id = sk.id\n" +
+                    "\t\t\t\t\tINNER JOIN Mentee m ON b.mentee_id = m.account_id\n" +
+                    "\t\t\t\t\tINNER JOIN Account acc ON acc.id = m.account_id\n" +
+                    "\t\t\t\t\tINNER JOIN Status status ON status.id = b.status_id\n" +
+                    "WHERE b.mentor_id = ? AND b.status_id = ? AND from_date >= ? AND to_date <= ?  ";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1,id);
+            preparedStatement.setInt(2,statusId);
+            preparedStatement.setDate(3,start);
+            preparedStatement.setDate(4,end);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+
+                Status status = new Status();
+                status.setId(resultSet.getInt("status_id"));
+                status.setType(resultSet.getString("type"));
+
+
+                Level_Skills level_skill = new Level_Skills();
+                level_skill.setId(resultSet.getInt("level_skill_id"));
+
+                Skill skill = new Skill();
+                skill.setId(resultSet.getInt("skill_id"));
+                skill.setName(resultSet.getString("skill_name"));
+                skill.setSrc_icon(resultSet.getString("src_icon"));
+                level_skill.setSkill(skill);
+
+                org.frog.model.Level level = new org.frog.model.Level();
+                level.setId(resultSet.getInt("level_id"));
+                level.setName(resultSet.getString("typeS"));
+                level_skill.setLevel(level);
+
+                Mentee mentee = new Mentee();
+                Account account_mentee = new Account();
+                account_mentee.setId(resultSet.getString("mentee_id"));
+                account_mentee.setEmail(resultSet.getString("mail"));
+                account_mentee.setName(resultSet.getString("name"));
+                account_mentee.setGender(resultSet.getInt("gender"));
+                account_mentee.setPhone(resultSet.getString("phone"));
+                account_mentee.setAddress(resultSet.getString("address"));
+                mentee.setAccount(account_mentee);
+
+                Booking booking = new Booking();
+                booking.setId(resultSet.getInt("id"));
+                booking.setAmount(resultSet.getInt("amount"));
+                booking.setDate(resultSet.getTimestamp("create_date"));
+                booking.setDescription(resultSet.getString("description"));
+                booking.setStartDate(resultSet.getDate("from_date"));
+                booking.setEndDate(resultSet.getDate("to_date"));
+                booking.setMentee(mentee);
+                booking.setLevel_skills(level_skill);
+                booking.setStatus(status);
+                bookings.add(booking);
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return bookings;
+    }
+    public ArrayList<Booking> filterBookingsHistoryByDate(String id, Date start , Date end){
+        ArrayList<Booking> bookings = new ArrayList<>();
+        try{
+            Connection connection = JDBC.getConnection();
+            String sql = "  Select  b.id,b.status_id,status.type,\n" +
+                    "\t\t\t\t\tb.amount,b.create_date,b.description,b.from_date,b.to_date,\n" +
+                    "                    level_skill_id,skill_id, sk.name as skill_name, sk.src_icon, ls.level_id, l.type as typeS,b.mentee_id,\n" +
+                    "\t\t\t\t\tacc.name,acc.address,acc.dob,acc.gender,acc.mail,acc.phone \n" +
+                    "FROM Booking b\n" +
+                    " INNER Join Level_Skill ls on b.level_skill_id = ls.id\n" +
+                    "                    INNER Join [Level] l On ls.level_id = l.id\n" +
+                    "                    INNER Join Skill sk On ls.skill_id = sk.id\n" +
+                    "\t\t\t\t\tINNER JOIN Mentee m ON b.mentee_id = m.account_id\n" +
+                    "\t\t\t\t\tINNER JOIN Account acc ON acc.id = m.account_id\n" +
+                    "\t\t\t\t\tINNER JOIN Status status ON status.id = b.status_id\n" +
+                    "WHERE b.mentor_id = ?  AND from_date >= ? AND to_date <= ?  ";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1,id);
+            preparedStatement.setDate(2,start);
+            preparedStatement.setDate(3,end);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+
+                Status status = new Status();
+                status.setId(resultSet.getInt("status_id"));
+                status.setType(resultSet.getString("type"));
+
+
+                Level_Skills level_skill = new Level_Skills();
+                level_skill.setId(resultSet.getInt("level_skill_id"));
+
+                Skill skill = new Skill();
+                skill.setId(resultSet.getInt("skill_id"));
+                skill.setName(resultSet.getString("skill_name"));
+                skill.setSrc_icon(resultSet.getString("src_icon"));
+                level_skill.setSkill(skill);
+
+                org.frog.model.Level level = new org.frog.model.Level();
+                level.setId(resultSet.getInt("level_id"));
+                level.setName(resultSet.getString("typeS"));
+                level_skill.setLevel(level);
+
+                Mentee mentee = new Mentee();
+                Account account_mentee = new Account();
+                account_mentee.setId(resultSet.getString("mentee_id"));
+                account_mentee.setEmail(resultSet.getString("mail"));
+                account_mentee.setName(resultSet.getString("name"));
+                account_mentee.setGender(resultSet.getInt("gender"));
+                account_mentee.setPhone(resultSet.getString("phone"));
+                account_mentee.setAddress(resultSet.getString("address"));
+                mentee.setAccount(account_mentee);
+
+                Booking booking = new Booking();
+                booking.setId(resultSet.getInt("id"));
+                booking.setAmount(resultSet.getInt("amount"));
+                booking.setDate(resultSet.getTimestamp("create_date"));
+                booking.setDescription(resultSet.getString("description"));
+                booking.setStartDate(resultSet.getDate("from_date"));
+                booking.setEndDate(resultSet.getDate("to_date"));
+                booking.setMentee(mentee);
+                booking.setLevel_skills(level_skill);
+                booking.setStatus(status);
+                bookings.add(booking);
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return bookings;
+    }
+ }
