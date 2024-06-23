@@ -172,6 +172,7 @@ public class ViewMentorScheduleController extends AuthenticationServlet {
         Wallet wallet = walletDAO.getByAccountId(account.getId());
 
 
+        request.setAttribute("now", now);
         request.setAttribute("wallet", wallet);
         request.setAttribute("bookingConflict", bookingConflict);
         request.setAttribute("level_skills", level_skills);

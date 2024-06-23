@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%-- Created by IntelliJ IDEA. User: HUY Date: 30-May-24 Time: 3:22 PM --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -333,12 +334,16 @@
                                             <i class="pin"></i>
                                             <%--Free And Proccessing                                      --%>
                                             <c:if test="${bs.status.id == 0}">
-                                                <blockquote class="notes color-note font-monospace" style="background-color: #32cd32; text-align: center">
+                                                <c:set var="time_start_at" value="${bs.schedule.date}T${slot.start_at}:00" />
+                                                <fmt:formatDate var="now" value="${requestScope.now }" pattern="yyyy-MM-dd'T'HH:mm:ss"/>
+                                                <%--Check if the time is in the future                                     --%>
+                                                <c:if test="${time_start_at > now}">
+                                                    <blockquote class="notes color-note font-monospace" style="background-color: #32cd32; text-align: center">
                                                         <div class="text-center fw-bold fs-4  ">
                                                             <span > Free</span>
                                                         </div>
                                                         <div class="mt-1" style="font-size: 14px">
-                                                            <span>book here</span>
+                                                            <span>book here </span>
                                                         </div>
                                                         <input type="checkbox" class="checkbox__input"
                                                                 <c:forEach items="${requestScope.bookingList}" var="booking">
@@ -350,7 +355,30 @@
                                                             <rect width="21" height="21" x=".5" y=".5" fill="#FFF" stroke="#006F94" rx="3" />
                                                             <path class="tick" stroke="#6EA340" fill="none" stroke-linecap="round" stroke-width="4" d="M4 10l5 5 9-9" />
                                                         </svg>
-                                                </blockquote>
+                                                    </blockquote>
+                                                </c:if>
+                                                <%--Check if the time is in the past                                      --%>
+                                                <c:if test="${time_start_at <= now}">
+                                                    <blockquote class="notes color-note font-monospace" style="background-color: #989797; text-align: center">
+                                                        <div class="text-center fw-bold fs-4  ">
+                                                            <span > Free</span>
+                                                        </div>
+                                                        <div class="mt-3" style="font-size: 14px">
+                                                            <span>out date </span>
+                                                        </div>
+                                                      <%--  <input type="checkbox" class="checkbox__input"
+                                                                <c:forEach items="${requestScope.bookingList}" var="booking">
+                                                                    ${booking.schedule.id == bs.schedule.id ? 'checked' : ''}
+                                                                </c:forEach>
+                                                               onchange="handleCheckboxChange(this, ${bs.schedule.id}, ${slot.id}, '${date}','${slot.end_at}')"
+                                                        />--%>
+                                                       <%-- <svg class="checkbox__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
+                                                            <rect width="21" height="21" x=".5" y=".5" fill="#FFF" stroke="#006F94" rx="3" />
+                                                            <path class="tick" stroke="#6EA340" fill="none" stroke-linecap="round" stroke-width="4" d="M4 10l5 5 9-9" />
+                                                        </svg>--%>
+                                                    </blockquote>
+                                                </c:if>
+
                                             </c:if>
                                             <%--Not Free                                           --%>
                                             <c:if test="${bs.status.id != 0}">
@@ -358,6 +386,7 @@
                                                 <c:if test="${bs.booking.mentee.account.id.equals(requestScope.mentee_id)}">
                                                     <%--Processing                                           --%>
                                                     <c:if test="${bs.status.id == 1}">
+
                                                         <blockquote class="notes color-note font-monospace" style="background-color: #F4E0B9">
 
                                                             <div class="text-center fw-bold">
@@ -446,7 +475,7 @@
                 </c:forEach>
                 </tbody>
             </table>
-            <div class="d-flex justify-content-between mt-4" style="width: 50%" >
+            <div class="d-flex justify-content-between mt-4" style="width: 70%" >
                 <div class="d-flex">
                     <div class="notetip" style="background-color: #FF6347FF;" ></div> <span class="text-danger ms-2">Busy</span>
                 </div>
@@ -462,6 +491,10 @@
                 <div class="d-flex">
                     <div class="notetip" style="background-color: #32CD32FF " ></div> <span class="ms-2" style="color: #32CD32FF">Free</span>
                 </div>
+                <div class="d-flex">
+                    <div class="notetip" style="background-color: #989797FF " ></div> <span class="ms-2" style="color: #989797FF">Free but out date</span>
+                </div>
+
             </div>
         </div>
 
