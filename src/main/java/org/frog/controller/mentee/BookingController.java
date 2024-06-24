@@ -42,7 +42,7 @@ public class BookingController extends AuthenticationServlet {
                 bsDAO.deleteScheduleBookings(Integer.parseInt(bookingID));
 
                 Wallet wallet = walletDAO.getByAccountId(account.getId());
-                float available = (wallet.getAvailable() + booking.getAmount());
+                float available = (wallet.getHold() + booking.getAmount());
                 walletDAO.updateAvailable(account.getWallet(), available);
                 resp.sendRedirect("viewBooking");
                 return;

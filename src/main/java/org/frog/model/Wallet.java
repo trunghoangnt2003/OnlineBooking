@@ -2,28 +2,28 @@ package org.frog.model;
 
 public class Wallet {
 
-    private int id;
+    private String id;
 
-    private float available;
+    private float hold;
 
     private float balance;
 
 
-    public Wallet(int id, float balance, float available) {
+    public Wallet(String id, float balance, float hold) {
         this.id = id;
         this.balance = balance;
-        this.available = available;
+        this.hold = hold;
     }
 
 
     public Wallet() {
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -35,11 +35,11 @@ public class Wallet {
         this.balance = balance;
     }
 
-    public float getAvailable() {
-        return available;
+    public float getHold() {
+        return hold;
     }
 
-    public void setAvailable(float available) {
-        this.available = available;
+    public void setHold(float hold) {
+        this.hold = hold;
     }
 }

@@ -14,7 +14,7 @@ public class WalletDAO {
             connection = JDBC.getConnection();
             String sql = "SELECT w.[id]\n" +
                     "      ,[balance]\n" +
-                    "      ,[available]\n" +
+                    "      ,[hold]\n" +
                     "\t  \n" +
                     "  FROM [Prog_DB].[dbo].[Wallet] w join Account on Account.wallet_id = w.id\n" +
                     "  where Account.id = ?";
@@ -23,9 +23,9 @@ public class WalletDAO {
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 Wallet wallet = new Wallet();
-                wallet.setId(resultSet.getInt(1));
+                wallet.setId(resultSet.getString(1));
                 wallet.setBalance(resultSet.getFloat(2));
-                wallet.setAvailable(resultSet.getFloat(3));
+                wallet.setHold(resultSet.getFloat(3));
                 return wallet;
             } else {
 
@@ -44,7 +44,7 @@ public class WalletDAO {
         }
         return null;
     }
-    public void updateDeposit(float amount,int id){
+    public void updateDeposit(float amount,String id){
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -56,7 +56,7 @@ public class WalletDAO {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setFloat(1,amount);
 
-            preparedStatement.setInt(2, id);
+            preparedStatement.setString(2, id);
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
@@ -74,16 +74,16 @@ public class WalletDAO {
 
     }
 
-    public void updateAvailable(Wallet wallet, float available){
+    public void updateAvailable(Wallet wallet, float hold){
         try{
 
             String sql = "UPDATE [dbo].[Wallet]\n" +
-                    "   SET [available] = ?\n" +
+                    "   SET [hold] = ?\n" +
                     " WHERE id = ?";
             Connection connection = JDBC.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setFloat(1, available);
-            preparedStatement.setInt(2, wallet.getId());
+            preparedStatement.setFloat(1, hold);
+            preparedStatement.setString(2, wallet.getId());
 
             preparedStatement.executeUpdate();
             JDBC.closeConnection(connection);
@@ -93,7 +93,7 @@ public class WalletDAO {
     }
     public Account getWalletAccountById(String account_id){
         Account account = new Account();
-        String sql = "SELECT w.id,balance,available,a.id AS account_id,name,role_id FROM Wallet w \n" +
+        String sql = "SELECT w.id,balance,hold,a.id AS account_id,name,role_id FROM Wallet w \n" +
                 "JOIN Account a ON w.id = a.wallet_id\n" +
                 "where a.id = ?";
         try{
@@ -105,9 +105,9 @@ public class WalletDAO {
                 account.setName(resultSet.getString("name"));
 
                 Wallet wallet = new Wallet();
-                wallet.setId(resultSet.getInt("id"));
+                wallet.setId(resultSet.getString("id"));
                 wallet.setBalance(resultSet.getFloat("balance"));
-                wallet.setAvailable(resultSet.getFloat("available"));
+                wallet.setHold(resultSet.getFloat("hold"));
                 account.setWallet(wallet);
 
                 Role role = new Role();
@@ -120,7 +120,7 @@ public class WalletDAO {
         }
         return account;
     }
-    public void createTransaction(Timestamp date , float amount,int walletFrom , int walletTo , float fee ){
+    public void createTransaction(Timestamp date , float amount,String walletFrom , String walletTo , float fee ){
         String sql = "INSERT INTO [dbo].[Transaction]\n" +
                 "           ([date]\n" +
                 "           ,[amount]\n" +
@@ -139,22 +139,22 @@ public class WalletDAO {
             PreparedStatement stm = JDBC.getConnection().prepareStatement(sql);
             stm.setTimestamp(1,date);
             stm.setFloat(2,amount);
-            stm.setInt(3,walletFrom);
-            stm.setInt(4,walletTo);
+            stm.setString(3,walletFrom);
+            stm.setString(4,walletTo);
             stm.setFloat(5,fee);
             stm.executeUpdate();
         }catch (Exception e){
             e.printStackTrace();
         }
     }
-    public boolean payment(float amount,int wallet_id){
+    public boolean payment(float amount,String wallet_id){
         String sql ="UPDATE [Wallet]\n" +
                 "   SET [balance] = ?   \n" +
                 " WHERE id = ?";
         try{
             PreparedStatement stm = JDBC.getConnection().prepareStatement(sql);
             stm.setFloat(1,amount);
-            stm.setInt(2,wallet_id);
+            stm.setString(2,wallet_id);
             int i = stm.executeUpdate();
             if(i>0){
                 return true;
@@ -164,14 +164,14 @@ public class WalletDAO {
         }
         return false;
     }
-    public boolean moneyBack(float amount,int wallet_id){
+    public boolean moneyBack(float amount,String wallet_id){
         String sql ="UPDATE [Wallet]\n" +
-                "   SET [available] = ?   \n" +
+                "   SET [hold] = ?   \n" +
                 " WHERE id = ?";
         try{
             PreparedStatement stm = JDBC.getConnection().prepareStatement(sql);
             stm.setFloat(1,amount);
-            stm.setInt(2,wallet_id);
+            stm.setString(2,wallet_id);
             int i = stm.executeUpdate();
             if(i>0){
                 return true;
@@ -182,7 +182,7 @@ public class WalletDAO {
         return false;
     }
 
-    public ArrayList<Transaction> getAllTransactionByWalletId(int id) {
+    public ArrayList<Transaction> getAllTransactionByWalletId(String id) {
         ArrayList<Transaction> transactions = new ArrayList<>();
         try {
             Connection connection = JDBC.getConnection();
@@ -193,7 +193,7 @@ public class WalletDAO {
                     //"\t\t\t\t\tjoin Status S on S.id = T.status_id\n" +
                     "                    where T.wallet_id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, id);
+            preparedStatement.setString(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Transaction transaction = new Transaction();

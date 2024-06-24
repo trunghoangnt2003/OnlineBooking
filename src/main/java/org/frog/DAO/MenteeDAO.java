@@ -52,27 +52,6 @@ public class MenteeDAO {
     }
 
 
-    public Wallet getWalletById(int id) {
-        try {
-            Connection connection = JDBC.getConnection();
-            String sql = "SELECT * FROM Wallet\n" +
-                    "where Wallet.id = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                Wallet wallet = new Wallet();
-                wallet.setId(resultSet.getInt("id"));
-                wallet.setBalance(resultSet.getInt("balance"));
-                return wallet;
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
 
     public void updateMentee(Mentee mentee) {
         try {
