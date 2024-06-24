@@ -288,8 +288,8 @@
         <div class="wallet">
             <h3 style="color: #07AD90; text-align: center" class="mb-4" > <i class="fa-solid fa-wallet" style="color: #07AD90;"></i> Wallet</h3>
             <h6>Total: ${requestScope.wallet.balance}$</h6>
-            <h6>Available: ${requestScope.wallet.available}$</h6>
-            <input id="available" type="text" hidden="hidden" name="available" value="${requestScope.wallet.available}"/>
+            <h6>Available: ${requestScope.wallet.balance-requestScope.wallet.hold}$</h6>
+            <input id="available" type="text" hidden="hidden" name="available" value="${requestScope.wallet.balance-requestScope.wallet.hold}"/>
         </div>
     </div>
     <div class="d-flex main">

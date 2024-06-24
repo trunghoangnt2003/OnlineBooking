@@ -256,7 +256,7 @@ public class ViewMentorScheduleController extends AuthenticationServlet {
         booking_scheduleDAO.makeBooking_Schedule(book, scheduleList);
 
         Wallet wallet = walletDAO.getByAccountId(account.getId());
-        float available = wallet.getHold() - amount;
+        float available = wallet.getHold() + amount;
         walletDAO.updateAvailable(wallet, available);
         response.sendRedirect("../mentee/viewBooking");
     }

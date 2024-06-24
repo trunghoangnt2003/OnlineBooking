@@ -94,11 +94,11 @@
             background-color: #07AD90; /* Green background */
             border: none; /* Remove borders */
             color: white; /* White text */
-            padding: 15px 49px; /* Add some padding */
+            padding: 10px 15px; /* Add some padding */
             text-align: center; /* Center the text */
             text-decoration: none; /* Remove underline */
             display: inline-block; /* Make the container inline */
-            font-size: 16px; /* Increase font size */
+            font-size: 12px; /* Increase font size */
             margin: 4px 2px; /* Add some margin */
             transition-duration: 0.4s; /* Add transition effect */
             cursor: pointer; /* Add a pointer cursor on hover */
@@ -116,7 +116,7 @@
         <!-- partial:partials/_sidebar.jsp -->
         <jsp:include page="../admin/partials/_sidebar.jsp"></jsp:include>
         <!-- partial -->
-        <div style="width: 100%;margin-left: 30px">
+        <div style="width: 90%;margin-left: 30px">
         <h2 style="font-weight: bold; margin-bottom: 5px;position: relative">Manage Payment Booking </h2>
             <div class="table-containers">
                 <c:if test="${param.page >=2 }">
@@ -126,8 +126,7 @@
                 <table class="table table-striped">
                     <thead class="table-dark">
                     <tr>
-                        <th>Name</th>
-                        <th>ID</th>
+                        <th>No</th>
                         <th>Create Date</th>
                         <th>Amount</th>
                         <th>Description</th>
@@ -143,13 +142,12 @@
                     <c:forEach items="${bookingsHistory}" var="book">
                         <tr>
                             <td>${count}</td>
-                            <td>${book.id}</td>
                             <td>${book.date}</td>
                             <td>${book.amount}</td>
                             <td>${book.description} </td>
-                            <td><img width="20px"
+                            <td><img
                                      src="${pageContext.request.contextPath}/${book.level_skills.skill.src_icon}">
-                                    ${book.level_skills.skill.name}</td>
+                                   <%-- ${book.level_skills.skill.name}--%></td>
                             <td>${book.level_skills.level.name} </td>
                             <td>${book.startDate}</td>
                             <td>${book.endDate}</td>

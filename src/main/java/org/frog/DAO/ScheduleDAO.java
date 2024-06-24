@@ -205,4 +205,68 @@ public class ScheduleDAO {
             e.printStackTrace();
         }
     }
+
+    public int getProccessingScheduleByMentorId (String id){
+        try{
+            String sql = " SELECT Count(id) as totalProcess\n" +
+                    "\t\t\t\t  FROM Schedule_Logs\n" +
+                    "\t\t\t\t  WHERE account_id = ?  and status_id = ?";
+            PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement(sql);
+            preparedStatement.setString(1, id);
+            preparedStatement.setInt(2, StatusEnum.PROCESSING);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                return resultSet.getInt("totalProcess");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public ArrayList<Schedule> getScheduleLogsByMentor(String id, Date from , Date to){
+        ArrayList<Schedule> schedules = new ArrayList<>();
+        String sql="\n" +
+                "SELECT Schedule_Logs.id, Schedule_Logs.date, Schedule_Logs.slot_id, Schedule_Logs.account_id, Schedule_Logs.status_id, Slot.time_start, Slot.time_end, Status.type\n" +
+                "FROM     Schedule_Logs INNER JOIN\n" +
+                "Slot ON Schedule_Logs.id = Slot.id INNER JOIN\n" +
+                "Status ON Schedule_Logs.status_id = Status.id\n" +
+                "WHERE account_id = ? and  [date] >= ? And  [date] <= ? ";
+        try {
+            Connection connection = JDBC.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, id);
+            preparedStatement.setDate(2, from);
+            preparedStatement.setDate(3, to);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                Schedule schedule = new Schedule();
+                schedule.setId(resultSet.getInt("id"));
+                schedule.setDate(resultSet.getDate("date"));
+
+                Mentor m = new Mentor();
+                Account acc = new Account();
+                acc.setId(resultSet.getString("account_id"));
+                m.setAccount(acc);
+                schedule.setMentor(m);
+
+                Status st = new Status();
+                st.setId(resultSet.getInt("status_id"));
+                st.setType(resultSet.getString("type"));
+                schedule.setStatus(st);
+
+                Slot sl = new Slot();
+                sl.setId(resultSet.getInt("slot_id"));
+                sl.setStart_at(resultSet.getString("time_start"));
+                sl.setEnd_at(resultSet.getString("time_end"));
+                schedule.setSlot(sl);
+                schedules.add(schedule);
+            }
+            return schedules;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
 }

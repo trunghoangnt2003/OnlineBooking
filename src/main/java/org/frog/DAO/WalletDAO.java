@@ -23,12 +23,10 @@ public class WalletDAO {
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 Wallet wallet = new Wallet();
-                wallet.setId(resultSet.getString(1));
-                wallet.setBalance(resultSet.getFloat(2));
-                wallet.setHold(resultSet.getFloat(3));
+                wallet.setId(resultSet.getString("id"));
+                wallet.setBalance(resultSet.getFloat("balance"));
+                wallet.setHold(resultSet.getFloat("hold"));
                 return wallet;
-            } else {
-
             }
         } catch (SQLException e) {
             e.printStackTrace();  // Log the stack trace

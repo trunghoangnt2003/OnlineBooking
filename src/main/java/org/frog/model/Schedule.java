@@ -10,6 +10,7 @@ public class Schedule {
     private Date date;
     private Slot slot;
     private Mentor mentor;
+    private Status status;
 
     public Schedule() {
     }
@@ -44,5 +45,13 @@ public class Schedule {
 
     public void setMentor(Mentor mentor) {
         this.mentor = mentor;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

@@ -11,6 +11,8 @@ import org.frog.model.*;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MentorDAO {
 
@@ -699,4 +701,69 @@ public class MentorDAO {
             throw new RuntimeException(e);
         }
     }
+
+    public Map<Mentor, Integer> getProcessingSchedule(int page, String name) {
+        Map<Mentor, Integer> map = new HashMap<>();
+        try {
+            String sql = "SELECT Account.id, Account.username, Account.password, Account.name, Account.phone, Account.gender, Account.mail " +
+                    "FROM Account INNER JOIN Mentor ON Account.id = Mentor.account_id " +
+                    "WHERE status = ? ";
+
+                    if(name != null) {
+                        sql += "AND Account.name LIKE '%" + name + "%' ";
+                    }
+            sql +=   "ORDER BY Account.id " +
+                    "OFFSET ? ROWS FETCH NEXT 5 ROWS ONLY";
+
+            PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement(sql);
+            preparedStatement.setInt(1, StatusEnum.ACTIVE);
+            preparedStatement.setInt(2, (page - 1) * 5);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                ScheduleDAO scheduleDAO = new ScheduleDAO();
+                Mentor mentor = new Mentor();
+                Account account = new Account();
+                account.setId(resultSet.getString("id"));
+                account.setUserName(resultSet.getString("username"));
+                account.setPassword(resultSet.getString("password"));
+                account.setName(resultSet.getString("name"));
+                account.setPhone(resultSet.getString("phone"));
+                account.setGender(resultSet.getInt("gender"));
+                account.setEmail(resultSet.getString("mail"));
+                mentor.setAccount(account);
+
+                int totalProcess = scheduleDAO.getProccessingScheduleByMentorId(account.getId());
+
+                map.put(mentor, totalProcess);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+
+
+
+    public int getTotalMentor(String name) {
+        try{
+            String sql = "SELECT count(*) as total\n " +
+                    "FROM     Account INNER JOIN\n" +
+                    "         Mentor ON Account.id = Mentor.account_id\n" +
+                    "WHERE status = ?";
+
+            if (name != null) {
+                sql += " and Account.name like '%" + name + "%'";
+            }
+            PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement(sql);
+            preparedStatement.setInt(1, StatusEnum.ACTIVE);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                return resultSet.getInt("total");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
 }
