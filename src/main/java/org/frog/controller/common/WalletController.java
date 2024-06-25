@@ -27,15 +27,26 @@ public class WalletController extends AuthenticationServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
         WalletDAO walletDAO = new WalletDAO();
         Wallet wallet = walletDAO.getByAccountId(account.getId());
-        ArrayList<Transaction> transactions = walletDAO.getAllTransactionByWalletId(wallet.getId());
+        ArrayList<Transaction> transactions = walletDAO.getAllTransactionByWalletId(account.getId());
         AccountDAO accountDAO = new AccountDAO();
         Account user = accountDAO.getAccountById(account.getId());
         int role = accountDAO.getRole(account.getId());
+
+        ArrayList<Account> sender = new ArrayList<>();
+        ArrayList<Account> receiver = new ArrayList<>();
+        for(Transaction t : transactions){
+            Account senderAccount = accountDAO.getAccountById(t.getWallet().getId());
+            Account receiverAccount = accountDAO.getAccountById(t.getWalletOpposite().getId());
+            t.setSender(senderAccount);
+            t.setReceiver(receiverAccount);
+        }
 
         req.setAttribute("role", role);
         req.setAttribute("transactions", transactions);
         req.setAttribute("wallet", wallet);
         req.setAttribute("account", user);
+        req.setAttribute("sender", sender);
+        req.setAttribute("receiver", receiver);
         req.getRequestDispatcher("../view/common/wallet.jsp").forward(req, resp);
     }
 }
