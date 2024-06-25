@@ -9,8 +9,9 @@ public class Schedule {
     private int id;
     private Date date;
     private Slot slot;
-    private Mentor mentor;
+   /* private Mentor mentor;*/
     private Status status;
+    private Mentor_Schedule mentorSchedule;
 
     public Schedule() {
     }
@@ -39,13 +40,13 @@ public class Schedule {
         this.slot = slot;
     }
 
-    public Mentor getMentor() {
+    /*public Mentor getMentor() {
         return mentor;
     }
 
     public void setMentor(Mentor mentor) {
         this.mentor = mentor;
-    }
+    }*/
 
     public Status getStatus() {
         return status;
@@ -53,5 +54,13 @@ public class Schedule {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Mentor_Schedule getMentorSchedule() {
+        return mentorSchedule;
+    }
+
+    public void setMentorSchedule(Mentor_Schedule mentorSchedule) {
+        this.mentorSchedule = mentorSchedule;
     }
 }

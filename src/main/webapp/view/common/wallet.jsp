@@ -208,7 +208,7 @@
         </div>
         <div class="balance">
             <h3>$${requestScope.wallet.balance}</h3>
-            <p>Available: ${requestScope.wallet.available}</p>
+            <p>Available: ${requestScope.wallet.hold}</p>
             <c:if test="${requestScope.role == 1}">
                 <button><a href="../payment" style="text-decoration: none">Withdraw</a></button>
                 <button class="btn2">Deposit</button>

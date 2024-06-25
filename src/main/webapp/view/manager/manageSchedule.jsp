@@ -44,6 +44,86 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
 
     <style>
+        /* CSS nền hiển thị Modal */
+        .nenmodal .nenmodal2 {
+            position:fixed;
+            top:0px;
+            left:0px;
+            width:100vw;
+            height:100vh;
+            background:rgba(0,0,0,0.7);
+            z-index:2;
+            display:none;
+        }
+        /* CSS bảng nội dung Modal */
+        .nenmodal .ndmodal {
+            position:absolute;
+            top:50%;
+            left:50%;
+            transform:translate(-50%,-50%) scale(0);
+            background:#fff;
+            width:500px;
+            z-index:2;
+            text-align:center;
+            padding:20px;
+            box-sizing:border-box;
+            font-family:"Open Sans",sans-serif;
+            border-radius:20px;
+            display: block;
+            position: fixed;
+            box-shadow:0px 0px 10px #111;
+        }
+        @media (max-width: 700px) {
+            .nenmodal .ndmodal {width:90%;}
+        }
+        /* CSS bao bọc của nút tắt Modal */
+        .nenmodal .closemodal {
+            text-align:center;
+            margin-top:-40px;
+            margin-bottom:10px;
+        }
+        /* CSS tieu de của Modal */
+        .titlemodal{
+            font-weight:bold;
+            font-size:25px;
+            margin-bottom:10px;
+        }
+        /* CSS nút tắt modal */
+        .closemodal button{
+            width:40px;
+            height:40px;
+            font-size:30px;
+            padding:0px;
+            border-radius:100%;
+            background:#333;
+            color:#fff;
+            border:none;
+        }
+        .nenmodal.active .nenmodal2 {
+            display:block;
+        }
+        /* CSS hiệu ứng hiển thị Modal */
+        .nenmodal.active .ndmodal {
+            transition:all 300ms ease-in-out;
+            transform:translate(-50%,-50%) scale(1);
+        }
+
+        .schedule-slot {
+            background-color: #b2e7db; /* Light green background */
+            padding: 13px 20px; /* Padding around the text */
+            margin: 5px 0;
+            border-radius: 5px; /* Rounded corners */
+            display: inline-block; /* Keep it inline */
+            font-family: Arial, sans-serif; /* Font family */
+            font-size: 16px; /* Font size */
+            color: #333; /* Text color */
+        }
+        input[type="checkbox"] {
+            margin-right: 10px; /* Space between checkbox and text */
+        }
+
+    </style>
+    <style>
         input[type="text"] {
 
             width: 100%;
@@ -173,6 +253,45 @@
         .btn-accept:hover{
             background-color: #35b835; /* Darker blue on hover */
         }
+
+        .btn-accept-lg{
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white; /* White text color */
+            background-color: #32cd32; /* Blue background color */
+            border: none; /* No border */
+            border-radius: 20px; /* Rounded edges */
+            text-align: center;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .btn-accept-lg:hover{
+            background-color: #35b835; /* Darker blue on hover */
+        }
+
+        .btn-write{
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            width: 110px;
+            color: #07AD90; /* White text color */
+            background-color: rgb(176, 237, 215); /* Blue background color */
+            border: none; /* No border */
+            border-radius: 20px; /* Rounded edges */
+            box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .btn-write:hover{
+            background-color: rgb(155, 234, 203); /* Darker blue on hover */
+        }
+
+
     </style>
     <style>
         .notes-container {
@@ -251,6 +370,35 @@
     </style>
 </head>
 <body>
+<div class="nenmodal" id="nenmodal-1">
+    <div class="nenmodal2"></div>
+    <div class="ndmodal">
+
+            <div class="closemodal"><button onclick="momodal()">X</button></div>
+            <div class="titlemodal mb-2">Request Schedule</div>
+        <form action="manageSchedule" method="Post" id="frm">
+            <div style="height: 400px; overflow-y: auto ">
+               <c:forEach items="${requestScope.allSchedule}" var="s">
+                       <div class="schedule-slot">
+                           <input type="checkbox" class="schedule-checkbox"  name="schedule" value="${s.id}"/> Slot ${s.slot.id} ( ${s.slot.start_at}-${s.slot.end_at} ) on ${s.date}
+                       </div>
+
+               </c:forEach>
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox" id="selectAll"   />
+                    Select All
+                </label>
+            </div>
+            <div class="m-3">
+
+
+                <button onclick="handleAccepted()" type="button" class="btn-accept-lg" style="" >Accept</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 <div class="container-scroller">
     <!-- partial:partials/_navbar.jsp -->
@@ -338,87 +486,88 @@
                 </div>
 
                 <div class="schedule" id="schedule">
-                    <h3>Schedule of Mentor ${requestScope.name}</h3>
-                    <input type="hidden" id="name" value="${requestScope.name}"/>
-                    <input type="hidden" id="mentorId" value="${requestScope.mentorId}"/>
-                    <table class="time-table">
-                        <thead class="time-table-head">
-                        <tr class="">
-                            <th class="table-head">
-                                <input type="date" id="ymd" name="ymd" onchange="changeDate()" value="${requestScope.today}" />
-                            </th>
-                            <c:forEach items="${requestScope.week}" var="date">
-                                <th class="table-head">${date}</th>
-                            </c:forEach>
-                        </tr>
-                        <tr>
-                            <th class="table-head" >Slot</th>
-                            <th class="table-head">Monday</th>
-                            <th class="table-head">Tuesday</th>
-                            <th class="table-head">Wednesday</th>
-                            <th class="table-head">Thursday</th>
-                            <th class="table-head" >Friday</th>
-                            <th class="table-head">Saturday</th>
-                            <th class="table-head" >Sunday</th>
-                        </tr>
-
-                        </thead>
-                        <tbody class="time-table-body" style="border: 1px #07AD90 solid">
-                        <c:forEach items="${requestScope.slots}" var="slot">
-                            <tr>
-                                <td class="text-center table-data">
-                                    <h6>Slot ${slot.id}</h6>
-                                        ${slot.start_at}-${slot.end_at}
-                                </td>
+                        <div class="d-flex justify-content-between">
+                            <h3>Schedule of Mentor ${requestScope.name}</h3>
+                            <input type="hidden" id="name" value="${requestScope.name}"/>
+                            <input type="hidden" id="mentorId" value="${requestScope.mentorId}"/>
+                        </div>
+                    <div class="d-flex justify-content-between ">
+                        <div>
+                            <button id="closeButton" class="btn-write" onclick="momodal()">View All</button></button>
+                        </div>
+                        <table class="time-table">
+                            <thead class="time-table-head">
+                            <tr class="">
+                                <th class="table-head">
+                                    <input type="date" id="ymd" name="ymd" onchange="changeDate()" value="${requestScope.today}" />
+                                </th>
                                 <c:forEach items="${requestScope.week}" var="date">
-                                    <td class="table-data" >
-                                        <c:forEach items="${requestScope.schedules}" var="s">
-                                            <c:if test="${ (s.slot.id == slot.id) && (s.date == date) }">
-                                                <div class="notes-container text-center ">
-                                                    <i class="pin"></i>
-                                                    <c:if test="${s.status.id == 1}">
-                                                        <blockquote class="notes color-note font-monospace " style="background-color: #F4E0B9">
-
-                                                            <div class="text-center fw-semibold">
-                                                                <span>${s.status.type}</span>
-                                                            </div>
-                                                            <div class="d-flex justify-content-center mt-4">
-                                                                <button class="btn-accept" style="margin: 0 auto">
-                                                                    Accept
-                                                                </button>
-                                                            </div>
-                                                        </blockquote>
-                                                    </c:if>
-
-                                                    <c:if test="${s.status.id == 2}">
-                                                        <blockquote class="notes color-note font-monospace" style="background-color: #FF6347">
-
-                                                            <div class="text-center fw-bold">
-                                                                <span>${s.status.type}</span>
-                                                            </div>
-
-                                                        </blockquote>
-                                                    </c:if>
-
-                                                    <c:if test="${s.status.id == 11}">
-                                                        <blockquote class="notes color-note font-monospace" style="background-color: #faad12">
-
-                                                            <div class="text-center fw-bold">
-                                                                <span>${s.status.type}</span>
-                                                            </div>
-
-                                                        </blockquote>
-                                                    </c:if>
-
-                                                </div>
-                                            </c:if>
-                                        </c:forEach>
-                                    </td>
+                                    <th class="table-head">${date}</th>
                                 </c:forEach>
                             </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
+                            <tr>
+                                <th class="table-head" >Slot</th>
+                                <th class="table-head">Monday</th>
+                                <th class="table-head">Tuesday</th>
+                                <th class="table-head">Wednesday</th>
+                                <th class="table-head">Thursday</th>
+                                <th class="table-head" >Friday</th>
+                                <th class="table-head">Saturday</th>
+                                <th class="table-head" >Sunday</th>
+                            </tr>
+
+                            </thead>
+                            <tbody class="time-table-body" style="border: 1px #07AD90 solid">
+                            <c:forEach items="${requestScope.slots}" var="slot">
+                                <tr>
+                                    <td class="text-center table-data">
+                                        <h6>Slot ${slot.id}</h6>
+                                            ${slot.start_at}-${slot.end_at}
+                                    </td>
+                                    <c:forEach items="${requestScope.week}" var="date">
+                                        <td class="table-data" >
+                                            <c:forEach items="${requestScope.schedules}" var="s">
+                                                <c:if test="${ (s.slot.id == slot.id) && (s.date == date) }">
+                                                    <div class="notes-container text-center ">
+                                                        <i class="pin"></i>
+                                                        <c:if test="${s.status.id == 1}">
+                                                            <blockquote class="notes color-note font-monospace " style="background-color: #F4E0B9">
+                                                                <div class="text-center fw-semibold">
+                                                                    <span>${s.status.type}</span>
+                                                                </div>
+                                                                <div class="d-flex justify-content-center mt-4">
+                                                                    <button class="btn-accept" style="margin: 0 auto" onclick="btnAccept(${s.id})">
+                                                                        Accept
+                                                                    </button>
+                                                                </div>
+                                                            </blockquote>
+                                                        </c:if>
+                                                        <c:if test="${s.status.id == 2}">
+                                                            <blockquote class="notes color-note font-monospace" style="background-color: #FF6347">
+
+                                                                <div class="text-center fw-bold">
+                                                                    <span>${s.status.type}</span>
+                                                                </div>
+
+                                                            </blockquote>
+                                                        </c:if>
+                                                        <c:if test="${s.status.id == 11}">
+                                                            <blockquote class="notes color-note font-monospace" style="background-color: #faad12">
+                                                                <div class="text-center fw-bold">
+                                                                    <span>${s.status.type}</span>
+                                                                </div>
+                                                            </blockquote>
+                                                        </c:if>
+                                                    </div>
+                                                </c:if>
+                                            </c:forEach>
+                                        </td>
+                                    </c:forEach>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -449,6 +598,32 @@
 
 <script>
 
+    function handleAccepted(){
+        const form = document.getElementById("frm");
+        form.submit();
+    }
+
+
+    var isOpen = false;
+    function momodal() {
+        if(isOpen == false){
+            document.getElementById("nenmodal-1").classList.toggle("active");
+            isOpen = true;
+        }
+        else{
+            document.getElementById("nenmodal-1").classList.toggle("active");
+            isOpen = false;
+        }
+
+    }
+
+    document.getElementById('selectAll').addEventListener('change', function() {
+        var checkboxes = document.querySelectorAll('.schedule-checkbox');
+        for (var checkbox of checkboxes) {
+            checkbox.checked = this.checked;
+        }
+    });
+
     function scheduleHandle(mentorId,page,name){
         const mentor = document.getElementById("mentorInput").value;
         window.location.href = "manageSchedule?mentor=" + mentor + "&mentorId=" + mentorId + "&name=" + name + "&page=" + page
@@ -471,6 +646,10 @@
     }
     function clearHandler(){
         window.location.href = "manageSchedule"
+    }
+
+    function btnAccept(id){
+        window.location.href = "manageSchedule?schedule=" + id
     }
 </script>
 <%--<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"--%>

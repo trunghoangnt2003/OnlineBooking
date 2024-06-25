@@ -13,6 +13,7 @@ import org.frog.model.Mentor;
 import org.frog.model.Schedule;
 import org.frog.model.Slot;
 import org.frog.utility.DateTimeHelper;
+import org.frog.utility.StatusEnum;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,7 +24,22 @@ import java.util.Map;
 public class ScheduleManager extends AuthenticationServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+        String[] Schedule = req.getParameterValues("schedule");
+        int[] id = new int[Schedule.length];
 
+        for (int i = 0; i < Schedule.length; i++) {
+            id[i] = Integer.parseInt(Schedule[i]);
+        }
+        ScheduleDAO scheduleDAO = new ScheduleDAO();
+
+        for (int i = 0; i < id.length; i++) {
+            Schedule schedule = scheduleDAO.getScheduleLogs(String.valueOf(id[i]));
+            scheduleDAO.insert(schedule);
+            scheduleDAO.updateById(id[i], StatusEnum.ACCEPTED);
+        }
+
+
+        resp.sendRedirect("manageSchedule");
     }
 
     @Override
@@ -71,8 +87,10 @@ public class ScheduleManager extends AuthenticationServlet {
         Map<Mentor, Integer>  mentors = mentorDAO.getProcessingSchedule(page,mentorName);
         ArrayList<Slot> slots = slotDAO.selectAll();
         ArrayList<Schedule> schedules = scheduleDAO.getScheduleLogsByMentor(mentorId, from, to);
+        ArrayList<Schedule> allSchedule = scheduleDAO.getAllScheduleLogsByMentor(mentorId);
 
 
+        req.setAttribute("allSchedule", allSchedule);
         req.setAttribute("mentorId", mentorId);
         req.setAttribute("name", name);
         req.setAttribute("schedules", schedules);
