@@ -64,9 +64,9 @@
                                     <img class="avatar" src="${pageContext.request.contextPath}/${requestScope.mentee.account.avatar}" alt="">
                                 </div>
                                 <h4 class="f-w-600" style="margin-top: 10px">${requestScope.mentee.account.name}</h4>
-                            <c:if test="${requestScope.acc_id == requestScope.url_id}">
-                                <a href="update" style="color: white"><i class="fa-solid fa-pen-to-square fa-xl" style="margin-top: 10px"></i></a>
-                            </c:if>
+                                <c:if test="${requestScope.acc_id == requestScope.url_id}">
+                                    <a href="update" style="color: white"><i class="fa-solid fa-pen-to-square fa-xl" style="margin-top: 10px"></i></a>
+                                </c:if>
                             </div>
                         </div>
                         <div class="col-sm-8" style="height: 500px; padding: 50px">
@@ -109,63 +109,63 @@
         </div>
     </div>
     <c:if test="${requestScope.acc_id == requestScope.url_id}">
-    <div class="container" style="margin-top: 30px">
-        <h3 style="color: #179b81; display: flex; justify-content: center">My Wish List</h3>
-        <div class="wishlist-container">
-            <table class="table align-middle mb-0 bg-white">
-                <thead class="bg-light">
-                <tr style="background: #B0EDD7">
-                    <th style="width: 300px; background: #B0EDD7">Name</th>
-                    <th style="width: 300px; background: #B0EDD7">Skill</th>
-                    <th style="width: 100px; background: #B0EDD7">Date</th>
-                    <th style="width: 100px; background: #B0EDD7">Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${requestScope.wishlistA}" var="w">
-                    <tr>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <img
-                                        src="${w.mentor.account.avatar}"
-                                        class="rounded-circle"
-                                        alt=""
-                                        style="width: 45px; height: 45px"
-                                />
-                                <div class="ms-3">
-                                    <p class="fw-bold mb-1">${w.mentor.account.name}</p>
-                                    <p class="text-muted mb-0">${w.mentor.account.email}</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <c:forEach begin="0" end="${w.mentor.level_skills.size() - 1}" items="${w.mentor.level_skills}" varStatus="i" var="ls">
-                                <span class="fw-normal mb-1">${ls.skill.name} for level ${ls.level.name}</span>
-                                <c:if test="${i.index < w.mentor.level_skills.size() - 1}">, </c:if>
-                            </c:forEach>
-                        </td>
-                        <td>${w.timeRequest}</td>
-                        <td>
-                            <button
-                                    type="button"
-                                    class="btn btn-link btn-rounded btn-sm fw-bold"
-                                    data-mdb-ripple-color="dark"
-                                    onclick="confirmDelete(${w.id})"
-                            >
-                                <i class="fa-solid fa-user-slash fa-xl"></i>
-                            </button>
-                        </td>
+        <div class="container" style="margin-top: 30px">
+            <h3 style="color: #179b81; display: flex; justify-content: center">My Wish List</h3>
+            <div class="wishlist-container">
+                <table class="table align-middle mb-0 bg-white">
+                    <thead class="bg-light">
+                    <tr style="background: #B0EDD7">
+                        <th style="width: 300px; background: #B0EDD7">Name</th>
+                        <th style="width: 300px; background: #B0EDD7">Skill</th>
+                        <th style="width: 100px; background: #B0EDD7">Date</th>
+                        <th style="width: 100px; background: #B0EDD7">Actions</th>
                     </tr>
-                </c:forEach>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${requestScope.wishlistA}" var="w">
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img
+                                            src="${w.mentor.account.avatar}"
+                                            class="rounded-circle"
+                                            alt=""
+                                            style="width: 45px; height: 45px"
+                                    />
+                                    <div class="ms-3">
+                                        <p class="fw-bold mb-1">${w.mentor.account.name}</p>
+                                        <p class="text-muted mb-0">${w.mentor.account.email}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <c:forEach begin="0" end="${w.mentor.level_skills.size() - 1}" items="${w.mentor.level_skills}" varStatus="i" var="ls">
+                                    <span class="fw-normal mb-1">${ls.skill.name} for level ${ls.level.name}</span>
+                                    <c:if test="${i.index < w.mentor.level_skills.size() - 1}">, </c:if>
+                                </c:forEach>
+                            </td>
+                            <td>${w.timeRequest}</td>
+                            <td>
+                                <button
+                                        type="button"
+                                        class="btn btn-link btn-rounded btn-sm fw-bold"
+                                        data-mdb-ripple-color="dark"
+                                        onclick="confirmDelete(${w.id},'${requestScope.url_id}')"
+                                >
+                                    <i class="fa-solid fa-user-slash fa-xl"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
     </c:if>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    function confirmDelete(bookingId) {
+    function confirmDelete(bookingId, menteeid) {
         Swal.fire({
             title: "Are you sure?",
             text: "Do you want to delete this mentor?",
@@ -184,7 +184,7 @@
                     showConfirmButton: false
                 });
                 setTimeout(() => {
-                    location.href = "profile?idwish=" + bookingId;
+                    location.href = "profile?idwish=" + bookingId + "&menteeid=" + menteeid;
                 }, 2000);
             }
         });

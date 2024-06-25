@@ -81,20 +81,20 @@ public class ScheduleDAO {
 
 
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return list;
     }
 
-    public ArrayList<Slot> getSlots(){
-        String sql="SELECT id,time_start,time_end FROM Slot";
+    public ArrayList<Slot> getSlots() {
+        String sql = "SELECT id,time_start,time_end FROM Slot";
         try {
             Connection connection = JDBC.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
             ArrayList<Slot> slots = new ArrayList<>();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 Slot slot = new Slot();
                 slot.setId(resultSet.getInt("id"));
                 slot.setStart_at(resultSet.getString("time_start"));
@@ -108,16 +108,17 @@ public class ScheduleDAO {
         }
     }
 
-    public ArrayList<BookingSchedule> getSchedulesByIDnDay(String id, Date start , Date end){
+    public ArrayList<BookingSchedule> getSchedulesByIDnDay(String id, Date start, Date end) {
         ArrayList<BookingSchedule> schedules = new ArrayList<>();
-        String sql="SELECT s.id,s.date,slot_id,s.account_id,bs.booking_id,skill.name,skill.src_icon,lvl.type,bs.schedule_id,isAtend,bs.status_id \n" +
+        String sql = "SELECT s.id,s.date,slot_id,s.mentor_schedule_id,ms.mentor_id,bs.booking_id,skill.name,skill.src_icon,lvl.type,bs.schedule_id,isAtend,bs.status_id \n" +
                 "                FROM Schedule s \n" +
+                "INNER JOIN Mentor_Schedule ms ON s.mentor_schedule_id = ms.id \n" +
                 "                LEFT JOIN Booking_Schedule bs ON s.id = bs.schedule_id\n" +
                 "                LEFT JOIN Booking b ON b.id = bs.booking_id\n" +
                 "               LEFT JOIN Level_Skill ls ON ls.id = b.level_skill_id\n" +
                 "                LEFT JOIN Skill skill ON skill.id = ls.skill_id\n" +
                 "\t\t\t\tLEFT JOIN Level lvl ON lvl.id=ls.level_id\n" +
-                "                WHERE s.account_id=? AND s.date >= ? AND s.date <= ?\n" +
+                "                WHERE ms.mentor_id=? AND s.date >= ? AND s.date <= ?\n" +
                 "                ORDER BY s.date ";
         try {
             Connection connection = JDBC.getConnection();
@@ -126,22 +127,28 @@ public class ScheduleDAO {
             preparedStatement.setDate(2, start);
             preparedStatement.setDate(3, end);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 BookingSchedule bs = new BookingSchedule();
                 Schedule s = new Schedule();
                 s.setId(resultSet.getInt("id"));
                 s.setDate(resultSet.getDate("date"));
 
+
+                Mentor_Schedule ms = new Mentor_Schedule();
+                ms.setId(resultSet.getInt("mentor_schedule_id"));
                 Mentor m = new Mentor();
                 Account acc = new Account();
-                acc.setId(resultSet.getString("account_id"));
+                acc.setId(resultSet.getString("mentor_id"));
                 m.setAccount(acc);
-                s.setMentor(m);
+                ms.setMentor(m);
+                s.setMentorSchedule(ms);
+
 
                 Slot sl = new Slot();
                 sl.setId(resultSet.getInt("slot_id"));
                 s.setSlot(sl);
                 bs.setSchedule(s);
+
 
                 Booking b = new Booking();
                 Level_Skills ls = new Level_Skills();
@@ -156,10 +163,12 @@ public class ScheduleDAO {
                 b.setId(resultSet.getInt("booking_id"));
                 bs.setBooking(b);
 
+
                 bs.setAttend(resultSet.getBoolean("isAtend"));
                 Status st = new Status();
                 st.setId(resultSet.getInt("status_id"));
                 bs.setStatus(st);
+
 
                 schedules.add(bs);
             }
@@ -169,12 +178,13 @@ public class ScheduleDAO {
             return null;
         }
     }
-    public int insertDayFreeByMentor(String id , Date date ,int slot_id){
+
+    public int insertDayFreeByMentor(int id, Date date, int slot_id) {
         int numUppdate = 0;
-        String sql="INSERT INTO [dbo].[Schedule]\n" +
+        String sql = "INSERT INTO [dbo].[Schedule]\n" +
                 "           ([date]\n" +
                 "           ,[slot_id]\n" +
-                "           ,[account_id])\n" +
+                "           ,[mentor_schedule_id])\n" +
                 "     VALUES\n" +
                 "           (?\n" +
                 "           ,?\n" +
@@ -183,21 +193,24 @@ public class ScheduleDAO {
             Connection connection = JDBC.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setDate(1, date);
-            preparedStatement.setString(3, id);
+
+
             preparedStatement.setInt(2, slot_id);
+            preparedStatement.setInt(3, id);
             numUppdate = preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return numUppdate;
     }
-    public void deleteDayFreeByMentor(String id , Date date ,int slot_id){
-        String sql="DELETE FROM [dbo].[Schedule]\n" +
-                "      WHERE  account_id=? AND date = ? AND slot_id = ? ";
+
+    public void deleteDayFreeByMentor(int id, Date date, int slot_id) {
+        String sql = "DELETE FROM [dbo].[Schedule]\n" +
+                "      WHERE  mentor_schedule_id=? AND date = ? AND slot_id = ? ";
         try {
             Connection connection = JDBC.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, id);
+            preparedStatement.setInt(1, id);
             preparedStatement.setDate(2, date);
             preparedStatement.setInt(3, slot_id);
             preparedStatement.executeUpdate();
@@ -205,4 +218,8 @@ public class ScheduleDAO {
             e.printStackTrace();
         }
     }
+
 }
+
+
+
