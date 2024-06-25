@@ -1,20 +1,21 @@
 package org.frog.controller.manager;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.frog.DAO.MentorDAO;
+import org.frog.DAO.Mentor_ScheduleDAO;
 import org.frog.DAO.ScheduleDAO;
 import org.frog.DAO.SlotDAO;
 import org.frog.controller.auth.AuthenticationServlet;
-import org.frog.model.Account;
-import org.frog.model.Mentor;
-import org.frog.model.Schedule;
-import org.frog.model.Slot;
+import org.frog.model.*;
 import org.frog.utility.DateTimeHelper;
 import org.frog.utility.StatusEnum;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,7 +25,8 @@ import java.util.Map;
 public class ScheduleManager extends AuthenticationServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
-        String[] Schedule = req.getParameterValues("schedule");
+/*        String[] Schedule = req.getParameterValues("schedule");
+        String mentorSchedule = req.getParameter("mentorSchedule");
         int[] id = new int[Schedule.length];
 
         for (int i = 0; i < Schedule.length; i++) {
@@ -39,7 +41,36 @@ public class ScheduleManager extends AuthenticationServlet {
         }
 
 
+        resp.sendRedirect("manageSchedule");*/
+        fetchPost(req, resp, account);
+    }
+
+    private void fetchPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+
+
+        BufferedReader reader = req.getReader();
+        StringBuilder jsonBuffer = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            jsonBuffer.append(line);
+        }
+        Gson gson = new Gson();
+        JsonObject json = gson.fromJson(jsonBuffer.toString(), JsonObject.class);
+
+        ScheduleDAO scheduleDAO = new ScheduleDAO();
+        String MentorSchedule = json.get("mentorSchedule").getAsString();
+        String action = json.get("action").getAsString();
+        int id = Integer.parseInt(MentorSchedule);
+        ArrayList<Schedule> schedulesLogs = scheduleDAO.getLogsAllByMentorScheduleId(id);
+        if(action.equals("2")) {
+            //accept
+        }else if(action.equals("3")) {
+            //reject
+        }
+
+
         resp.sendRedirect("manageSchedule");
+
     }
 
     @Override
@@ -52,7 +83,7 @@ public class ScheduleManager extends AuthenticationServlet {
         SlotDAO slotDAO = new SlotDAO();
         MentorDAO mentorDAO = new MentorDAO();
         ScheduleDAO scheduleDAO = new ScheduleDAO();
-
+        Mentor_ScheduleDAO mentor_scheduleDAO = new Mentor_ScheduleDAO();
 
 
         int page = 1;
@@ -84,12 +115,14 @@ public class ScheduleManager extends AuthenticationServlet {
             today = DateTimeHelper.convertUtilDateToSqlDate(ymd);
         }
         ArrayList<java.sql.Date> week = DateTimeHelper.getDatesBetween(from, to);
-        Map<Mentor, Integer>  mentors = mentorDAO.getProcessingSchedule(page,mentorName);
+        Map<Mentor_Schedule, Integer>  mentorSchedule = mentorDAO.getProcessingSchedule(page,mentorName);
         ArrayList<Slot> slots = slotDAO.selectAll();
         ArrayList<Schedule> schedules = scheduleDAO.getScheduleLogsByMentor(mentorId, from, to);
         ArrayList<Schedule> allSchedule = scheduleDAO.getAllScheduleLogsByMentor(mentorId);
+        Mentor_Schedule mentor_schedule = mentor_scheduleDAO.getByMentor(mentorId);
 
 
+        req.setAttribute("mentor_schedule", mentor_schedule);
         req.setAttribute("allSchedule", allSchedule);
         req.setAttribute("mentorId", mentorId);
         req.setAttribute("name", name);
@@ -98,7 +131,7 @@ public class ScheduleManager extends AuthenticationServlet {
         req.setAttribute("total", total);
         req.setAttribute("end_page", end_page);
         req.setAttribute("page", page);
-        req.setAttribute("mentors", mentors);
+        req.setAttribute("mentorSchedule", mentorSchedule);
         req.setAttribute("week", week);
         req.setAttribute("today", today);
         req.setAttribute("slots", slots);

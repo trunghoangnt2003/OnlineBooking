@@ -404,4 +404,39 @@ public class ScheduleDAO {
             e.printStackTrace();
         }
     }
+
+    public ArrayList<Schedule> getLogsAllByMentorScheduleId(int id){
+        ArrayList<Schedule> schedules = new ArrayList<>();
+        String sql="SELECT * FROM Schedule_Logs WHERE mentor_schedule_id = ? And status_id = ?";
+        try {
+            Connection connection = JDBC.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(2, StatusEnum.PROCESSING);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                Schedule schedule = new Schedule();
+                schedule.setId(resultSet.getInt("id"));
+                schedule.setDate(resultSet.getDate("date"));
+
+                Slot slot    = new Slot();
+                slot.setId(resultSet.getInt("slot_id"));
+                schedule.setSlot(slot);
+
+                Status st = new Status();
+                st.setId(resultSet.getInt("status_id"));
+                schedule.setStatus(st);
+
+                Mentor_Schedule ms = new Mentor_Schedule();
+                ms.setId(resultSet.getInt("mentor_schedule_id"));
+                schedule.setMentorSchedule(ms);
+
+                schedules.add(schedule);
+            }
+            return schedules;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

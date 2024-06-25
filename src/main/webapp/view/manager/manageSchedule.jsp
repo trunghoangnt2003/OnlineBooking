@@ -6,7 +6,7 @@
   Date: 24-Jun-24
   Time: 2:43 PM
   To change this template use File | Settings | File Templates.
---%>ss
+--%>
 
 <html>
 <head>
@@ -432,20 +432,24 @@
                 <div class="table-responsive" style="border: 1px solid black;border-radius: 10px; margin-top: 15px; height: 300px">
                     <table class=" table table-hover"  id="user-table" style="width: 100%; border-radius: 5px">
                         <thead class="table-dark">
-                        <td>No</td>
+                        <td>Schedule</td>
                         <td>Mentor Name</td>
                         <td>Mentor Id</td>
+                        <td>Start</td>
+                        <td>End</td>
                         <td>Slot Waiting</td>
                         <td>Schedule</td>
                         </thead>
                         <tbody >
-                            <c:forEach items="${requestScope.mentors}" var="entry" varStatus="i">
+                            <c:forEach items="${requestScope.mentorSchedule}" var="entry">
                                 <tr>
-                                    <td>${i.index+1}</td>
-                                    <td>${entry.key.account.name}</td>
-                                    <td>${entry.key.account.id}</td>
+                                    <td>${entry.key.id}</td>
+                                    <td>${entry.key.mentor.account.name}</td>
+                                    <td>${entry.key.mentor.account.id}</td>
+                                    <td>${entry.key.start_date}</td>
+                                    <td>${entry.key.end_date}</td>
                                     <td>${entry.value}</td>
-                                    <td ><i class="fa-regular fa-calendar-days fa-2xl" style="color: #74C0FC; cursor: pointer" onclick="scheduleHandle('${entry.key.account.id}','${requestScope.page}','${entry.key.account.name}')"></i></td>
+                                    <td ><i class="fa-regular fa-calendar-days fa-2xl" style="color: #74C0FC; cursor: pointer" onclick="scheduleHandle('${entry.key.mentor.account.id}','${requestScope.page}','${entry.key.mentor.account.name}')"></i></td>
                                 </tr>
                             </c:forEach>
                         </tbody>
@@ -487,86 +491,96 @@
 
                 <div class="schedule" id="schedule">
                         <div class="d-flex justify-content-between">
-                            <h3>Schedule of Mentor ${requestScope.name}</h3>
-                            <input type="hidden" id="name" value="${requestScope.name}"/>
-                            <input type="hidden" id="mentorId" value="${requestScope.mentorId}"/>
+                            <div>
+                                <h3>Schedule of Mentor ${requestScope.name} #${requestScope.mentor_schedule.id}</h3>
+                                <input type="hidden" id="name" value="${requestScope.name}"/>
+                                <input type="hidden" id="mentorId" value="${requestScope.mentorId}"/>
+                            </div>
+
+
                         </div>
                     <div class="d-flex justify-content-between ">
-                        <div>
-                            <button id="closeButton" class="btn-write" onclick="momodal()">View All</button></button>
-                        </div>
-                        <table class="time-table">
-                            <thead class="time-table-head">
-                            <tr class="">
-                                <th class="table-head">
-                                    <input type="date" id="ymd" name="ymd" onchange="changeDate()" value="${requestScope.today}" />
-                                </th>
-                                <c:forEach items="${requestScope.week}" var="date">
-                                    <th class="table-head">${date}</th>
-                                </c:forEach>
-                            </tr>
-                            <tr>
-                                <th class="table-head" >Slot</th>
-                                <th class="table-head">Monday</th>
-                                <th class="table-head">Tuesday</th>
-                                <th class="table-head">Wednesday</th>
-                                <th class="table-head">Thursday</th>
-                                <th class="table-head" >Friday</th>
-                                <th class="table-head">Saturday</th>
-                                <th class="table-head" >Sunday</th>
-                            </tr>
-
-                            </thead>
-                            <tbody class="time-table-body" style="border: 1px #07AD90 solid">
-                            <c:forEach items="${requestScope.slots}" var="slot">
-                                <tr>
-                                    <td class="text-center table-data">
-                                        <h6>Slot ${slot.id}</h6>
-                                            ${slot.start_at}-${slot.end_at}
-                                    </td>
+                        <c:if test="${requestScope.mentor_schedule != null}">
+                            <div style="Width: 10%">
+                                <button id="closeButton" class="btn-write" onclick="momodal()">View All</button>
+                                <button  class="btn-write" onclick="handleAcceptedAll(${requestScope.mentor_schedule.id},3)" style="margin-top: 10px"  >Accept</button>
+                                <button  class="btn-write" onclick="handleAcceptedAll(${requestScope.mentor_schedule.id},2)" style="margin-top: 10px"  >Reject</button>
+                            </div>
+                        </c:if>
+                        <div class="d-flex justify-content-center " style="width: 90%">
+                            <table class="time-table">
+                                <thead class="time-table-head">
+                                <tr class="">
+                                    <th class="table-head">
+                                        <input type="date" id="ymd" name="ymd" onchange="changeDate()" value="${requestScope.today}" />
+                                    </th>
                                     <c:forEach items="${requestScope.week}" var="date">
-                                        <td class="table-data" >
-                                            <c:forEach items="${requestScope.schedules}" var="s">
-                                                <c:if test="${ (s.slot.id == slot.id) && (s.date == date) }">
-                                                    <div class="notes-container text-center ">
-                                                        <i class="pin"></i>
-                                                        <c:if test="${s.status.id == 1}">
-                                                            <blockquote class="notes color-note font-monospace " style="background-color: #F4E0B9">
-                                                                <div class="text-center fw-semibold">
-                                                                    <span>${s.status.type}</span>
-                                                                </div>
-                                                                <div class="d-flex justify-content-center mt-4">
-                                                                    <button class="btn-accept" style="margin: 0 auto" onclick="btnAccept(${s.id})">
-                                                                        Accept
-                                                                    </button>
-                                                                </div>
-                                                            </blockquote>
-                                                        </c:if>
-                                                        <c:if test="${s.status.id == 2}">
-                                                            <blockquote class="notes color-note font-monospace" style="background-color: #FF6347">
-
-                                                                <div class="text-center fw-bold">
-                                                                    <span>${s.status.type}</span>
-                                                                </div>
-
-                                                            </blockquote>
-                                                        </c:if>
-                                                        <c:if test="${s.status.id == 11}">
-                                                            <blockquote class="notes color-note font-monospace" style="background-color: #faad12">
-                                                                <div class="text-center fw-bold">
-                                                                    <span>${s.status.type}</span>
-                                                                </div>
-                                                            </blockquote>
-                                                        </c:if>
-                                                    </div>
-                                                </c:if>
-                                            </c:forEach>
-                                        </td>
+                                        <th class="table-head">${date}</th>
                                     </c:forEach>
                                 </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>
+                                <tr>
+                                    <th class="table-head" >Slot</th>
+                                    <th class="table-head">Monday</th>
+                                    <th class="table-head">Tuesday</th>
+                                    <th class="table-head">Wednesday</th>
+                                    <th class="table-head">Thursday</th>
+                                    <th class="table-head" >Friday</th>
+                                    <th class="table-head">Saturday</th>
+                                    <th class="table-head" >Sunday</th>
+                                </tr>
+
+                                </thead>
+                                <tbody class="time-table-body" style="border: 1px #07AD90 solid">
+                                <c:forEach items="${requestScope.slots}" var="slot">
+                                    <tr>
+                                        <td class="text-center table-data">
+                                            <h6>Slot ${slot.id}</h6>
+                                                ${slot.start_at}-${slot.end_at}
+                                        </td>
+                                        <c:forEach items="${requestScope.week}" var="date">
+                                            <td class="table-data" >
+                                                <c:forEach items="${requestScope.schedules}" var="s">
+                                                    <c:if test="${ (s.slot.id == slot.id) && (s.date == date) }">
+                                                        <div class="notes-container text-center ">
+                                                            <i class="pin"></i>
+                                                            <c:if test="${s.status.id == 1}">
+                                                                <blockquote class="notes color-note font-monospace " style="background-color: #F4E0B9">
+                                                                    <div class="text-center fw-semibold">
+                                                                        <span>${s.status.type}</span>
+                                                                    </div>
+                                                                    <%--<div class="d-flex justify-content-center mt-4">
+                                                                        <button class="btn-accept" style="margin: 0 auto" onclick="btnAccept(${s.id})">
+                                                                            Accept
+                                                                        </button>
+                                                                    </div>--%>
+                                                                </blockquote>
+                                                            </c:if>
+                                                            <c:if test="${s.status.id == 2}">
+                                                                <blockquote class="notes color-note font-monospace" style="background-color: #FF6347">
+
+                                                                    <div class="text-center fw-bold">
+                                                                        <span>${s.status.type}</span>
+                                                                    </div>
+
+                                                                </blockquote>
+                                                            </c:if>
+                                                            <c:if test="${s.status.id == 11}">
+                                                                <blockquote class="notes color-note font-monospace" style="background-color: #faad12">
+                                                                    <div class="text-center fw-bold">
+                                                                        <span>${s.status.type}</span>
+                                                                    </div>
+                                                                </blockquote>
+                                                            </c:if>
+                                                        </div>
+                                                    </c:if>
+                                                </c:forEach>
+                                            </td>
+                                        </c:forEach>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -650,6 +664,27 @@
 
     function btnAccept(id){
         window.location.href = "manageSchedule?schedule=" + id
+    }
+
+    function  handleAcceptedAll(id,action){
+        fetch("manageSchedule", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({mentorSchedule: id,action:action}),
+        }).then( response => {
+            if(response.ok) {
+                location.reload();
+            } else {
+                throw new Error('Network response was not ok.');
+            }
+
+        }).catch(
+            error => {
+                console.error('There has been a problem with your fetch operation:', error);
+            }
+        )
     }
 </script>
 <%--<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"--%>

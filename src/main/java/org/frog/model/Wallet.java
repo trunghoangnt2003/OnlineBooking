@@ -17,6 +17,8 @@ public class Wallet {
 
 
     public Wallet() {
+        this.hold = 0;
+        this.balance = 0;
     }
 
     public String getId() {
