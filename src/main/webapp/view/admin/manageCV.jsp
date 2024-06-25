@@ -141,8 +141,13 @@
                                                     <span>CV of mentor: ${m.account.name}</span>
                                                     <form action="manageCV" method="post">
                                                         <span>
-                                                            <button type="submit" name="action" class="btn btn-success" style="padding: 5px;margin: 5px" value="APPROVE" id="approveButton">APPROVE</button>
-                                                        <button type="submit" name="action" class="btn btn-danger" style="padding: 5px;margin: 5px" value="REJECT" id="rejectButton">REJECT</button>
+                                                            <c:if test="${m.status.id == 1}">
+                                                                <button type="submit" name="action" class="btn btn-success" style="padding: 5px;margin: 5px" value="APPROVE" id="approveButton">APPROVE</button>
+                                                                <button type="submit" name="action" class="btn btn-danger" style="padding: 5px;margin: 5px" value="REJECT" id="rejectButton">REJECT</button>
+                                                            </c:if>
+                                                            <c:if test="${m.status.id != 1}">
+                                                                aaa
+                                                            </c:if>
                                                         </span>
                                                         <input type="hidden" name="accountId" value="${m.account.id}" />
                                                     </form>
