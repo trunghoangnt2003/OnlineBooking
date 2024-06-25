@@ -29,7 +29,7 @@ public class ManageCVMentor extends AuthenticationServlet {
             mentor_cv_logDAO.updateStatus(accountId, 14);
             MentorDAO mentorDAO = new MentorDAO();
             Mentor_CV_Log mentor_cv_log = mentor_cv_logDAO.getMentorCVLogByAccountId(accountId);
-            mentorDAO.updateMentorLog(mentor_cv_log);
+            mentorDAO.updateMentor(mentor_cv_log);
         } else if ("REJECT".equals(action)) {
             mentor_cv_logDAO.updateStatus(accountId, 2);
         }
@@ -40,6 +40,7 @@ public class ManageCVMentor extends AuthenticationServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
         MentorDAO mentorDAO = new MentorDAO();
         ArrayList<Mentor_CV_Log> mentors = mentorDAO.getAllMentor();
+        System.out.println("mentor size: " + mentors.size());
         Level_SkillDAO level_skillDAO = new Level_SkillDAO();
         for (Mentor_CV_Log mentor : mentors) {
             ArrayList<Level_Skills> level_skills = level_skillDAO.getLevel_SkillByMentorId(mentor.getAccount().getId());

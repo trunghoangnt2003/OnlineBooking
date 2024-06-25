@@ -255,7 +255,7 @@ public class MentorDAO {
 
     }
 
-    public void updateMentorLog(Mentor_CV_Log mentor) {
+    public void updateMentor(Mentor_CV_Log mentor) {
         try {
             Connection connection = JDBC.getConnection();
             String sql = "UPDATE [dbo].[Mentor]\n" +
@@ -594,7 +594,7 @@ public class MentorDAO {
         }
     }
 
-    public void updateMentorCVLog(Mentor mentor, String id, String status) {
+    public void insertMentorLog(Mentor_CV_Log mentor, int status_id) {
         try {
             Connection connection = JDBC.getConnection();
             String sql = "INSERT INTO [dbo].[Mentor_CV_Logs]\n" +
@@ -602,9 +602,11 @@ public class MentorDAO {
                     "           ,[price]\n" +
                     "           ,[experience]\n" +
                     "           ,[education]\n" +
-                    "           ,[account_id])\n" +
+                    "           ,[account_id]\n" +
+                    "           ,[status_id])\n" +
                     "     VALUES\n" +
                     "           (?\n" +
+                    "           ,?\n" +
                     "           ,?\n" +
                     "           ,?\n" +
                     "           ,?\n" +
@@ -614,7 +616,8 @@ public class MentorDAO {
             preparedStatement.setInt(2, mentor.getPrice());
             preparedStatement.setString(3, mentor.getExperience());
             preparedStatement.setString(4, mentor.getEducation());
-            preparedStatement.setString(5, id);
+            preparedStatement.setString(5, mentor.getAccount().getId());
+            preparedStatement.setInt(6, status_id);
             preparedStatement.executeUpdate();
             JDBC.closeConnection(connection);
         } catch (SQLException e) {
@@ -695,6 +698,37 @@ public class MentorDAO {
             }
             JDBC.closeConnection(connection);
             return mentors;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void insertMentorCVLog(Mentor_CV_Log mentor, int status_id) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "INSERT INTO [dbo].[Mentor_CV_Logs]\n" +
+                    "           ([profile_detail]\n" +
+                    "           ,[price]\n" +
+                    "           ,[experience]\n" +
+                    "           ,[education]\n" +
+                    "           ,[account_id]\n" +
+                    "           ,[status_id])\n" +
+                    "     VALUES\n" +
+                    "           (?\n" +
+                    "           ,?\n" +
+                    "           ,?\n" +
+                    "           ,?\n" +
+                    "           ,?\n" +
+                    "           ,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, mentor.getProfileDetail());
+            preparedStatement.setInt(2, mentor.getPrice());
+            preparedStatement.setString(3, mentor.getExperience());
+            preparedStatement.setString(4, mentor.getEducation());
+            preparedStatement.setString(5, mentor.getAccount().getId());
+            preparedStatement.setInt(6, status_id);
+            preparedStatement.executeUpdate();
+            JDBC.closeConnection(connection);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
