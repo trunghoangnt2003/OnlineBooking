@@ -1,6 +1,7 @@
 package org.frog.DAO;
 
 import org.frog.model.*;
+import org.frog.utility.StatusEnum;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -215,5 +216,25 @@ public class WalletDAO {
             throw new RuntimeException(e);
         }
         return transactions;
+    }
+    public void insert(Wallet wallet) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "INSERT INTO [dbo].[Wallet]\n" +
+                    "           ([id]\n" +
+                    "           ,[balance]\n" +
+                    "           ,[hold])\n" +
+                    "     VALUES\n" +
+                    "           (?\n" +
+                    "           ,?\n" +
+                    "           ,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1,wallet.getId());
+            preparedStatement.setFloat(2,wallet.getBalance());
+            preparedStatement.setFloat(3,wallet.getHold());
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
