@@ -1,5 +1,6 @@
 package org.frog.model;
 
+
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -10,8 +11,16 @@ public class Schedule {
     private Date date;
     private Slot slot;
     private Mentor mentor;
-
+    private Status status;
     public Schedule() {
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public int getId() {
@@ -45,4 +54,5 @@ public class Schedule {
     public void setMentor(Mentor mentor) {
         this.mentor = mentor;
     }
+
 }

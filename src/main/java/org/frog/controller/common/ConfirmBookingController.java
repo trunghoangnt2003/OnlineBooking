@@ -11,6 +11,7 @@ import org.frog.DAO.WalletDAO;
 import org.frog.model.Account;
 import org.frog.model.Booking;
 import org.frog.utility.DateTimeHelper;
+import org.frog.utility.PaymentEnum;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -35,21 +36,25 @@ public class ConfirmBookingController extends HttpServlet {
                 booking = bookingDAO.getBookingById(id);
                 mentor=walletDAO.getWalletAccountById(booking.getMentor().getAccount().getId());
                 mentee=walletDAO.getWalletAccountById(booking.getMentee().getAccount().getId());
-                float fee = (float) (booking.getAmount() * 0.05);
-                float menteePay = booking.getAmount() + fee;
+
+                float fee = (float) (booking.getAmount() * PaymentEnum.FEE);
+                float menteePay = booking.getAmount() ;
                 walletDAO.payment(mentee.getWallet().getBalance()-menteePay,mentee.getWallet().getId());
-                walletDAO.payment(mentor.getWallet().getBalance()+booking.getAmount(),mentor.getWallet().getId());
+                walletDAO.updateAvailable(mentor.getWallet(),mentor.getWallet().getHold()-booking.getAmount());
+
+                walletDAO.payment(mentor.getWallet().getBalance()+booking.getAmount()-fee,mentor.getWallet().getId());
+
                 LocalDateTime now = LocalDateTime.now();
                 walletDAO.createTransaction(Timestamp.valueOf(now),booking.getAmount(),mentee.getWallet().getId(),mentor.getWallet().getId(),fee);
                 resp.getWriter().println("Thank you for confirming your booking");
                 resp.getWriter().println("BOOKING");
-                resp.getWriter().println("Mentee"+booking.getMentee().getAccount().getName());
-                resp.getWriter().println("Amount"+booking.getAmount());
-                resp.getWriter().println("Created date"+booking.getDate());
-                resp.getWriter().println("Skill"+booking.getLevel_skills().getSkill().getName());
-                resp.getWriter().println("Level"+booking.getLevel_skills().getLevel().getName());
-                resp.getWriter().println("Start Date"+booking.getStartDate());
-                resp.getWriter().println("End Date"+booking.getEndDate());
+                resp.getWriter().println("Mentee: "+booking.getMentee().getAccount().getName());
+                resp.getWriter().println("Amount: "+booking.getAmount());
+                resp.getWriter().println("Created date: "+booking.getDate());
+                resp.getWriter().println("Skill: "+booking.getLevel_skills().getSkill().getName());
+                resp.getWriter().println("Level: "+booking.getLevel_skills().getLevel().getName());
+                resp.getWriter().println("Start Date: "+booking.getStartDate());
+                resp.getWriter().println("End Date: "+booking.getEndDate());
                 resp.getWriter().println("If you have any question please contact us at Frog Communication");
             } else {
                 resp.getWriter().println("Sorry, your booking has not been confirmed yet");

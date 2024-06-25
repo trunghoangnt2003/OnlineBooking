@@ -169,16 +169,37 @@ public class ScheduleDAO {
             return null;
         }
     }
+    public boolean checkDayExistScheduleLogs(String id , Date date , int slot_id){
+        String sql="SELECT * FROM Schedule_Logs \n" +
+                "WHERE account_id= ? AND date = ? AND slot_id = ?";
+        try {
+            Connection connection = JDBC.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, id);
+            preparedStatement.setDate(2, date);
+            preparedStatement.setInt(3, slot_id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                return true;
+            }
+            return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     public int insertDayFreeByMentor(String id , Date date ,int slot_id){
         int numUppdate = 0;
-        String sql="INSERT INTO [dbo].[Schedule]\n" +
+        String sql="INSERT INTO [Schedule_Logs]\n" +
                 "           ([date]\n" +
                 "           ,[slot_id]\n" +
-                "           ,[account_id])\n" +
+                "           ,[account_id]\n" +
+                "           ,[status_id])\n" +
                 "     VALUES\n" +
                 "           (?\n" +
                 "           ,?\n" +
-                "           ,?)\n";
+                "           ,?\n" +
+                "           ,1)";
         try {
             Connection connection = JDBC.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -191,9 +212,11 @@ public class ScheduleDAO {
         }
         return numUppdate;
     }
-    public void deleteDayFreeByMentor(String id , Date date ,int slot_id){
-        String sql="DELETE FROM [dbo].[Schedule]\n" +
-                "      WHERE  account_id=? AND date = ? AND slot_id = ? ";
+    public void reMarkDayFreeByMentor(String id , Date date ,int slot_id){
+        String sql="UPDATE [Schedule_Logs]\n" +
+                "   SET \n" +
+                "      [status_id] = 1\n" +
+                " WHERE  account_id=? AND date = ? AND slot_id = ? ";
         try {
             Connection connection = JDBC.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -203,6 +226,86 @@ public class ScheduleDAO {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+    public void deleteDayFreeByMentor(String id , Date date ,int slot_id){
+        String sql="UPDATE [Schedule_Logs]\n" +
+                "   SET \n" +
+                "      [status_id] = 12\n" +
+                " WHERE  account_id=? AND date = ? AND slot_id = ? ";
+        try {
+            Connection connection = JDBC.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, id);
+            preparedStatement.setDate(2, date);
+            preparedStatement.setInt(3, slot_id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public ArrayList<Schedule> getAllScheduleLogsByMentor(String id){
+        ArrayList<Schedule> schedules = new ArrayList<>();
+        String sql="\n" +
+                "SELECT Schedule_Logs.id, Schedule_Logs.date, Schedule_Logs.slot_id, Schedule_Logs.account_id, Schedule_Logs.status_id, Slot.time_start, Slot.time_end, Status.type\n" +
+                "FROM     Schedule_Logs INNER JOIN\n" +
+                "Slot ON Schedule_Logs.id = Slot.id INNER JOIN\n" +
+                "Status ON Schedule_Logs.status_id = Status.id\n" +
+                "WHERE account_id = ? ";
+        try {
+            Connection connection = JDBC.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                Schedule schedule = new Schedule();
+                schedule.setId(resultSet.getInt("id"));
+                schedule.setDate(resultSet.getDate("date"));
+
+                Mentor m = new Mentor();
+                Account acc = new Account();
+                acc.setId(resultSet.getString("account_id"));
+                m.setAccount(acc);
+                schedule.setMentor(m);
+
+                Status st = new Status();
+                st.setId(resultSet.getInt("status_id"));
+                st.setType(resultSet.getString("type"));
+                schedule.setStatus(st);
+
+                Slot sl = new Slot();
+                sl.setId(resultSet.getInt("slot_id"));
+                sl.setStart_at(resultSet.getString("time_start"));
+                sl.setEnd_at(resultSet.getString("time_end"));
+                schedule.setSlot(sl);
+                schedules.add(schedule);
+            }
+            return schedules;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+    public boolean checkSlotBooked(String id , Date date ,int slot_id){
+        String sql = "SELECT b.status_id FROM Booking_Schedule bs \n" +
+                "LEFT JOIN Booking b ON bs.booking_id=b.id\n" +
+                "LEFT JOIN Schedule s ON s.id = bs.schedule_id\n" +
+                "WHERE (b.status_id = 1 OR b.status_id=11) AND account_id= ? AND date = ? AND slot_id = ?";
+        try {
+            Connection connection = JDBC.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, id);
+            preparedStatement.setDate(2, date);
+            preparedStatement.setInt(3, slot_id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                return true;
+            }
+            return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }

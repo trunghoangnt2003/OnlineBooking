@@ -35,7 +35,7 @@ public class DeleteScheduleController extends AuthenticationServlet {
                 else{
                     req.getSession().setAttribute("DeleteSlotError", "Can not delete slot in passed");
                 }
-                resp.sendRedirect("/Frog/mentor/schedule?today="+day);
+                resp.sendRedirect("/Frog/mentor/schedule/edit?today="+day);
             }
         }catch(Exception e){
             e.printStackTrace();

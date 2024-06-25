@@ -52,7 +52,7 @@ public class UpdateScheduleController extends AuthenticationServlet {
                      // money back
                      booking = bookingDAO.getBookingById(b.getId());
                      mentee = walletDAO.getWalletAccountById(booking.getMentee().getAccount().getId());
-                     walletDAO.moneyBack(mentee.getWallet().getHold()+booking.getAmount(),mentee.getWallet().getId());
+                     walletDAO.moneyBack(mentee.getWallet().getHold()-booking.getAmount(),mentee.getWallet().getId());
                      //delete bs
                      bsDAO.deleteScheduleBookings(b.getId());
                      // reject booking
@@ -69,7 +69,7 @@ public class UpdateScheduleController extends AuthenticationServlet {
                 //money back
                 booking = bookingDAO.getBookingById(Integer.parseInt(bookingID));
                 mentee=walletDAO.getWalletAccountById(booking.getMentee().getAccount().getId());
-                walletDAO.moneyBack(mentee.getWallet().getHold()+booking.getAmount(),mentee.getWallet().getId());
+                walletDAO.moneyBack(mentee.getWallet().getHold()-booking.getAmount(),mentee.getWallet().getId());
                 //save log
                 ArrayList<BookingSchedule> bsSavelogs = new ArrayList<>();
                 bsSavelogs=bsDAO.getBookingSchedulesById(Integer.parseInt(bookingID));

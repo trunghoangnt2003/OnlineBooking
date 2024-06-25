@@ -1,5 +1,7 @@
 package org.frog.model;
 
+import org.frog.DAO.ScheduleDAO;
+
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,5 +43,9 @@ public class Week {
             e.printStackTrace();
             return null;
         }
+    }
+    public boolean isBooked(String id , Date date ,int slot_id){
+        ScheduleDAO scheduleDAO = new ScheduleDAO();
+        return scheduleDAO.checkSlotBooked(id,date,slot_id);
     }
 }

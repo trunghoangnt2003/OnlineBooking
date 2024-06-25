@@ -29,13 +29,16 @@ public class InsertScheduleController extends AuthenticationServlet {
             SlotDAO slDAO = new SlotDAO();
             Slot id = slDAO.getTimeSlot(Integer.parseInt(infoSlotID[1]));
             if (DateTimeHelper.compareDayIDtoNow(infoSlotID[0], id.getStart_at(), id.getEnd_at())) {
-                scheduleDAO.insertDayFreeByMentor(account.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]));
-
+                if(scheduleDAO.checkDayExistScheduleLogs(account.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]))){
+                    scheduleDAO.reMarkDayFreeByMentor(account.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]));
+                }else{
+                    scheduleDAO.insertDayFreeByMentor(account.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]));
+                }
             } else {
                 req.getSession().setAttribute("AddSlotError", "slot in passed");
             }
         }
-        resp.sendRedirect("/Frog/mentor/schedule?today="+day);
+        resp.sendRedirect("/Frog/mentor/schedule/edit?today="+day);
 
     }
 }

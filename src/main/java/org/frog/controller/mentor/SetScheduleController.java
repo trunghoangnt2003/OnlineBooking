@@ -48,6 +48,6 @@ public class SetScheduleController extends AuthenticationServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        resp.sendRedirect("/Frog/mentor/schedule");
+        resp.sendRedirect("/Frog/mentor/schedule/edit");
     }
 }

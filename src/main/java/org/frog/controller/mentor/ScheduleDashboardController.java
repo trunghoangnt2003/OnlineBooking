@@ -16,12 +16,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/mentor/schedule/edit")
-public class ViewScheduleController extends AuthenticationServlet {
+@WebServlet("/mentor/schedule")
+public class ScheduleDashboardController extends AuthenticationServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
-
 
     }
 
@@ -29,7 +28,7 @@ public class ViewScheduleController extends AuthenticationServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
         try {
             String day = req.getParameter("today");
-            ArrayList<Schedule> schedules = new ArrayList<>();
+            ArrayList<BookingSchedule> schedules = new ArrayList<>();
             ArrayList<BookingSchedule> BookingSlots = new ArrayList<>();
             ArrayList<Slot> slots = new ArrayList<>();
             List<Week> weeks = new ArrayList<>();
@@ -59,7 +58,7 @@ public class ViewScheduleController extends AuthenticationServlet {
 
 
             slots = scheduleDAO.getSlots();
-            schedules = scheduleDAO.getAllScheduleLogsByMentor(account.getId());
+            schedules = scheduleDAO.getSchedulesByIDnDay(account.getId(), DateTimeHelper.convertStringToDateByDay(weeks.get(0).getDayOfMonth()), DateTimeHelper.convertStringToDateByDay(weeks.get(6).getDayOfMonth()));
             bookings = bs.getBookingByMenteeBookMentor(account.getId());
 
             BookingSlots = bs.getDetailBookings(account.getId());
@@ -70,7 +69,7 @@ public class ViewScheduleController extends AuthenticationServlet {
             req.setAttribute("count", 1);
             req.setAttribute("mentorID", account.getId());
             req.setAttribute("schedules", schedules);
-            req.getRequestDispatcher("/view/mentor/schedule/ViewMentorSchedule.jsp").forward(req, resp);
+            req.getRequestDispatcher("/view/mentor/schedule/ScheduleDashboard.jsp").forward(req, resp);
 
 
         } catch (Exception e) {

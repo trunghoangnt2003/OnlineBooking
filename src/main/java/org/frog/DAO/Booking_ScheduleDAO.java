@@ -1432,7 +1432,7 @@ public class Booking_ScheduleDAO {
                     "\t\t\t\t\tINNER JOIN Mentee m ON b.mentee_id = m.account_id\n" +
                     "\t\t\t\t\tINNER JOIN Account acc ON acc.id = m.account_id\n" +
                     "\t\t\t\t\tINNER JOIN Status status ON status.id = b.status_id\n" +
-                    "WHERE b.mentor_id = ?  AND from_date >= ? AND to_date <= ?  ";
+                    "WHERE b.status_id = 2 OR b.status_id = 13 AND b.mentor_id = ?  AND from_date >= ? AND to_date <= ?  ";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1,id);
             preparedStatement.setDate(2,start);

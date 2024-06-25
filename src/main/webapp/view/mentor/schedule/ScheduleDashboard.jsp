@@ -55,127 +55,35 @@
 <jsp:include page="/view/common/header.jsp"></jsp:include>
 <div class="body">
     <div class="left-side">
-        <div >
-            <a href="${pageContext.request.contextPath}/mentor/schedule" style="text-decoration: none">
-                <i class="fa-solid fa-arrow-right-to-bracket fa-rotate-180 fa-xl" style="color: #07ad90"></i>
-                &nbsp;<span
-                    style="color: #07ad90; font-weight: 500; font-size: 20px; margin-bottom: 20px">Back to schedule</span>
-            </a>
-        </div>
         <form action="schedule" method="GET" id="getForm">
             <div>
-                <label for="today" style="color:#07AD90;margin-top: 40px">Select Date:</label>
+                <label for="today" style="color:#07AD90;">Select Date:</label>
                 <input type="date" class="styled-date" name="today" id="today" value="${today}"
                        data-viewID="${param.viewID}"
                        onchange="updateURL()">
             </div>
         </form>
 
-        <button id="myBtn" onclick="openSetTime()" style="background-color: cornflowerblue">Quick Set</button>
-        <br/>
         <!-- Nút mở modal mới -->
+        <button id="myBtn" onclick="openSetSlot()" style="padding: 15px 33px;">Set Schedule</button>
+        <button id="myBtn3" onclick="invitedRequest()" style="padding: 15px 31px">View Request</button>
+        <button id="myBtn3" onclick="openMyRequestWork()" style="padding: 15px 20px">Manage Request</button>
+        <button id="myBtn3" onclick="historyRequest()">History Request</button>
         <c:if test="${param.viewID != null}">
             <div>
                 <h5 style="text-align: center; color: #07AD90;width: 50%;">Slot Detail </h5>
                 <hr style="margin: 10px 0; border: 1px #1BB295 solid; opacity: 100%;width: 50%">
                 <ul id="bookingList" class="booking-list">
-                <c:forEach items="${BookingSlots}" var="sche">
-                    <c:if test="${param.viewID == sche.booking.id }">
-                        <li class="booking-item">  Slot ${sche.schedule.slot.id} - Day ${sche.schedule.date}</li>
-                    </c:if>
+                    <c:forEach items="${BookingSlots}" var="sche">
+                        <c:if test="${param.viewID == sche.booking.id }">
+                            <li class="booking-item">  Slot ${sche.schedule.slot.id} - Day ${sche.schedule.date}</li>
+                        </c:if>
 
-                </c:forEach>
+                    </c:forEach>
                 </ul>
             </div>
         </c:if>
-        <div id="myModal" class="modal">
-            <!-- Modal content -->
-            <div class="modal-content-time" style="width: 60%">
-                <span class="close" style="margin-left: 750px">&times;</span>
-                <!-- Form để gửi yêu cầu POST -->
-                <h4 style="color:#07AD90;">Set free day</h4>
 
-                <div class="container-card">
-                    <div class="form-container">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="selectWeek" value="1" checked>
-                            <label class="form-check-label">
-                                One Week
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="selectWeek" value="2">
-                            <label class="form-check-label">
-                                Two Week
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="selectWeek" value="3">
-                            <label class="form-check-label">
-                                Three Week
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="selectWeek" value="4">
-                            <label class="form-check-label">
-                                Four Week
-                            </label>
-                        </div>
-
-
-                        <span>Select Day Of Week </span>
-                        <select id="selectDOW" class="select-container">
-                            <option value="Monday">Monday</option>
-                            <option value="Tuesday">Tuesday</option>
-                            <option value="Wednesday">Wednesday</option>
-                            <option value="Thursday">Thursday</option>
-                            <option value="Friday">Friday</option>
-                            <option value="Saturday">Saturday</option>
-                            <option value="Sunday">Sunday</option>
-                        </select><br/>
-                        <span>Select Slot:</span>
-                        <div class="select-container">
-                            <input type="checkbox" name="selectSlot" value="1"> Slot 1 (08:00 - 10:00)
-                        </div>
-                        <div class="select-container">
-                            <input type="checkbox" name="selectSlot" value="2"> Slot 2 (10:00 - 12:00)
-                        </div>
-                        <div class="select-container">
-                            <input type="checkbox" name="selectSlot" value="3"> Slot 3 (13:00 - 15:00)
-                        </div>
-                        <div class="select-container">
-                            <input type="checkbox" name="selectSlot" value="4"> Slot 4 (15:00 - 17:00)
-                        </div>
-                        <div class="select-container">
-                            <input type="checkbox" name="selectSlot" value="5"> Slot 5 (17:00 - 19:00)
-                        </div>
-                        <div class="select-container">
-                            <input type="checkbox" name="selectSlot" value="6"> Slot 6 (19:00 - 21:00)
-                        </div>
-                        <div class="select-container">
-                            <input type="checkbox" name="selectSlot" value="7"> Slot 7 (21:00 - 23:00)
-                        </div>
-                        <br/>
-                        <button type="button" class="submit-button2"
-                                onclick="addListBooks()">Add Slot
-                        </button>
-
-                    </div>
-                    <div class="filter-box ">
-                        <div>List of book
-                            <div id="showCount" class="count-container"></div>
-                        </div>
-                        <div id="checkboxContainer"></div>
-
-                    </div>
-                    <div><input type="button" value="SAVE" class="submit-button"
-                                data-receive="${sessionScope.numberUpdateSuccess}" id="btnSetFreeTime"
-                                onclick="sendSetTimeData()">
-                    </div>
-                </div>
-
-            </div>
-        </div>
 
         <div id="infoModal" class="modal">
             <!-- Modal content -->
@@ -221,74 +129,103 @@
 
                     <c:forEach items="${weeks}" var="week">
                         <c:set var="countCheck" value="${count = 0}"></c:set>
+                        <c:set var="foundBusy" value="false"></c:set>
+                        <c:set var="icon" value="false"></c:set>
+                        <c:set var="waitingIcon" value="false"></c:set>
                         <td>
                             <c:forEach items="${schedules}" var="sche">
-                                <c:if test="${sche.date == week.convertStringToDateByDay(week.dayOfMonth) && sche.slot.id == t.id}">
+                                <c:if test="${sche.schedule.date == week.convertStringToDateByDay(week.dayOfMonth) && sche.schedule.slot.id == t.id}">
                                     <c:if test="${sche.status.id == 11}">
-                                        <c:if test="${week.isBooked(requestScope.mentorID,sche.date,sche.slot.id)}">
-                                            <c:set var="countCheck" value="${count = 2}"></c:set>
+                                        <c:set var="countCheck" value="${count = 1}"></c:set>
+                                        <c:set var="foundBusy" value="true"></c:set>
+                                        <c:set var="nameSkill" value="${sche.booking.level_skills.skill.name}"></c:set>
+                                        <c:set var="avatarSkill"
+                                               value="${sche.booking.level_skills.skill.src_icon}"></c:set>
+                                        <c:set var="nameType" value="${sche.booking.level_skills.level.name}"></c:set>
+
+                                    </c:if>
+                                    <c:if test="${sche.status.id == 3}">
+                                        <c:set var="countCheck" value="${count = 1}"></c:set>
+                                        <c:set var="nameSkill" value="${sche.booking.level_skills.skill.name}"></c:set>
+                                        <c:set var="avatarSkill"
+                                               value="${sche.booking.level_skills.skill.src_icon}"></c:set>
+                                        <c:set var="nameType" value="${sche.booking.level_skills.level. name}"></c:set>
+                                        <c:if test="${sche.attend}">
+                                            <c:set var="present" value="present"></c:set>
+                                            <c:set var="icon" value="true"></c:set>
                                         </c:if>
-                                        <c:if test="${!week.isBooked(requestScope.mentorID,sche.date,sche.slot.id)}">
-                                            <c:set var="countCheck" value="${count = 3}"></c:set>
+                                        <c:if test="${!sche.attend}">
+                                            <c:set var="present" value="absent"></c:set>
+                                            <c:set var="icon" value="true"></c:set>
                                         </c:if>
                                     </c:if>
-
-                                    <c:if test="${(sche.status.id == 1 ) }">
-                                        <c:set var="countCheck" value="${count = 1}"></c:set>
-
+                                    <c:if test="${(sche.status.id == 0 || sche.status.id==2) && !foundBusy}">
+                                        <c:set var="countCheck" value="${count = 2}"></c:set>
+                                    </c:if>
+                                    <c:if test="${(sche.status.id == 1 ) && !foundBusy}">
+                                        <c:if test="${param.viewID == sche.booking.id }">
+                                            <c:set var="waitingIcon" value="true"></c:set>
+                                        </c:if>
+                                        <c:set var="countCheck" value="${count = 3}"></c:set>
                                     </c:if>
                                 </c:if>
                             </c:forEach>
                             <c:choose>
-                                <c:when test="${countCheck == 2 }">
-                                    <div class="notes-container" onclick="">
+                                <c:when test="${countCheck == 1 }">
+
+                                    <div class="notes-container">
                                         <i class="pin"></i>
                                         <blockquote class="notes red">
-                                            Slot Booked
+                                            <img width="30px" src="${pageContext.request.contextPath}/${avatarSkill}" style="margin-bottom: 10px;">
+
+
+                                            <button id="button-schedule-td1" class="info-link"
+                                                    data-book-id="${week.dayOfMonth}_${t.id}"
+                                                    data-today-id="${week.dayOfMonth}"
+                                                    style="background: transparent" onclick="informationMentee()">
+                                                    <%--                                                    ${nameSkill}--%>
+                                                    ${nameType}
+                                            </button>
+                                            <c:if test="${present.equals('present') && icon}">
+                                                <i class="fa-solid fa-frog fa-xl" style="color: #02b23c; margin-top:-20px;margin-left: 40px"></i>
+                                            </c:if>
+                                            <c:if test="${present.equals('absent') && icon }">
+                                                <i class="fa-solid fa-face-sad-tear fa-xl" style="color: #f25452; margin-top:-20px;margin-left: 40px"></i>
+
+                                            </c:if>
                                         </blockquote>
                                     </div>
+
                                 </c:when>
-                                <c:when test="${countCheck == 3 }">
+                                <c:when test="${countCheck == 2 }">
 
                                     <div class="notes-container" onclick="">
                                         <i class="pin"></i>
                                         <blockquote class="notes green">
 
-                                            <button id="button-schedule-td3" class="button-schedule-td3"
-                                                    data-schedule-id="${week.dayOfMonth}_${t.id}"
-                                                    data-today-id="${week.dayOfMonth}"
-                                                    style=" background: transparent;padding: 40px 20px; "
-                                                    onclick="deleteFreeDay()">
-                                                Approved
-                                            </button>
+                                            <h4 style="margin-top: 15px;margin-left: 30px">  <i class="fa-solid fa-battery-full fa-xl" style="color: turquoise;"></i> </h4>
                                         </blockquote>
                                     </div>
                                 </c:when>
-                                <c:when test="${countCheck == 1 }">
+                                <c:when test="${countCheck == 3 }">
 
                                     <div class="notes-container">
                                         <i class="pin"></i>
-                                        <blockquote class="notes waiting">
-                                            <button id="button-schedule-td2" class="button-schedule-td3"
-                                                    data-schedule-id="${week.dayOfMonth}_${t.id}"
-                                                    data-today-id="${week.dayOfMonth}"
-                                                    style=" background: transparent;padding: 30px 10px; "
-                                                    onclick="deleteFreeDay()">
-                                                Waiting Approve...
-                                            </button>
+                                        <blockquote class="notes yellow">
+                                            Waiting...
+
+                                            <c:if test="${waitingIcon}">
+                                                <div style="    margin-top: 20px;
+                                            margin-left: 10px;">
+                                                    <i class="fa-solid fa-envelope fa-xl"></i>
+                                                </div>
+                                            </c:if>
+
+
                                         </blockquote>
                                     </div>
                                 </c:when>
-                                <c:otherwise>
 
-                                    <button id="button-schedule-td" style="background: white" class="button-schedule-td"
-                                            data-schedule-id="${week.dayOfMonth}_${t.id}"
-                                            data-today-id="${week.dayOfMonth}"
-                                            data-set-error="${sessionScope.AddSlotError}"
-                                            onclick="setFreeDay()">
-                                        <i class="fa-solid fa-plus fa-flip-vertical fa-lg" style="color: #b3dfd2;"></i>
-                                    </button>
-                                </c:otherwise>
 
                             </c:choose>
 
@@ -300,7 +237,7 @@
             </c:forEach>
             </tbody>
         </table>
-            <%--lay ra session cho delete--%>
+        <%--lay ra session cho delete--%>
         <input type="hidden" id="deleteButtonSession" value="${sessionScope.DeleteSlotError}">
 
 
@@ -398,7 +335,18 @@
 </div>
 
 <script>
-
+    const historyRequest = () => {
+        window.location.href = 'schedule/history';
+    }
+    const invitedRequest = () => {
+        window.location.href = 'schedule/invite';
+    }
+    const openMyRequestWork = () => {
+        window.location.href = "schedule/manage"
+    }
+    const openSetSlot = () => {
+        window.location.href = "schedule/edit"
+    }
     function updateURL() {
         var todayElement = document.getElementById('today');
         var selectedDate = todayElement.value;
@@ -417,7 +365,7 @@
 
     function removeSession() {
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", "/Frog/mentor/schedule/deleteSession", true);
+        xhr.open("GET", "schedule/deleteSession", true);
         xhr.send();
     }
 
@@ -443,56 +391,11 @@
             modal.style.display = "none";
         }
     }
-    const openSetTime = () => {
-        var modal = document.getElementById("myModal");
-        var span = document.getElementsByClassName("close")[0];
-        var btnOnclick = document.getElementById("myBtn");
-        btnOnclick.onclick = function (event) {
 
-            modal.style.display = "block";
-            return false;
-
-        };
-    }
 
     // set free day
-    const setFreeDay = () => {
-        var tdLinks = document.getElementsByClassName("button-schedule-td");
-        var newURL = "";
-        // Loop through each element and set the click event handler
-        for (let i = 0; i < tdLinks.length; i++) {
-            tdLinks[i].onclick = function (event) {
-                event.preventDefault();
-                Swal.fire({
-                    title: "Are you want to set a free day?",
-                    text: "",
-                    icon: "question",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, I set it!"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        var slotID = this.getAttribute('data-schedule-id');
-                        var today = this.getAttribute('data-today-id');
-                        localStorage.setItem('isSuccess', 'yes');
-
-                        newURL = "/Frog/mentor/schedule/insert?slotID=" + slotID + "&today=" + today;
 
 
-                        // Redirect to the new URL
-                        window.location.href = newURL;
-                    }
-                });
-            };
-
-        }
-    };
-    var error = document.getElementById('button-schedule-td').getAttribute('data-set-error');
-    if (error) {
-        localStorage.removeItem('isSuccess');
-        localStorage.setItem('failToSet', error);
-    }
 
 
     const Toast = Swal.mixin({
@@ -526,7 +429,7 @@
                     if (result.isConfirmed) {
                         var slotID = this.getAttribute('data-schedule-id');
                         var today = this.getAttribute('data-today-id');
-                        newURL = "/Frog/mentor/schedule/delete?slotID=" + slotID + "&today=" + today;
+                        newURL = "schedule/delete?slotID=" + slotID + "&today=" + today;
                         localStorage.setItem('isDelete', 'yes');
 
                         // Redirect to the new URL
@@ -548,7 +451,31 @@
         localStorage.setItem('numberFreeTime', numberFreeTime);
     }
 
+    const informationMentee = () => {
+        var links = document.getElementsByClassName("info-link");
+        for (var i = 0; i < links.length; i++) {
+            links[i].onclick = function (event) {
+                event.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ a
 
+                // Lấy giá trị data-book-id từ phần tử a được click
+                var bookID = this.getAttribute('data-book-id');
+                var today = this.getAttribute('data-today-id');
+                // Tạo URL mới dựa trên bookID
+                var newURL = "schedule?dayID=" + bookID + "&today=" + today;
+
+                // Lưu trạng thái của modal và ID của modal vào localStorage
+                localStorage.setItem('modalToOpen', 'tdModal');
+
+                // Lưu bookID vào localStorage để sử dụng sau khi trang được tải lại (nếu cần)
+                localStorage.setItem('bookID', bookID);
+
+                // Chuyển hướng đến URL mới
+                window.location.href = newURL;
+            };
+        }
+
+
+    }
     const confirmSlot = () => {
         var dataTime = document.getElementById("confirmBtn").getAttribute('data-time');
         var date = dataTime.split("_")[0];
@@ -622,98 +549,8 @@
         }
 
     }
-    let counter = 0;
-    let countSlots = 0;
-    const addListBooks = () => {
-        if (counter >= 7) {
-            Toast.fire({
-                icon: "error",
-                title: "Add list limit in 7 times"
-            });
-            return;
-        }
-        var dayOfWeek = document.getElementById('selectDOW').value;
-        var slots = document.getElementsByName('selectSlot');
-        var container = document.getElementById('checkboxContainer');
-        var showCount = document.getElementById('showCount');
-        for (var i = 0; i < slots.length; i++) {
-            if (slots[i].checked) {
-                var checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.value = dayOfWeek + "_" + slots[i].value;
-                checkbox.name = 'setTimeData';
-                checkbox.checked = true;
-                dayOfWeek = dayOfWeek + "_" + slots[i].value;
-                countSlots++;
-                checkbox.addEventListener('change', function () {
-                    if (!this.checked) {
-                        //---------- giam count
-                        counter--;
-                        var down = this.value.split("_");
-                        for (let i = 1; i < down.length; i++) {
-                            countSlots = countSlots - 1;
-                        }
-                        var label = document.createElement('label');
-                        label.appendChild(document.createTextNode(dayOfWeek));
-                        var countElement = document.createElement("span");
-                        countElement.textContent = "total booked: " + countSlots;
-                        var showCount = document.getElementById("showCount");
-                        showCount.innerHTML = "";
-                        showCount.appendChild(countElement);
-                        //-----------------
 
-                        var parent = this.parentNode;
-                        parent.removeChild(this.nextSibling); // Xóa label
-                        parent.removeChild(this.nextSibling); // Xóa <br>
-                        parent.removeChild(this); // Xóa checkbox
-                    }
-                });
-            }
-        }
-        var label = document.createElement('label');
-        label.appendChild(document.createTextNode(dayOfWeek));
-        var countElement = document.createElement("span");
-        countElement.textContent = "total booked: " + countSlots;
-        var showCount = document.getElementById("showCount");
-        showCount.innerHTML = "";
-        showCount.appendChild(countElement);
-        container.appendChild(checkbox);
-        container.appendChild(label);
-        container.appendChild(document.createElement('br'));
 
-        counter++;
-
-        for (var i = 0; i < slots.length; i++) {
-            slots[i].checked = false;
-        }
-
-    }
-    const sendSetTimeData = () => {
-        var weeks = document.getElementsByName('selectWeek');
-        var dataSlots = document.getElementsByName('setTimeData');
-        let selectedWeek;
-        for (const weekElement of weeks) {
-            if (weekElement.checked) {
-                selectedWeek = weekElement.value;
-                break;
-            }
-        }
-        if (dataSlots.length == 0) {
-            Toast.fire({
-                icon: "error",
-                title: "Must add slot to save"
-            });
-            return;
-        }
-        let selectedData = [];
-        for (const dataElement of dataSlots) {
-            if (dataElement.checked) {
-                selectedData.push(dataElement.value);
-            }
-        }
-
-        window.location.href = '/Frog/mentor/schedule/set?week=' + selectedWeek + '&data=' + selectedData.join(",")
-    }
     // set free day
     window.onload = function () {
 
@@ -817,7 +654,6 @@
         }
         removeSession();
     };
-
 
 
 </script>

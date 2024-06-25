@@ -374,7 +374,7 @@ th:first-child{
     -ms-transform: rotate(2deg);
     transform: rotate(2deg);
 }
-.grey{
+.waiting{
     background: #aaaaaa;
     -webkit-transform: rotate(2deg);
     -moz-transform: rotate(2deg);
