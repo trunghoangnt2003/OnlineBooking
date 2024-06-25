@@ -294,7 +294,7 @@
             <a href="#">View all</a>
         </div>
     </div>
-
+</div>
 <!-- MDB -->
 <script
         type="text/javascript"
