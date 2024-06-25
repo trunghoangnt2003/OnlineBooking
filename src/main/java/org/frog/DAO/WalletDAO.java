@@ -232,6 +232,7 @@ public class WalletDAO {
             preparedStatement.setFloat(2,wallet.getBalance());
             preparedStatement.setFloat(3,wallet.getHold());
             preparedStatement.executeUpdate();
+            JDBC.closeConnection(connection);
         } catch (Exception e) {
             e.printStackTrace();
         }
