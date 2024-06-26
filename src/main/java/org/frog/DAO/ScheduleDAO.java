@@ -81,7 +81,7 @@ public class ScheduleDAO {
 
 
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return list;

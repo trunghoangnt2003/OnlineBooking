@@ -74,4 +74,28 @@ public class Mentor_CV_LogDAO {
         }
         return null;
     }
+
+    public boolean isHaveAccount(String id) {
+        String result = null;
+
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "select M.account_id from Mentor_CV_Logs M " +
+                    "where M.account_id = ?";
+            assert connection != null;
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                result = resultSet.getString("account_id");
+                System.out.println("result" + result);
+                return true;
+            }
+            JDBC.closeConnection(connection);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return false;
+    }
 }

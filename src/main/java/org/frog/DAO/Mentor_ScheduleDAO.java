@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.util.Date;
 
 public class Mentor_ScheduleDAO {
-
     public Mentor_Schedule getByMentor(String mentorId) {
         try{
             String sql = "SELECT [id]\n" +
@@ -56,4 +55,5 @@ public class Mentor_ScheduleDAO {
             e.printStackTrace();
         }
     }
+
 }

@@ -209,6 +209,8 @@
         <div class="balance">
             <h3>$${requestScope.wallet.balance}</h3>
             <p>Available: ${requestScope.wallet.hold}</p>
+            <h3>Total: $${requestScope.wallet.balance}</h3>
+            <p>Hold: ${requestScope.wallet.hold}</p>
             <c:if test="${requestScope.role == 1}">
                 <button><a href="../payment" style="text-decoration: none">Withdraw</a></button>
                 <button class="btn2">Deposit</button>
@@ -244,7 +246,8 @@
                     </c:if>
                     <th>Date</th>
                     <th>Type</th>
-                    <th>Opposite Wallet</th>
+                    <th>Sender</th>
+                    <th>Receiver</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -266,25 +269,33 @@
                         </td>
                         <c:if test="${requestScope.role == 2}">
                             <td>
-                                <c:if test="${t.fee == 0}">
+                                <c:if test="${t.fee == null}">
                                     -
                                 </c:if>
-                                <c:if test="${t.fee != 0}">
+                                <c:if test="${t.fee != null}">
                                     ${t.fee}
                                 </c:if>
                             </td>
                         </c:if>
                         <td>${t.date}</td>
-                        <td>${t.typeTransaction.name}</td>
                         <td>
-                            <c:if test="${t.typeTransaction.name == 'Deposit'}">
-                                <span>-</span>
+                            <c:if test="${t.typeTransaction.id == 1}">
+                                Deposit
                             </c:if>
-                            <c:if test="${t.typeTransaction.name == 'Withdrawl'}">
-                                <span>-</span>
+                            <c:if test="${t.typeTransaction.id == 2}">
+                                Withdraw
                             </c:if>
-                            <c:if test="${t.typeTransaction.name == 'Payment'}">
-                                <span>${t.account.name}</span>
+                            <c:if test="${t.typeTransaction.id == 3}">
+                                Payment
+                            </c:if>
+                        </td>
+                        <td>${t.sender.name}</td>
+                        <td>
+                            <c:if test="${t.walletOpposite.id == null}">
+                                -
+                            </c:if>
+                            <c:if test="${t.walletOpposite.id != null}">
+                                ${t.receiver.name}
                             </c:if>
                         </td>
                     </tr>
@@ -294,7 +305,7 @@
             <a href="#">View all</a>
         </div>
     </div>
-
+</div>
 <!-- MDB -->
 <script
         type="text/javascript"

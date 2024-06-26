@@ -73,21 +73,18 @@ public class UpdateProfileController extends AuthenticationServlet {
 
         MentorDAO mentorDAO = new MentorDAO();
         Mentor_CV_Log mentorCVLog = new Mentor_CV_Log();
+        Mentor_CV_LogDAO mentor_cv_logDAO = new Mentor_CV_LogDAO();
         mentorCVLog.setEducation(education);
         mentorCVLog.setExperience(experience);
         mentorCVLog.setProfileDetail(profile_detail);
         mentorCVLog.setPrice(Integer.parseInt(raw_price));
         mentorCVLog.setAccount(account);
-        mentorDAO.updateMentorLog(mentorCVLog, 1);
-
-//        Mentor mentor = new Mentor();
-//        mentor.setProfileDetail(profile_detail);
-//        mentor.setEducation(education);
-//        mentor.setExperience(experience);
-//        mentor.setPrice(Integer.parseInt(raw_price));
-//
-//        Mentor_CV_LogDAO mentor_cv_logDAO = new Mentor_CV_LogDAO();
-//        Status status = mentor_cv_logDAO.getStatusCVLog(account.getId());
+        boolean isHaveAccount = mentor_cv_logDAO.isHaveAccount(account.getId());
+        if (isHaveAccount) {
+            mentorDAO.updateMentorLog(mentorCVLog, 1);
+        } else {
+            mentorDAO.insertMentorLog(mentorCVLog, 1);
+        }
 
         String[] levelSkills = req.getParameterValues("level_skill");
         if (levelSkills != null) {

@@ -4,12 +4,12 @@ public class Wallet {
 
     private String id;
 
-    private float hold;
+    private int hold;
 
-    private float balance;
+    private int balance;
 
 
-    public Wallet(String id, float balance, float hold) {
+    public Wallet(String id, int balance, int hold) {
         this.id = id;
         this.balance = balance;
         this.hold = hold;
@@ -33,7 +33,7 @@ public class Wallet {
         return balance;
     }
 
-    public void setBalance(float balance) {
+    public void setBalance(int balance) {
         this.balance = balance;
     }
 
@@ -41,7 +41,7 @@ public class Wallet {
         return hold;
     }
 
-    public void setHold(float hold) {
+    public void setHold(int hold) {
         this.hold = hold;
     }
 }

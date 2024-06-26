@@ -268,9 +268,11 @@ public class AccountDAO {
                     "           ,[username]\n" +
                     "           ,[password]\n" +
                     "           ,[status]\n" +
+                    "           ,[wallet_id]\n" +
                     "           ,[role_id])\n" +
                     "     VALUES\n" +
                     "           (?\n" +
+                    "           ,?\n" +
                     "           ,?\n" +
                     "           ,?\n" +
                     "           ,?\n" +
@@ -292,7 +294,8 @@ public class AccountDAO {
             preparedStatement.setString(8,account.getUserName());
             preparedStatement.setString(9,account.getPassword());
             preparedStatement.setInt(10,account.getStatus().getId());
-            preparedStatement.setInt(11,account.getRole().getId());
+            preparedStatement.setString(11,account.getWallet().getId());
+            preparedStatement.setInt(12,account.getRole().getId());
             kq = preparedStatement.executeUpdate();
 
             JDBC.closeConnection(connection);

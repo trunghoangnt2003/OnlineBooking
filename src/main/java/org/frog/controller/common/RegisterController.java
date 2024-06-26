@@ -6,9 +6,11 @@ import jakarta.servlet.http.*;
 import org.frog.DAO.AccountDAO;
 import org.frog.DAO.MenteeDAO;
 import org.frog.DAO.MentorDAO;
+import org.frog.DAO.WalletDAO;
 import org.frog.model.Account;
 import org.frog.model.Role;
 import org.frog.model.Status;
+import org.frog.model.Wallet;
 import org.frog.utility.Email;
 import org.frog.utility.SHA1;
 import org.frog.utility.StatusEnum;
@@ -135,7 +137,10 @@ public class RegisterController extends HttpServlet {
                 }else {
                     id = createMentorID();
                 }
-                Account accountRegister = new Account(id,null,name,userName,password,dob,phone,email,address,gender,null,new Status(StatusEnum.INACTIVE,""),new Role(role,""));
+                Wallet wallet = new Wallet(id,0,0);
+                WalletDAO walletDAO = new WalletDAO();
+                walletDAO.insert(wallet);
+                Account accountRegister = new Account(id,null,name,userName,password,dob,phone,email,address,gender,wallet,new Status(StatusEnum.INACTIVE,""),new Role(role,""));
 
                 accountDAO.insertUser(accountRegister);
                 if(role == 1){

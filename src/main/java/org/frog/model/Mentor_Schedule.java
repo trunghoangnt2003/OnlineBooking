@@ -3,11 +3,10 @@ package org.frog.model;
 import java.sql.Date;
 
 public class Mentor_Schedule {
-
     private int id;
     private Mentor mentor;
     private Date start_date;
-    private  Date end_date;
+    private Date end_date;
 
     public int getId() {
         return id;
