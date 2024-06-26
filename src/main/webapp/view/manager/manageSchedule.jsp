@@ -273,10 +273,10 @@
 
         .btn-write{
             display: inline-block;
-            padding: 10px 20px;
+            padding: 7px 15px;
             font-size: 16px;
             font-weight: bold;
-            width: 110px;
+            width: 100px;
             color: #07AD90; /* White text color */
             background-color: rgb(176, 237, 215); /* Blue background color */
             border: none; /* No border */
@@ -496,15 +496,13 @@
                                 <input type="hidden" id="name" value="${requestScope.name}"/>
                                 <input type="hidden" id="mentorId" value="${requestScope.mentorId}"/>
                             </div>
-
-
                         </div>
                     <div class="d-flex justify-content-between ">
                         <c:if test="${requestScope.mentor_schedule != null}">
                             <div style="Width: 10%">
                                 <button id="closeButton" class="btn-write" onclick="momodal()">View All</button>
-                                <button  class="btn-write" onclick="handleAcceptedAll(${requestScope.mentor_schedule.id},3)" style="margin-top: 10px"  >Accept</button>
-                                <button  class="btn-write" onclick="handleAcceptedAll(${requestScope.mentor_schedule.id},2)" style="margin-top: 10px"  >Reject</button>
+                                <button  class="btn-write" onclick="handleAcceptedAll(${requestScope.mentor_schedule.id},'accept')" style="margin-top: 10px"  >Accept</button>
+                                <button  class="btn-write" onclick="handleAcceptedAll(${requestScope.mentor_schedule.id},'reject')" style="margin-top: 10px"  >Reject</button>
                             </div>
                         </c:if>
                         <div class="d-flex justify-content-center " style="width: 90%">

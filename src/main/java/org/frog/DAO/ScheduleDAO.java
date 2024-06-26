@@ -385,7 +385,7 @@ public class ScheduleDAO {
     }
 
     public void insert(Schedule schedule){
-        String sql="INSERT INTO [dbo].[Schedule_Logs]\n" +
+        String sql="INSERT INTO [dbo].[Schedule]\n" +
                 "           ([date]\n" +
                 "           ,[slot_id]\n" +
                 "           ,[mentor_schedule_id])\n" +

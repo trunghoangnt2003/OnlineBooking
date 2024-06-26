@@ -56,16 +56,29 @@ public class ScheduleManager extends AuthenticationServlet {
         }
         Gson gson = new Gson();
         JsonObject json = gson.fromJson(jsonBuffer.toString(), JsonObject.class);
-
+        Mentor_ScheduleDAO mentor_scheduleDAO = new Mentor_ScheduleDAO();
         ScheduleDAO scheduleDAO = new ScheduleDAO();
         String MentorSchedule = json.get("mentorSchedule").getAsString();
         String action = json.get("action").getAsString();
         int id = Integer.parseInt(MentorSchedule);
         ArrayList<Schedule> schedulesLogs = scheduleDAO.getLogsAllByMentorScheduleId(id);
-        if(action.equals("2")) {
+        if(action.equals("accept")) {
             //accept
-        }else if(action.equals("3")) {
+            Date lastDate = schedulesLogs.get(0).getDate();
+            for (Schedule schedule : schedulesLogs) {
+                scheduleDAO.insert(schedule);
+                scheduleDAO.updateById(schedule.getId(), StatusEnum.ACCEPTED);
+                Date sdate = schedule.getDate();
+                if(sdate.compareTo(lastDate) > 0) {
+                    lastDate = schedule.getDate();
+                }
+            }
+            mentor_scheduleDAO.updateEndDate(id, lastDate);
+        }else if(action.equals("reject")) {
             //reject
+            for (Schedule schedule : schedulesLogs) {
+                scheduleDAO.updateById(schedule.getId(), StatusEnum.REJECT);
+            }
         }
 
 
