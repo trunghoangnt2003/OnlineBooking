@@ -232,7 +232,6 @@
                                             <c:set var="countCheck" value="${count = 3}"></c:set>
                                         </c:if>
                                     </c:if>
-
                                     <c:if test="${(sche.status.id == 1 ) }">
                                         <c:set var="countCheck" value="${count = 1}"></c:set>
 
@@ -265,7 +264,6 @@
                                     </div>
                                 </c:when>
                                 <c:when test="${countCheck == 1 }">
-
                                     <div class="notes-container">
                                         <i class="pin"></i>
                                         <blockquote class="notes waiting">

@@ -340,10 +340,7 @@
                             <c:if test="${slotConfirmedNumber == bookingSlotsNumber}">
                                 <c:if test="${bookingSlots[0].booking.status.id != 13 }">
                                 <li><span style="font-weight: bold">All lessons are finished,wait ${bookingSlots[0].booking.mentee.account.name} confirms...</span></li>
-                                <li>
-                                <input type="button" class="btn" id="btn" value="Send Mail" onclick="sendMail()" data-id="${bookingSlots[0].booking.mentee.account.id}_${bookingSlots[0].booking.id}" >
 
-                                </li>
                                 </c:if>
                             </c:if>
                         </ul>
@@ -408,34 +405,7 @@
         var newURL = currentURL + "?id=" + id + "&action=1";
         window.location.href = newURL;
     }
-    const sendMail = () => {
-        var btnOnclick = document.getElementById("btn");
-        var newURL = "";
-        btnOnclick.onclick = function (event) {
-            event.preventDefault();
-            Swal.fire({
-                title: "Are you want to send mail ?",
-                text: "Ensure that all slot has happened",
-                icon: "question",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes!"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        title: "Successfully",
-                        text: "Mail sent",
-                        icon: "success"
-                    });
-                    var menteeId = this.getAttribute('data-id').split("_")[0];
-                    var bookingId =this.getAttribute('data-id').split("_")[1];
-                    newURL = '/Frog/confirmMail?menteeId=' + menteeId + '&bookingId='+bookingId;
-                    window.location.href = newURL;
-                }
-            });
-        };
-    }
+
     const absentSlot = (id) => {
         var dataTime = document.getElementById("absentBtn_"+id).getAttribute('data-time');
         var date = dataTime.split("_")[0];
@@ -513,7 +483,17 @@
             });
         }
     };
-
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
     window.onload = function () {
             var isConfirmSlotManage = localStorage.getItem('isConfirmSlotManage');
             var isAbsentManage = localStorage.getItem('isAbsentManage');

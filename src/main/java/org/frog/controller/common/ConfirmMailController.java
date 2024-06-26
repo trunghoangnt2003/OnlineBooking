@@ -42,11 +42,22 @@ public class ConfirmMailController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String menteeId=req.getParameter("menteeId");
         String bookingId=req.getParameter("bookingId");
+        String isLastSlot = req.getParameter("isLastSlot");
         AccountDAO accDao = new AccountDAO();
         Account mentee = accDao.getAccountById(menteeId);
         String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort()
                 + req.getContextPath() + "/confirmBooking?id=" +bookingId;
         sendEmail(url, mentee);
-        resp.sendRedirect("/Frog/mentor/schedule/manage?id="+bookingId+"&action=3");
+        if(isLastSlot.equals("true")){
+            String manage=req.getParameter("manage");
+            if(manage != null ){
+                String bookId=req.getParameter("bookId");
+                String actionId=req.getParameter("actionId");
+                resp.sendRedirect("/Frog/mentor/schedule/manage?id="+bookId+"&action="+actionId);
+            }else{
+                resp.sendRedirect("/Frog/mentor/schedule");
+            }
+        }
+        resp.sendRedirect("/Frog/manager/paymentBooking");
     }
 }

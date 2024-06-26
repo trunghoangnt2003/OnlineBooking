@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.frog.DAO.Booking_ScheduleDAO;
 import org.frog.DAO.MentorDAO;
+import org.frog.DAO.Mentor_ScheduleDAO;
 import org.frog.DAO.ScheduleDAO;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.*;
@@ -59,7 +60,7 @@ public class ViewScheduleController extends AuthenticationServlet {
 
 
             slots = scheduleDAO.getSlots();
-            schedules = scheduleDAO.getAllScheduleLogsByMentor(account.getId());
+            schedules = scheduleDAO.getScheduleLogsByMentorSet(account.getId());
             bookings = bs.getBookingByMenteeBookMentor(account.getId());
 
             BookingSlots = bs.getDetailBookings(account.getId());

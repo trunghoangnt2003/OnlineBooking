@@ -916,6 +916,20 @@ public class BookingDAO {
         }
         return total;
     }
-
+    public int findBookingIdByBookingScheduleId(int BookingScheduleId){
+        String sql = "SELECT booking_id FROM Booking_Schedule\n" +
+                "WHERE id = ?";
+        try{
+            PreparedStatement stm = JDBC.getConnection().prepareStatement(sql);
+            stm.setInt(1,BookingScheduleId);
+            ResultSet rs = stm.executeQuery();
+            if(rs.next()){
+                return rs.getInt("booking_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }
 

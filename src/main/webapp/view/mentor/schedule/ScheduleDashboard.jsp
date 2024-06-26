@@ -410,46 +410,9 @@
         }
     });
     //delete free day
-    const deleteFreeDay = () => {
-        var tdLinks = document.getElementsByClassName("button-schedule-td3");
-        var newURL = "";
-        // Loop through each element and set the click event handler
-        for (let i = 0; i < tdLinks.length; i++) {
-            tdLinks[i].onclick = function (event) {
-                event.preventDefault();
-                Swal.fire({
-                    title: "Are you want to DELETE a free day?",
-                    text: "",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, I DELETE it!"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        var slotID = this.getAttribute('data-schedule-id');
-                        var today = this.getAttribute('data-today-id');
-                        newURL = "schedule/delete?slotID=" + slotID + "&today=" + today;
-                        localStorage.setItem('isDelete', 'yes');
 
-                        // Redirect to the new URL
-                        window.location.href = newURL;
-                    }
-                });
-            };
+  
 
-        }
-        ;
-    }
-    var errorDelete = document.getElementById('deleteButtonSession').value;
-    if (errorDelete) {
-        localStorage.removeItem('isDelete');
-        localStorage.setItem('failToDelete', errorDelete);
-    }
-    var numberFreeTime = document.getElementById('btnSetFreeTime').getAttribute('data-receive');
-    if (numberFreeTime) {
-        localStorage.setItem('numberFreeTime', numberFreeTime);
-    }
 
     const informationMentee = () => {
         var links = document.getElementsByClassName("info-link");
