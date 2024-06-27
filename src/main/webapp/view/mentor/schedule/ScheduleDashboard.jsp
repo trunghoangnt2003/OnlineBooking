@@ -66,7 +66,7 @@
 
         <!-- Nút mở modal mới -->
         <button id="myBtn" onclick="openSetSlot()" style="padding: 15px 33px;">Set Schedule</button>
-        <button id="myBtn3" onclick="invitedRequest()" style="padding: 15px 31px">View Request</button>
+        <button id="myBtn3" onclick="invitedRequest()" style="padding: 15px 31px">New Request</button>
         <button id="myBtn3" onclick="openMyRequestWork()" style="padding: 15px 20px">Manage Request</button>
         <button id="myBtn3" onclick="historyRequest()">History Request</button>
         <c:if test="${param.viewID != null}">

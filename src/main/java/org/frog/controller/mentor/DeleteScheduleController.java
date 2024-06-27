@@ -47,6 +47,5 @@ public class DeleteScheduleController extends AuthenticationServlet {
         }catch(Exception e){
             e.printStackTrace();
         }
-
     }
 }

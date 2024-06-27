@@ -52,7 +52,7 @@ public class PaymentServlet extends AuthenticationServlet {
                 int check = transactionDAO.insertDeposit(user, (float) money /100);
 
                 if(check>0) {
-                    user.getWallet().setBalance(user.getWallet().getBalance()+ (float) money /100);
+                    user.getWallet().setBalance((int) (user.getWallet().getBalance()+ (float) money /100));
                     HttpSession session = request.getSession();
                     session.setAttribute("account", user);
 

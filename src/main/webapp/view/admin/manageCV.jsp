@@ -38,6 +38,11 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin/manageCV.css">
+    <style>
+        .cv {
+            margin-top: 3vh;
+        }
+    </style>
 </head>
 <body>
 <div class="container-scroller">
@@ -87,7 +92,7 @@
                                             <span class="close" style="text-align: end">&times;</span>
                                             <div>
                                                 <h3 class="header-cv">Mentor CV</h3>
-                                                <div style="display:flex;">
+                                                <div class="cv" style="display:flex;">
                                                     <div class="col-md-5 card left">
                                                         <img src="${pageContext.request.contextPath}/${m.account.avatar}" class="mb-3 img-cv">
                                                         <h5 class="name">Name: ${m.account.name}</h5>
@@ -129,7 +134,6 @@
                                                         <div class="skills-container">
                                                             <c:forEach items="${m.level_skills}" var="s">
                                                                 <div class="skill-item">
-                                                                    <img class="icon-skill" src="${pageContext.request.contextPath}/${s.skill.src_icon}" alt="${s.skill.name}">
                                                                     <span class="skill-name">${s.skill.name}</span> : <span class="skill-level">${s.level.name}</span>
                                                                 </div>
                                                             </c:forEach>
@@ -141,8 +145,13 @@
                                                     <span>CV of mentor: ${m.account.name}</span>
                                                     <form action="manageCV" method="post">
                                                         <span>
-                                                            <button type="submit" name="action" class="btn btn-success" style="padding: 5px;margin: 5px" value="APPROVE" id="approveButton">APPROVE</button>
-                                                        <button type="submit" name="action" class="btn btn-danger" style="padding: 5px;margin: 5px" value="REJECT" id="rejectButton">REJECT</button>
+                                                            <c:if test="${m.status.id == 1}">
+                                                                <button type="submit" name="action" class="btn btn-success" style="padding: 5px;margin: 5px" value="APPROVE" id="approveButton">APPROVE</button>
+                                                                <button type="submit" name="action" class="btn btn-danger" style="padding: 5px;margin: 5px" value="REJECT" id="rejectButton">REJECT</button>
+                                                            </c:if>
+                                                            <c:if test="${m.status.id != 1}">
+
+                                                            </c:if>
                                                         </span>
                                                         <input type="hidden" name="accountId" value="${m.account.id}" />
                                                     </form>

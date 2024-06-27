@@ -225,12 +225,12 @@
                             <c:forEach items="${schedules}" var="sche">
                                 <c:if test="${sche.date == week.convertStringToDateByDay(week.dayOfMonth) && sche.slot.id == t.id}">
                                     <c:if test="${sche.status.id == 11}">
-                                        <c:if test="${week.isBooked(requestScope.mentorID,sche.date,sche.slot.id)}">
+                                        <c:set var="countCheck" value="${count = 3}"></c:set>
+
+                                    </c:if>
+                                    <c:if test="${sche.status.id == 9}">
                                             <c:set var="countCheck" value="${count = 2}"></c:set>
-                                        </c:if>
-                                        <c:if test="${!week.isBooked(requestScope.mentorID,sche.date,sche.slot.id)}">
-                                            <c:set var="countCheck" value="${count = 3}"></c:set>
-                                        </c:if>
+
                                     </c:if>
                                     <c:if test="${(sche.status.id == 1 ) }">
                                         <c:set var="countCheck" value="${count = 1}"></c:set>
@@ -303,95 +303,7 @@
 
 
 
-        <div id="tdModal" class="modal">
-            <!-- Modal content -->
-            <div class="modal-content2">
-                <span class="close">&times;</span>
-                <!-- Your modal content here -->
-                <h4 style="color: #07AD90">Schedule details</h4>
-                <span style="color: red; font-size: 12px"> (Note: If the lesson has been finished,please confirm slot)</span>
-                <div class="d-flex justify-content-around">
-                    <div>
-                        <div class="info-card">
-                            <ul>
-                                <li style="list-style-type: none">Name : ${bookInfo[0].booking.mentee.account.name}</li>
-                                <li style="list-style-type: none">Mail : ${bookInfo[0].booking.mentee.account.email}</li>
-                                <li style="list-style-type: none">Phone : ${bookInfo[0].booking.mentee.account.phone}</li>
-                            </ul>
-                        </div>
-                        <div class="info-card">
 
-                            <ul>
-
-                                <li style="list-style-type: none">Skill name : <img width="30px"
-                                                                                    src="${pageContext.request.contextPath}/${bookInfo[0].booking.level_skills.skill.src_icon}">
-                                    ${bookInfo[0].booking.level_skills.skill.name}</li>
-                                <li style="list-style-type: none">Skill level
-                                    : ${bookInfo[0].booking.level_skills.level.name}</li>
-                            </ul>
-                            <ul>
-                                <li style="list-style-type: none">Day:${bookInfo[0].schedule.date} </li>
-                                <li style="list-style-type: none">Time
-                                    : ${bookInfo[0].schedule.slot.start_at}-${bookInfo[0].schedule.slot.end_at}</li>
-                                <li style="list-style-type: none">Slot Booked : ${bookInfo[0].schedule.slot.id}</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="info-card1" >
-
-                        <ul>
-                            <li style="list-style-type: none">Created date : ${bookInfo[0].booking.date}</li>
-                            <li style="list-style-type: none">Total amount request : ${bookInfo[0].booking.amount}</li>
-
-
-                            <li style="list-style-type: none">Status payment :
-                                <span style="color: #f8ce0b"> <c:if
-                                        test="${bookInfo[0].booking.status.id == 11 || bookInfo[0].booking.status.id == 3 }">Payment Not Confirm Yet</c:if> </span>
-                                <span style="color: #28a745"><c:if
-                                        test="${bookInfo[0].booking.status.id == 13 }">Payment Confirmed</c:if></span>
-                            </li>
-                        </ul>
-                        <ul>
-                            <li style="list-style-type: none">Confirm slot:</li>
-                            <c:if test="${bookInfo[0].status.id == 3 }">
-                                <c:if test="${bookInfo[0].attend ==  true }">
-                                    <li style="pointer-events: none;list-style-type: none;display: inline">
-                                        <input type="button" value="Present" id="confirmBtn2" style=" background: #1BB295">
-                                    </li>
-                                </c:if>
-                                <c:if test="${bookInfo[0].attend ==  false }">
-                                    <li style="pointer-events: none;list-style-type: none;display: inline">
-                                        <input type="button" value="Absent" id="absentBtn2" style=" background: #ff2222">
-                                    </li>
-                                </c:if>
-
-                                <li style="list-style-type: none">(Request was sent, money will unlock after finish all
-                                    slot)
-                                </li>
-
-                            </c:if>
-                            <c:if test="${bookInfo[0].status.id == 11 }">
-                                <li style="list-style-type: none; display: inline">
-                                    <input type="button" value="Present" id="confirmBtn"
-                                           data-id=" ${bookInfo[0].id}" data-time="${bookInfo[0].schedule.date}_${bookInfo[0].schedule.slot.start_at}"
-                                           onclick="confirmSlot()">
-                                </li>
-                                <li style="list-style-type: none;display: inline">
-                                    <input type="button" value="Absent" id="absentBtn"
-                                           data-id=" ${bookInfo[0].id}" data-time="${bookInfo[0].schedule.date}_${bookInfo[0].schedule.slot.start_at}"
-                                           onclick="absentSlot()">
-                                </li>
-                            </c:if>
-                        </ul>
-                    </div>
-                </div>
-
-            </div>
-
-
-        </div>
-    </div>
 
 </div>
 
@@ -428,9 +340,8 @@
     // Khi người dùng nhấp vào nút, mở modal mới
     btn2.onclick = function () {
         infoModal.style.display = "block";
-        return false; // Ngăn chặn gửi form mặc định
+        return false;
     }
-    // Khi người dùng nhấp vào nút đóng (x), đóng modal mới
     spanInfo.onclick = function () {
         infoModal.style.display = "none";
     }
@@ -474,12 +385,28 @@
                         var slotID = this.getAttribute('data-schedule-id');
                         var today = this.getAttribute('data-today-id');
                         localStorage.setItem('isSuccess', 'yes');
+                        // newURL = "/Frog/mentor/schedule/insert?slotID=" + slotID + "&today=" + today;
+                        fetch("insert", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({slotID: slotID,today:today,option:"free"}),
+                        }).then( response => {
+                            if(response.ok) {
+                                location.reload();
+                            } else {
+                                throw new Error('Network response was not ok.');
+                            }
 
-                        newURL = "/Frog/mentor/schedule/insert?slotID=" + slotID + "&today=" + today;
-
+                        }).catch(
+                            error => {
+                                console.error('There has been a problem with your fetch operation:', error);
+                            }
+                        )
 
                         // Redirect to the new URL
-                        window.location.href = newURL;
+                        // window.location.href = newURL;
                     }
                 });
             };
@@ -546,80 +473,6 @@
         localStorage.setItem('numberFreeTime', numberFreeTime);
     }
 
-
-    const confirmSlot = () => {
-        var dataTime = document.getElementById("confirmBtn").getAttribute('data-time');
-        var date = dataTime.split("_")[0];
-        var time = dataTime.split("_")[1];
-        var currentDate = new Date();
-        var dateTimeString= date + " " + time;
-        var dateTimeValue = new Date(dateTimeString);
-        if (currentDate < dateTimeValue) {
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "Slot has not occurred yet.",
-            });
-        } else {
-            Swal.fire({
-                title: "Are you sure you want to PRESENT slot?",
-                text: "Ensure that the slot has happened.",
-                icon: "question",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, I confirm it!"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var ID = document.getElementById("confirmBtn").getAttribute('data-id');
-                    var newURL = '/Frog/mentor/schedule/confirm?ID=' + ID + '&option=present';
-                    localStorage.setItem('isConfirmSlot', 'yes');
-                    // Redirect to the new URL
-                    window.location.href = newURL;
-                }
-            });
-        }
-    };
-    const absentSlot = () => {
-        var dataTime = document.getElementById("absentBtn").getAttribute('data-time');
-        var date = dataTime.split("_")[0];
-        var time = dataTime.split("_")[1];
-        var currentDate = new Date();
-        var dateTimeString= date + " " + time;
-        var dateTimeValue = new Date(dateTimeString);
-        if (currentDate < dateTimeValue) {
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "Slot has not occurred yet.",
-            });
-        }
-        else{
-            var btnOnclick = document.getElementById("absentBtn");
-            var newURL = "";
-            btnOnclick.onclick = function (event) {
-                event.preventDefault();
-                Swal.fire({
-                    title: "Is the mentee ABSENT a slot ?",
-                    text: "Ensure that the slot has happened",
-                    icon: "question",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, absent !"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        var ID = this.getAttribute('data-id');
-                        newURL = '/Frog/mentor/schedule/confirm?ID=' + ID + '&option=absent';
-                        localStorage.setItem('isAbsent', 'yes');
-                        // Redirect to the new URL
-                        window.location.href = newURL;
-                    }
-                });
-            };
-        }
-
-    }
     let counter = 0;
     let countSlots = 0;
     const addListBooks = () => {
@@ -712,7 +565,7 @@
 
         window.location.href = '/Frog/mentor/schedule/set?week=' + selectedWeek + '&data=' + selectedData.join(",")
     }
-    // set free day
+
     window.onload = function () {
 
         var isSuccess = localStorage.getItem('isSuccess');

@@ -1,26 +1,13 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" external-system-id="GRADLE" name="Gradle : org : Frog-1.0-SNAPSHOT.war (exploded)">
-    <output-path>$PROJECT_DIR$/build/libs/exploded/Frog-1.0-SNAPSHOT.war</output-path>
-    <properties id="gradle-properties">
-      <options external-project-path="$PROJECT_DIR$">
-        <buildTaskPath>:war_exploded</buildTaskPath>
-        <cleanTaskPath>:cleanWar_exploded</cleanTaskPath>
-        <manifest>TWFuaWZlc3QtVmVyc2lvbjogMS4wDQoNCg==</manifest>
-      </options>
-    </properties>
+  <artifact type="exploded-war" name="Frog.main:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/Frog_main_war_exploded</output-path>
     <root id="root">
-      <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/build/libs/exploded/Frog-1.0-SNAPSHOT.war/META-INF/MANIFEST.MF" />
-      </element>
-      <element id="javaee-facet-resources" facet="Frog.main/web/Web Gradle : Frog-1.0-SNAPSHOT.war" />
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="Frog.main" />
-          <element id="dir-copy" path="$PROJECT_DIR$/build/resources/main" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Gradle: org.glassfish.web:jakarta.servlet.jsp.jstl:2.0.0" />
-          <element id="library" level="project" name="Gradle: jakarta.servlet:jakarta.servlet-api:5.0.0" />
           <element id="library" level="project" name="Gradle: org.apache.httpcomponents:fluent-hc:4.5.13" />
           <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpclient:4.5.13" />
           <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.10.1" />
@@ -29,6 +16,7 @@
           <element id="library" level="project" name="Gradle: org.hibernate:hibernate-core:5.6.15.Final" />
           <element id="library" level="project" name="Gradle: javax.persistence:javax.persistence-api:2.2" />
           <element id="library" level="project" name="Gradle: com.microsoft.sqlserver:mssql-jdbc:12.3.0.jre17-preview" />
+          <element id="library" level="project" name="Gradle: org.json:json:20240303" />
           <element id="library" level="project" name="Gradle: jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:2.0.0" />
           <element id="library" level="project" name="Gradle: commons-logging:commons-logging:1.2" />
           <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpcore:4.4.13" />
@@ -54,9 +42,9 @@
           <element id="library" level="project" name="Gradle: com.sun.xml.fastinfoset:FastInfoset:1.2.15" />
           <element id="library" level="project" name="Gradle: jakarta.validation:jakarta.validation-api:2.0.2" />
           <element id="library" level="project" name="Gradle: com.sun.activation:jakarta.activation:2.0.0" />
-          <element id="library" level="project" name="Gradle: org.json:json:20240303" />
         </element>
       </element>
+      <element id="javaee-facet-resources" facet="Frog.main/web/Web Gradle : Frog-1.0-SNAPSHOT.war" />
     </root>
   </artifact>
 </component>

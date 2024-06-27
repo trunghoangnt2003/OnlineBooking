@@ -9,9 +9,9 @@ public class Transaction {
 
     private Date date;
 
-    private float amount;
+    private int amount;
 
-    private float fee;
+    private int fee;
 
     private TypeTransaction typeTransaction;
 
@@ -19,13 +19,15 @@ public class Transaction {
 
     private Wallet walletOpposite;
 
-    private Account account;
+    private Account sender;
+
+    private Account receiver;
 
     private String description;
 
     private Status status;
 
-    public Transaction(int id, Date date, float amount, float fee, TypeTransaction typeTransaction, Wallet wallet, Wallet walletOpposite, Account account, String description) {
+    public Transaction(int id, Date date, int amount, int fee, TypeTransaction typeTransaction, Wallet wallet, Wallet walletOpposite, Account sender, Account receiver, String description) {
         this.id = id;
         this.date = date;
         this.amount = amount;
@@ -33,7 +35,8 @@ public class Transaction {
         this.typeTransaction = typeTransaction;
         this.wallet = wallet;
         this.walletOpposite = walletOpposite;
-        this.account = account;
+        this.sender = sender;
+        this.receiver = receiver;
         this.description = description;
     }
 
@@ -61,7 +64,7 @@ public class Transaction {
         return amount;
     }
 
-    public void setAmount(float amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 
@@ -69,7 +72,7 @@ public class Transaction {
         return fee;
     }
 
-    public void setFee(float fee) {
+    public void setFee(int fee) {
         this.fee = fee;
     }
 
@@ -97,12 +100,20 @@ public class Transaction {
         this.walletOpposite = walletOpposite;
     }
 
-    public Account getAccount() {
-        return account;
+    public Account getSender() {
+        return sender;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setSender(Account sender) {
+        this.sender = sender;
+    }
+
+    public Account getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(Account receiver) {
+        this.receiver = receiver;
     }
 
     public String getDescription() {

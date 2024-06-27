@@ -1,6 +1,5 @@
 package org.frog.model;
 
-
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -10,28 +9,14 @@ public class Schedule {
     private int id;
     private Date date;
     private Slot slot;
-//    private Mentor mentor;
+   /* private Mentor mentor;*/
     private Status status;
     private Mentor_Schedule mentorSchedule;
-
-    public Mentor_Schedule getMentorSchedule() {
-        return mentorSchedule;
-    }
-
-    public void setMentorSchedule(Mentor_Schedule mentorSchedule) {
-        this.mentorSchedule = mentorSchedule;
-    }
 
     public Schedule() {
     }
 
-    public Status getStatus() {
-        return status;
-    }
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
 
     public int getId() {
         return id;
@@ -57,12 +42,27 @@ public class Schedule {
         this.slot = slot;
     }
 
-//    public Mentor getMentor() {
-//        return mentor;
-//    }
-//
-//    public void setMentor(Mentor mentor) {
-//        this.mentor = mentor;
-//    }
+    /*public Mentor getMentor() {
+        return mentor;
+    }
 
+    public void setMentor(Mentor mentor) {
+        this.mentor = mentor;
+    }*/
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Mentor_Schedule getMentorSchedule() {
+        return mentorSchedule;
+    }
+
+    public void setMentorSchedule(Mentor_Schedule mentorSchedule) {
+        this.mentorSchedule = mentorSchedule;
+    }
 }

@@ -191,7 +191,7 @@ public class Level_SkillDAO {
             if (levels != null && levels.length > 0) {
                 sql += " AND (";
                 for (int i = 0; i < levels.length; i++) {
-                    sql += " Level.type = ?";
+                    sql += " Level.type = '" + levels[i]+ "' ";
                     if (i < levels.length - 1) {
                         sql += " OR";
                     }
@@ -202,13 +202,6 @@ public class Level_SkillDAO {
             assert connection != null;
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, StatusEnum.ACTIVE);
-
-            if (levels != null && levels.length > 0) {
-                for (int i = 0; i < levels.length; i++) {
-                    preparedStatement.setString(1 + i, levels[i]);
-                }
-            }
-
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {

@@ -69,7 +69,7 @@
     <div style="text-align: left;font-weight: bold">
     <h3 style="text-align: center;font-weight: bold;">Booking</h3>
         <p style="font-weight: bold"><span style="font-weight: bold">Mentee: </span> ${book.mentee.account.name}</p>
-    <p>Amount: ${book.id}</p>
+    <p>Amount: ${book.amount}</p>
     <p>Created date: ${book.date}</p>
     <p>Skill: ${book.level_skills.skill.name}</p>
     <p>Level: ${book.level_skills.level.name}</p>

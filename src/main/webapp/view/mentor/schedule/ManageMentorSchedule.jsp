@@ -340,6 +340,9 @@
                             <c:if test="${slotConfirmedNumber == bookingSlotsNumber}">
                                 <c:if test="${bookingSlots[0].booking.status.id != 13 }">
                                 <li><span style="font-weight: bold">All lessons are finished,wait ${bookingSlots[0].booking.mentee.account.name} confirms...</span></li>
+                                            <input type="button" class="btn" id="btn" value="Booking Done"
+                                            data-id="${bookingSlots[0].booking.mentee.account.id}"
+                                            data-booking-id="${bookingSlots[0].booking.id}" onclick="sendMail()">
 
                                 </c:if>
                             </c:if>
@@ -391,6 +394,35 @@
     </c:if>
 </div>
 <script>
+    const sendMail = () => {
+        var btnOnclick = document.getElementById("btn");
+        var newURL = "";
+        btnOnclick.onclick = function (event) {
+            event.preventDefault();
+            Swal.fire({
+                title: "Are you want to send mail ?",
+                text: "Ensure that all slot has happened",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Successfully",
+                        text: "Mail sent",
+                        icon: "success"
+                    });
+                    var menteeId = document.getElementById('btn').getAttribute('data-id');
+                    var bookingId = document.getElementById('btn').getAttribute('data-booking-id');
+                    var url = '/Frog/confirmMail?menteeId='+menteeId+'&bookingId='+bookingId;
+                    window.location.href=url;
+                }
+            });
+        };
+    }
+
     const updateURL = ()=>{
         var currentURL = window.location.href;
         var url = new URL(currentURL);

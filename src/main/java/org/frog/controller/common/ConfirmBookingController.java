@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.frog.DAO.BookingDAO;
 import org.frog.DAO.Booking_ScheduleDAO;
+import org.frog.DAO.ScheduleDAO;
 import org.frog.DAO.WalletDAO;
 import org.frog.model.Account;
 import org.frog.model.Booking;
@@ -29,28 +30,34 @@ public class ConfirmBookingController extends HttpServlet {
             Booking_ScheduleDAO bsDao = new Booking_ScheduleDAO();
             BookingDAO bookingDAO = new BookingDAO();
             Booking booking = new Booking();
-            WalletDAO walletDAO = new WalletDAO();
-            Account mentor = new Account();
-            Account mentee = new Account();
+//            WalletDAO walletDAO = new WalletDAO();
+//            Account mentor = new Account();
+//            Account mentee = new Account();
             int id = Integer.parseInt(bookingId);
             booking = bookingDAO.getBookingById(id);
 
             if (bsDao.getDetailBookingMentee(id).size() == bsDao.getNumberOfSlotConfirmed(id)) {
-                if(booking.getStatus().getId() != 13){
-                    bsDao.updateBooking(id, 13);
-                    mentor=walletDAO.getWalletAccountById(booking.getMentor().getAccount().getId());
-                    mentee=walletDAO.getWalletAccountById(booking.getMentee().getAccount().getId());
+//                if(booking.getStatus().getId() != 13){
+//                    bsDao.updateBooking(id, 13);
+//                    mentor=walletDAO.getWalletAccountById(booking.getMentor().getAccount().getId());
+//                    mentee=walletDAO.getWalletAccountById(booking.getMentee().getAccount().getId());
+//
+//                    float fee = (float) (booking.getAmount() * PaymentEnum.FEE);
+//                    float menteePay = booking.getAmount() ;
+//                    walletDAO.payment(mentee.getWallet().getBalance()-menteePay,mentee.getWallet().getId());
+//                    walletDAO.updateAvailable(mentor.getWallet(),mentor.getWallet().getHold()-booking.getAmount());
+//
+//                    walletDAO.payment(mentor.getWallet().getBalance()+booking.getAmount()-fee,mentor.getWallet().getId());
+//
+//                    LocalDateTime now = LocalDateTime.now();
+//                    walletDAO.createTransaction(Timestamp.valueOf(now),booking.getAmount(),mentee.getWallet().getId(),mentor.getWallet().getId(),fee);
+//                }
+                Booking_ScheduleDAO bDAO = new Booking_ScheduleDAO();
+                               if(booking.getStatus().getId() !=13 && booking.getStatus().getId() !=3  ){
+                       bDAO.updateBooking(id,3);
+                   }
 
-                    float fee = (float) (booking.getAmount() * PaymentEnum.FEE);
-                    float menteePay = booking.getAmount() ;
-                    walletDAO.payment(mentee.getWallet().getBalance()-menteePay,mentee.getWallet().getId());
-                    walletDAO.updateAvailable(mentor.getWallet(),mentor.getWallet().getHold()-booking.getAmount());
 
-                    walletDAO.payment(mentor.getWallet().getBalance()+booking.getAmount()-fee,mentor.getWallet().getId());
-
-                    LocalDateTime now = LocalDateTime.now();
-                    walletDAO.createTransaction(Timestamp.valueOf(now),booking.getAmount(),mentee.getWallet().getId(),mentor.getWallet().getId(),fee);
-                }
                 req.setAttribute("book", booking);
 //
                 req.getRequestDispatcher("/view/common/ConfirmBooking.jsp").forward(req, resp);

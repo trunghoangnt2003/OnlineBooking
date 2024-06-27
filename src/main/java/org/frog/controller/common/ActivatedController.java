@@ -23,7 +23,6 @@ public class ActivatedController extends HttpServlet {
         String email = req.getParameter("token");
         AccountDAO accountDAO = new AccountDAO();
         ArrayList<Account> accounts = accountDAO.selectAll();
-        String account_email = "";
         Account accountCheck = null;
         boolean check = true;
         for(Account account:accounts){
@@ -31,7 +30,6 @@ public class ActivatedController extends HttpServlet {
             if(SHA1.toSHA1(account.getEmail()+account.getEmail()).equals(email)){
 
                 if (account.getStatus().getId()==StatusEnum.INACTIVE){
-                    account_email = account.getEmail();
                     accountCheck = account;
                     check=false;
                     break;
@@ -43,11 +41,9 @@ public class ActivatedController extends HttpServlet {
         if(check) {
             resp.getWriter().println("Sorry, the link you provided has expired");
         }else{
-            resp.getWriter().println("Account Activated" );
-            resp.getWriter().println("user name : "+accountCheck.getUserName());
-            resp.getWriter().println("email : "+accountCheck.getEmail());
-            resp.getWriter().println("Role : "+(accountCheck.getRole().getId()==1?"Mentee":"Mentor"));
-            accountDAO.updateStatus(account_email, StatusEnum.ACTIVE);
+            accountDAO.updateStatusById(accountCheck.getId(), StatusEnum.ACTIVE);
+            req.setAttribute("account", accountCheck);
+            req.getRequestDispatcher("view/public/activated.jsp").forward(req, resp);
         }
 
     }

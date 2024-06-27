@@ -6,11 +6,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.frog.DAO.BookingDAO;
 import org.frog.DAO.Booking_ScheduleDAO;
+import org.frog.DAO.Mentor_ScheduleDAO;
 import org.frog.DAO.WalletDAO;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.Account;
 import org.frog.model.Booking;
 import org.frog.model.BookingSchedule;
+import org.frog.model.Mentor_Schedule;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -74,6 +76,14 @@ public class UpdateScheduleController extends AuthenticationServlet {
                 ArrayList<BookingSchedule> bsSavelogs = new ArrayList<>();
                 bsSavelogs=bsDAO.getBookingSchedulesById(Integer.parseInt(bookingID));
                 bsDAO.saveLog(bsSavelogs);
+                //save schedule
+                Mentor_ScheduleDAO mentor_scheduleDao = new Mentor_ScheduleDAO();
+                Mentor_Schedule mentor_schedule = mentor_scheduleDao.getByMentor(account.getId());
+                ArrayList<BookingSchedule> bsSlots =bsDAO.checkSlotBookedByRejecSlot(Integer.parseInt(bookingID));
+                for(BookingSchedule bs : bsSlots){
+                    int bsSlotsId = bsDAO.getIdSCheduleLogs(bs.getSchedule().getDate(),bs.getSchedule().getSlot().getId(),mentor_schedule.getId());
+                    bsDAO.updateStatusScheduleLogs(bsSlotsId,11);
+                }
                 // delete bs
                 boolean checkDBs = bsDAO.deleteScheduleBookings(Integer.parseInt(bookingID));
                 // reject booking

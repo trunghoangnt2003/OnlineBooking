@@ -37,4 +37,19 @@ public class Mentor_ScheduleDAO {
 
         return null;
     }
+
+    public void updateEndDate(int id, java.util.Date end) {
+        try{
+            String sql = "UPDATE [dbo].[Mentor_Schedule]\n" +
+                    "   SET [end_date] = ?\n" +
+                    " WHERE id = ?";
+            PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement(sql);
+            preparedStatement.setDate(1, new java.sql.Date(end.getTime()));
+            preparedStatement.setInt(2, id);
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

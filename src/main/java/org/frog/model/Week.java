@@ -44,8 +44,5 @@ public class Week {
             return null;
         }
     }
-    public boolean isBooked(String id , Date date ,int slot_id){
-        ScheduleDAO scheduleDAO = new ScheduleDAO();
-        return scheduleDAO.checkSlotBooked(id,date,slot_id);
-    }
+
 }

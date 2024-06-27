@@ -551,7 +551,7 @@ public class BookingDAO {
                     "\t\t\t\t\tINNER JOIN Mentee m ON b.mentee_id = m.account_id\n" +
                     "\t\t\t\t\tINNER JOIN Account acc ON acc.id = m.account_id\n" +
                     "\t\t\t\t\tINNER JOIN Status status ON status.id = b.status_id\n" +
-                    "WHERE b.status_id = 3";
+                    "WHERE b.status_id = 3 OR b.status_id = 7";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){

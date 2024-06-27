@@ -57,13 +57,23 @@ public class ViewScheduleController extends AuthenticationServlet {
                 req.setAttribute("bookInfo", bookInfo);
 
             }
-
-
             slots = scheduleDAO.getSlots();
             schedules = scheduleDAO.getScheduleLogsByMentorSet(account.getId());
             bookings = bs.getBookingByMenteeBookMentor(account.getId());
-
             BookingSlots = bs.getDetailBookings(account.getId());
+            // check slot booked or not
+            // slot always exist in schedule logs
+            ArrayList<BookingSchedule> bsCheckSlotBooked = bs.checkSlotBooked(account.getId());
+            int idCheckSlotBooked = 0;
+            Mentor_ScheduleDAO mentor_scheduleDao = new Mentor_ScheduleDAO();
+            Mentor_Schedule mentor_schedule = mentor_scheduleDao.getByMentor(account.getId());
+            for( BookingSchedule b : bsCheckSlotBooked){
+                idCheckSlotBooked = bs.getIdSCheduleLogs(b.getSchedule().getDate(),b.getSchedule().getSlot().getId(),mentor_schedule.getId());
+               if(idCheckSlotBooked != 0){
+                   bs.updateStatusScheduleLogs(idCheckSlotBooked,9);
+               }
+            }
+
             req.setAttribute("today", day);
             req.setAttribute("BookingSlots", BookingSlots);
             req.setAttribute("bookings", bookings);

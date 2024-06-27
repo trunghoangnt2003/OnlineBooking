@@ -118,6 +118,7 @@
             cursor: pointer; /* Add a pointer cursor on hover */
             border-radius: 12px; /* Rounded corners */
         }
+
     </style>
 
 </head>
@@ -148,8 +149,9 @@
                         <th>Start Date</th>
                         <th>End Date</th>
                         <th>Name</th>
+                        <th>isDone</th>
                         <th>Re-send</th>
-                        <th>Status</th>
+                        <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -165,10 +167,11 @@
                             <td>${book.startDate}</td>
                             <td>${book.endDate}</td>
                             <td>${book.mentee.account.name}</td>
+                            <td><input type="checkbox" readonly class="custom-checkbox" <c:if test="${book.status.id == 3}"> checked </c:if></td>
                             <td>
-                                <input type="button" class="btn" id="btn" value="Send Mail" onclick="sendMail()" data-id="${book.mentee.account.id}_${book.id}">
+                                <input type="button" class="btn" id="btn" value="Send Mail" onclick="sendMail('${book.mentee.account.id}',${book.id})">
                             </td>
-                            <td><button id="confirmBooking" data-id="${book.id}" onclick="confirmBooking()">
+                            <td><button id="confirmBooking" onclick="confirmBooking(${book.id})">
                                 Confirm
                             </button>
                                 </td>
@@ -207,63 +210,58 @@
         </div>
         </div>
 
-</body>
+</div>
 <!-- container-scroller -->
 <!-- plugins:js -->
 <script>
-    const confirmBooking = () => {
-        var btnOnclick = document.getElementById("confirmBooking");
+    function confirmBooking(id) {
         var newURL = "";
-        btnOnclick.onclick = function (event) {
-            event.preventDefault();
-            Swal.fire({
-                title: "Are you want to confirm booking",
-                icon: "question",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes!"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        title: "confirm Successfully",
-                        text: "Transaction added",
-                        icon: "success"
-                    });
-                    var id = this.getAttribute('data-id');
-                    newURL = "/Frog/confirmBooking?id="+id;
-                    window.location.href = newURL;
-                }
-            });
-        };
+        console.log('confirm');
+        event.preventDefault();
+        Swal.fire({
+            title: "Are you want to confirm booking",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "confirm Successfully",
+                    text: "Transaction added",
+                    icon: "success"
+                });
+                //var id = this.getAttribute('data-id');
+                newURL = "/Frog/manageConfirmBooking?id="+id;
+                window.location.href = newURL;
+            }
+        });
     }
-    const sendMail = () => {
-        var btnOnclick = document.getElementById("btn");
-        var newURL = "";
-        btnOnclick.onclick = function (event) {
-            event.preventDefault();
-            Swal.fire({
-                title: "Are you want to send mail ?",
-                text: "Ensure that all slot has happened",
-                icon: "question",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes!"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        title: "Successfully",
-                        text: "Mail sent",
-                        icon: "success"
-                    });
-                    var menteeId = this.getAttribute('data-id').split("_")[0];
-                    var bookingId =this.getAttribute('data-id').split("_")[1];
-                    newURL = '/Frog/confirmMail?menteeId=' + menteeId + '&bookingId='+bookingId;
-                    window.location.href = newURL;
-                }
-            });
-        };
+    function sendMail(accID, bid)  {
+        console.log('SendMil');
+        event.preventDefault();
+        Swal.fire({
+            title: "Are you want to send mail ?",
+            text: "Ensure that all slot has happened",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Successfully",
+                    text: "Mail sent",
+                    icon: "success"
+                });
+               // var menteeId = this.getAttribute('data-id').split("_")[0];
+               // var bookingId =this.getAttribute('data-id').split("_")[1];
+                newURL = '/Frog/confirmMail?menteeId=' + accID + '&bookingId='+bid;
+                window.location.href = newURL;
+            }
+        });
     }
 </script>
 

@@ -49,11 +49,9 @@ public class ScheduleDashboardController extends AuthenticationServlet {
 
             String dayID = req.getParameter("dayID");
             if (dayID != null) {
-
                 String[] infoDayID = dayID.split("_");
                 ArrayList<BookingSchedule> bookInfo = bs.getDetailBooking(account.getId(), DateTimeHelper.convertStringToDateByDay(infoDayID[0]), Integer.parseInt(infoDayID[1]));
                 req.setAttribute("bookInfo", bookInfo);
-
             }
 
 

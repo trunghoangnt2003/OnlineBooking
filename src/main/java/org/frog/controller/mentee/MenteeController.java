@@ -32,7 +32,14 @@ public class MenteeController extends AuthenticationServlet {
             wish_list_id = Integer.parseInt(id);
         }
         dao.UnfollowById(wish_list_id);
+
+
         List<WishList> wishListsAccepet = dao.getWishListAcceptByMenteeId(account.getId());
+
+        if (id != null){
+            resp.sendRedirect("profile?menteeid=" + menteeId);
+            return;
+        }
 
         req.setAttribute("acc_id", account.getId()) ;
         req.setAttribute("url_id", menteeId);
@@ -46,3 +53,4 @@ public class MenteeController extends AuthenticationServlet {
 
     }
 }
+

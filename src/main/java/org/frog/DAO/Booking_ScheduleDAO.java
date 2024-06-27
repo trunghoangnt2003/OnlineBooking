@@ -32,25 +32,20 @@ public class Booking_ScheduleDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1,mentor_id);
 
-
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 BookingSchedule bookingSchedule = new BookingSchedule();
                 bookingSchedule.setId(resultSet.getInt("id"));
 
-
                 Status status = new Status();
                 status.setId(resultSet.getInt("status_id"));
                 bookingSchedule.setStatus(status);
 
-
                 Schedule schedule = new Schedule();
                 schedule.setId(resultSet.getInt("schedule_id"));
 
-
                 Mentor_Schedule mentor_schedule = new Mentor_Schedule();
                 mentor_schedule.setId(resultSet.getInt("mentor_schedule_id"));
-
 
                 Mentor mentor = new Mentor();
                 Account account_mentor = new Account();
@@ -59,26 +54,20 @@ public class Booking_ScheduleDAO {
                 mentor_schedule.setMentor(mentor);
                 schedule.setMentorSchedule(mentor_schedule);
 
-
                 schedule.setDate(resultSet.getDate("date"));
-
 
                 Slot slot = new Slot();
                 slot.setId(resultSet.getInt("slot_id"));
                 schedule.setSlot(slot);
 
-
                 bookingSchedule.setSchedule(schedule);
-
 
                 Booking booking = new Booking();
                 booking.setId(resultSet.getInt("booking_id"));
                 bookingSchedule.setBooking(booking);
 
-
                 Level_Skills level_skill = new Level_Skills();
                 level_skill.setId(resultSet.getInt("level_skill_id"));
-
 
                 Skill skill = new Skill();
                 skill.setId(resultSet.getInt("skill_id"));
@@ -86,13 +75,11 @@ public class Booking_ScheduleDAO {
                 skill.setSrc_icon(resultSet.getString("src_icon"));
                 level_skill.setSkill(skill);
 
-
                 org.frog.model.Level level = new org.frog.model.Level();
                 level.setId(resultSet.getInt("level_id"));
                 level.setName(resultSet.getString("type"));
                 level_skill.setLevel(level);
                 booking.setLevel_skills(level_skill);
-
 
                 Mentee mentee = new Mentee();
                 Account account_mentee = new Account();
@@ -106,7 +93,6 @@ public class Booking_ScheduleDAO {
         }
         return list;
     }
-
 
     public void makeBooking_Schedule(Booking booking, ArrayList<Integer> scheduleList){
         try {
@@ -437,8 +423,6 @@ public class Booking_ScheduleDAO {
         return bs;
     }
 
-
-
     public ArrayList<BookingSchedule> getDetailBookings(String mentor_id ) throws SQLException {
         ArrayList<BookingSchedule> bs = new ArrayList<>();
         try{
@@ -461,7 +445,6 @@ public class Booking_ScheduleDAO {
                     "                    Where ms.mentor_id = ? ";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1,mentor_id);
-
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
@@ -490,7 +473,6 @@ public class Booking_ScheduleDAO {
 
                 schedule.setDate(resultSet.getDate("date"));
 
-
                 Slot slot = new Slot();
                 slot.setId(resultSet.getInt("slot_id"));
                 slot.setStart_at(resultSet.getString("time_start"));
@@ -510,10 +492,8 @@ public class Booking_ScheduleDAO {
                 status_booking.setId(resultSet.getInt("status"));
                 booking.setStatus(status_booking);
 
-
                 Level_Skills level_skill = new Level_Skills();
                 level_skill.setId(resultSet.getInt("level_skill_id"));
-
 
                 Skill skill = new Skill();
                 skill.setId(resultSet.getInt("skill_id"));
@@ -546,7 +526,6 @@ public class Booking_ScheduleDAO {
         }
         return bs;
     }
-
     public ArrayList<Booking> getBookingsHistory(String id ){
         ArrayList<Booking> bookings = new ArrayList<>();
         try{
@@ -969,8 +948,6 @@ public class Booking_ScheduleDAO {
         return bookings;
     }
 
-
-
     public ArrayList<BookingSchedule> getLogs(int booking_id){
         ArrayList<BookingSchedule> list = new ArrayList<>();
         String sql = "SELECT sbl.id, sbl.booking_id, b.mentee_id, b.level_skill_id, sbl.schedule_id, \n" +
@@ -999,6 +976,7 @@ public class Booking_ScheduleDAO {
                     slot.setStart_at(resultSet.getString("time_start"));
                     slot.setEnd_at(resultSet.getString("time_end"));
                     schedule.setSlot(slot);
+
 
                     Mentor_Schedule mentor_schedule = new Mentor_Schedule();
                     mentor_schedule.setId(resultSet.getInt("mentor_schedule_id"));
@@ -1033,7 +1011,6 @@ public class Booking_ScheduleDAO {
         return list;
     }
 
-
     public ArrayList<BookingSchedule> getBookingScheduleMentorAccepted(String mentor_id){
         ArrayList<BookingSchedule> list = new ArrayList<>();
         try{
@@ -1059,6 +1036,7 @@ public class Booking_ScheduleDAO {
                 Schedule schedule = new Schedule();
                 schedule.setId(resultSet.getInt("schedule_id"));
 
+
                 Mentor_Schedule mentor_schedule = new Mentor_Schedule();
                 mentor_schedule.setId(resultSet.getInt("mentor_schedule_id"));
                 Mentor mentor = new Mentor();
@@ -1073,6 +1051,7 @@ public class Booking_ScheduleDAO {
                 slot.setId(resultSet.getInt("slot_id"));
                 schedule.setSlot(slot);
 
+
                 bookingSchedule.setSchedule(schedule);
                 list.add(bookingSchedule);
             }
@@ -1081,7 +1060,6 @@ public class Booking_ScheduleDAO {
         }
         return list;
     }
-
 
     public void saveLog(ArrayList<BookingSchedule> bookingScheduless ){
         try{
@@ -1245,7 +1223,6 @@ public class Booking_ScheduleDAO {
         }
         return bs;
     }
-
     public int getNumberOfSlotConfirmed(int booking_id) throws SQLException {
         int number = 0;
         try{
@@ -1527,5 +1504,91 @@ public class Booking_ScheduleDAO {
             System.out.println(e.getMessage());
         }
         return bookings;
+    }
+    public ArrayList<BookingSchedule> checkSlotBooked(String id ){
+        ArrayList<BookingSchedule> bsCheck = new ArrayList<>();
+        String sql = "  SELECT Date , slot_id FROM Booking_Schedule bs \n" +
+                "                         JOIN Booking b ON bs.booking_id=b.id\n" +
+                "                          JOIN Schedule s ON s.id = bs.schedule_id\n" +
+                "               JOIN Mentor_Schedule ms ON ms.id = s.mentor_schedule_id\n" +
+                "                          WHERE (b.status_id = 1 OR b.status_id=11) AND ms.mentor_id= ? ";
+        try {
+            Connection connection = JDBC.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+             while (resultSet.next()){
+                BookingSchedule bs = new BookingSchedule();
+                Schedule sche = new Schedule();
+                sche.setDate(resultSet.getDate("Date"));
+                Slot s = new Slot();
+                s.setId(resultSet.getInt("slot_id"));
+                sche.setSlot(s);
+                bs.setSchedule(sche);
+                bsCheck.add(bs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bsCheck;
+    }
+    public int getIdSCheduleLogs(Date date , int slot_id,int mentor_schedule_id){
+        String sql ="  SELECT id FROM Schedule_Logs\n" +
+                "  WHERE Date = ? AND slot_id= ? AND mentor_schedule_id =? ";
+        ArrayList<Schedule> schedules = new ArrayList<>();
+        int id = 0;
+        try {
+            PreparedStatement stm = JDBC.getConnection().prepareStatement(sql);
+            stm.setDate(1, date);
+            stm.setInt(2, slot_id);
+            stm.setInt(3,mentor_schedule_id);
+            ResultSet resultSet = stm.executeQuery();
+            while (resultSet.next()){
+                id=resultSet.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+    public void updateStatusScheduleLogs(int scheduleLogsId,int status_id){
+        Connection connection = JDBC.getConnection();
+        String sql = "UPDATE Schedule_Logs SET status_id = ?\n" +
+                "  WHERE id = ?\n ";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, status_id);
+            stm.setInt(2, scheduleLogsId);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public ArrayList<BookingSchedule> checkSlotBookedByRejecSlot(int booking_id ){
+        ArrayList<BookingSchedule> bsCheck = new ArrayList<>();
+        String sql = "  SELECT Date , slot_id FROM Booking_Schedule bs \n" +
+                "                         JOIN Booking b ON bs.booking_id=b.id\n" +
+                "                          JOIN Schedule s ON s.id = bs.schedule_id\n" +
+                "               JOIN Mentor_Schedule ms ON ms.id = s.mentor_schedule_id\n" +
+                "                          WHERE (b.status_id = 1 OR b.status_id=11) AND b.id = ? ";
+        try {
+            Connection connection = JDBC.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, booking_id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                BookingSchedule bs = new BookingSchedule();
+                Schedule sche = new Schedule();
+                sche.setDate(resultSet.getDate("Date"));
+                Slot s = new Slot();
+                s.setId(resultSet.getInt("slot_id"));
+                sche.setSlot(s);
+                bs.setSchedule(sche);
+                bsCheck.add(bs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bsCheck;
     }
  }
