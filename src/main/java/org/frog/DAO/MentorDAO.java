@@ -10,10 +10,7 @@ import org.frog.model.Status;
 import org.frog.model.*;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class MentorDAO {
 
@@ -706,24 +703,38 @@ public class MentorDAO {
         }
     }
 
-    public Map<Mentor_Schedule, Integer> getProcessingSchedule(int page, String name) {
-        Map<Mentor_Schedule, Integer> map = new LinkedHashMap<>();
+    public Map<Mentor_Schedule, Map<String, Integer>> getProcessingSchedule(int page, String name) {
+        Map<Mentor_Schedule, Map<String, Integer>> map = new LinkedHashMap<>();
         try {
-            String sql = "SELECT a.id, a.name,ms.start_date,ms.id as MentorSchedule, ms.end_date, count(sl.status_id) as waiting\n" +
-                    "FROM Account  a JOIN Mentor m ON a.id = m.account_id and a.status = ? \n" +
-                    "LEFT JOIN Mentor_Schedule ms ON m.account_id = ms.mentor_id\n" +
-                    "LEFT JOIN Schedule_Logs sl ON ms.id = sl.mentor_schedule_id AND status_id =? \n";
+            String sql = "With T1 AS\n" +
+                    "(\n" +
+                    "SELECT a.id, a.name,ms.start_date,ms.id as MentorSchedule, ms.end_date, count(sl.status_id) as waiting\n" +
+                    "                    FROM Account  a JOIN Mentor m ON a.id = m.account_id and a.status = ? \n" +
+                    "                    LEFT JOIN Mentor_Schedule ms ON m.account_id = ms.mentor_id\n" +
+                    "                    LEFT JOIN Schedule_Logs sl ON ms.id = sl.mentor_schedule_id AND status_id = ? \n" +
+                    "\t\t\t\t\tGROUP BY a.id, ms.id,a.name,ms.start_date, ms.end_date ),\n" +
+                    "T2  AS \n" +
+                    "(\n" +
+                    "SELECT a.id, a.name,count(sl.status_id) as remove\n" +
+                    "                    FROM Account  a JOIN Mentor m ON a.id = m.account_id and a.status = ? \n" +
+                    "                    LEFT JOIN Mentor_Schedule ms ON m.account_id = ms.mentor_id\n" +
+                    "                    LEFT JOIN Schedule_Logs sl ON ms.id = sl.mentor_schedule_id AND  status_id = ?\n" +
+                    "\t\t\t\t\tGROUP BY a.id,a.name\n" +
+                    ")\n" +
+                    "Select T1.*, T2.remove\n" +
+                    "FROM T1 JOIN T2 ON T1.id = T2.id\n";
                     if(name != null) {
-                        sql += "WHERE a.name LIKE '%" + name + "%' \n";
+                        sql += "WHERE T1.name LIKE '%" + name + "%' \n";
                     }
-            sql +=  "GROUP BY a.id, ms.id,a.name,ms.start_date, ms.end_date \n"+
-                    "ORDER BY a.id " +
+            sql += "ORDER BY T1.MentorSchedule " +
                     "OFFSET ? ROWS FETCH NEXT 5 ROWS ONLY";
 
             PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement(sql);
             preparedStatement.setInt(1, StatusEnum.ACTIVE);
             preparedStatement.setInt(2, StatusEnum.PROCESSING);
-            preparedStatement.setInt(3, (page - 1) * 5);
+            preparedStatement.setInt(3, StatusEnum.ACTIVE);
+            preparedStatement.setInt(4, StatusEnum.WAITCANCEL);
+            preparedStatement.setInt(5, (page - 1) * 5);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Mentor_Schedule mentorSchedule = new Mentor_Schedule();
@@ -737,7 +748,12 @@ public class MentorDAO {
                 mentor.setAccount(account);
                 mentorSchedule.setMentor(mentor);
                 int totalProcess = resultSet.getInt("waiting");
-                map.put(mentorSchedule, totalProcess);
+                int totalRemove = resultSet.getInt("remove");
+
+                Map<String, Integer> mapCal = new HashMap<>();
+                mapCal.put("waiting", totalProcess);
+                mapCal.put("remove", totalRemove);
+                map.put(mentorSchedule, mapCal);
             }
         } catch (Exception e) {
             e.printStackTrace();

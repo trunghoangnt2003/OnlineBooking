@@ -437,7 +437,8 @@
                         <td>Mentor Id</td>
                         <td>Start</td>
                         <td>End</td>
-                        <td>Slot Waiting</td>
+                        <td>New Slot</td>
+                        <td>Remove Slot</td>
                         <td>Schedule</td>
                         </thead>
                         <tbody >
@@ -448,7 +449,8 @@
                                     <td>${entry.key.mentor.account.id}</td>
                                     <td>${entry.key.start_date}</td>
                                     <td>${entry.key.end_date}</td>
-                                    <td>${entry.value}</td>
+                                    <td>${entry.value.get("waiting")}</td>
+                                    <td>${entry.value.get("remove")}</td>
                                     <td ><i class="fa-regular fa-calendar-days fa-2xl" style="color: #74C0FC; cursor: pointer" onclick="scheduleHandle('${entry.key.mentor.account.id}','${requestScope.page}','${entry.key.mentor.account.name}')"></i></td>
                                 </tr>
                             </c:forEach>
@@ -501,8 +503,10 @@
                         <c:if test="${requestScope.mentor_schedule != null}">
                             <div style="Width: 10%">
                                 <button id="closeButton" class="btn-write" onclick="momodal()">View All</button>
-                                <button  class="btn-write" onclick="handleAcceptedAll(${requestScope.mentor_schedule.id},'accept')" style="margin-top: 10px"  >Accept</button>
-                                <button  class="btn-write" onclick="handleAcceptedAll(${requestScope.mentor_schedule.id},'reject')" style="margin-top: 10px"  >Reject</button>
+                                <button  class="btn-write" onclick="handleSlot(${requestScope.mentor_schedule.id},'accept','new')" style="margin-top: 10px"  >Accept new slot</button>
+                                <button  class="btn-write" onclick="handleSlot(${requestScope.mentor_schedule.id},'reject','new')" style="margin-top: 10px"  >Reject new slot</button>
+                                <button  class="btn-write" onclick="handleSlot(${requestScope.mentor_schedule.id},'accept','remove')" style="margin-top: 10px"  >Accept delete slot</button>
+                                <button  class="btn-write" onclick="handleSlot(${requestScope.mentor_schedule.id},'reject','remove')" style="margin-top: 10px"  >Reject delete slot</button>
                             </div>
                         </c:if>
                         <div class="d-flex justify-content-center " style="width: 90%">
@@ -544,7 +548,7 @@
                                                             <c:if test="${s.status.id == 1}">
                                                                 <blockquote class="notes color-note font-monospace " style="background-color: #F4E0B9">
                                                                     <div class="text-center fw-semibold">
-                                                                        <span>${s.status.type}</span>
+                                                                        <span>New Slot</span>
                                                                     </div>
                                                                     <%--<div class="d-flex justify-content-center mt-4">
                                                                         <button class="btn-accept" style="margin: 0 auto" onclick="btnAccept(${s.id})">
@@ -553,7 +557,7 @@
                                                                     </div>--%>
                                                                 </blockquote>
                                                             </c:if>
-                                                            <c:if test="${s.status.id == 2}">
+                                                            <c:if test="${s.status.id == 12}">
                                                                 <blockquote class="notes color-note font-monospace" style="background-color: #FF6347">
 
                                                                     <div class="text-center fw-bold">
@@ -564,6 +568,13 @@
                                                             </c:if>
                                                             <c:if test="${s.status.id == 11}">
                                                                 <blockquote class="notes color-note font-monospace" style="background-color: #faad12">
+                                                                    <div class="text-center d-flex align-items-center fw-bold">
+                                                                        <span>${s.status.type}</span>
+                                                                    </div>
+                                                                </blockquote>
+                                                            </c:if>
+                                                            <c:if test="${s.status.id == 15}">
+                                                                <blockquote class="notes color-note font-monospace" style="background-color: #f87517">
                                                                     <div class="text-center fw-bold">
                                                                         <span>${s.status.type}</span>
                                                                     </div>
@@ -664,13 +675,13 @@
         window.location.href = "manageSchedule?schedule=" + id
     }
 
-    function  handleAcceptedAll(id,action){
+    function  handleSlot(id,action,type){
         fetch("manageSchedule", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({mentorSchedule: id,action:action}),
+            body: JSON.stringify({mentorSchedule: id,action:action,type:type}),
         }).then( response => {
             if(response.ok) {
                 location.reload();

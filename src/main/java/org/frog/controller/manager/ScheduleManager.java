@@ -60,24 +60,42 @@ public class ScheduleManager extends AuthenticationServlet {
         ScheduleDAO scheduleDAO = new ScheduleDAO();
         String MentorSchedule = json.get("mentorSchedule").getAsString();
         String action = json.get("action").getAsString();
+        String type = json.get("type").getAsString();
         int id = Integer.parseInt(MentorSchedule);
-        ArrayList<Schedule> schedulesLogs = scheduleDAO.getLogsAllByMentorScheduleId(id);
-        if(action.equals("accept")) {
-            //accept
-            Date lastDate = schedulesLogs.get(0).getDate();
-            for (Schedule schedule : schedulesLogs) {
-                scheduleDAO.insert(schedule);
-                scheduleDAO.updateById(schedule.getId(), StatusEnum.ACCEPTED);
-                Date sdate = schedule.getDate();
-                if(sdate.compareTo(lastDate) > 0) {
-                    lastDate = schedule.getDate();
+
+        if(type.equals("new")){
+            ArrayList<Schedule> schedulesLogs = scheduleDAO.getLogsProcessByMentorScheduleId(id);
+            if(action.equals("accept")) {
+                //accept
+                Date lastDate = schedulesLogs.get(0).getDate();
+                for (Schedule schedule : schedulesLogs) {
+                    scheduleDAO.insert(schedule);
+                    scheduleDAO.updateLogsById(schedule.getId(), StatusEnum.ACCEPTED);
+                    Date sdate = schedule.getDate();
+                    if(sdate.compareTo(lastDate) > 0) {
+                        lastDate = schedule.getDate();
+                    }
+                }
+                mentor_scheduleDAO.updateEndDate(id, lastDate);
+            }else if(action.equals("reject")) {
+                //reject
+                for (Schedule schedule : schedulesLogs) {
+                    scheduleDAO.updateLogsById(schedule.getId(), StatusEnum.CANCEL);
                 }
             }
-            mentor_scheduleDAO.updateEndDate(id, lastDate);
-        }else if(action.equals("reject")) {
-            //reject
-            for (Schedule schedule : schedulesLogs) {
-                scheduleDAO.updateById(schedule.getId(), StatusEnum.REJECT);
+        } else if (type.equals("remove")) {
+            // remove
+            ArrayList<Schedule> schedulesLogs = scheduleDAO.getLogsWaitCancelByMentorScheduleId(id);
+            if (action.equals("accept")) {
+                for (Schedule schedule : schedulesLogs) {
+                    scheduleDAO.updateLogsById(schedule.getId(), StatusEnum.CANCEL);
+                    scheduleDAO.deleteSlotAccepted(schedule.getMentorSchedule().getId(), schedule.getDate(), schedule.getSlot().getId());
+                }
+            } else if (action.equals("reject")) {
+                for (Schedule schedule : schedulesLogs) {
+                    scheduleDAO.updateLogsById(schedule.getId(), StatusEnum.ACCEPTED);
+                }
+
             }
         }
 
@@ -128,7 +146,7 @@ public class ScheduleManager extends AuthenticationServlet {
             today = DateTimeHelper.convertUtilDateToSqlDate(ymd);
         }
         ArrayList<java.sql.Date> week = DateTimeHelper.getDatesBetween(from, to);
-        Map<Mentor_Schedule, Integer>  mentorSchedule = mentorDAO.getProcessingSchedule(page,mentorName);
+        Map<Mentor_Schedule, Map<String, Integer>>  mentorSchedule = mentorDAO.getProcessingSchedule(page,mentorName);
         ArrayList<Slot> slots = slotDAO.selectAll();
         ArrayList<Schedule> schedules = scheduleDAO.getScheduleLogsByMentor(mentorId, from, to);
         ArrayList<Schedule> allSchedule = scheduleDAO.getAllScheduleLogsByMentor(mentorId);

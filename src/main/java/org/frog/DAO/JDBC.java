@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 public class JDBC {
     public static Connection getConnection() {
-        String  connectionURL = "jdbc:sqlserver://localhost:1433;databaseName=Prog_DB;user=hyamyyou1;password=123;encrypt=true;trustServerCertificate=true";
+        String  connectionURL = "jdbc:sqlserver://localhost:1433;databaseName=Prog_DB;user=sa;password=123;encrypt=true;trustServerCertificate=true";
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             Connection c = DriverManager.getConnection(connectionURL);

@@ -34,9 +34,9 @@ public class DeleteScheduleController extends AuthenticationServlet {
                 SlotDAO slDAO = new SlotDAO();
                 Slot id = slDAO.getTimeSlot(Integer.parseInt(infoSlotID[1]));
                 if(DateTimeHelper.compareDayIDtoNow(infoSlotID[0], id.getStart_at(), id.getEnd_at())){
-                    if(scheduleDAO.isSlotAccepted(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]))){
-                        scheduleDAO.deleteSlotAccepted(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]));
-                    }
+//                    if(scheduleDAO.isSlotAccepted(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]))){
+//                        scheduleDAO.deleteSlotAccepted(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]));
+//                    }
                     scheduleDAO.deleteDayFreeByMentor(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]));
                 }
                 else{
