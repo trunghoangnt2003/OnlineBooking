@@ -212,7 +212,6 @@
             <c:if test="${requestScope.role == 1}">
                 <button>Withdraw</button>
                 <button onclick="payment()" class="btn2">Deposit</button>
-                <button>Payment</button>
             </c:if>
             <c:if test="${requestScope.role == 2}">
                 <button>Withdraw</button>
