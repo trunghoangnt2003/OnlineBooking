@@ -26,7 +26,7 @@
         }
 
         .info-container{
-            width:83%;
+            width:78%;
             margin: 20px 0;
             border-radius: 10px;
             padding: 25px;
@@ -34,11 +34,27 @@
         }
 
         .wallet{
-            width: 15%;
+            width: 20%;
             margin: 20px 0;
             border-radius: 10px;
             padding: 25px;
             box-shadow: 0 5px 7px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .wallet-top {
+            color: #07AD90;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+            cursor: pointer;
+        }
+        .wallet-top i {
+
+            margin-right: 0.5rem;
+        }
+        .wallet-top:hover {
+            color: #04e8bf;
         }
 
 
@@ -281,15 +297,19 @@
             </div>
             <div  class="d-flex justify-content-between mt-3">
                 <span class="fs-4"> Mentor: ${requestScope.mentor.account.name}</span>
-                <span class="fs-5">${requestScope.mentor.price}$/per slot</span>
+                <span class="fs-5">${requestScope.mentor.price}VND/per slot</span>
 
             </div>
         </div>
         <div class="wallet">
-            <h3 style="color: #07AD90; text-align: center" class="mb-4" > <i class="fa-solid fa-wallet" style="color: #07AD90;"></i> Wallet</h3>
-            <h6>Total: ${requestScope.wallet.balance}$</h6>
-            <h6>Available: ${requestScope.wallet.balance-requestScope.wallet.hold}$</h6>
+            <div class="wallet-top" onclick="waletHandle()">
+                <i class="fa-solid fa-wallet fa-2x"></i>
+                <h3>Wallet</h3>
+            </div>
+            <h6>Total: ${requestScope.wallet.balance} VND</h6>
+            <h6>Available: ${requestScope.wallet.balance-requestScope.wallet.hold} VND</h6>
             <input id="available" type="text" hidden="hidden" name="available" value="${requestScope.wallet.balance-requestScope.wallet.hold}"/>
+
         </div>
     </div>
     <div class="d-flex main">
@@ -512,6 +532,7 @@
 
                         </ul>
                         <i style="font-size: 10px; color: #FF6347">< Your bookings above have conflict! ></i>
+                        <i style="font-size: 10px; color: #FF6347">< ${requestScope.slotNotExist} slots not exist ></i>
                         <hr style="margin: 5px 0; color: #FF6347; opacity: 80%; border: none;">
                     </div>
                 </c:if>
@@ -529,9 +550,9 @@
                         <textarea id="notes" name="message" placeholder="write your sort message" rows="6" ></textarea>
                     </div>
                     <div class="amount">
-                        <input id="price" type="number" value="${requestScope.mentor.price}" hidden="hidden">
-                        <span id="number_booking"></span>
-                        <span id="amount"></span>
+                        <input id="price" type="number" value="${requestScope.mentor.price}" hidden="hidden"/>
+                        <h5 id="number_booking"></h5>
+                        <h5 id="amount" ></h5>
 
                     </div>
                     <div class="btn-book">
@@ -677,7 +698,7 @@
                             text: "Insufficient balance.",
                             icon: "error",
                             showConfirmButton: false,
-
+                            footer:'<a href="../payment">Recharge wallet now</a>'
                         })
                         console.log("ádadasd");
                     }else {
@@ -707,6 +728,10 @@
 
             }
         });
+    }
+
+    function waletHandle(){
+        window.location.href = "../wallet/view";
     }
 </script>
 

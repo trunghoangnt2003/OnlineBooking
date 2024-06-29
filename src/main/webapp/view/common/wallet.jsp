@@ -207,8 +207,8 @@
             <h2>Hello, ${requestScope.account.name}</h2>
         </div>
         <div class="balance">
-            <h3>Total: $${requestScope.wallet.balance}</h3>
-            <p>Hold: ${requestScope.wallet.hold}</p>
+            <h3>Total: ${requestScope.wallet.balance}000 VND</h3>
+            <p>Hold: ${requestScope.wallet.hold} VND</p>
             <c:if test="${requestScope.role == 1}">
                 <button>Withdraw</button>
                 <button onclick="payment()" class="btn2">Deposit</button>
@@ -263,7 +263,7 @@
                                 <span><i class="fa-solid fa-money-bill-trend-up"></i></span>
                             </c:if>
 
-                            <span>$</span>${t.amount}
+                            <span>${t.amount} VND</span>
                         </td>
                         <c:if test="${requestScope.role == 2}">
                             <td>
