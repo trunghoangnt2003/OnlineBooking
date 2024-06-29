@@ -34,6 +34,7 @@ public class ViewMentorScheduleController extends AuthenticationServlet {
 
         SlotDAO slotDAO = new SlotDAO();
         Booking_ScheduleDAO booking_scheduleDAO = new Booking_ScheduleDAO();
+        BookingDAO bookingDAO = new BookingDAO();
         MentorDAO mentorDAO = new MentorDAO();
         ArrayList<Slot> slots = slotDAO.selectAll();
         Level_SkillDAO level_skillDAO = new Level_SkillDAO();
@@ -47,10 +48,13 @@ public class ViewMentorScheduleController extends AuthenticationServlet {
         String[] bookings = request.getParameterValues("booking-schedule");
         String[] bookConflict = request.getParameterValues("booking-conflict");
         ArrayList<BookingSchedule> bookingLogs = booking_scheduleDAO.getLogs(bookinngsLogsID);
+        Booking b = bookingDAO.getBookingById(bookinngsLogsID);
         ArrayList<BookingSchedule> bookingListAccepted = booking_scheduleDAO.getBookingScheduleMentorAccepted(mentor_id);
         ArrayList<BookingSchedule> bookingConflict = new ArrayList<>();
         ArrayList<BookingSchedule> bookingList = new ArrayList<>();
 
+
+        int slotNotExist = b.getTotalSlot() - bookingLogs.size();
 
         //convert booking array string to ArrayList
         if(bookings != null) {
@@ -172,7 +176,7 @@ public class ViewMentorScheduleController extends AuthenticationServlet {
         Level_Skills level_skills = level_skillDAO.getBySkillAndLevel(skill, level);
         Wallet wallet = walletDAO.getByAccountId(account.getId());
 
-
+        request.setAttribute("slotNotExist", slotNotExist);
         request.setAttribute("now", now);
         request.setAttribute("wallet", wallet);
         request.setAttribute("bookingConflict", bookingConflict);
@@ -247,6 +251,8 @@ public class ViewMentorScheduleController extends AuthenticationServlet {
 
         Level_Skills level_skills = level_skillDAO.getBySkillAndLevel(skill, level);
         booking.setLevel_skills(level_skills);
+
+        booking.setTotalSlot(scheduleList.size());
 
         bookingDAO.insertBooking(booking);
 

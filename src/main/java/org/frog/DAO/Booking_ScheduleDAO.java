@@ -1591,4 +1591,18 @@ public class Booking_ScheduleDAO {
         }
         return bsCheck;
     }
+
+    public void changeBookingIdToZero(int booking_id){
+        Connection connection = JDBC.getConnection();
+        String sql = "UPDATE Booking SET booking_id = ?\n" +
+                "  WHERE [schedule_id] = ?\n ";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, 0);
+            stm.setInt(2, booking_id);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
  }

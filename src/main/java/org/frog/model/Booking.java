@@ -16,6 +16,7 @@ public class Booking {
     private String description;
     private Level_Skills level_skills;
     private String reason;
+    private int totalSlot;
 
     public Booking(int id, Status status, int amount, Timestamp date, Mentor mentor, Mentee mentee, Date startDate, Date endDate) {
         this.id = id;
@@ -118,5 +119,13 @@ public class Booking {
 
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    public int getTotalSlot() {
+        return totalSlot;
+    }
+
+    public void setTotalSlot(int totalSlot) {
+        this.totalSlot = totalSlot;
     }
 }

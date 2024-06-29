@@ -6,10 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.frog.DAO.MentorDAO;
-import org.frog.DAO.Mentor_ScheduleDAO;
-import org.frog.DAO.ScheduleDAO;
-import org.frog.DAO.SlotDAO;
+import org.frog.DAO.*;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.*;
 import org.frog.utility.DateTimeHelper;
@@ -58,6 +55,7 @@ public class ScheduleManager extends AuthenticationServlet {
         JsonObject json = gson.fromJson(jsonBuffer.toString(), JsonObject.class);
         Mentor_ScheduleDAO mentor_scheduleDAO = new Mentor_ScheduleDAO();
         ScheduleDAO scheduleDAO = new ScheduleDAO();
+        Booking_ScheduleDAO booking_scheduleDAO = new Booking_ScheduleDAO();
         String MentorSchedule = json.get("mentorSchedule").getAsString();
         String action = json.get("action").getAsString();
         String type = json.get("type").getAsString();
@@ -89,6 +87,8 @@ public class ScheduleManager extends AuthenticationServlet {
             if (action.equals("accept")) {
                 for (Schedule schedule : schedulesLogs) {
                     scheduleDAO.updateLogsById(schedule.getId(), StatusEnum.CANCEL);
+                    Schedule sche = scheduleDAO.getScheduleByInfo(schedule.getMentorSchedule().getId(), schedule.getDate(), schedule.getSlot().getId());
+                    booking_scheduleDAO.changeBookingIdToZero(sche.getId());
                     scheduleDAO.deleteSlotAccepted(schedule.getMentorSchedule().getId(), schedule.getDate(), schedule.getSlot().getId());
                 }
             } else if (action.equals("reject")) {

@@ -532,6 +532,7 @@
 
                         </ul>
                         <i style="font-size: 10px; color: #FF6347">< Your bookings above have conflict! ></i>
+                        <i style="font-size: 10px; color: #FF6347">< ${requestScope.slotNotExist} slots not exist ></i>
                         <hr style="margin: 5px 0; color: #FF6347; opacity: 80%; border: none;">
                     </div>
                 </c:if>

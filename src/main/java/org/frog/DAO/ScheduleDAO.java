@@ -599,5 +599,36 @@ public class ScheduleDAO {
             return null;
         }
     }
+
+    public Schedule getScheduleByInfo(int mentor_schedule_id , Date date , int slot_id){
+        try{
+            String sql = "SELECT * FROM [dbo].[Schedule]\n" +
+                    "WHERE mentor_schedule_id = ? AND date = ? AND slot_id = ?";
+            Connection connection = JDBC.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1,mentor_schedule_id);
+            preparedStatement.setDate(2,date);
+            preparedStatement.setInt(3,slot_id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Schedule schedule = new Schedule();
+                schedule.setId(resultSet.getInt("id"));
+                schedule.setDate(resultSet.getDate("date"));
+
+                Slot slot = new Slot();
+                slot.setId(resultSet.getInt("slot_id"));
+                schedule.setSlot(slot);
+
+                Mentor_Schedule ms = new Mentor_Schedule();
+                ms.setId(resultSet.getInt("mentor_schedule_id"));
+                schedule.setMentorSchedule(ms);
+                return schedule;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
 
