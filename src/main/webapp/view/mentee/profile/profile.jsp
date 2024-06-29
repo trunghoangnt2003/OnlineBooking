@@ -133,7 +133,7 @@
                                             style="width: 45px; height: 45px"
                                     />
                                     <div class="ms-3">
-                                        <p class="fw-bold mb-1">${w.mentor.account.name}</p>
+                                        <a class="fw-bold mb-1" href="../mentor/profile?mentorid=${w.mentor.account.id}">${w.mentor.account.name}</a>
                                         <p class="text-muted mb-0">${w.mentor.account.email}</p>
                                     </div>
                                 </div>
@@ -165,7 +165,7 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    function confirmDelete(bookingId, menteeid) {
+    function confirmDelete(wId, menteeid) {
         Swal.fire({
             title: "Are you sure?",
             text: "Do you want to delete this mentor?",
@@ -178,13 +178,13 @@
             if (result.isConfirmed) {
                 Swal.fire({
                     title: "Deleted!",
-                    text: "Your mentor has been deleted.",
+                    text: "Mentor has been remove from your wish list.",
                     icon: "success",
                     timer: 2000,
                     showConfirmButton: false
                 });
                 setTimeout(() => {
-                    location.href = "profile?idwish=" + bookingId + "&menteeid=" + menteeid;
+                    location.href = "profile?idwish=" + wId + "&menteeid=" + menteeid;
                 }, 2000);
             }
         });

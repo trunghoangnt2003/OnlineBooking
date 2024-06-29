@@ -237,41 +237,41 @@
             background-color: rgba(255, 0, 0, 0.1); /* Slightly red background on hover */
         }
 
+        /*.btn-accept{*/
+        /*    display: inline-block;*/
+        /*    padding: 5px 15px;*/
+        /*    font-size: 12px;*/
+        /*    color: white; !* White text color *!*/
+        /*    background-color: #32cd32; !* Blue background color *!*/
+        /*    border: none; !* No border *!*/
+        /*    border-radius: 20px; !* Rounded edges *!*/
+        /*    text-align: center;*/
+        /*    cursor: pointer;*/
+        /*    outline: none;*/
+        /*}*/
+
+        /*.btn-accept:hover{*/
+        /*    background-color: #35b835; !* Darker blue on hover *!*/
+        /*}*/
+
+        /*.btn-accept-lg{*/
+        /*    display: inline-block;*/
+        /*    padding: 10px 20px;*/
+        /*    font-size: 16px;*/
+        /*    color: white; !* White text color *!*/
+        /*    background-color: #32cd32; !* Blue background color *!*/
+        /*    border: none; !* No border *!*/
+        /*    border-radius: 20px; !* Rounded edges *!*/
+        /*    text-align: center;*/
+        /*    cursor: pointer;*/
+        /*    outline: none;*/
+        /*}*/
+
+        /*.btn-accept-lg:hover{*/
+        /*    background-color: #35b835; !* Darker blue on hover *!*/
+        /*}*/
+
         .btn-accept{
-            display: inline-block;
-            padding: 5px 15px;
-            font-size: 12px;
-            color: white; /* White text color */
-            background-color: #32cd32; /* Blue background color */
-            border: none; /* No border */
-            border-radius: 20px; /* Rounded edges */
-            text-align: center;
-            cursor: pointer;
-            outline: none;
-        }
-
-        .btn-accept:hover{
-            background-color: #35b835; /* Darker blue on hover */
-        }
-
-        .btn-accept-lg{
-            display: inline-block;
-            padding: 10px 20px;
-            font-size: 16px;
-            color: white; /* White text color */
-            background-color: #32cd32; /* Blue background color */
-            border: none; /* No border */
-            border-radius: 20px; /* Rounded edges */
-            text-align: center;
-            cursor: pointer;
-            outline: none;
-        }
-
-        .btn-accept-lg:hover{
-            background-color: #35b835; /* Darker blue on hover */
-        }
-
-        .btn-write{
             display: inline-block;
             padding: 7px 15px;
             font-size: 16px;
@@ -287,8 +287,27 @@
             outline: none;
         }
 
-        .btn-write:hover{
+        .btn-accept:hover{
             background-color: rgb(155, 234, 203); /* Darker blue on hover */
+        }
+        .btn-reject{
+            display: inline-block;
+            padding: 7px 15px;
+            font-size: 16px;
+            font-weight: bold;
+            width: 100px;
+            color: #ffffff; /* White text color */
+            background-color: #f44040; /* Blue background color */
+            border: none; /* No border */
+            border-radius: 20px; /* Rounded edges */
+            box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .btn-reject:hover{
+            background-color: #f82828; /* Darker blue on hover */
         }
 
 
@@ -370,35 +389,35 @@
     </style>
 </head>
 <body>
-<div class="nenmodal" id="nenmodal-1">
-    <div class="nenmodal2"></div>
-    <div class="ndmodal">
+<%--<div class="nenmodal" id="nenmodal-1">--%>
+<%--    <div class="nenmodal2"></div>--%>
+<%--    <div class="ndmodal">--%>
 
-            <div class="closemodal"><button onclick="momodal()">X</button></div>
-            <div class="titlemodal mb-2">Request Schedule</div>
-        <form action="manageSchedule" method="Post" id="frm">
-            <div style="height: 400px; overflow-y: auto ">
-               <c:forEach items="${requestScope.allSchedule}" var="s">
-                       <div class="schedule-slot">
-                           <input type="checkbox" class="schedule-checkbox"  name="schedule" value="${s.id}"/> Slot ${s.slot.id} ( ${s.slot.start_at}-${s.slot.end_at} ) on ${s.date}
-                       </div>
+<%--            <div class="closemodal"><button onclick="momodal()">X</button></div>--%>
+<%--            <div class="titlemodal mb-2">Request Schedule</div>--%>
+<%--        <form action="manageSchedule" method="Post" id="frm">--%>
+<%--            <div style="height: 400px; overflow-y: auto ">--%>
+<%--               <c:forEach items="${requestScope.allSchedule}" var="s">--%>
+<%--                       <div class="schedule-slot">--%>
+<%--                           <input type="checkbox" class="schedule-checkbox"  name="schedule" value="${s.id}"/> Slot ${s.slot.id} ( ${s.slot.start_at}-${s.slot.end_at} ) on ${s.date}--%>
+<%--                       </div>--%>
 
-               </c:forEach>
-            </div>
-            <div>
-                <label>
-                    <input type="checkbox" id="selectAll"   />
-                    Select All
-                </label>
-            </div>
-            <div class="m-3">
+<%--               </c:forEach>--%>
+<%--            </div>--%>
+<%--            <div>--%>
+<%--                <label>--%>
+<%--                    <input type="checkbox" id="selectAll"   />--%>
+<%--                    Select All--%>
+<%--                </label>--%>
+<%--            </div>--%>
+<%--            <div class="m-3">--%>
 
 
-                <button onclick="handleAccepted()" type="button" class="btn-accept-lg" style="" >Accept</button>
-            </div>
-        </form>
-    </div>
-</div>
+<%--                <button onclick="handleAccepted()" type="button" class="btn-accept-lg" style="" >Accept</button>--%>
+<%--            </div>--%>
+<%--        </form>--%>
+<%--    </div>--%>
+<%--</div>--%>
 
 <div class="container-scroller">
     <!-- partial:partials/_navbar.jsp -->
@@ -494,22 +513,26 @@
                 <div class="schedule" id="schedule">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h3>Schedule of Mentor ${requestScope.name} #${requestScope.mentor_schedule.id}</h3>
+                                <h3>Schedule of Mentor </h3>
                                 <input type="hidden" id="name" value="${requestScope.name}"/>
                                 <input type="hidden" id="mentorId" value="${requestScope.mentorId}"/>
                             </div>
                         </div>
-                    <div class="d-flex justify-content-between ">
-                        <c:if test="${requestScope.mentor_schedule != null}">
-                            <div style="Width: 10%">
-                                <button id="closeButton" class="btn-write" onclick="momodal()">View All</button>
-                                <button  class="btn-write" onclick="handleSlot(${requestScope.mentor_schedule.id},'accept','new')" style="margin-top: 10px"  >Accept new slot</button>
-                                <button  class="btn-write" onclick="handleSlot(${requestScope.mentor_schedule.id},'reject','new')" style="margin-top: 10px"  >Reject new slot</button>
-                                <button  class="btn-write" onclick="handleSlot(${requestScope.mentor_schedule.id},'accept','remove')" style="margin-top: 10px"  >Accept delete slot</button>
-                                <button  class="btn-write" onclick="handleSlot(${requestScope.mentor_schedule.id},'reject','remove')" style="margin-top: 10px"  >Reject delete slot</button>
-                            </div>
-                        </c:if>
-                        <div class="d-flex justify-content-center " style="width: 90%">
+
+                    <div class="">
+                        <div class="d-flex justify-content-center" style="margin: 20px 65px" >
+                            <c:if test="${requestScope.mentor_schedule != null}">
+                                <span class="d-flex align-items-end" style="font-size: 1.5rem; width: 280px">${requestScope.name} #${requestScope.mentor_schedule.id}</span>
+                                <%--                                <button id="closeButton" class="btn-write" onclick="momodal()">View All</button>--%>
+                                <button  class="btn-accept w-auto mx-2" onclick="handleSlot(${requestScope.mentor_schedule.id},'accept','new')" style="margin-top: 10px"  >Accept new slot</button>
+                                <button  class="btn-accept w-auto mx-2" onclick="handleSlot(${requestScope.mentor_schedule.id},'accept','remove')" style="margin-top: 10px"  >Accept remove slot</button>
+                                <button  class="btn-reject w-auto mx-2" onclick="handleSlot(${requestScope.mentor_schedule.id},'reject','new')" style="margin-top: 10px"  >Reject new slot</button>
+                                <button  class="btn-reject w-auto mx-2" onclick="handleSlot(${requestScope.mentor_schedule.id},'reject','remove')" style="margin-top: 10px"  >Reject remove slot</button>
+
+                            </c:if>
+                        </div>
+
+                        <div class="d-flex justify-content-center " style="width: 100%">
                             <table class="time-table">
                                 <thead class="time-table-head">
                                 <tr class="">
@@ -546,8 +569,8 @@
                                                         <div class="notes-container text-center ">
                                                             <i class="pin"></i>
                                                             <c:if test="${s.status.id == 1}">
-                                                                <blockquote class="notes color-note font-monospace " style="background-color: #F4E0B9">
-                                                                    <div class="text-center fw-semibold">
+                                                                <blockquote class="notes color-note font-monospace d-flex align-items-center " style="background-color: #F4E0B9">
+                                                                    <div class="text-center w-100 fw-semibold">
                                                                         <span>New Slot</span>
                                                                     </div>
                                                                     <%--<div class="d-flex justify-content-center mt-4">
@@ -558,25 +581,24 @@
                                                                 </blockquote>
                                                             </c:if>
                                                             <c:if test="${s.status.id == 12}">
-                                                                <blockquote class="notes color-note font-monospace" style="background-color: #FF6347">
-
-                                                                    <div class="text-center fw-bold">
+                                                                <blockquote class="notes color-note font-monospace d-flex align-items-center" style="background-color: #FF6347">
+                                                                    <div class="text-center w-100 fw-bold">
                                                                         <span>${s.status.type}</span>
                                                                     </div>
 
                                                                 </blockquote>
                                                             </c:if>
                                                             <c:if test="${s.status.id == 11}">
-                                                                <blockquote class="notes color-note font-monospace" style="background-color: #faad12">
-                                                                    <div class="text-center d-flex align-items-center fw-bold">
+                                                                <blockquote class="notes color-note font-monospace d-flex align-items-center" style="background-color: #faad12">
+                                                                    <div class="text-center w-100 fw-bold">
                                                                         <span>${s.status.type}</span>
                                                                     </div>
                                                                 </blockquote>
                                                             </c:if>
                                                             <c:if test="${s.status.id == 15}">
-                                                                <blockquote class="notes color-note font-monospace" style="background-color: #f87517">
-                                                                    <div class="text-center fw-bold">
-                                                                        <span>${s.status.type}</span>
+                                                                <blockquote class="notes color-note font-monospace d-flex align-items-center" style="background-color: #f87517">
+                                                                    <div class="text-center  fw-bold">
+                                                                        <span>Waiting Remove</span>
                                                                     </div>
                                                                 </blockquote>
                                                             </c:if>
@@ -621,31 +643,31 @@
 
 <script>
 
-    function handleAccepted(){
-        const form = document.getElementById("frm");
-        form.submit();
-    }
+    // function handleAccepted(){
+    //     const form = document.getElementById("frm");
+    //     form.submit();
+    // }
 
 
-    var isOpen = false;
-    function momodal() {
-        if(isOpen == false){
-            document.getElementById("nenmodal-1").classList.toggle("active");
-            isOpen = true;
-        }
-        else{
-            document.getElementById("nenmodal-1").classList.toggle("active");
-            isOpen = false;
-        }
-
-    }
-
-    document.getElementById('selectAll').addEventListener('change', function() {
-        var checkboxes = document.querySelectorAll('.schedule-checkbox');
-        for (var checkbox of checkboxes) {
-            checkbox.checked = this.checked;
-        }
-    });
+    // var isOpen = false;
+    // function momodal() {
+    //     if(isOpen == false){
+    //         document.getElementById("nenmodal-1").classList.toggle("active");
+    //         isOpen = true;
+    //     }
+    //     else{
+    //         document.getElementById("nenmodal-1").classList.toggle("active");
+    //         isOpen = false;
+    //     }
+    //
+    // }
+    //
+    // document.getElementById('selectAll').addEventListener('change', function() {
+    //     var checkboxes = document.querySelectorAll('.schedule-checkbox');
+    //     for (var checkbox of checkboxes) {
+    //         checkbox.checked = this.checked;
+    //     }
+    // });
 
     function scheduleHandle(mentorId,page,name){
         const mentor = document.getElementById("mentorInput").value;

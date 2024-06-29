@@ -361,13 +361,14 @@ public class ScheduleDAO {
                 "FROM Schedule_Logs INNER JOIN Mentor_Schedule on Schedule_Logs.mentor_schedule_id = Mentor_Schedule.id\n" +
                 "INNER JOIN Slot ON Schedule_Logs.slot_id = Slot.id\n" +
                 "INNER JOIN Status ON Schedule_Logs.status_id = Status.id\n" +
-                "WHERE mentor_id = ? and  [date] >= ? And  [date] <= ? ";
+                "WHERE mentor_id = ? and  [date] >= ? And  [date] <= ? AND status_id != ?";
         try {
             Connection connection = JDBC.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, id);
             preparedStatement.setDate(2, from);
             preparedStatement.setDate(3, to);
+            preparedStatement.setInt(4, StatusEnum.CANCEL);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 Schedule schedule = new Schedule();

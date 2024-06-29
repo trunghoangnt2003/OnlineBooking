@@ -149,12 +149,12 @@ public class ScheduleManager extends AuthenticationServlet {
         Map<Mentor_Schedule, Map<String, Integer>>  mentorSchedule = mentorDAO.getProcessingSchedule(page,mentorName);
         ArrayList<Slot> slots = slotDAO.selectAll();
         ArrayList<Schedule> schedules = scheduleDAO.getScheduleLogsByMentor(mentorId, from, to);
-        ArrayList<Schedule> allSchedule = scheduleDAO.getAllScheduleLogsByMentor(mentorId);
+        //ArrayList<Schedule> allSchedule = scheduleDAO.getAllScheduleLogsByMentor(mentorId);
         Mentor_Schedule mentor_schedule = mentor_scheduleDAO.getByMentor(mentorId);
 
 
         req.setAttribute("mentor_schedule", mentor_schedule);
-        req.setAttribute("allSchedule", allSchedule);
+        //req.setAttribute("allSchedule", allSchedule);
         req.setAttribute("mentorId", mentorId);
         req.setAttribute("name", name);
         req.setAttribute("schedules", schedules);
