@@ -123,8 +123,8 @@ public class ScheduleManager extends AuthenticationServlet {
         }
 
         int total =mentorDAO.getTotalMentor(mentorName);
-        int end_page = total / 4;
-        if (total % 4 != 0) {
+        int end_page = total / 5;
+        if (total % 5 != 0) {
             end_page++;
         }
 
