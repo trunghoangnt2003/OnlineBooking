@@ -28,14 +28,14 @@
         background: #FFFFFF;
     }
 
-    .X {
-        margin-top: 25px;
-        padding: 1% 2%;
-        max-width: 1440px;
-        border-radius: 5px;
-        background: #ecf0f1;
-        box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .3);
-    }
+    /*.X {*/
+    /*    margin-top: 25px;*/
+    /*    padding: 1% 2%;*/
+    /*    max-width: 1440px;*/
+    /*    border-radius: 5px;*/
+    /*    background: #ecf0f1;*/
+    /*    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .3);*/
+    /*}*/
 
     h2 {
         text-align: center;
@@ -48,73 +48,91 @@
     }
 
     li {
-        color: #2c3e50;
-        font-size: 16px;
-        text-align: justify;
+        margin-right: 10px;
 
     }
 
-    /*SG = style grid*/
-    .SG {
-        margin: 0;
-        padding: 60px;
-        text-align: center;
-    }
 
-    .SG .sgLi {
-        min-width: 24%;
-        margin: 2% .35%;
-        display: inline-flex;
-        transition: box-shadow 0.2s ease;
-    }
+    /*.SG {*/
+    /*    margin: 0;*/
+    /*    padding: 60px;*/
+    /*    text-align: center;*/
+    /*}*/
 
-    .SG .sgLi:hover {
-        box-shadow: 4px 4px 4px 2px rgba(144, 238, 144, .5);
-    }
+    /*.SG .sgLi {*/
+    /*    min-width: 24%;*/
+    /*    margin: 2% .35%;*/
+    /*    display: inline-flex;*/
+    /*    transition: box-shadow 0.2s ease;*/
+    /*}*/
 
-    .SG .box {
+    /*.SG .sgLi:hover {*/
+    /*    box-shadow: 4px 4px 4px 2px rgba(144, 238, 144, .5);*/
+    /*}*/
+
+    /*.SG .box {*/
+    /*    width: 100%;*/
+    /*    height: 100vh;*/
+    /*    padding: 1% 2%;*/
+    /*    background: #fff;*/
+    /*    min-height: 200px;*/
+    /*    max-height: 220px;*/
+    /*    box-sizing: border-box;*/
+    /*}*/
+
+
+
+    /*.s18 li:before {*/
+    /*    content: '';*/
+    /*    width: 20px;*/
+    /*    height: 20px;*/
+    /*    margin-right: 15px;*/
+    /*    display: inline-block;*/
+    /*    background: url(//goo.gl/lcPSVD);*/
+    /*    background-position: 50%;*/
+    /*}*/
+
+
+    /*.s19 li:before {*/
+    /*    content: '\f0a9';*/
+    /*    margin-right: 15px;*/
+
+    /*}*/
+
+    /*!* responsive grid*!*/
+    /*@media (max-width: 970px) {*/
+    /*    .SG .sgLi {*/
+    /*        width: 180px;*/
+    /*    }*/
+    /*}*/
+
+    /*@media (max-width: 425px) {*/
+    /*    .SG .sgLi {*/
+    /*        width: 100%;*/
+    /*    }*/
+    /*}*/
+    .custom-table {
         width: 100%;
-        height: 100vh;
-        padding: 1% 2%;
-        background: #fff;
-        min-height: 200px;
-        max-height: 220px;
-        box-sizing: border-box;
+        border-collapse: collapse;
     }
 
-    /*Styles */
-    .df {
-        list-style-type: disc;
+    .custom-table th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 5px 5px;
     }
-
-    .s18 li:before {
-        content: '';
-        width: 20px;
-        height: 20px;
-        margin-right: 15px;
-        display: inline-block;
-        background: url(//goo.gl/lcPSVD);
-        background-position: 50%;
+    .custom-table td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 2px 5px;
+        height: 100%;
     }
-
-
-    .s19 li:before {
-        content: '\f0a9';
-        margin-right: 15px;
-
+    .custom-table th {
+        background-color: #f2f2f2;
     }
-
-    /* responsive grid*/
-    @media (max-width: 970px) {
-        .SG .sgLi {
-            width: 180px;
-        }
-    }
-
-    @media (max-width: 425px) {
-        .SG .sgLi {
-            width: 100%;
-        }
+    .custom-table .narrow-column {
+        width: 1%;
+        padding: 0 40px;
     }
 </style>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mentor/ManageSchedule.css">
@@ -161,10 +179,10 @@
             <div class="col-8">
                 <c:if test="${param.action == 1}">
                     <div style="display: inline">
-                        <div> <h3 style="text-decoration: none;color: #07ad90;">Table</h3></div>
-                    <div> <input type="date" class="styled-date" name="today" id="today" value="${today}"
-                               data-viewID="${param.viewID}"  style="width: 20%"
-                               onchange="updateURL()"> </div>
+                        <div><h3 style="text-decoration: none;color: #07ad90;">Table</h3></div>
+                        <div><input type="date" class="styled-date" name="today" id="today" value="${today}"
+                                    data-viewID="${param.viewID}" style="width: 20%"
+                                    onchange="updateURL()"></div>
                     </div>
                     <table>
                         <thead>
@@ -270,32 +288,40 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title"> Day: ${bookSlot.schedule.date}
-                                    Slot ${bookSlot.schedule.slot.id} (${bookSlot.schedule.slot.start_at}-${bookSlot.schedule.slot.end_at})
+                                    Slot ${bookSlot.schedule.slot.id}
+                                    (${bookSlot.schedule.slot.start_at}-${bookSlot.schedule.slot.end_at})
                                 </h5>
                                 <p class="card-text">
                                     <img width="30px"
                                          src="${pageContext.request.contextPath}/${bookSlot.booking.level_skills.skill.src_icon}"
                                          style="margin-bottom: 10px;"/>
-                                        ${bookSlot.booking.level_skills.skill.name} ${bookSlot.booking.level_skills.level.name} </p>
+                                        ${bookSlot.booking.level_skills.skill.name} ${bookSlot.booking.level_skills.level.name}
+                                </p>
                                 <c:if test="${bookSlot.status.id == 3}">
                                     <c:if test="${bookSlot.attend}">
-                                        <p><input type="button" value="Present" id="confirmBtn2" style=" background: #28a745;display: inline">  </p>
+                                        <p><input type="button" value="Present" id="confirmBtn2"
+                                                  style=" background: #28a745;display: inline"></p>
                                     </c:if>
                                     <c:if test="${!bookSlot.attend}">
-                                        <p>  <input type="button" value="Absent" id="absentBtn2" style=" background: #ff2222;display: inline">
+                                        <p><input type="button" value="Absent" id="absentBtn2"
+                                                  style=" background: #ff2222;display: inline">
                                         </p>
                                     </c:if>
                                 </c:if>
                                 <c:if test="${bookSlot.status.id == 11 }">
                                     <li style="list-style-type: none; display: inline">
-                                        <input type="button" value="Present" id="confirmBtn_${bookSlot.id}" class="BtnButton"
-                                               data-id=" ${bookSlot.id}" data-time="${bookSlot.schedule.date}_${bookSlot.schedule.slot.start_at}"
+                                        <input type="button" value="Present" id="confirmBtn_${bookSlot.id}"
+                                               class="BtnButton"
+                                               data-id=" ${bookSlot.id}"
+                                               data-time="${bookSlot.schedule.date}_${bookSlot.schedule.slot.start_at}"
                                                data-slot="${param.id}_${param.action}"
                                                onclick="confirmSlot(${bookSlot.id})">
                                     </li>
                                     <li style="list-style-type: none;display: inline">
-                                        <input type="button" value="Absent" id="absentBtn_${bookSlot.id}" class="BtnButton"
-                                               data-id=" ${bookSlot.id}"  data-time="${bookSlot.schedule.date}_${bookSlot.schedule.slot.start_at}"
+                                        <input type="button" value="Absent" id="absentBtn_${bookSlot.id}"
+                                               class="BtnButton"
+                                               data-id=" ${bookSlot.id}"
+                                               data-time="${bookSlot.schedule.date}_${bookSlot.schedule.slot.start_at}"
                                                data-slot="${param.id}_${param.action}"
                                                onclick="absentSlot(${bookSlot.id})">
                                     </li>
@@ -315,47 +341,54 @@
     padding: 0;
     margin: 0;
     font-family: Arial, sans-serif;">
-                            <li class="liSub"><span>Name : </span>  ${bookingSlots[0].booking.mentee.account.name}</li>
-                            <li class="liSub"><span>Mail : </span>  ${bookingSlots[0].booking.mentee.account.email}</li>
-                            <li class="liSub"><span>Phone : </span>  ${bookingSlots[0].booking.mentee.account.phone}</li>
+                            <li class="liSub"><span>Name : </span> ${bookingSlots[0].booking.mentee.account.name}</li>
+                            <li class="liSub"><span>Mail : </span> ${bookingSlots[0].booking.mentee.account.email}</li>
+                            <li class="liSub"><span>Phone : </span> ${bookingSlots[0].booking.mentee.account.phone}</li>
                             <li class="liSub">
                                 <span>Skill name:</span>
-                                <img width="30px" src="${pageContext.request.contextPath}/${bookingSlots[0].booking.level_skills.skill.src_icon}">
+                                <img width="30px"
+                                     src="${pageContext.request.contextPath}/${bookingSlots[0].booking.level_skills.skill.src_icon}">
                                     ${bookingSlots[0].booking.level_skills.skill.name}
                             </li>
-                            <li class="liSub"><span>Skill level : </span>  ${bookingSlots[0].booking.level_skills.level.name}</li>
-                            <li class="liSub"><span>Day Start : </span>  ${bookingSlots[0].booking.startDate}</li>
-                            <li class="liSub"><span>Day End : </span>  ${bookingSlots[0].booking.endDate}</li>
-                            <li class="liSub"><span>Slot Booked : </span>  ${bookingSlots[0].schedule.slot.id}</li>
-                            <li class="liSub"><span>Created date : </span>  ${bookingSlots[0].booking.date}</li>
-                            <li class="liSub"><span>Total amount request : </span>  ${bookingSlots[0].booking.amount}</li>
+                            <li class="liSub">
+                                <span>Skill level : </span> ${bookingSlots[0].booking.level_skills.level.name}</li>
+                            <li class="liSub"><span>Day Start : </span> ${bookingSlots[0].booking.startDate}</li>
+                            <li class="liSub"><span>Day End : </span> ${bookingSlots[0].booking.endDate}</li>
+                            <li class="liSub"><span>Slot Booked : </span> ${bookingSlots[0].schedule.slot.id}</li>
+                            <li class="liSub"><span>Created date : </span> ${bookingSlots[0].booking.date}</li>
+                            <li class="liSub"><span>Total amount request : </span> ${bookingSlots[0].booking.amount}
+                            </li>
                         </ul>
                     </div>
 
                 </c:if>
                 <c:if test="${param.action == 3}">
-                        <ul>
-                            <li style="color: red">(Note: If the lesson has been finished,please confirm slot)</li>
-                            <li><span style="font-weight: bold">Number of Slots confirm: ${slotConfirmedNumber}/${bookingSlotsNumber}</span></li>
-                            <c:if test="${slotConfirmedNumber == bookingSlotsNumber}">
-                                <c:if test="${bookingSlots[0].booking.status.id != 13 }">
-                                <li><span style="font-weight: bold">All lessons are finished,wait ${bookingSlots[0].booking.mentee.account.name} confirms...</span></li>
-                                            <input type="button" class="btn" id="btn" value="Booking Done"
-                                            data-id="${bookingSlots[0].booking.mentee.account.id}"
-                                            data-booking-id="${bookingSlots[0].booking.id}" onclick="sendMail()">
+                    <ul>
+                        <li style="color: red">(Note: If the lesson has been finished,please confirm slot)</li>
+                        <li><span
+                                style="font-weight: bold">Number of Slots confirm: ${slotConfirmedNumber}/${bookingSlotsNumber}</span>
+                        </li>
+                        <c:if test="${slotConfirmedNumber == bookingSlotsNumber}">
+                            <c:if test="${bookingSlots[0].booking.status.id != 13 }">
+                                <li><span
+                                        style="font-weight: bold">All lessons are finished,wait ${bookingSlots[0].booking.mentee.account.name} confirms...</span>
+                                </li>
+                                <input type="button" class="btn" id="btn" value="Booking Done"
+                                       data-id="${bookingSlots[0].booking.mentee.account.id}"
+                                       data-booking-id="${bookingSlots[0].booking.id}" onclick="sendMail()">
 
-                                </c:if>
                             </c:if>
-                        </ul>
-                         <ul style="margin-top: 20px">
-                            <li style="list-style-type: none">Status payment :
-                                <span style="color: #f8ce0b"> <c:if
-                                        test="${bookingSlots[0].booking.status.id != 13  }">Payment Not Confirm Yet</c:if> </span>
-                                <span style="color: #28a745"><c:if
-                                        test="${bookingSlots[0].booking.status.id == 13 }">Payment Confirmed</c:if></span>
-                            </li>
+                        </c:if>
+                    </ul>
+                    <ul style="margin-top: 20px">
+                        <li style="list-style-type: none">Status payment :
+                            <span style="color: #f8ce0b"> <c:if
+                                    test="${bookingSlots[0].booking.status.id != 13  }">Payment Not Confirm Yet</c:if> </span>
+                            <span style="color: #28a745"><c:if
+                                    test="${bookingSlots[0].booking.status.id == 13 }">Payment Confirmed</c:if></span>
+                        </li>
 
-                        </ul>
+                    </ul>
                 </c:if>
             </div>
         </div>
@@ -363,34 +396,64 @@
 
     <%--    view id--%>
     <c:if test="${param.id == null}">
-        <div>
-            <div class="X">
-                <h2>Manage Request booking</h2>
-                <h3>My Mentee booking</h3>
-                <ul class="SG">
+        <%--        <div>--%>
+        <%--            <div class="X">--%>
+        <h2>Manage Request booking</h2>
+        <h3>My Mentee booking</h3>
+        <%--                <ul class="SG">--%>
 
-                    <c:forEach items="${menteeBooking}" var="book">
-                        <li class="sgLi" onclick="openMenteeBookings(${book.id})">
-                            <div class="box">
-                                <h4>
-                                    <img width="30px"
-                                         src="${pageContext.request.contextPath}/${book.level_skills.skill.src_icon}">
-                                        ${book.level_skills.skill.name}
-                                </h4>
-                                <h5>
-                                        ${book.level_skills.level.name}
-                                </h5>
-                                <ul class="df">
-                                    <li style="list-style-type: none">Name: ${book.mentee.account.name}</li>
-                                    <li style="list-style-type: none">Start Date: ${book.startDate}</li>
-                                    <li style="list-style-type: none">End Date: ${book.endDate}</li>
-                                </ul>
-                            </div>
-                        </li>
-                    </c:forEach>
-                </ul>
-            </div>
-        </div>
+        <%--                    <c:forEach items="${menteeBooking}" var="book">--%>
+        <%--                        <li class="sgLi" onclick="openMenteeBookings(${book.id})">--%>
+        <%--                            <div class="box">--%>
+        <%--                                <h4>--%>
+        <%--                                    <img width="30px"--%>
+        <%--                                         src="${pageContext.request.contextPath}/${book.level_skills.skill.src_icon}">--%>
+        <%--                                        ${book.level_skills.skill.name}--%>
+        <%--                                </h4>--%>
+        <%--                                <h5>--%>
+        <%--                                        ${book.level_skills.level.name}--%>
+        <%--                                </h5>--%>
+        <%--                                <ul class="df">--%>
+        <%--                                    <li style="list-style-type: none">Name: ${book.mentee.account.name}</li>--%>
+        <%--                                    <li style="list-style-type: none">Start Date: ${book.startDate}</li>--%>
+        <%--                                    <li style="list-style-type: none">End Date: ${book.endDate}</li>--%>
+        <%--                                </ul>--%>
+        <%--                            </div>--%>
+        <%--                        </li>--%>
+        <%--                    </c:forEach>--%>
+        <%--                </ul>--%>
+        <%--            </div>--%>
+        <%--        </div>--%>
+        <table class="custom-table">
+            <thead>
+            <tr>
+                <th>Number</th>
+                <th>Skill Name</th>
+                <th>Skill Level</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Name</th>
+                <th>Details</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach items="${menteeBooking}" var="book">
+                <tr>
+                    <td class="narrow-column">${count}</td>
+                    <td>
+                        <img width="30px" src="${pageContext.request.contextPath}/${book.level_skills.skill.src_icon}">
+                            ${book.level_skills.skill.name}
+                    </td>
+                    <td>${book.level_skills.level.name}</td>
+                    <td>${book.startDate}</td>
+                    <td>${book.endDate}</td>
+                    <td>${book.mentee.account.name}</td>
+                    <td class="narrow-column"><i class="fa-solid fa-eye fa-xl" style="color: #63E6BE" onclick="openMenteeBookings(${book.id})"></i></td>
+                </tr>
+                <c:set var="count" value="${count + 1}"></c:set>
+            </c:forEach>
+            </tbody>
+        </table>
     </c:if>
 </div>
 <script>
@@ -416,14 +479,14 @@
                     });
                     var menteeId = document.getElementById('btn').getAttribute('data-id');
                     var bookingId = document.getElementById('btn').getAttribute('data-booking-id');
-                    var url = '/Frog/confirmMail?menteeId='+menteeId+'&bookingId='+bookingId;
-                    window.location.href=url;
+                    var url = '/Frog/confirmMail?menteeId=' + menteeId + '&bookingId=' + bookingId;
+                    window.location.href = url;
                 }
             });
         };
     }
 
-    const updateURL = ()=>{
+    const updateURL = () => {
         var currentURL = window.location.href;
         var url = new URL(currentURL);
         selectedDate = document.getElementById('today').value;
@@ -439,11 +502,11 @@
     }
 
     const absentSlot = (id) => {
-        var dataTime = document.getElementById("absentBtn_"+id).getAttribute('data-time');
+        var dataTime = document.getElementById("absentBtn_" + id).getAttribute('data-time');
         var date = dataTime.split("_")[0];
         var time = dataTime.split("_")[1];
         var currentDate = new Date();
-        var dateTimeString= date + " " + time;
+        var dateTimeString = date + " " + time;
         var dateTimeValue = new Date(dateTimeString);
         if (currentDate < dateTimeValue) {
             Swal.fire({
@@ -451,9 +514,8 @@
                 title: "Oops...",
                 text: "Slot has not occurred yet.",
             });
-        }
-        else{
-            var btnOnclick = document.getElementById("absentBtn_"+id);
+        } else {
+            var btnOnclick = document.getElementById("absentBtn_" + id);
             var newURL = "";
             btnOnclick.onclick = function (event) {
                 event.preventDefault();
@@ -469,7 +531,7 @@
                     if (result.isConfirmed) {
                         var ID = this.getAttribute('data-id');
                         var dataSlot = this.getAttribute('data-slot');
-                        newURL = '/Frog/mentor/schedule/confirm?ID=' + ID + '&option=absent&manage=true&dataSlot='+dataSlot;
+                        newURL = '/Frog/mentor/schedule/confirm?ID=' + ID + '&option=absent&manage=true&dataSlot=' + dataSlot;
                         localStorage.setItem('isAbsentManage', 'yes');
                         // Redirect to the new URL
                         window.location.href = newURL;
@@ -480,11 +542,11 @@
 
     }
     const confirmSlot = (id) => {
-        var dataTime = document.getElementById("confirmBtn_"+id).getAttribute('data-time');
+        var dataTime = document.getElementById("confirmBtn_" + id).getAttribute('data-time');
         var date = dataTime.split("_")[0];
         var time = dataTime.split("_")[1];
         var currentDate = new Date();
-        var dateTimeString= date + " " + time;
+        var dateTimeString = date + " " + time;
         var dateTimeValue = new Date(dateTimeString);
         console.log(dateTimeValue);
         console.log(currentDate);
@@ -505,9 +567,9 @@
                 confirmButtonText: "Yes, I confirm it!"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    var ID = document.getElementById("confirmBtn_"+id).getAttribute('data-id');
-                    var dataSlot = document.getElementById("confirmBtn_"+id).getAttribute('data-slot');
-                    var newURL = '/Frog/mentor/schedule/confirm?ID=' + ID + '&option=present&manage=true&dataSlot='+dataSlot;
+                    var ID = document.getElementById("confirmBtn_" + id).getAttribute('data-id');
+                    var dataSlot = document.getElementById("confirmBtn_" + id).getAttribute('data-slot');
+                    var newURL = '/Frog/mentor/schedule/confirm?ID=' + ID + '&option=present&manage=true&dataSlot=' + dataSlot;
                     localStorage.setItem('isConfirmSlotManage', 'yes');
                     // Redirect to the new URL
                     window.location.href = newURL;
@@ -527,15 +589,15 @@
         }
     });
     window.onload = function () {
-            var isConfirmSlotManage = localStorage.getItem('isConfirmSlotManage');
-            var isAbsentManage = localStorage.getItem('isAbsentManage');
-            if (isConfirmSlotManage) {
-                Toast.fire({
-                    icon: "success",
-                    title:  " take present successfully  "
-                });
-                localStorage.removeItem('isConfirmSlotManage');
-            }
+        var isConfirmSlotManage = localStorage.getItem('isConfirmSlotManage');
+        var isAbsentManage = localStorage.getItem('isAbsentManage');
+        if (isConfirmSlotManage) {
+            Toast.fire({
+                icon: "success",
+                title: " take present successfully  "
+            });
+            localStorage.removeItem('isConfirmSlotManage');
+        }
         if (isAbsentManage) {
             Toast.fire({
                 icon: "success",
@@ -544,7 +606,7 @@
             localStorage.removeItem('isAbsentManage');
         }
 
-        }
+    }
 
 </script>
 <!-- Bootstrap JS and dependencies -->

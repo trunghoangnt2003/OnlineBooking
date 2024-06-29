@@ -53,7 +53,12 @@ public class InsertScheduleController extends AuthenticationServlet {
             Slot id = slDAO.getTimeSlot(Integer.parseInt(infoSlotID[1]));
             if (DateTimeHelper.compareDayIDtoNow(infoSlotID[0], id.getStart_at(), id.getEnd_at())) {
                 if(scheduleDAO.checkDayExistScheduleLogs(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]))){
-                    scheduleDAO.reMarkDayFreeByMentor(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]));
+                    if(scheduleDAO.checkProcessStatusScheduleLogs(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]))==StatusEnum.WAITCANCEL){
+                        scheduleDAO.reMarkDayFreeByMentor(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]),StatusEnum.ACCEPTED);
+                    }
+                    else{
+                        scheduleDAO.reMarkDayFreeByMentor(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]),StatusEnum.PROCESSING);
+                    }
                 }else{
                     scheduleDAO.insertDayFreeByMentor(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]));
 

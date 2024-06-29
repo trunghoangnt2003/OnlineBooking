@@ -931,5 +931,20 @@ public class BookingDAO {
         }
         return 0;
     }
+    public boolean isNewBooking(String mentorId){
+        String sql = "SELECT id FROM Booking\n" +
+                "\tWHERE mentor_id = ? AND status_id = 1";
+        try{
+            PreparedStatement stm = JDBC.getConnection().prepareStatement(sql);
+            stm.setString(1,mentorId);
+            ResultSet rs = stm.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
 

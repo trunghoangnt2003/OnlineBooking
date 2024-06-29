@@ -141,7 +141,7 @@
     <table class="table table-striped">
         <thead class="table-dark">
         <tr>
-            <th>Name</th>
+            <th>Number</th>
             <th>Create Date</th>
             <th>Amount</th>
             <th>Description</th>

@@ -6,8 +6,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.frog.DAO.AccountDAO;
+import org.frog.DAO.BookingDAO;
 import org.frog.DAO.Booking_ScheduleDAO;
 import org.frog.model.Account;
+import org.frog.model.Booking;
 import org.frog.utility.Email;
 import org.frog.utility.SHA1;
 
@@ -45,9 +47,16 @@ public class ConfirmMailController extends HttpServlet {
         String menteeId=req.getParameter("menteeId");
         String bookingId=req.getParameter("bookingId");
 //        String isLastSlot = req.getParameter("isLastSlot");
+        String isManager = req.getParameter("isManager");
         Booking_ScheduleDAO bsDAO = new Booking_ScheduleDAO();
+        BookingDAO bookingDAO = new BookingDAO();
+
+        Booking booking = bookingDAO.getBookingById(Integer.parseInt(bookingId));
         try {
-            bsDAO.updateBooking(Integer.parseInt(bookingId), 7);
+            if(booking.getStatus().getId() !=3 ){
+                bsDAO.updateBooking(Integer.parseInt(bookingId), 7);
+
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -66,6 +75,11 @@ public class ConfirmMailController extends HttpServlet {
 //                resp.sendRedirect("/Frog/mentor/schedule");
 //            }
 //        }
-        resp.sendRedirect("/Frog/mentor/schedule/manage?id="+bookingId+"&action=3");
+        if(isManager != null){
+            resp.sendRedirect("/Frog/manager/paymentBooking");
+        }
+        else{
+            resp.sendRedirect("/Frog/mentor/schedule/manage?id="+bookingId+"&action=3");
+        }
     }
 }

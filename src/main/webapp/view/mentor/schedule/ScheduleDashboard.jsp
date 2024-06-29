@@ -66,7 +66,12 @@
 
         <!-- Nút mở modal mới -->
         <button id="myBtn" onclick="openSetSlot()" style="padding: 15px 33px;">Set Schedule</button>
+        <div style="display: inline">
         <button id="myBtn3" onclick="invitedRequest()" style="padding: 15px 31px">New Request</button>
+        <c:if test="${newBooking != null}">
+            <i class="fa-solid fa-comment-dots fa-xl" style="color: #74C0FC;"></i>
+        </c:if>
+        </div>
         <button id="myBtn3" onclick="openMyRequestWork()" style="padding: 15px 20px">Manage Request</button>
         <button id="myBtn3" onclick="historyRequest()">History Request</button>
         <c:if test="${param.viewID != null}">

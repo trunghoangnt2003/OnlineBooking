@@ -216,7 +216,6 @@
 <script>
     function confirmBooking(id) {
         var newURL = "";
-        console.log('confirm');
         event.preventDefault();
         Swal.fire({
             title: "Are you want to confirm booking",
@@ -239,7 +238,6 @@
         });
     }
     function sendMail(accID, bid)  {
-        console.log('SendMil');
         event.preventDefault();
         Swal.fire({
             title: "Are you want to send mail ?",
@@ -258,7 +256,7 @@
                 });
                // var menteeId = this.getAttribute('data-id').split("_")[0];
                // var bookingId =this.getAttribute('data-id').split("_")[1];
-                newURL = '/Frog/confirmMail?menteeId=' + accID + '&bookingId='+bid;
+                newURL = '/Frog/confirmMail?menteeId=' + accID + '&bookingId='+bid+'&isManager=true';
                 window.location.href = newURL;
             }
         });

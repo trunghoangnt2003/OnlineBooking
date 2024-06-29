@@ -219,33 +219,35 @@ public class ScheduleDAO {
     }
 
 
-    public void reMarkDayFreeByMentor(int id , Date date ,int slot_id){
+    public void reMarkDayFreeByMentor(int id , Date date ,int slot_id,int status_id){
         String sql="UPDATE [Schedule_Logs]\n" +
                 "   SET \n" +
-                "      [status_id] = 1\n" +
+                "      [status_id] = ?\n" +
                 " WHERE  mentor_schedule_id=? AND date = ? AND slot_id = ? ";
         try {
             Connection connection = JDBC.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, id);
-            preparedStatement.setDate(2, date);
-            preparedStatement.setInt(3, slot_id);
+            preparedStatement.setInt(1, status_id);
+            preparedStatement.setInt(2, id);
+            preparedStatement.setDate(3, date);
+            preparedStatement.setInt(4, slot_id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    public void deleteDayFreeByMentor(int id , Date date ,int slot_id){
+    public void deleteDayFreeByMentor(int id , Date date ,int slot_id,int status_id){
         String sql="UPDATE [dbo].[Schedule_Logs]\n" +
                 "   SET \n" +
-                "      [status_id] = 12\n" +
+                "      [status_id] = ?\n" +
                 " WHERE [mentor_schedule_id] = ? AND date = ? AND slot_id = ?  ";
         try {
             Connection connection = JDBC.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, id);
-            preparedStatement.setDate(2, date);
-            preparedStatement.setInt(3, slot_id);
+            preparedStatement.setInt(1, status_id);
+            preparedStatement.setInt(2, id);
+            preparedStatement.setDate(3, date);
+            preparedStatement.setInt(4, slot_id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -561,6 +563,26 @@ public class ScheduleDAO {
             e.printStackTrace();
             return null;
         }
+    }
+    public int checkProcessStatusScheduleLogs(int mentor_schedule_id, Date date , int slot_id){
+        String sql = "SELECT status_id FROM Schedule_Logs\n" +
+                "\tWHERE mentor_schedule_id = ? AND date = ? AND slot_id = ?";
+        int num = 0;
+        try {
+            PreparedStatement stm = JDBC.getConnection().prepareStatement(sql);
+            stm.setInt(1,mentor_schedule_id);
+            stm.setDate(2,date);
+            stm.setInt(3,slot_id);
+            ResultSet resultSet = stm.executeQuery();
+            if(resultSet.next()){
+               num = resultSet.getInt("status_id");
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return num;
+
     }
 }
 

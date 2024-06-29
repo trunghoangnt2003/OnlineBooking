@@ -12,6 +12,7 @@ import org.frog.model.Account;
 import org.frog.model.Mentor_Schedule;
 import org.frog.model.Slot;
 import org.frog.utility.DateTimeHelper;
+import org.frog.utility.StatusEnum;
 
 import java.io.IOException;
 @WebServlet("/mentor/schedule/delete")
@@ -34,10 +35,15 @@ public class DeleteScheduleController extends AuthenticationServlet {
                 SlotDAO slDAO = new SlotDAO();
                 Slot id = slDAO.getTimeSlot(Integer.parseInt(infoSlotID[1]));
                 if(DateTimeHelper.compareDayIDtoNow(infoSlotID[0], id.getStart_at(), id.getEnd_at())){
-                    if(scheduleDAO.isSlotAccepted(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]))){
-                        scheduleDAO.deleteSlotAccepted(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]));
+//                    if(scheduleDAO.isSlotAccepted(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]))){
+//                        scheduleDAO.deleteSlotAccepted(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]));
+//                    }
+                    if(scheduleDAO.checkProcessStatusScheduleLogs(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]))==StatusEnum.PROCESSING){
+                        scheduleDAO.deleteDayFreeByMentor(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]), StatusEnum.CANCEL);
                     }
-                    scheduleDAO.deleteDayFreeByMentor(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]));
+                    else{
+                        scheduleDAO.deleteDayFreeByMentor(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]),StatusEnum.WAITCANCEL);
+                    }
                 }
                 else{
                     req.getSession().setAttribute("DeleteSlotError", "Can not delete slot in passed");

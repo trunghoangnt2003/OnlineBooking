@@ -62,6 +62,7 @@ public class ManageMentorSchedule extends AuthenticationServlet {
                req.setAttribute("bookingSlotsNumber",bookingSlots.size());
                req.setAttribute("slotConfirmedNumber",bDAO.getNumberOfSlotConfirmed(Integer.parseInt(id)));
            }
+           req.setAttribute("count", 1);
            req.setAttribute("menteeBooking", menteeBooking);
            req.setAttribute("slots", slots);
            req.setAttribute("schedules", schedules);
