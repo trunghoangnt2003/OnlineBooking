@@ -1591,4 +1591,55 @@ public class Booking_ScheduleDAO {
         }
         return bsCheck;
     }
+
+    public void changeScheduleIdToZero(int id){
+        Connection connection = JDBC.getConnection();
+        String sql = "UPDATE [dbo].[Schedule_Booking_Logs]\n" +
+                "   SET [schedule_id] = NULL \n" +
+                " WHERE id =  ?  ";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, id);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ArrayList<BookingSchedule> getScheduleBookingLogsByScheduleId(int schedule_id){
+
+        ArrayList<BookingSchedule> bookingSchedules = new ArrayList<>();
+        try{
+            String sql = " SELECT [id]\n" +
+                    "      ,[booking_id]\n" +
+                    "      ,[schedule_id]\n" +
+                    "      ,[status_id]\n" +
+                    "  FROM [dbo].[Schedule_Booking_Logs]\n" +
+                    "  WHERE schedule_id = ? ";
+            Connection connection = JDBC.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, schedule_id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                BookingSchedule bookingSchedule = new BookingSchedule();
+                bookingSchedule.setId(resultSet.getInt("id"));
+
+                Status status = new Status();
+                status.setId(resultSet.getInt("status_id"));
+                bookingSchedule.setStatus(status);
+
+                Booking booking = new Booking();
+                booking.setId(resultSet.getInt("booking_id"));
+                bookingSchedule.setBooking(booking);
+
+                Schedule schedule = new Schedule();
+                schedule.setId(resultSet.getInt("schedule_id"));
+                bookingSchedule.setSchedule(schedule);
+                bookingSchedules.add(bookingSchedule);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return bookingSchedules;
+    }
  }

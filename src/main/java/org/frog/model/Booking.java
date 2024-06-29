@@ -17,6 +17,7 @@ public class Booking {
     private Level_Skills level_skills;
     private String reason;
     private int totalSlot;
+
     public Booking(int id, Status status, int amount, Timestamp date, Mentor mentor, Mentee mentee, Date startDate, Date endDate) {
         this.id = id;
         this.status = status;

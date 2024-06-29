@@ -207,14 +207,11 @@
             <h2>Hello, ${requestScope.account.name}</h2>
         </div>
         <div class="balance">
-            <h3>$${requestScope.wallet.balance}</h3>
-            <p>Available: ${requestScope.wallet.hold}</p>
-            <h3>Total: $${requestScope.wallet.balance}</h3>
-            <p>Hold: ${requestScope.wallet.hold}</p>
+            <h3>Total: ${requestScope.wallet.balance}000 VND</h3>
+            <p>Hold: ${requestScope.wallet.hold} VND</p>
             <c:if test="${requestScope.role == 1}">
-                <button><a href="../payment" style="text-decoration: none">Withdraw</a></button>
-                <button class="btn2">Deposit</button>
-                <button>Payment</button>
+                <button>Withdraw</button>
+                <button onclick="payment()" class="btn2">Deposit</button>
             </c:if>
             <c:if test="${requestScope.role == 2}">
                 <button>Withdraw</button>
@@ -265,7 +262,7 @@
                                 <span><i class="fa-solid fa-money-bill-trend-up"></i></span>
                             </c:if>
 
-                            <span>$</span>${t.amount}
+                            <span>${t.amount} VND</span>
                         </td>
                         <c:if test="${requestScope.role == 2}">
                             <td>
@@ -332,10 +329,6 @@
         const profileCompleteness = document.querySelector('.profile-completeness h3 span');
         let completeness = 50; // Example percentage
 
-        function updateProfileCompleteness(newPercentage) {
-            completeness = newPercentage;
-            profileCompleteness.textContent = ${completeness}%;
-        }
 
         // Example: Handle chat button click
         const chatButton = document.querySelector('.help button');
@@ -346,6 +339,10 @@
         // Example usage: update profile completeness
         updateProfileCompleteness(75); // Update to 75% for demonstration
     });
+
+    function payment() {
+        window.location.href = "http://localhost:8080/Frog/payment";
+    }
 </script>
 
 </body>

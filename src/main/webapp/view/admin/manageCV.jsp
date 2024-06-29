@@ -72,7 +72,7 @@
                         <td>Full Name</td>
                         <td>Account Name</td>
                         <td>CV</td>
-                        <td>Active</td>
+                        <td>Status</td>
                         </thead>
                         <tbody >
                         <c:set var="count" value="1"/>

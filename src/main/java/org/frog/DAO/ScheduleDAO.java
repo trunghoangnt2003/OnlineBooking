@@ -318,12 +318,12 @@ public class ScheduleDAO {
         }
         return false;
     }
-    public void deleteSlotAccepted(int id , Date date , int slot_id){
+    public void deleteSlotAccepted(int mentor_schedule_id , Date date , int slot_id){
         String sql ="DELETE FROM [Schedule]\n" +
                 "WHERE mentor_schedule_id = ? AND date = ? AND slot_id = ?";
         try{
             PreparedStatement stm = JDBC.getConnection().prepareStatement(sql);
-            stm.setInt(1,id);
+            stm.setInt(1,mentor_schedule_id);
             stm.setDate(2,date);
             stm.setInt(3,slot_id);
             stm.executeUpdate();
@@ -362,13 +362,14 @@ public class ScheduleDAO {
                 "FROM Schedule_Logs INNER JOIN Mentor_Schedule on Schedule_Logs.mentor_schedule_id = Mentor_Schedule.id\n" +
                 "INNER JOIN Slot ON Schedule_Logs.slot_id = Slot.id\n" +
                 "INNER JOIN Status ON Schedule_Logs.status_id = Status.id\n" +
-                "WHERE mentor_id = ? and  [date] >= ? And  [date] <= ? ";
+                "WHERE mentor_id = ? and  [date] >= ? And  [date] <= ? AND status_id != ?";
         try {
             Connection connection = JDBC.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, id);
             preparedStatement.setDate(2, from);
             preparedStatement.setDate(3, to);
+            preparedStatement.setInt(4, StatusEnum.CANCEL);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 Schedule schedule = new Schedule();
@@ -494,7 +495,7 @@ public class ScheduleDAO {
         return null;
     }
 
-    public  void updateById(int id, int status_id){
+    public  void updateLogsById(int id, int status_id){
         String sql="UPDATE [dbo].[Schedule_Logs]\n" +
                 "   SET [status_id] = ?\n" +
                 " WHERE id = ? ";
@@ -530,7 +531,7 @@ public class ScheduleDAO {
         }
     }
 
-    public ArrayList<Schedule> getLogsAllByMentorScheduleId(int id){
+    public ArrayList<Schedule> getLogsProcessByMentorScheduleId(int id){
         ArrayList<Schedule> schedules = new ArrayList<>();
         String sql="SELECT * FROM Schedule_Logs WHERE mentor_schedule_id = ? And status_id = ?";
         try {
@@ -583,6 +584,72 @@ public class ScheduleDAO {
         }
         return num;
 
+    }
+
+    public ArrayList<Schedule> getLogsWaitCancelByMentorScheduleId(int id){
+        ArrayList<Schedule> schedules = new ArrayList<>();
+        String sql="SELECT * FROM Schedule_Logs WHERE mentor_schedule_id = ? And status_id = ?";
+        try {
+            Connection connection = JDBC.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(2, StatusEnum.WAITCANCEL);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                Schedule schedule = new Schedule();
+                schedule.setId(resultSet.getInt("id"));
+                schedule.setDate(resultSet.getDate("date"));
+
+                Slot slot = new Slot();
+                slot.setId(resultSet.getInt("slot_id"));
+                schedule.setSlot(slot);
+
+                Status st = new Status();
+                st.setId(resultSet.getInt("status_id"));
+                schedule.setStatus(st);
+
+                Mentor_Schedule ms = new Mentor_Schedule();
+                ms.setId(resultSet.getInt("mentor_schedule_id"));
+                schedule.setMentorSchedule(ms);
+
+                schedules.add(schedule);
+            }
+            return schedules;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Schedule getScheduleByInfo(int mentor_schedule_id , Date date , int slot_id){
+        try{
+            String sql = "SELECT * FROM [dbo].[Schedule]\n" +
+                    "WHERE mentor_schedule_id = ? AND date = ? AND slot_id = ?";
+            Connection connection = JDBC.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1,mentor_schedule_id);
+            preparedStatement.setDate(2,date);
+            preparedStatement.setInt(3,slot_id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Schedule schedule = new Schedule();
+                schedule.setId(resultSet.getInt("id"));
+                schedule.setDate(resultSet.getDate("date"));
+
+                Slot slot = new Slot();
+                slot.setId(resultSet.getInt("slot_id"));
+                schedule.setSlot(slot);
+
+                Mentor_Schedule ms = new Mentor_Schedule();
+                ms.setId(resultSet.getInt("mentor_schedule_id"));
+                schedule.setMentorSchedule(ms);
+                return schedule;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }
 

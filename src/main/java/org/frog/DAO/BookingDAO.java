@@ -162,7 +162,8 @@ public class BookingDAO {
                     "           ,[from_date]\n" +
                     "           ,[to_date]\n" +
                     "           ,[description]\n" +
-                    "           ,[level_skill_id])\n" +
+                    "           ,[level_skill_id]\n" +
+                    "           ,[total_slot])\n" +
                     "     VALUES\n" +
                     "           (?\n" +
                     "           ,?\n" +
@@ -172,7 +173,8 @@ public class BookingDAO {
                     "           ,?\n" +
                     "           ,?\n" +
                     "           ,?\n" +
-                    "           ,?)";
+                    "           ,?\n" +
+                    "           ,?);";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, booking.getStatus().getId());
             preparedStatement.setInt(2, booking.getAmount());
@@ -182,6 +184,7 @@ public class BookingDAO {
             preparedStatement.setDate(6, booking.getEndDate());
             preparedStatement.setString(7, booking.getDescription());
             preparedStatement.setInt(8, booking.getLevel_skills().getId());
+            preparedStatement.setInt(9, booking.getTotalSlot());
             preparedStatement.executeUpdate();
             JDBC.closeConnection(connection);
 
@@ -605,7 +608,7 @@ public class BookingDAO {
     public Booking getBookingById(int bookingid){
         Booking booking = new Booking();
         String sql = "Select  b.id,b.status_id,status.type,\n" +
-                "\t\t\t\t\tb.amount,b.create_date,b.description,b.from_date,b.to_date,\n" +
+                "\t\t\t\t\tb.amount,b.create_date,b.description,b.from_date,b.to_date,b.total_slot,\n" +
                 "                    level_skill_id,skill_id, sk.name as skill_name, sk.src_icon, ls.level_id, l.type as typeS,b.mentee_id,b.mentor_id,\n" +
                 "\t\t\t\t\tacc.name,acc.address,acc.dob,acc.gender,acc.mail,acc.phone \n" +
                 "FROM Booking b\n" +
@@ -662,6 +665,7 @@ public class BookingDAO {
                 booking.setDescription(resultSet.getString("description"));
                 booking.setStartDate(resultSet.getDate("from_date"));
                 booking.setEndDate(resultSet.getDate("to_date"));
+                booking.setTotalSlot(resultSet.getInt("total_slot"));
             }
         }catch (Exception e){
             e.printStackTrace();
