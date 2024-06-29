@@ -35,17 +35,19 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <style>
-        .body{
+        .body {
             display: flex;
             margin: 60px 60px;
             justify-content: space-between;
 
         }
-        .left-side{
+
+        .left-side {
             width: 16%;
             margin-top: 10px;
         }
-        .right-side{
+
+        .right-side {
             width: 83%;
         }
 
@@ -53,6 +55,18 @@
 </head>
 <body>
 <jsp:include page="/view/common/header.jsp"></jsp:include>
+
+<c:if test="${isFree != null}">
+    <div class="alert alert-danger text-center" role="alert">
+        <b>It seems like next week is free. Please schedule the day to ensure there is no disruption to the learning process </b>
+    </div>
+</c:if>
+<c:if test="${isStart != null}">
+    <div class="alert alert-warning text-center" role="alert">
+        <b>To start teaching. Please schedule a day to begin the lessons</b>
+    </div>
+
+</c:if>
 <div class="body">
     <div class="left-side">
         <form action="schedule" method="GET" id="getForm">
@@ -67,10 +81,10 @@
         <!-- Nút mở modal mới -->
         <button id="myBtn" onclick="openSetSlot()" style="padding: 15px 33px;">Set Schedule</button>
         <div style="display: inline">
-        <button id="myBtn3" onclick="invitedRequest()" style="padding: 15px 31px">New Request</button>
-        <c:if test="${newBooking != null}">
-            <i class="fa-solid fa-comment-dots fa-xl" style="color: #74C0FC;"></i>
-        </c:if>
+            <button id="myBtn3" onclick="invitedRequest()" style="padding: 15px 31px">New Request</button>
+            <c:if test="${newBooking != null}">
+                <i class="fa-solid fa-comment-dots fa-xl" style="color: #74C0FC;"></i>
+            </c:if>
         </div>
         <button id="myBtn3" onclick="openMyRequestWork()" style="padding: 15px 20px">Manage Request</button>
         <button id="myBtn3" onclick="historyRequest()">History Request</button>
@@ -81,7 +95,7 @@
                 <ul id="bookingList" class="booking-list">
                     <c:forEach items="${BookingSlots}" var="sche">
                         <c:if test="${param.viewID == sche.booking.id }">
-                            <li class="booking-item">  Slot ${sche.schedule.slot.id} - Day ${sche.schedule.date}</li>
+                            <li class="booking-item"> Slot ${sche.schedule.slot.id} - Day ${sche.schedule.date}</li>
                         </c:if>
 
                     </c:forEach>
@@ -94,15 +108,17 @@
             <!-- Modal content -->
             <div class="modal-content" style="width: 40%">
                 <span class="closeInfo">&times;</span>
-                <h4 style="color: #07AD90" >Tutorial Use </h4>
+                <h4 style="color: #07AD90">Tutorial Use </h4>
                 <p><i class="fa-solid fa-envelope fa-xl"></i> is waiting for decision with booking</p>
-                <p> <i class="fa-solid fa-frog fa-xl" style="color: #02b23c;"></i>  is present slot</p>
+                <p><i class="fa-solid fa-frog fa-xl" style="color: #02b23c;"></i> is present slot</p>
                 <p><i class="fa-solid fa-face-sad-tear fa-xl" style="color: #f25452;"></i> is absent slot</p>
                 <p><i class="fa-solid fa-square fa-xl" style="color: #63E6BE;"></i> is slot you set free</p>
-                <p><i class="fa-solid fa-square fa-xl" style="color: #FFD43B;"></i>is slot waiting for decision with booking</p>
+                <p><i class="fa-solid fa-square fa-xl" style="color: #FFD43B;"></i>is slot waiting for decision with
+                    booking</p>
                 <p><i class="fa-solid fa-square fa-xl" style="color: #ed1b0c;"></i>is slot work with mentee</p>
                 <p><i class="fa-solid fa-battery-full fa-xl" style="color: #63E6BE;"> </i>is icon slot free </p>
-                <p><i class="fa-solid fa-plus fa-flip-vertical fa-lg" style="color: #b3dfd2;"></i> is allow you set slot free when click on</p>
+                <p><i class="fa-solid fa-plus fa-flip-vertical fa-lg" style="color: #b3dfd2;"></i> is allow you set slot
+                    free when click on</p>
             </div>
         </div>
 
@@ -111,7 +127,9 @@
 
 
     <div class="right-side">
-        <h1 style="color: #07AD90" class="text-center">Time table <i class="fa-solid fa-circle-info fa-2xs" id="myBtn2"></i> </h1>
+        <h1 style="color: #07AD90" class="text-center">Time table <i class="fa-solid fa-circle-info fa-2xs"
+                                                                     id="myBtn2"></i></h1>
+        <%--        <c:if test="${isFree != null}"><p class="text-center" style="color: red">( It seems next week free. Please set day to teach ! )</p></c:if>--%>
         <table>
             <thead>
             <tr>
@@ -181,7 +199,8 @@
                                     <div class="notes-container">
                                         <i class="pin"></i>
                                         <blockquote class="notes red">
-                                            <img width="30px" src="${pageContext.request.contextPath}/${avatarSkill}" style="margin-bottom: 10px;">
+                                            <img width="30px" src="${pageContext.request.contextPath}/${avatarSkill}"
+                                                 style="margin-bottom: 10px;">
 
 
                                             <button id="button-schedule-td1" class="info-link"
@@ -192,10 +211,12 @@
                                                     ${nameType}
                                             </button>
                                             <c:if test="${present.equals('present') && icon}">
-                                                <i class="fa-solid fa-frog fa-xl" style="color: #02b23c; margin-top:-20px;margin-left: 40px"></i>
+                                                <i class="fa-solid fa-frog fa-xl"
+                                                   style="color: #02b23c; margin-top:-20px;margin-left: 40px"></i>
                                             </c:if>
                                             <c:if test="${present.equals('absent') && icon }">
-                                                <i class="fa-solid fa-face-sad-tear fa-xl" style="color: #f25452; margin-top:-20px;margin-left: 40px"></i>
+                                                <i class="fa-solid fa-face-sad-tear fa-xl"
+                                                   style="color: #f25452; margin-top:-20px;margin-left: 40px"></i>
 
                                             </c:if>
                                         </blockquote>
@@ -208,7 +229,9 @@
                                         <i class="pin"></i>
                                         <blockquote class="notes green">
 
-                                            <h4 style="margin-top: 15px;margin-left: 30px">  <i class="fa-solid fa-battery-full fa-xl" style="color: turquoise;"></i> </h4>
+                                            <h4 style="margin-top: 15px;margin-left: 30px"><i
+                                                    class="fa-solid fa-battery-full fa-xl"
+                                                    style="color: turquoise;"></i></h4>
                                         </blockquote>
                                     </div>
                                 </c:when>
@@ -246,7 +269,6 @@
         <input type="hidden" id="deleteButtonSession" value="${sessionScope.DeleteSlotError}">
 
 
-
         <div id="tdModal" class="modal">
             <!-- Modal content -->
             <div class="modal-content2">
@@ -259,8 +281,10 @@
                         <div class="info-card">
                             <ul>
                                 <li style="list-style-type: none">Name : ${bookInfo[0].booking.mentee.account.name}</li>
-                                <li style="list-style-type: none">Mail : ${bookInfo[0].booking.mentee.account.email}</li>
-                                <li style="list-style-type: none">Phone : ${bookInfo[0].booking.mentee.account.phone}</li>
+                                <li style="list-style-type: none">Mail
+                                    : ${bookInfo[0].booking.mentee.account.email}</li>
+                                <li style="list-style-type: none">Phone
+                                    : ${bookInfo[0].booking.mentee.account.phone}</li>
                             </ul>
                         </div>
                         <div class="info-card">
@@ -282,7 +306,7 @@
                         </div>
                     </div>
 
-                    <div class="info-card1" >
+                    <div class="info-card1">
 
                         <ul>
                             <li style="list-style-type: none">Created date : ${bookInfo[0].booking.date}</li>
@@ -301,12 +325,14 @@
                             <c:if test="${bookInfo[0].status.id == 3 }">
                                 <c:if test="${bookInfo[0].attend ==  true }">
                                     <li style="pointer-events: none;list-style-type: none;display: inline">
-                                        <input type="button" value="Present" id="confirmBtn2" style=" background: #1BB295">
+                                        <input type="button" value="Present" id="confirmBtn2"
+                                               style=" background: #1BB295">
                                     </li>
                                 </c:if>
                                 <c:if test="${bookInfo[0].attend ==  false }">
                                     <li style="pointer-events: none;list-style-type: none;display: inline">
-                                        <input type="button" value="Absent" id="absentBtn2" style=" background: #ff2222">
+                                        <input type="button" value="Absent" id="absentBtn2"
+                                               style=" background: #ff2222">
                                     </li>
                                 </c:if>
 
@@ -318,12 +344,14 @@
                             <c:if test="${bookInfo[0].status.id == 11 }">
                                 <li style="list-style-type: none; display: inline">
                                     <input type="button" value="Present" id="confirmBtn"
-                                           data-id=" ${bookInfo[0].id}" data-time="${bookInfo[0].schedule.date}_${bookInfo[0].schedule.slot.start_at}"
+                                           data-id=" ${bookInfo[0].id}"
+                                           data-time="${bookInfo[0].schedule.date}_${bookInfo[0].schedule.slot.start_at}"
                                            onclick="confirmSlot()">
                                 </li>
                                 <li style="list-style-type: none;display: inline">
                                     <input type="button" value="Absent" id="absentBtn"
-                                           data-id=" ${bookInfo[0].id}" data-time="${bookInfo[0].schedule.date}_${bookInfo[0].schedule.slot.start_at}"
+                                           data-id=" ${bookInfo[0].id}"
+                                           data-time="${bookInfo[0].schedule.date}_${bookInfo[0].schedule.slot.start_at}"
                                            onclick="absentSlot()">
                                 </li>
                             </c:if>
@@ -352,6 +380,7 @@
     const openSetSlot = () => {
         window.location.href = "schedule/edit"
     }
+
     function updateURL() {
         var todayElement = document.getElementById('today');
         var selectedDate = todayElement.value;
@@ -401,8 +430,6 @@
     // set free day
 
 
-
-
     const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -415,8 +442,6 @@
         }
     });
     //delete free day
-
-  
 
 
     const informationMentee = () => {
@@ -449,7 +474,7 @@
         var date = dataTime.split("_")[0];
         var time = dataTime.split("_")[1];
         var currentDate = new Date();
-        var dateTimeString= date + " " + time;
+        var dateTimeString = date + " " + time;
         var dateTimeValue = new Date(dateTimeString);
         if (currentDate < dateTimeValue) {
             Swal.fire({
@@ -482,7 +507,7 @@
         var date = dataTime.split("_")[0];
         var time = dataTime.split("_")[1];
         var currentDate = new Date();
-        var dateTimeString= date + " " + time;
+        var dateTimeString = date + " " + time;
         var dateTimeValue = new Date(dateTimeString);
         if (currentDate < dateTimeValue) {
             Swal.fire({
@@ -490,8 +515,7 @@
                 title: "Oops...",
                 text: "Slot has not occurred yet.",
             });
-        }
-        else{
+        } else {
             var btnOnclick = document.getElementById("absentBtn");
             var newURL = "";
             btnOnclick.onclick = function (event) {

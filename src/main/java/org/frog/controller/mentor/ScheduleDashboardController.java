@@ -64,6 +64,20 @@ public class ScheduleDashboardController extends AuthenticationServlet {
             bookings = bs.getBookingByMenteeBookMentor(account.getId());
 
             BookingSlots = bs.getDetailBookings(account.getId());
+            // kiem tra tuan sau co trong slot khong
+            List<Week> weeksCheck = new ArrayList<>();
+            weeksCheck = DateTimeHelper.getWeekDates(DateTimeHelper.getFutureDate(1));
+            ArrayList<BookingSchedule> isNextWeekFree = new ArrayList<>();
+            isNextWeekFree =  scheduleDAO.getSchedulesByIDnDay(account.getId(), DateTimeHelper.convertStringToDateByDay(weeksCheck.get(0).getDayOfMonth()), DateTimeHelper.convertStringToDateByDay(weeksCheck.get(6).getDayOfMonth()));
+            if(schedules.size()==0){
+                req.setAttribute("isStart", "yes");
+            }else {
+                if(isNextWeekFree.size() == 0){
+                    req.setAttribute("isFree", "yes");
+                }
+            }
+
+            //--------------------------------------
             req.setAttribute("today", day);
             req.setAttribute("BookingSlots", BookingSlots);
             req.setAttribute("bookings", bookings);

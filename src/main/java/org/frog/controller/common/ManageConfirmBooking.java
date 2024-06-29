@@ -47,7 +47,7 @@ public class ManageConfirmBooking extends AuthenticationServlet {
                     float fee = (float) (booking.getAmount() * PaymentEnum.FEE);
                     float menteePay = booking.getAmount() ;
                     walletDAO.payment(mentee.getWallet().getBalance()-menteePay,mentee.getWallet().getId());
-                    walletDAO.updateAvailable(mentor.getWallet(),mentor.getWallet().getHold()-booking.getAmount());
+                    walletDAO.updateAvailable(mentee.getWallet(),mentee.getWallet().getHold()-booking.getAmount());
 
                     walletDAO.payment(mentor.getWallet().getBalance()+booking.getAmount()-fee,mentor.getWallet().getId());
 
