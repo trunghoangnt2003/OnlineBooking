@@ -24,12 +24,10 @@ public class WalletDAO {
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 Wallet wallet = new Wallet();
-                wallet.setId(resultSet.getString(1));
-                wallet.setBalance(resultSet.getFloat(2));
-                wallet.setHold(resultSet.getFloat(3));
+                wallet.setId(resultSet.getString("id"));
+                wallet.setBalance(resultSet.getInt("balance"));
+                wallet.setHold(resultSet.getInt("hold"));
                 return wallet;
-            } else {
-
             }
         } catch (SQLException e) {
             e.printStackTrace();  // Log the stack trace
@@ -107,8 +105,8 @@ public class WalletDAO {
 
                 Wallet wallet = new Wallet();
                 wallet.setId(resultSet.getString("id"));
-                wallet.setBalance(resultSet.getFloat("balance"));
-                wallet.setHold(resultSet.getFloat("hold"));
+                wallet.setBalance(resultSet.getInt("balance"));
+                wallet.setHold(resultSet.getInt("hold"));
                 account.setWallet(wallet);
 
                 Role role = new Role();
@@ -165,6 +163,7 @@ public class WalletDAO {
         }
         return false;
     }
+
     public boolean moneyBack(float amount,String wallet_id){
         String sql ="UPDATE [Wallet]\n" +
                 "   SET [hold] = ?   \n" +
@@ -187,29 +186,30 @@ public class WalletDAO {
         ArrayList<Transaction> transactions = new ArrayList<>();
         try {
             Connection connection = JDBC.getConnection();
-            String sql = "select A.name, T.id, T.amount, T.fee, TT.name as type_name, T.date\n" +
-                    "                    from Account A join Wallet W on A.wallet_id = W.id\n" +
-                    "                    join [Transaction] T on W.id = T.wallet_opposite\n" +
-                    "                    join Type_Transaction TT on TT.id = T.type_id\n" +
-                    //"\t\t\t\t\tjoin Status S on S.id = T.status_id\n" +
-                    "                    where T.wallet_id = ?";
+            String sql = "select T.id, T.amount, T.date, T.type_id, T.fee, T.wallet_id, T.wallet_opposite\n" +
+                    "from [Transaction] T join Wallet W on W.id = T.wallet_id\n" +
+                    "where T.wallet_id = ? \n" +
+                    "or T.wallet_opposite = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, id);
+            preparedStatement.setString(2, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Transaction transaction = new Transaction();
                 TypeTransaction typeTransaction = new TypeTransaction();
-                Account account = new Account();
+                Wallet wallet = new Wallet();
+                Wallet oppositeWallet = new Wallet();
                 transaction.setId(resultSet.getInt("id"));
                 transaction.setDate(resultSet.getDate("date"));
-                transaction.setAmount(resultSet.getFloat("amount"));
-                transaction.setFee(resultSet.getFloat("fee"));
-                typeTransaction.setName(resultSet.getString("type_name"));
-                account.setName(resultSet.getString("name"));
+                transaction.setAmount(resultSet.getInt("amount"));
+                transaction.setFee(resultSet.getInt("fee"));
+                typeTransaction.setId(resultSet.getInt("type_id"));
+                wallet.setId(resultSet.getString("wallet_id"));
+                oppositeWallet.setId(resultSet.getString("wallet_opposite"));
+                transaction.setWallet(wallet);
+                transaction.setWalletOpposite(oppositeWallet);
                 transaction.setTypeTransaction(typeTransaction);
-                transaction.setAccount(account);
                 transactions.add(transaction);
-
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

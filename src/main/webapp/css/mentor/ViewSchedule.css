@@ -153,8 +153,25 @@ body{
     color: black; /* Black text on hover */
     border: 2px solid #42509e; /* Green border on hover */
 }
-
-
+.myBtnfunc{
+    background-color: #07AD90; /* Green background */
+    border: none; /* Remove borders */
+    color: white; /* White text */
+    padding: 15px 24px; /* Add some padding */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Make the container inline */
+    font-size: 16px; /* Increase font size */
+    margin: 4px 2px; /* Add some margin */
+    transition-duration: 0.4s; /* Add transition effect */
+    cursor: pointer; /* Add a pointer cursor on hover */
+    border-radius: 12px; /* Rounded corners */
+}
+.myBtnfunc:hover{
+    background-color: white; /* White background on hover */
+    color: black; /* Black text on hover */
+    border: 2px solid #42509e; /* Green border on hover */
+}
 .closeInfo {
     /*margin-left: 1250px;*/
     position: absolute;
@@ -374,7 +391,7 @@ th:first-child{
     -ms-transform: rotate(2deg);
     transform: rotate(2deg);
 }
-.grey{
+.waiting{
     background: #aaaaaa;
     -webkit-transform: rotate(2deg);
     -moz-transform: rotate(2deg);

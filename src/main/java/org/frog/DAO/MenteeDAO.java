@@ -1,12 +1,78 @@
 package org.frog.DAO;
 
-import org.frog.model.Account;
-import org.frog.model.Mentee;
-import org.frog.model.Wallet;
+import org.frog.model.*;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MenteeDAO {
+    public Map<Mentee, Map<String, Integer>> getStaticAllMentee(String nameSearch) {
+        Map<Mentee, Map<String, Integer>> menteeMap = new HashMap<>();
+
+        String sql = "SELECT \n" +
+                "    a.id, \n" +
+                "    a.name, \n" +
+                "    a.username, \n" +
+                "    COUNT(DISTINCT b.level_skill_id) AS TotalSkill, \n" +
+                "    COUNT(DISTINCT Schedule.slot_id) AS TotalSlots\n" +
+                "FROM \n" +
+                "    Account a \n" +
+                "JOIN \n" +
+                "    Mentee me ON a.id = me.account_id\n" +
+                "LEFT JOIN \n" +
+                "    Booking b ON me.account_id = b.mentee_id AND (b.status_id = 3 OR b.status_id = 11)\n" +
+                "LEFT JOIN \n" +
+                "    Status ON Status.id = b.status_id\n" +
+                "LEFT JOIN \n" +
+                "    Booking_Schedule ON Booking_Schedule.booking_id = b.id\n" +
+                "LEFT JOIN \n" +
+                "    Schedule ON Schedule.id = Booking_Schedule.schedule_id\n" +
+                "WHERE \n" +
+                "    a.name LIKE ?\n" +
+                "GROUP BY \n" +
+                "    a.id, a.name, a.username\n" +
+                "ORDER BY \n" +
+                "    a.name;";
+
+        try (Connection connection = JDBC.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            // Ensure the nameSearch parameter is handled correctly
+            if (nameSearch == null || nameSearch.isEmpty()) {
+                nameSearch = ""; // If empty or null, search for all names
+            }
+
+            preparedStatement.setString(1, "%" + nameSearch + "%");
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    Account account = new Account();
+                    account.setId(resultSet.getString("id"));
+                    account.setName(resultSet.getString("name"));
+                    account.setUserName(resultSet.getString("username"));
+
+                    Mentee mentee = new Mentee();
+                    mentee.setAccount(account);
+
+                    Map<String, Integer> total = new HashMap<>();
+                    total.put("TotalSkill", resultSet.getInt("TotalSkill"));
+                    total.put("TotalSlots", resultSet.getInt("TotalSlots"));
+
+                    menteeMap.put(mentee, total);
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace(); // or use a logger to log the exception
+        }
+
+        return menteeMap;
+    }
+
+
+
     public Mentee getMenteeById(String id) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;

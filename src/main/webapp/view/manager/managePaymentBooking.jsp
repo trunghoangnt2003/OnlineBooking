@@ -94,7 +94,7 @@
             background-color: #07AD90; /* Green background */
             border: none; /* Remove borders */
             color: white; /* White text */
-            padding: 15px 49px; /* Add some padding */
+            padding: 15px ; /* Add some padding */
             text-align: center; /* Center the text */
             text-decoration: none; /* Remove underline */
             display: inline-block; /* Make the container inline */
@@ -104,6 +104,21 @@
             cursor: pointer; /* Add a pointer cursor on hover */
             border-radius: 12px; /* Rounded corners */
         }
+        .btn{
+            background-color: #0CA4F6; /* Green background */
+            border: none; /* Remove borders */
+            color: white; /* White text */
+            padding: 15px ; /* Add some padding */
+            text-align: center; /* Center the text */
+            text-decoration: none; /* Remove underline */
+            display: inline-block; /* Make the container inline */
+            font-size: 16px; /* Increase font size */
+            margin: 4px 2px; /* Add some margin */
+            transition-duration: 0.4s; /* Add transition effect */
+            cursor: pointer; /* Add a pointer cursor on hover */
+            border-radius: 12px; /* Rounded corners */
+        }
+
     </style>
 
 </head>
@@ -116,7 +131,7 @@
         <!-- partial:partials/_sidebar.jsp -->
         <jsp:include page="../admin/partials/_sidebar.jsp"></jsp:include>
         <!-- partial -->
-        <div style="width: 100%;margin-left: 30px">
+        <div style="width: 80%;margin-left: 40px">
         <h2 style="font-weight: bold; margin-bottom: 5px;position: relative">Manage Payment Booking </h2>
             <div class="table-containers">
                 <c:if test="${param.page >=2 }">
@@ -126,17 +141,17 @@
                 <table class="table table-striped">
                     <thead class="table-dark">
                     <tr>
-                        <th>Name</th>
+                        <th>Number</th>
                         <th>ID</th>
                         <th>Create Date</th>
                         <th>Amount</th>
-                        <th>Description</th>
-                        <th>Skill Name</th>
-                        <th>Skill Level</th>
+                        <th>Skill Name Level</th>
                         <th>Start Date</th>
                         <th>End Date</th>
                         <th>Name</th>
-                        <th>Status</th>
+                        <th>isDone</th>
+                        <th>Re-send</th>
+                        <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -146,15 +161,17 @@
                             <td>${book.id}</td>
                             <td>${book.date}</td>
                             <td>${book.amount}</td>
-                            <td>${book.description} </td>
                             <td><img width="20px"
                                      src="${pageContext.request.contextPath}/${book.level_skills.skill.src_icon}">
-                                    ${book.level_skills.skill.name}</td>
-                            <td>${book.level_skills.level.name} </td>
+                                    ${book.level_skills.skill.name} ${book.level_skills.level.name} </td>
                             <td>${book.startDate}</td>
                             <td>${book.endDate}</td>
                             <td>${book.mentee.account.name}</td>
-                            <td><button id="confirmBooking" data-id="${book.id}" onclick="confirmBooking()">
+                            <td><input type="checkbox" readonly class="custom-checkbox" <c:if test="${book.status.id == 3}"> checked </c:if></td>
+                            <td>
+                                <input type="button" class="btn" id="btn" value="Send Mail" onclick="sendMail('${book.mentee.account.id}',${book.id})">
+                            </td>
+                            <td><button id="confirmBooking" onclick="confirmBooking(${book.id})">
                                 Confirm
                             </button>
                                 </td>
@@ -193,35 +210,56 @@
         </div>
         </div>
 
-</body>
+</div>
 <!-- container-scroller -->
 <!-- plugins:js -->
 <script>
-    const confirmBooking = () => {
-        var btnOnclick = document.getElementById("confirmBooking");
+    function confirmBooking(id) {
         var newURL = "";
-        btnOnclick.onclick = function (event) {
-            event.preventDefault();
-            Swal.fire({
-                title: "Are you want to confirm booking",
-                icon: "question",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes!"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        title: "confirm Successfully",
-                        text: "Transaction added",
-                        icon: "success"
-                    });
-                    var id = this.getAttribute('data-id');
-                    newURL = "/Frog/confirmBooking?id="+id;
-                    window.location.href = newURL;
-                }
-            });
-        };
+        event.preventDefault();
+        Swal.fire({
+            title: "Are you want to confirm booking",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "confirm Successfully",
+                    text: "Transaction added",
+                    icon: "success"
+                });
+                //var id = this.getAttribute('data-id');
+                newURL = "/Frog/manageConfirmBooking?id="+id;
+                window.location.href = newURL;
+            }
+        });
+    }
+    function sendMail(accID, bid)  {
+        event.preventDefault();
+        Swal.fire({
+            title: "Are you want to send mail ?",
+            text: "Ensure that all slot has happened",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Successfully",
+                    text: "Mail sent",
+                    icon: "success"
+                });
+               // var menteeId = this.getAttribute('data-id').split("_")[0];
+               // var bookingId =this.getAttribute('data-id').split("_")[1];
+                newURL = '/Frog/confirmMail?menteeId=' + accID + '&bookingId='+bid+'&isManager=true';
+                window.location.href = newURL;
+            }
+        });
     }
 </script>
 

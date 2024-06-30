@@ -1,5 +1,7 @@
 package org.frog.model;
 
+import org.frog.DAO.ScheduleDAO;
+
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -42,4 +44,5 @@ public class Week {
             return null;
         }
     }
+
 }

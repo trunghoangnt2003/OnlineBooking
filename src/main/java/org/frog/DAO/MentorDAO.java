@@ -10,7 +10,7 @@ import org.frog.model.Status;
 import org.frog.model.*;
 
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.*;
 
 public class MentorDAO {
 
@@ -255,7 +255,7 @@ public class MentorDAO {
 
     }
 
-    public void updateMentorLog(Mentor_CV_Log mentor) {
+    public void updateMentor(Mentor_CV_Log mentor) {
         try {
             Connection connection = JDBC.getConnection();
             String sql = "UPDATE [dbo].[Mentor]\n" +
@@ -594,7 +594,7 @@ public class MentorDAO {
         }
     }
 
-    public void updateMentorCVLog(Mentor mentor, String id, String status) {
+    public void insertMentorLog(Mentor_CV_Log mentor, int status_id) {
         try {
             Connection connection = JDBC.getConnection();
             String sql = "INSERT INTO [dbo].[Mentor_CV_Logs]\n" +
@@ -602,9 +602,11 @@ public class MentorDAO {
                     "           ,[price]\n" +
                     "           ,[experience]\n" +
                     "           ,[education]\n" +
-                    "           ,[account_id])\n" +
+                    "           ,[account_id]\n" +
+                    "           ,[status_id])\n" +
                     "     VALUES\n" +
                     "           (?\n" +
+                    "           ,?\n" +
                     "           ,?\n" +
                     "           ,?\n" +
                     "           ,?\n" +
@@ -614,7 +616,8 @@ public class MentorDAO {
             preparedStatement.setInt(2, mentor.getPrice());
             preparedStatement.setString(3, mentor.getExperience());
             preparedStatement.setString(4, mentor.getEducation());
-            preparedStatement.setString(5, id);
+            preparedStatement.setString(5, mentor.getAccount().getId());
+            preparedStatement.setInt(6, status_id);
             preparedStatement.executeUpdate();
             JDBC.closeConnection(connection);
         } catch (SQLException e) {
@@ -695,6 +698,135 @@ public class MentorDAO {
             }
             JDBC.closeConnection(connection);
             return mentors;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Map<Mentor_Schedule, Map<String, Integer>> getProcessingSchedule(int page, String name) {
+        Map<Mentor_Schedule, Map<String, Integer>> map = new LinkedHashMap<>();
+        try {
+            String sql = "With T1 AS\n" +
+                    "(\n" +
+                    "SELECT a.id, a.name,ms.start_date,ms.id as MentorSchedule, ms.end_date, count(sl.status_id) as waiting\n" +
+                    "                    FROM Account  a JOIN Mentor m ON a.id = m.account_id and a.status = ? \n" +
+                    "                    LEFT JOIN Mentor_Schedule ms ON m.account_id = ms.mentor_id\n" +
+                    "                    LEFT JOIN Schedule_Logs sl ON ms.id = sl.mentor_schedule_id AND status_id = ? \n" +
+                    "\t\t\t\t\tGROUP BY a.id, ms.id,a.name,ms.start_date, ms.end_date ),\n" +
+                    "T2  AS \n" +
+                    "(\n" +
+                    "SELECT a.id, a.name,count(sl.status_id) as remove\n" +
+                    "                    FROM Account  a JOIN Mentor m ON a.id = m.account_id and a.status = ? \n" +
+                    "                    LEFT JOIN Mentor_Schedule ms ON m.account_id = ms.mentor_id\n" +
+                    "                    LEFT JOIN Schedule_Logs sl ON ms.id = sl.mentor_schedule_id AND  status_id = ?\n" +
+                    "\t\t\t\t\tGROUP BY a.id,a.name\n" +
+                    ")\n" +
+                    "Select T1.*, T2.remove\n" +
+                    "FROM T1 JOIN T2 ON T1.id = T2.id\n";
+                    if(name != null) {
+                        sql += "WHERE T1.name LIKE '%" + name + "%' \n";
+                    }
+            sql += "ORDER BY T1.MentorSchedule " +
+                    "OFFSET ? ROWS FETCH NEXT 5 ROWS ONLY";
+
+            PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement(sql);
+            preparedStatement.setInt(1, StatusEnum.ACTIVE);
+            preparedStatement.setInt(2, StatusEnum.PROCESSING);
+            preparedStatement.setInt(3, StatusEnum.ACTIVE);
+            preparedStatement.setInt(4, StatusEnum.WAITCANCEL);
+            preparedStatement.setInt(5, (page - 1) * 5);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Mentor_Schedule mentorSchedule = new Mentor_Schedule();
+                mentorSchedule.setId(resultSet.getInt("MentorSchedule"));
+                mentorSchedule.setStart_date(resultSet.getDate("start_date"));
+                mentorSchedule.setEnd_date(resultSet.getDate("end_date"));
+                Account account = new Account();
+                account.setId(resultSet.getString("id"));
+                account.setName(resultSet.getString("name"));
+                Mentor mentor = new Mentor();
+                mentor.setAccount(account);
+                mentorSchedule.setMentor(mentor);
+                int totalProcess = resultSet.getInt("waiting");
+                int totalRemove = resultSet.getInt("remove");
+
+                Map<String, Integer> mapCal = new HashMap<>();
+                mapCal.put("waiting", totalProcess);
+                mapCal.put("remove", totalRemove);
+                map.put(mentorSchedule, mapCal);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+
+
+
+    public int getTotalMentor(String name) {
+        try{
+            String sql = "SELECT count(*) as total\n " +
+                    "FROM     Account INNER JOIN\n" +
+                    "         Mentor ON Account.id = Mentor.account_id\n" +
+                    "WHERE status = ?";
+
+            if (name != null) {
+                sql += " and Account.name like '%" + name + "%'";
+            }
+            PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement(sql);
+            preparedStatement.setInt(1, StatusEnum.ACTIVE);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                return resultSet.getInt("total");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
+    public void insertMentorCVLog(Mentor_CV_Log mentor, int status_id) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "INSERT INTO [dbo].[Mentor_CV_Logs]\n" +
+                    "           ([profile_detail]\n" +
+                    "           ,[price]\n" +
+                    "           ,[experience]\n" +
+                    "           ,[education]\n" +
+                    "           ,[account_id]\n" +
+                    "           ,[status_id])\n" +
+                    "     VALUES\n" +
+                    "           (?\n" +
+                    "           ,?\n" +
+                    "           ,?\n" +
+                    "           ,?\n" +
+                    "           ,?\n" +
+                    "           ,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, mentor.getProfileDetail());
+            preparedStatement.setInt(2, mentor.getPrice());
+            preparedStatement.setString(3, mentor.getExperience());
+            preparedStatement.setString(4, mentor.getEducation());
+            preparedStatement.setString(5, mentor.getAccount().getId());
+            preparedStatement.setInt(6, status_id);
+            preparedStatement.executeUpdate();
+            JDBC.closeConnection(connection);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public  void createScheduleMaster(String id){
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "INSERT INTO [dbo].[Mentor_Schedule]\n" +
+                    "           ([mentor_id])\n" +
+                    "     VALUES (?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, id);
+            preparedStatement.executeUpdate();
+            JDBC.closeConnection(connection);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

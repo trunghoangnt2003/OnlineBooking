@@ -119,12 +119,12 @@
     function confirmDelete(bookingId) {
         Swal.fire({
             title: "Are you sure?",
-            text: "Do you want to delete this booking?",
+            text: "Do you want to cancel this booking?",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!",
+            confirmButtonText: "Yes",
         }).then((result) => {
             if (result.isConfirmed) {
                 Swal.fire({

@@ -149,6 +149,9 @@ public class RegisterController extends HttpServlet {
                 }else {
                     MentorDAO mentorDAO = new MentorDAO();
                     mentorDAO.register(accountRegister);
+                    //insert mentor schedule
+                    mentorDAO.createScheduleMaster(accountRegister.getId());
+
                 }
                 String done;
                 done = "Please check your mail to activate your account.";

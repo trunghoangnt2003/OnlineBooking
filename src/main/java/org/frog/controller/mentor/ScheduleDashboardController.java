@@ -4,9 +4,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.frog.DAO.BookingDAO;
 import org.frog.DAO.Booking_ScheduleDAO;
 import org.frog.DAO.MentorDAO;
-import org.frog.DAO.Mentor_ScheduleDAO;
 import org.frog.DAO.ScheduleDAO;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.*;
@@ -17,12 +17,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/mentor/schedule/edit")
-public class ViewScheduleController extends AuthenticationServlet {
+@WebServlet("/mentor/schedule")
+public class ScheduleDashboardController extends AuthenticationServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
-
 
     }
 
@@ -30,13 +29,14 @@ public class ViewScheduleController extends AuthenticationServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
         try {
             String day = req.getParameter("today");
-            ArrayList<Schedule> schedules = new ArrayList<>();
+            ArrayList<BookingSchedule> schedules = new ArrayList<>();
             ArrayList<BookingSchedule> BookingSlots = new ArrayList<>();
             ArrayList<Slot> slots = new ArrayList<>();
             List<Week> weeks = new ArrayList<>();
             MentorDAO mentorDAO = new MentorDAO();
             ScheduleDAO scheduleDAO = new ScheduleDAO();
             Booking_ScheduleDAO bs = new Booking_ScheduleDAO();
+            BookingDAO bookingDAO = new BookingDAO();
             ArrayList<Booking> bookings = new ArrayList<>();
 
             if (day == null) {
@@ -51,29 +51,33 @@ public class ViewScheduleController extends AuthenticationServlet {
 
             String dayID = req.getParameter("dayID");
             if (dayID != null) {
-
                 String[] infoDayID = dayID.split("_");
                 ArrayList<BookingSchedule> bookInfo = bs.getDetailBooking(account.getId(), DateTimeHelper.convertStringToDateByDay(infoDayID[0]), Integer.parseInt(infoDayID[1]));
                 req.setAttribute("bookInfo", bookInfo);
-
             }
+            if(bookingDAO.isNewBooking(account.getId())) {
+                req.setAttribute("newBooking", "yes");
+            }
+
             slots = scheduleDAO.getSlots();
-            schedules = scheduleDAO.getScheduleLogsByMentorSet(account.getId());
+            schedules = scheduleDAO.getSchedulesByIDnDay(account.getId(), DateTimeHelper.convertStringToDateByDay(weeks.get(0).getDayOfMonth()), DateTimeHelper.convertStringToDateByDay(weeks.get(6).getDayOfMonth()));
             bookings = bs.getBookingByMenteeBookMentor(account.getId());
+
             BookingSlots = bs.getDetailBookings(account.getId());
-            // check slot booked or not
-            // slot always exist in schedule logs
-            ArrayList<BookingSchedule> bsCheckSlotBooked = bs.checkSlotBooked(account.getId());
-            int idCheckSlotBooked = 0;
-            Mentor_ScheduleDAO mentor_scheduleDao = new Mentor_ScheduleDAO();
-            Mentor_Schedule mentor_schedule = mentor_scheduleDao.getByMentor(account.getId());
-            for( BookingSchedule b : bsCheckSlotBooked){
-                idCheckSlotBooked = bs.getIdSCheduleLogs(b.getSchedule().getDate(),b.getSchedule().getSlot().getId(),mentor_schedule.getId());
-               if(idCheckSlotBooked != 0){
-                   bs.updateStatusScheduleLogs(idCheckSlotBooked,9);
-               }
+            // kiem tra tuan sau co trong slot khong
+            List<Week> weeksCheck = new ArrayList<>();
+            weeksCheck = DateTimeHelper.getWeekDates(DateTimeHelper.getFutureDate(1));
+            ArrayList<BookingSchedule> isNextWeekFree = new ArrayList<>();
+            isNextWeekFree =  scheduleDAO.getSchedulesByIDnDay(account.getId(), DateTimeHelper.convertStringToDateByDay(weeksCheck.get(0).getDayOfMonth()), DateTimeHelper.convertStringToDateByDay(weeksCheck.get(6).getDayOfMonth()));
+            if(schedules.size()==0){
+                req.setAttribute("isStart", "yes");
+            }else {
+                if(isNextWeekFree.size() == 0){
+                    req.setAttribute("isFree", "yes");
+                }
             }
 
+            //--------------------------------------
             req.setAttribute("today", day);
             req.setAttribute("BookingSlots", BookingSlots);
             req.setAttribute("bookings", bookings);
@@ -81,7 +85,7 @@ public class ViewScheduleController extends AuthenticationServlet {
             req.setAttribute("count", 1);
             req.setAttribute("mentorID", account.getId());
             req.setAttribute("schedules", schedules);
-            req.getRequestDispatcher("/view/mentor/schedule/ViewMentorSchedule.jsp").forward(req, resp);
+            req.getRequestDispatcher("/view/mentor/schedule/ScheduleDashboard.jsp").forward(req, resp);
 
 
         } catch (Exception e) {

@@ -38,6 +38,7 @@
           <li class="nav-item"> <a class="nav-link" href="../admin/skill">Skills Management</a></li>
           <li class="nav-item"> <a class="nav-link" href="../admin/report">Report Management</a></li>
           <li class="nav-item"> <a class="nav-link" href="../manager/paymentBooking">Payment Management</a></li>
+          <li class="nav-item"> <a class="nav-link" href="../admin/manageSchedule">Schedule Management</a></li>
         </ul>
       </div>
     </li>

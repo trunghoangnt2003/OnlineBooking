@@ -52,15 +52,17 @@ public class ManageMentorSchedule extends AuthenticationServlet {
            if(id != null){
                bookingSlots = bDAO.getDetailBookingMentee(Integer.parseInt(id));
                Booking b = bsDao.getBookingById(Integer.parseInt(id));
-               if(b.getStatus().getId() !=13){
-                   if(bookingSlots.size() == bDAO.getNumberOfSlotConfirmed(Integer.parseInt(id))){
-                       bDAO.updateBooking(Integer.parseInt(id),3);
-                   }
-               }
+               // auto set done booking
+//               if(b.getStatus().getId() !=13){
+//                   if(bookingSlots.size() == bDAO.getNumberOfSlotConfirmed(Integer.parseInt(id))){
+//                       bDAO.updateBooking(Integer.parseInt(id),3);
+//                   }
+//               }
                req.setAttribute("bookingSlots", bookingSlots);
                req.setAttribute("bookingSlotsNumber",bookingSlots.size());
                req.setAttribute("slotConfirmedNumber",bDAO.getNumberOfSlotConfirmed(Integer.parseInt(id)));
            }
+           req.setAttribute("count", 1);
            req.setAttribute("menteeBooking", menteeBooking);
            req.setAttribute("slots", slots);
            req.setAttribute("schedules", schedules);
