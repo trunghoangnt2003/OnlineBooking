@@ -10,6 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class SkillsDAO {
 
@@ -41,6 +44,29 @@ public class SkillsDAO {
                 skill.setSrc_icon(src_icon);
                 skill.setCategory(category);
                 list.add(skill);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return list;
+    }
+    public Map<String, Integer> getSkill() {
+        Map<String, Integer> list = new LinkedHashMap<>();
+        String sql = "SELECT s.id,s.name, count(*) as [count] \n" +
+                "FROM [Prog_DB].[dbo].[Booking] b\n" +
+                "join [dbo].[Level_Skill] ls on b.level_skill_id = ls.id\n" +
+                "join [dbo].[Skill] s on ls.skill_id = s.id\n" +
+                "group by s.id,s.name\n" +
+                "order by [count]";
+
+        try (Connection connection = JDBC.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                list.put(resultSet.getString(2),resultSet.getInt(3));
+
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());

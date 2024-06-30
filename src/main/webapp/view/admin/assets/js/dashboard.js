@@ -1,126 +1,165 @@
 (function($) {
   'use strict';
+  function formatDate(dateString) {
+    var date = new Date(dateString);
+    var options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+  }
   $(function() {
-    if ($("#performanceLine").length) { 
-      const ctx = document.getElementById('performanceLine');
-      var graphGradient = document.getElementById("performanceLine").getContext('2d');
-      var graphGradient2 = document.getElementById("performanceLine").getContext('2d');
-      var saleGradientBg = graphGradient.createLinearGradient(5, 0, 5, 100);
-      saleGradientBg.addColorStop(0, 'rgba(26, 115, 232, 0.18)');
-      saleGradientBg.addColorStop(1, 'rgba(26, 115, 232, 0.02)');
-      var saleGradientBg2 = graphGradient2.createLinearGradient(100, 0, 50, 150);
-      saleGradientBg2.addColorStop(0, 'rgba(0, 208, 255, 0.19)');
-      saleGradientBg2.addColorStop(1, 'rgba(0, 208, 255, 0.03)');
-
-      new Chart(ctx, {
-        type: 'line',
+    if ($("#performanceLine").length) {
+      $.ajax({
+        url: "../admin/dash",
+        type: "POST",
         data: {
-          labels: ["SUN","sun", "MON", "mon", "TUE","tue", "WED", "wed", "THU", "thu", "FRI", "fri", "SAT"],
-          datasets: [{
-            label: 'This week',
-            data: [50, 110, 60, 290, 200, 115, 130, 170, 90, 210, 240, 280, 200],
+          action: "income" // Replace 'actionName' with the desired action
+        },
+        success: function (data) {
+          // Dữ liệu từ Servlet đã được trả về ở định dạng JSON
+          // Bạn có thể sử dụng dữ liệu này để cấu hình biểu đồ
+          var labels = data.estimatedIncome.map(function (item) {
+            return formatDate(item.date);
+          });
+          var datasets = [{
+            label: 'Paymentgit',
+            data: data.estimatedIncome.map(function (item) {
+              return item.amount;
+            }),
             backgroundColor: saleGradientBg,
             borderColor: [
-                '#1F3BB3',
+              '#1F3BB3',
             ],
             borderWidth: 1.5,
             fill: true, // 3: no fill
             pointBorderWidth: 1,
-            pointRadius: [4, 4, 4, 4, 4,4, 4, 4, 4, 4,4, 4, 4],
-            pointHoverRadius: [2, 2, 2, 2, 2,2, 2, 2, 2, 2,2, 2, 2],
-            pointBackgroundColor: ['#1F3BB3)', '#1F3BB3', '#1F3BB3', '#1F3BB3','#1F3BB3)', '#1F3BB3', '#1F3BB3', '#1F3BB3','#1F3BB3)', '#1F3BB3', '#1F3BB3', '#1F3BB3','#1F3BB3)'],
-            pointBorderColor: ['#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff',],
-        },{
-          label: 'Last week',
-          data: [30, 150, 190, 250, 120, 150, 130, 20, 30, 15, 40, 95, 180],
-          backgroundColor: saleGradientBg2,
-          borderColor: [
-              '#52CDFF',
-          ],
-          borderWidth: 1.5,
-          fill: true, // 3: no fill
-          pointBorderWidth: 1,
-          pointRadius: [0, 0, 0, 4, 0],
-          pointHoverRadius: [0, 0, 0, 2, 0],
-          pointBackgroundColor: ['#52CDFF)', '#52CDFF', '#52CDFF', '#52CDFF','#52CDFF)', '#52CDFF', '#52CDFF', '#52CDFF','#52CDFF)', '#52CDFF', '#52CDFF', '#52CDFF','#52CDFF)'],
-            pointBorderColor: ['#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff',],
-      }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          elements: {
-            line: {
-                tension: 0.4,
-            }
-          },
-        
-          scales: {
-            y: {
-              border: {
-                display: false
+            pointRadius: [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+            pointHoverRadius: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+            pointBackgroundColor: ['#1F3BB3)', '#1F3BB3', '#1F3BB3', '#1F3BB3', '#1F3BB3)', '#1F3BB3', '#1F3BB3', '#1F3BB3', '#1F3BB3)', '#1F3BB3', '#1F3BB3', '#1F3BB3', '#1F3BB3)'],
+            pointBorderColor: ['#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff',],
+            // Các cấu hình khác của dataset
+          }];
+          const ctx = document.getElementById('performanceLine');
+          var graphGradient = document.getElementById("performanceLine").getContext('2d');
+          var graphGradient2 = document.getElementById("performanceLine").getContext('2d');
+          var saleGradientBg = graphGradient.createLinearGradient(5, 0, 5, 100);
+          saleGradientBg.addColorStop(0, 'rgba(26, 115, 232, 0.18)');
+          saleGradientBg.addColorStop(1, 'rgba(26, 115, 232, 0.02)');
+          var saleGradientBg2 = graphGradient2.createLinearGradient(100, 0, 50, 150);
+          saleGradientBg2.addColorStop(0, 'rgba(0, 208, 255, 0.19)');
+          saleGradientBg2.addColorStop(1, 'rgba(0, 208, 255, 0.03)');
+
+          new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: labels,
+              datasets: datasets
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              elements: {
+                line: {
+                  tension: 0.4,
+                }
               },
-              grid: {
-                display: true,
-                color:"#F0F0F0",
-                drawBorder: false,
+
+              scales: {
+                y: {
+                  border: {
+                    display: false
+                  },
+                  grid: {
+                    display: true,
+                    color: "#F0F0F0",
+                    drawBorder: false,
+                  },
+                  ticks: {
+                    beginAtZero: false,
+                    autoSkip: true,
+                    maxTicksLimit: 4,
+                    color: "#6B778C",
+                    font: {
+                      size: 10,
+                    }
+                  }
+                },
+                x: {
+                  border: {
+                    display: false
+                  },
+                  grid: {
+                    display: false,
+                    drawBorder: false,
+                  },
+                  ticks: {
+                    beginAtZero: false,
+                    autoSkip: true,
+                    maxTicksLimit: 7,
+                    color: "#6B778C",
+                    font: {
+                      size: 10,
+                    }
+                  }
+                }
               },
-              ticks: {
-                beginAtZero: false,
-                autoSkip: true,
-                maxTicksLimit: 4,
-                color:"#6B778C",
-                font: {
-                  size: 10,
+              plugins: {
+                legend: {
+                  display: false,
                 }
               }
             },
-            x: {
-              border: {
-                display: false
-              },
-              grid: {
-                display: false,
-                drawBorder: false,
-              },
-              ticks: {
-                beginAtZero: false,
-                autoSkip: true,
-                maxTicksLimit: 7,
-                color:"#6B778C",
-                font: {
-                  size: 10,
-                }
-              }
-            }
-          },
-          plugins: {
-            legend: {
-                display: false,
-            }
-          }
-        },
-        plugins: [{
-          afterDatasetUpdate: function (chart, args, options) {
-              const chartId = chart.canvas.id;
-              var i;
-              const legendId = `${chartId}-legend`;
-              const ul = document.createElement('ul');
-              for(i=0;i<chart.data.datasets.length; i++) {
+            plugins: [{
+              afterDatasetUpdate: function (chart, args, options) {
+                const chartId = chart.canvas.id;
+                var i;
+                const legendId = `${chartId}-legend`;
+                const ul = document.createElement('ul');
+                for (i = 0; i < chart.data.datasets.length; i++) {
                   ul.innerHTML += `
                   <li>
                     <span style="background-color: ${chart.data.datasets[i].borderColor}"></span>
                     ${chart.data.datasets[i].label}
                   </li>
                 `;
+                }
+                return document.getElementById(legendId).appendChild(ul);
               }
-              return document.getElementById(legendId).appendChild(ul);
-            }
-        }]
-      });
+            }]
+          });
+        }
+      })
     }
 
-    if ($("#status-summary").length) { 
+    if ($("#status-summary").length) {
+      $.ajax({
+        url: "../admin/dash",
+        type: "POST",
+        data: {
+          action: "income" // Replace 'actionName' with the desired action
+        },
+        success: function (data) {
+          // Dữ liệu từ Servlet đã được trả về ở định dạng JSON
+          // Bạn có thể sử dụng dữ liệu này để cấu hình biểu đồ
+          var labels = data.estimatedIncome.map(function (item) {
+            return formatDate(item.date);
+          });
+          var datasets = [{
+            label: 'Income',
+            data: data.estimatedIncome.map(function (item) {
+              return item.amount;
+            }),
+            backgroundColor: saleGradientBg,
+            borderColor: [
+              '#1F3BB3',
+            ],
+            borderWidth: 1.5,
+            fill: true, // 3: no fill
+            pointBorderWidth: 1,
+            pointRadius: [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+            pointHoverRadius: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+            pointBackgroundColor: ['#1F3BB3)', '#1F3BB3', '#1F3BB3', '#1F3BB3', '#1F3BB3)', '#1F3BB3', '#1F3BB3', '#1F3BB3', '#1F3BB3)', '#1F3BB3', '#1F3BB3', '#1F3BB3', '#1F3BB3)'],
+            pointBorderColor: ['#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff',],
+            // Các cấu hình khác của dataset
+          }];
       const statusSummaryChartCanvas = document.getElementById('status-summary');
       new Chart(statusSummaryChartCanvas, {
         type: 'line',
@@ -175,6 +214,8 @@
           }
         }
       });
+        }
+      })
     }
 
     if ($("#marketingOverview").length) { 
@@ -360,25 +401,35 @@
       bar.animate(.34); // Number from 0.0 to 1.0
     }
 
-    if ($("#doughnutChart").length) { 
+    if ($("#doughnutChart").length) {
+      $.ajax({
+        url: "../admin/dash",
+        type: "POST",
+        data: {
+          action: "booking" // Replace 'actionName' with the desired action
+        },
+        success: function (data) {
+          // Dữ liệu từ Servlet đã được trả về ở định dạng JSON
+          // Bạn có thể sử dụng dữ liệu này để cấu hình biểu đồ
+          const acp =data.bookingAccepted;
+          const rej = data.bookingReject;
+
+
       const doughnutChartCanvas = document.getElementById('doughnutChart');
       new Chart(doughnutChartCanvas, {
         type: 'doughnut',
         data: {
-          labels: ['Total','Net','Gross','AVG'],
+          labels: ['Booking Accepted','Booking Reject'],
           datasets: [{
-            data: [40, 20, 30, 10],
+            data:[acp,rej],
             backgroundColor: [
-              "#1F3BB3",
-              "#FDD0C7",
-              "#52CDFF",
-              "#81DADA"
+              "#93DC5C",
+              '#52CDFF'
+
             ],
             borderColor: [
-              "#1F3BB3",
-              "#FDD0C7",
-              "#52CDFF",
-              "#81DADA"
+              "#93DC5C",
+              '#52CDFF',
             ],
           }]
         },
@@ -415,25 +466,111 @@
             }
         }]
       });
+        }
+      })
+    }
+    if ($("#doughnutChartPurple").length) {
+      $.ajax({
+        url: "../admin/dash",
+        type: "POST",
+        data: {
+          action: "account" // Replace 'actionName' with the desired action
+        },
+        success: function (data) {
+          // Dữ liệu từ Servlet đã được trả về ở định dạng JSON
+          // Bạn có thể sử dụng dữ liệu này để cấu hình biểu đồ
+          const mentee =data.mentee;
+          const mentor = data.mentor;
+          const manager = data.manager;
+
+          const doughnutChartCanvas = document.getElementById('doughnutChartPurple');
+          new Chart(doughnutChartCanvas, {
+            type: 'doughnut',
+            data: {
+              labels: ['Mentee : '+data.count_mentee,'Mentor : '+data.count_mentor,'Manager : '+data.count_manager],
+              datasets: [{
+                data:[mentee,mentor,manager],
+                backgroundColor: [
+                  "#01FFFF",
+                  "#0E4D92",
+                  "#FFC0CB",
+
+                ],
+                borderColor: [
+                  "#01FFFF",
+                  "#0E4D92",
+                  "#FFC0CB",
+                ],
+              }]
+            },
+            options: {
+              cutout: 90,
+              animationEasing: "easeOutBounce",
+              animateRotate: true,
+              animateScale: false,
+              responsive: true,
+              maintainAspectRatio: true,
+              showScale: true,
+              legend: false,
+              plugins: {
+                legend: {
+                  display: false,
+                }
+              }
+            },
+            plugins: [{
+              afterDatasetUpdate: function (chart, args, options) {
+                const chartId = chart.canvas.id;
+                var i;
+                const legendId = `${chartId}-legend`;
+                const ul = document.createElement('ul');
+                for(i=0;i<chart.data.datasets[0].data.length; i++) {
+                  ul.innerHTML += `
+                  <li>
+                    <span style="background-color: ${chart.data.datasets[0].backgroundColor[i]}"></span>
+                    ${chart.data.labels[i]}
+                  </li>
+                `;
+                }
+                return document.getElementById(legendId).appendChild(ul);
+              }
+            }]
+          });
+        }
+      })
     }
 
-    if ($("#leaveReport").length) { 
+    if ($("#leaveReport").length) {
+      $.ajax({
+        url: "../admin/dash",
+        type: "POST",
+        data: {
+          action: "skill" // Replace 'actionName' with the desired action
+        },
+        success: function (data) {
+          console.log(data);
+          var skillKey = Object.keys(data.skill);
+          var skillValue = Object.values(data.skill);
+          // Dữ liệu từ Servlet đã được trả về ở định dạng JSON
+          // Bạn có thể sử dụng dữ liệu này để cấu hình biểu đồ
+          var labels = skillKey;
+          var datasets = [{
+            label: 'Skill',
+            data: skillValue,
+            backgroundColor: "#52CDFF",
+            borderColor: [
+              '#52CDFF',
+            ],
+            borderWidth: 0,
+            fill: true, // 3: no fill
+            barPercentage: 0.5,
+          }];
       const leaveReportCanvas = document.getElementById('leaveReport');
       new Chart(leaveReportCanvas, {
         type: 'bar',
         data: {
-          labels: ["Jan","Feb", "Mar", "Apr", "May"],
-          datasets: [{
-              label: 'Last week',
-              data: [18, 25, 39, 11, 24],
-              backgroundColor: "#52CDFF",
-              borderColor: [
-                  '#52CDFF',
-              ],
-              borderWidth: 0,
-              fill: true, // 3: no fill
-              barPercentage: 0.5,
-          }]
+          labels:labels,
+          datasets: datasets,
         },
         options: {
           responsive: true,
@@ -493,6 +630,8 @@
           }
         }
       });
+        }
+      })
     }
 
 

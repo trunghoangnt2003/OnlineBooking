@@ -21,15 +21,13 @@ public class paymentSuccessful extends AuthenticationServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
-        Currency usd = Currency.getInstance("USD");
-        Locale loc = new Locale("hi", "IN");
-        NumberFormat usdFormatter
+        Currency vnd = Currency.getInstance("VND");
+        Locale localeVN = new Locale("vi", "VN");
+        NumberFormat vndFormatter = NumberFormat.getCurrencyInstance(localeVN);
 
-                = NumberFormat.getCurrencyInstance(Locale.US);
-
-        usdFormatter.setCurrency(usd);
+        vndFormatter.setCurrency(vnd);
         req.setAttribute("account",account);
-        req.setAttribute("balance",usdFormatter.format(account.getWallet().getBalance()));
+        req.setAttribute("balance",vndFormatter.format(account.getWallet().getBalance()));
         req.getRequestDispatcher("view/vnpay/paymentSuccessful.jsp").forward(req, resp);
     }
 }
