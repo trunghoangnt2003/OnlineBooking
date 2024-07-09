@@ -4,9 +4,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.frog.DAO.MenteeDAO;
 import org.frog.DAO.WishListDAO;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.Account;
+import org.frog.model.Mentee;
 import org.frog.model.WishList;
 
 import java.io.IOException;
@@ -26,11 +28,11 @@ public class ViewListFollowController extends AuthenticationServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
         String id = req.getParameter("id");
-        WishListDAO dao = new WishListDAO();
-        ArrayList<WishList> wishLists = dao.getWishListByMentorId(id);
+        MenteeDAO dao = new MenteeDAO();
+        ArrayList<Mentee> mentees = dao.getListMentorBookingMentor(id);
 
         req.setAttribute("id", id);
-        req.setAttribute("wishLists", wishLists);
+        req.setAttribute("mentees", mentees);
         req.getRequestDispatcher("../view/mentor/view_follower.jsp").forward(req, resp);
     }
 }

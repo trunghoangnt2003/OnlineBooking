@@ -20,6 +20,10 @@ public class HomeController extends HttpServlet {
         MentorDAO mentorDAO = new MentorDAO();
         ArrayList<Mentor> mentors = mentorDAO.getAllMentorFollowRate();
 
+        System.out.println("Total book: " + mentors.size());
+        for(Mentor mentor : mentors) {
+            System.out.println(mentor.getTotalBookings());
+        }
         req.setAttribute("mentor", mentors);
         req.getRequestDispatcher("view/common/home.jsp").forward(req, resp);
     }

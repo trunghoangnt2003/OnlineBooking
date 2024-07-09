@@ -30,23 +30,32 @@
             &nbsp;<span style="color: #07ad90; font-weight: 500; font-size: 20px; margin-top: 10px" >Back to profile</span>
         </a>
     </div>
-    <h1 class="mb-4">List of Following Requests</h1>
+    <h1 class="mb-4">List of students who have been training</h1>
     <table class="table table-striped">
         <thead class="table-dark">
         <tr>
             <th>Name</th>
-            <th>Time of Request</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Time of request</th>
+            <th>Time training end</th>
+            <th>Total slot booking</th>
+
             <td></td>
 <%--            <th>Status</th>--%>
 <%--            <th>Action</th>--%>
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${requestScope.wishLists}" var="w">
+        <c:forEach items="${requestScope.mentees}" var="m">
 
                 <tr>
-                    <td>${w.mentee.account.name}</td>
-                    <td>${w.timeRequest}</td>
+                    <td>${m.account.name}</td>
+                    <td>${m.account.email}</td>
+                    <td>${m.account.address}</td>
+                    <td>${m.booking.startDate}</td>
+                    <td>${m.booking.endDate}</td>
+                    <td>${m.booking.totalSlot}</td>
                     <td><button onclick="viewMenteeProfle('${w.mentee.account.id}')" type="button" class="btn btn-info" data-mdb-ripple-init>Info</button></td>
                 </tr>
 

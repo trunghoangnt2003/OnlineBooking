@@ -58,7 +58,7 @@ public class ViewProfileController extends AuthenticationServlet {
             req.setAttribute("account", account);
             req.setAttribute("list_follow", wish);
             req.setAttribute("isAuthor", isAuthor);
-            req.setAttribute("numberFollower", wishLists.size());
+            req.setAttribute("numberFollower", mentor.getTotalBookings());
             req.setAttribute("level_skills", level_skills);
             req.setAttribute("mentor", mentor);
             req.setAttribute("review", reviews);

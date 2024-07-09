@@ -167,6 +167,42 @@ public class MenteeDAO {
         }
     }
 
+    public ArrayList<Mentee> getListMentorBookingMentor(String id) {
+        ArrayList<Mentee> mentees = new ArrayList<>();
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "SELECT A.id, A.name, A.mail, A.address, MIN(B.create_date) as create_date, MIN(B.from_date) as from_date, MAX(B.to_date) as to_date, SUM(B.total_slot) as total_slot\n" +
+                    "FROM Account A\n" +
+                    "JOIN Mentee Me on A.id = Me.account_id\n" +
+                    "JOIN Booking B on Me.account_id = B.mentee_id\n" +
+                    "WHERE B.mentor_id = ?\n" +
+                    "GROUP BY A.id, A.name, A.mail, A.address";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Account account = new Account();
+                Mentee mentee = new Mentee();
+                Booking booking = new Booking();
+                booking.setTotalSlot(resultSet.getInt("total_slot"));
+                booking.setStartDate(resultSet.getDate("from_date"));
+                booking.setEndDate(resultSet.getDate("to_date"));
+                mentee.setBooking(booking);
+
+                account.setName(resultSet.getString("name"));
+                account.setEmail(resultSet.getString("mail"));
+                account.setAddress(resultSet.getString("address"));
+
+                mentee.setAccount(account);
+
+                mentees.add(mentee);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();  // Log the stack trace
+        }
+        return mentees;
+    }
+
 }
 
 
