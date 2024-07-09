@@ -40,7 +40,7 @@ public class RegisterController extends HttpServlet {
                 "<br>" +
                 "<b>Address : "+account.getAddress()+"</b>"+
                 "<br>" +
-                "<b>Gender : "+(account.getGender() == 1?"Male":"Female")+"</b>"+
+                "<b>Gender : "+(account.getGender() == 1?"Male":"Female")+"</b> <br>"+
                 "<b>Role : "+(account.getRole().getId()==1?"Mentee":"Mentor")+"</b>"+
                 "<br>" +
                 "Once you click on the link, you will be directed to the activation page where you can provide any necessary information and complete the activation process.<br>" +

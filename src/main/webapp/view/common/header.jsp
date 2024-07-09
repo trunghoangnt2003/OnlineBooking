@@ -106,7 +106,7 @@ position: sticky; top:0; z-index: 999">
                         </c:if>
                         <c:if test="${sessionScope.account.role.id == 3}">
                             <li class="nav-item">
-                                <a class="nav-link" href="<%=url%>/admin/home">Dash Board</a>
+                                <a class="nav-link" href="<%=url%>/admin/dash">Dash Board</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="<%=url%>/admin/mentor">Manage</a>
