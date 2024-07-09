@@ -26,7 +26,6 @@ public class LoginController extends HttpServlet {
         String url;
         AccountDAO accountDAO = new AccountDAO();
         Account account = accountDAO.getLogin(userName, sha1PassWord);
-        System.out.println(account.getId());
         if(account == null){
             url = "view/public/signin.jsp";
             warningLogin = "username or password incorrect";

@@ -431,5 +431,55 @@ public class AccountDAO {
         }
         return role;
     }
+    public int getTotalMentee(){
+        int role = 0;
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "SELECT count(*)\n" +
+                    "  FROM [Prog_DB].[dbo].[Mentee]";
+            PreparedStatement preparedStatement = connection.prepareCall(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                role = resultSet.getInt(1);
+            }
+            JDBC.closeConnection(connection);
+        } catch (SQLException ignored) {
+        }
+        return role;
+    }
+    public int getTotalMentor(){
+        int role = 0;
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "SELECT count(*)\n" +
+                    "  FROM [Prog_DB].[dbo].[Mentor]";
+            PreparedStatement preparedStatement = connection.prepareCall(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                role = resultSet.getInt(1);
+            }
+            JDBC.closeConnection(connection);
+        } catch (SQLException ignored) {
+        }
+        return role;
+    }
+    public int getTotalManager(){
+        int role = 0;
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "SELECT count(*)\n" +
+                    "  FROM [Prog_DB].[dbo].Account\n" +
+                    "  where role_id = 4";
+            PreparedStatement preparedStatement = connection.prepareCall(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                role = resultSet.getInt(1);
+            }
+            JDBC.closeConnection(connection);
+        } catch (SQLException ignored) {
+        }
+        return role;
+    }
+
 
 }

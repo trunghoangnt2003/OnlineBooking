@@ -22101,12 +22101,14 @@ code {
 }
 
 #doughnutChart-legend ul,
+#account-legend ul,
 #doughnutChartPurple-legend ul,
 #doughnutChartPurple-dark-legend ul {
   margin-bottom: 0;
   display: none;
 }
 #doughnutChart-legend ul li,
+#account-legend ul li,
 #doughnutChartPurple-legend ul li,
 #doughnutChartPurple-dark-legend ul li {
   list-style: none;
@@ -22116,6 +22118,7 @@ code {
   margin-left: 1rem;
 }
 #doughnutChart-legend ul li span,
+#account-legend ul li span,
 #doughnutChartPurple-legend ul li span,
 #doughnutChartPurple-dark-legend ul li span {
   width: 10px;
@@ -22125,6 +22128,7 @@ code {
   margin-right: 10px;
 }
 #doughnutChart-legend ul:first-child,
+#account-legend ul:first-child,
 #doughnutChartPurple-legend ul:first-child,
 #doughnutChartPurple-dark-legend ul:first-child {
   display: flex;

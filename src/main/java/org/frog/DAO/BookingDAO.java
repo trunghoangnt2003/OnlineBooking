@@ -11,6 +11,47 @@ import java.util.List;
 import java.util.Map;
 
 public class BookingDAO {
+    public ArrayList<Booking> estimatedIncome(String dateFrom,String dateTo){
+        ArrayList<Booking> bookings = new ArrayList<>();
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "SELECT CAST(create_date AS DATE) as date, SUM(amount) as total_amount\n" +
+                    "FROM [dbo].[Booking]\n" +
+                    "where Booking.status_id = 3 or Booking.status_id = 11\n" +
+                    "GROUP BY CAST(create_date AS DATE)\n" +
+                    "ORDER BY date ASC;";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Booking booking = new Booking();
+                booking.setDate(resultSet.getTimestamp(1));
+                booking.setAmount(resultSet.getInt(2));
+                bookings.add(booking);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookings;
+    }
+    public int countBookingByStatus(int status) {
+        try {
+
+            Connection connection = JDBC.getConnection();
+            String sql = "SELECT Count(*)\n" +
+                    "FROM [Prog_DB].[dbo].[Booking]\n" +
+                    "where status_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, status);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
     public int CalcBookByMentor(String mentorId) {
         try {
