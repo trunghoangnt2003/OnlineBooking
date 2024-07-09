@@ -207,8 +207,8 @@
             <h2>Hello, ${requestScope.account.name}</h2>
         </div>
         <div class="balance">
-            <h3>Total: ${requestScope.wallet.balance}000 VND</h3>
-            <p>Hold: ${requestScope.wallet.hold} VND</p>
+            <h3>Total: ${requestScope.balance}</h3>
+            <p>Hold: ${requestScope.hold}</p>
             <c:if test="${requestScope.role == 1}">
                 <button>Withdraw</button>
                 <button onclick="payment()" class="btn2">Deposit</button>

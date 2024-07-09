@@ -12,7 +12,10 @@ import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.*;
 
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Locale;
 
 @WebServlet("/mentor/profile")
 public class ViewProfileController extends AuthenticationServlet {
@@ -42,6 +45,14 @@ public class ViewProfileController extends AuthenticationServlet {
             if(mentorId.equals(account.getId())){
                 isAuthor = true;
             }
+
+            Currency vnd = Currency.getInstance("VND");
+            Locale localeVN = new Locale("vi", "VN");
+            NumberFormat vndFormatter = NumberFormat.getCurrencyInstance(localeVN);
+
+            vndFormatter.setCurrency(vnd);
+            req.setAttribute("price", vndFormatter.format(mentor.getPrice()));
+
 
             req.setAttribute("numberReview", allReviews.size());
             req.setAttribute("account", account);

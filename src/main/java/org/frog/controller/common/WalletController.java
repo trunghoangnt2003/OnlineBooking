@@ -13,7 +13,10 @@ import org.frog.model.Transaction;
 import org.frog.model.Wallet;
 
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Locale;
 
 @WebServlet("/wallet/view")
 public class WalletController extends AuthenticationServlet {
@@ -40,6 +43,14 @@ public class WalletController extends AuthenticationServlet {
             t.setSender(senderAccount);
             t.setReceiver(receiverAccount);
         }
+
+        Currency vnd = Currency.getInstance("VND");
+        Locale localeVN = new Locale("vi", "VN");
+        NumberFormat vndFormatter = NumberFormat.getCurrencyInstance(localeVN);
+
+        vndFormatter.setCurrency(vnd);
+        req.setAttribute("balance", vndFormatter.format(wallet.getBalance()));
+        req.setAttribute("hold", vndFormatter.format(wallet.getHold()));
 
         req.setAttribute("role", role);
         req.setAttribute("transactions", transactions);

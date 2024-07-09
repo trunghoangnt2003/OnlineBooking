@@ -376,7 +376,7 @@
                 <div class="card-body text-center">
                     <div>
                         <img src="${pageContext.request.contextPath}/${requestScope.mentor.account.avatar}" width="200px" height="200px" class="mb-3 img">
-                        <div class="price">${requestScope.mentor.price} $/hour</div>
+                        <div class="price">${requestScope.price} /hour</div>
                     </div>
                     <div class="d-flex align-items-center justify-content-center">
                         <h3>${requestScope.mentor.account.name}</h3>
