@@ -85,7 +85,7 @@ public class CreateProfileController extends AuthenticationServlet {
         mentor.setAccount(account);
         mentor.setPrice(price);
         mentor.setProfileDetail(detail);
-        mentorDAO.update(mentor);
+//        mentorDAO.update(mentor);
 
         Mentor_CV_Log mentorCVLog = new Mentor_CV_Log();
         mentorCVLog.setAccount(account);

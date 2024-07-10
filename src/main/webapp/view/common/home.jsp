@@ -43,23 +43,32 @@
         .footer {
             margin-top: 50px;
         }
+        .banner {
+            position: relative;
+            width: 100%;
+            height: 800px;
+            margin: 10px 30px 20px 0;
+            justify-content: center;
+            box-shadow: 4px 6px 8px rgba(0, 0, 0, 0.6);
+        }
+        .banner img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
     </style>
 </head>
 <body>
 <jsp:include page="../common/header.jsp"></jsp:include>
-<%--<nav>--%>
-<%--    <div class="nav-logo">FROG COMMUNITY</div>--%>
-<%--    <ul class="nav-links">--%>
-<%--        <li class="link"><a href="#">Home</a></li>--%>
-<%--        <li class="link"><a href="#">Book Mentor</a></li>--%>
-<%--        <li class="link"><a href="#">Contact Us</a></li>--%>
-<%--    </ul>--%>
-<%--</nav>--%>
 
 <section class="banner">
-    <a href="facebook.com"><img src="${pageContext.request.contextPath}/img/home/1.png" class="active"></a>
-    <a href="youtube.com"><img src="${pageContext.request.contextPath}/img/home/2.png"></a>
-    <img src="${pageContext.request.contextPath}/img/home/3.png">
+    <img src="${pageContext.request.contextPath}/img/home/i1.png" class="active">
+    <img src="${pageContext.request.contextPath}/img/home/i2.png">
+    <img src="${pageContext.request.contextPath}/img/home/i3.png">
+    <img src="${pageContext.request.contextPath}/img/home/i4.png">
 </section>
 
 <div class="show-top-mentor">
