@@ -7,6 +7,7 @@
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -326,7 +327,7 @@
                     <br/>
                     <span>Total mentor: ${requestScope.mentorList.size()}</span>
                     <br/>
-                    <span >Total spend money: ${requestScope.total_amount} $ </span>
+                    <span >Total spend money: <fmt:formatNumber value="${requestScope.total_amount}" type="number" maxFractionDigits="0" />₫</span>
                 </div>
                 <div id="myChart" style="width:70%; max-width:400px; height:300px;">
                 </div>
@@ -351,7 +352,7 @@
                         <td>${i.index+1}</td>
                         <td>${mentor.account.name}</td>
 <%--                        <td>${mentor.account.email}</td>--%>
-                        <td>${mentor.price} $</td>
+                        <td> <fmt:formatNumber value="${mentor.price}" type="number" maxFractionDigits="0" />₫</td>
 
                         <td>
                             <div style="cursor: pointer; text-align: center" onclick="ratingHandle('${mentor.account.id}','${mentor.account.name}')"  >
@@ -399,7 +400,9 @@
                         <br/>
                        <i>${booking.mentor.account.email}</i>
                 </td>
-                <td >${booking.amount} $</td>
+                <td>
+                    <fmt:formatNumber value="${booking.amount}" type="number" maxFractionDigits="0" />₫
+                </td>
                 <td > <img width="20px" src="${pageContext.request.contextPath}/${booking.level_skills.skill.src_icon}" alt=""/>
                        &nbsp ${booking.level_skills.skill.name} for ${booking.level_skills.level.name}</td>
                 <td >${booking.startDate}</td>

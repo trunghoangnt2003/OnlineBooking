@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -58,7 +59,7 @@
                 <c:forEach items="${requestScope.bookingList}" var="booking">
                     <tr>
                         <td>${booking.mentor.account.name}</td>
-                        <td>${booking.amount}$</td>
+                        <td><fmt:formatNumber value="${booking.amount}" type="number" maxFractionDigits="0" />₫</td>
                         <td>${booking.startDate}</td>
                         <td>${booking.endDate}</td>
                         <td>${booking.description}</td>
@@ -94,7 +95,7 @@
                 <c:forEach items="${requestScope.bookingListC}" var="booking">
                     <tr>
                         <td>${booking.mentor.account.name}</td>
-                        <td>${booking.amount}$</td>
+                        <td><fmt:formatNumber value="${booking.amount}" type="number" maxFractionDigits="0" />₫</td>
                         <td>${booking.startDate}</td>
                         <td>${booking.endDate}</td>
                         <td>${booking.description}</td>

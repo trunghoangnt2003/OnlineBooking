@@ -297,7 +297,9 @@
             </div>
             <div  class="d-flex justify-content-between mt-3">
                 <span class="fs-4"> Mentor: ${requestScope.mentor.account.name}</span>
-                <span class="fs-5">${requestScope.mentor.price}VND/per slot</span>
+                <span class="fs-5">
+                    <fmt:formatNumber value="${requestScope.mentor.price}" type="number" maxFractionDigits="0" />₫/per slot
+                </span>
 
             </div>
         </div>
@@ -306,8 +308,12 @@
                 <i class="fa-solid fa-wallet fa-2x"></i>
                 <h3>Wallet</h3>
             </div>
-            <h6>Total: ${requestScope.wallet.balance} VND</h6>
-            <h6>Available: ${requestScope.wallet.balance-requestScope.wallet.hold} VND</h6>
+            <h6>Total:
+                <fmt:formatNumber value="${requestScope.wallet.balance}" type="number" maxFractionDigits="0" />₫
+            </h6>
+            <h6>Available:
+                <fmt:formatNumber value="${requestScope.wallet.balance-requestScope.wallet.hold}" type="number" maxFractionDigits="0" />₫
+            </h6>
             <input id="available" type="text" hidden="hidden" name="available" value="${requestScope.wallet.balance-requestScope.wallet.hold}"/>
 
         </div>
@@ -653,12 +659,15 @@
 
 
         numbook.innerHTML = 'Number of booking: ' + number_booking;
-        amount.innerHTML = 'Total amount: ' + number_booking * price + " $";
+        var totalAmount = number_booking * price;
+        var formattedAmount = totalAmount.toLocaleString('en-US', { maximumFractionDigits: 0 });
+
+        amount.innerHTML =  'Total amount: ' + formattedAmount + '₫';
         const total_amount = document.createElement('input');
         total_amount.type = 'text';
         total_amount.name = 'total_amount';
         total_amount.id = 'total_amount';
-        total_amount.value = (number_booking * price);
+        total_amount.value =  (number_booking * price);
         total_amount.style.display = 'none';
         amount.appendChild(total_amount);
 
