@@ -1,6 +1,5 @@
 package org.frog.controller.admin;
 
-import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -16,9 +15,7 @@ import org.frog.model.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024, // 1 MB
@@ -29,7 +26,7 @@ import java.util.ArrayList;
 public class ManageSkill extends AuthenticationServlet {
     private static final String UPLOAD_DIR = "img\\image_skill";
 
-    private void updateStatusSkill(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void updateStatusSkill(HttpServletRequest req, HttpServletResponse resp)  {
         boolean isChecked = Boolean.parseBoolean(req.getParameter("isChecked"));
         String value = req.getParameter("value");
         int id = Integer.parseInt(value);

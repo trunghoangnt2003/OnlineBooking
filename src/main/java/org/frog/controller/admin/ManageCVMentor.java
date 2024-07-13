@@ -10,7 +10,6 @@ import org.frog.DAO.Mentor_CV_LogDAO;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.Account;
 import org.frog.model.Level_Skills;
-import org.frog.model.Mentor;
 import org.frog.model.Mentor_CV_Log;
 
 import java.io.IOException;

@@ -11,6 +11,7 @@ import org.frog.utility.Email;
 import org.frog.utility.SHA1;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -57,7 +58,7 @@ public class ResetPassWordController extends HttpServlet{
                 done = "Check your mail!";
                 req.setAttribute("done", done);
                 String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort()
-                        + req.getContextPath() + "/change-pass?token=" + SHA1.toSHA1(account.getEmail() + date);
+                        + req.getContextPath() + "/change-pass?token=" + URLEncoder.encode(SHA1.toSHA1(account.getEmail() + date));
                 sendEmail(url, email);
             }
         }else {

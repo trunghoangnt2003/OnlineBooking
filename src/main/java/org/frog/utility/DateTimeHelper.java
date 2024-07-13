@@ -1,7 +1,6 @@
 package org.frog.utility;
 
-import org.frog.model.Schedule;
-import org.frog.model.Week;
+import org.frog.model.*;
 
 import java.sql.Date;
 import java.sql.Timestamp;
