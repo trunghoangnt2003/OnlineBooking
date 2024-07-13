@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -35,7 +36,19 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-
+        .filter-box {
+            display: none;
+            position: absolute;
+            right: 220px;
+            margin-top: -40px;
+            width: 730px;
+            height: 50px;
+            border: 1px solid #000;
+            padding: 5px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
 
     </style>
 </head>
@@ -64,32 +77,19 @@
             </button>
             <div id="filterBox" class="filter-box">
                 <button id="closeButton" class="close-button">X</button>
-                <div class="content" style="    display: flex;
-                    margin: 5px 235px;
-                    margin-left: -10px;
-                    justify-content: space-around;">
+                <div class="content" >
                     <!-- Thêm nội dung tùy ý vào đây -->
-
-                    <p>
-                        <button style="background: transparent;border: none;outline: none; cursor: pointer;" value="1"
-                                onclick="filterByStatusReject()" id="filterByStatusReject"><i
-                                class="fa-solid fa-filter-circle-xmark"></i></button>
-                    </p>
-                    <p>
-                        <button style="background: transparent;border: none;outline: none; cursor: pointer;"
-                                id="fiterByStatusPaid" value="2" onclick="fiterByStatusPaid()">
-                            <i class="fa-solid fa-filter-circle-dollar "></i>
-                        </button>
-                    </p>
-                    <p>
-                    <div style="display: flex;justify-content: space-around;margin-bottom: 20px">
-                    <input type="checkbox" id="myCheckbox" <c:if test="${param.filter != null}">checked</c:if> >
-                        <button <c:if test="${param.filter == null}">disabled</c:if> class="btCheck"
-                                style="background: transparent;border: none;outline: none; cursor: pointer;" onclick="selectStartEndDate()
-                            " id="selectDate">
-                            <i class="fa-regular fa-calendar-days "></i></button>
-                    </div>
-                    </p>
+                        <form style="margin-top: 5px">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" name="name" style="border-radius: 5px">
+                        <select name="option">
+                            <option value="2">Reject</option>
+                            <option value="13">Paid</option>
+                        </select>
+                        From: <input type="date" name="StartDate">
+                        To: <input type="date" name="EndDate">
+                        <input type="submit" value="search">
+                         </form>
                 </div>
             </div>
 
@@ -158,7 +158,9 @@
             <tr>
                 <td>${count}</td>
                 <td>${book.date}</td>
-                <td>${book.amount}</td>
+                <td>
+                    <fmt:formatNumber value="${book.amount}" type="number" maxFractionDigits="0" />₫
+                </td>
                 <td>${book.description} </td>
                 <td><img width="20px"
                          src="${pageContext.request.contextPath}/${book.level_skills.skill.src_icon}">
@@ -197,7 +199,7 @@
                 </li>
             </c:forEach>
             <li><h6 style="right: 0;position: absolute;">
-                Total : ${bookingsHistory.size()}</h6></li>
+                Total : ${totalBookings}</h6></li>
         </ul>
 
     </c:if>

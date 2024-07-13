@@ -2,9 +2,11 @@ package org.frog.DAO;
 
 import com.sun.jdi.PathSearchingVirtualMachine;
 import org.frog.model.*;
+import org.frog.utility.DateTimeHelper;
 import org.frog.utility.StatusEnum;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -528,9 +530,11 @@ public class BookingDAO {
                     "\t\t\t\t\tINNER JOIN Mentee m ON b.mentee_id = m.account_id\n" +
                     "\t\t\t\t\tINNER JOIN Account acc ON acc.id = m.account_id\n" +
                     "\t\t\t\t\tINNER JOIN Status status ON status.id = b.status_id\n" +
-                    "WHERE b.mentor_id = ? AND b.status_id = 11 OR b.status_id = 3";
+                    "WHERE b.mentor_id = ? AND b.status_id = 11 OR b.status_id = 3 AND b.mentor_id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1,id);
+            preparedStatement.setString(2,id);
+
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
 
@@ -991,5 +995,32 @@ public class BookingDAO {
         }
         return false;
     }
+    public boolean isBookingExpired(int bookingId) {
+        Date date = null;
+        String time = null;
+        String sql = "SELECT MIN(from_date) AS Date, MIN(slot.time_start) AS Time FROM Booking b " +
+                "INNER JOIN Booking_Schedule bs ON b.id = bs.booking_id " +
+                "INNER JOIN Schedule s ON s.id = bs.schedule_id " +
+                "INNER JOIN Slot slot ON slot.id = s.slot_id " +
+                "WHERE b.id = ?";
+
+        try (PreparedStatement stm = JDBC.getConnection().prepareStatement(sql)) {
+            stm.setInt(1, bookingId);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                date = rs.getDate("Date");
+                time = rs.getString("Time");
+            }
+            if (date != null && time != null) {
+                Timestamp bookingTimestamp = DateTimeHelper.convertToTimestamp(date.toString(), time);
+                Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+                return bookingTimestamp.before(currentTimestamp);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }
 

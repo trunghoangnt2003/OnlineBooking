@@ -831,4 +831,23 @@ public class MentorDAO {
             throw new RuntimeException(e);
         }
     }
+    public boolean isCVexisted(String id){
+        String sql = "SELECT * FROM Mentor\n" +
+                "\tWHERE account_id = ? \n" +
+                "\tAND profile_detail IS NOT NULL AND price IS NOT NULL AND experience IS NOT NULL AND education IS NOT NULL";
+        try {
+            Connection connection = JDBC.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                return true;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+
+
 }
