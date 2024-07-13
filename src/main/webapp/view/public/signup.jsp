@@ -46,7 +46,7 @@
         <div class="form-group password col">
           <label for="repassword">Confirm Password</label>
           <input type="password" id="repassword" placeholder="Enter your re-password">
-          <i id="" class="fa-solid fa-eye pass-toggle-btn"></i>
+          <i id="repass-toggle" class="fa-solid fa-eye pass-toggle-btn"></i>
         </div>
       </div>
       <div class="row">

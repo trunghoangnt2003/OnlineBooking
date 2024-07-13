@@ -86,7 +86,6 @@ public class AccountDAO {
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                System.out.println(resultSet.getString("mail"));
                 String id = resultSet.getString("id");
                 String name = resultSet.getString("name");
                 String avatar = resultSet.getString("avatar");
@@ -103,6 +102,7 @@ public class AccountDAO {
                 user.setName(name);
                 user.setAvatar(avatar);
                 user.setRole(new Role(role,""));
+                user.setStatus(new Status(resultSet.getInt("status"),""));
                 WalletDAO walletDAO = new WalletDAO();
                 user.setWallet(walletDAO.getByAccountId(resultSet.getString("id")));
 

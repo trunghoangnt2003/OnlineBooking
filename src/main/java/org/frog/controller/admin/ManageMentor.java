@@ -21,22 +21,22 @@ public class ManageMentor extends AuthenticationServlet {
         String userId = request.getParameter("userId");
         String action = request.getParameter("action");
         // Xử lý request dựa trên action
-        if (action.equals("ban")) {
-            // Thực hiện ban user
-            banUser(userId,account.getId());
-            response.setStatus(HttpServletResponse.SC_OK);
-        } else if (action.equals("unban")) {
-            // Thực hiện reinstate user
-            reinstateUser(userId,account.getId());
-            response.setStatus(HttpServletResponse.SC_OK);
-        }else if (action.equals("active")) {
-            // Thực hiện reinstate user
-            reinstateUser(userId,account.getId());
-            response.setStatus(HttpServletResponse.SC_OK);
-        }
-        else {
-            // Xử lý lỗi nếu action không hợp lệ
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        switch (action) {
+            case "ban":
+                // Thực hiện ban user
+                banUser(userId, account.getId());
+                response.setStatus(HttpServletResponse.SC_OK);
+                break;
+            case "unban":
+            case "active":
+                // Thực hiện reinstate user
+                reinstateUser(userId, account.getId());
+                response.setStatus(HttpServletResponse.SC_OK);
+                break;
+            default:
+                // Xử lý lỗi nếu action không hợp lệ
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                break;
         }
     }
     private void banUser(String userId,String idAdmin) {
