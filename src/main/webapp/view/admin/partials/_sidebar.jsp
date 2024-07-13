@@ -2,7 +2,7 @@
   <ul class="nav">
     <c:if test="${sessionScope.account.role.id == 3}">
       <li class="nav-item">
-        <a class="nav-link" href="../dash.jsp">
+        <a class="nav-link" href="../admin/dash">
           <i class="mdi mdi-grid-large menu-icon"></i>
           <span class="menu-title">Dashboard</span>
         </a>
