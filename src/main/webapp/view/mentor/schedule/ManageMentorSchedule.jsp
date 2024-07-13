@@ -601,7 +601,7 @@
         if (isAbsentManage) {
             Toast.fire({
                 icon: "success",
-                title: numberFreeTime + "take absent successfully "
+                title:  "take absent successfully "
             });
             localStorage.removeItem('isAbsentManage');
         }
