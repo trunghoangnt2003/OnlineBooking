@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -53,7 +54,9 @@
             <tr>
                 <td>${requestScope.count}</td>
                 <td>${book.date}</td>
-                <td>${book.amount}</td>
+                <td>
+                    <fmt:formatNumber value="${book.amount}" type="number" maxFractionDigits="0" />₫
+                </td>
                 <td>${book.description} </td>
                 <td><img width="20px"
                          src="${pageContext.request.contextPath}/${book.level_skills.skill.src_icon}">

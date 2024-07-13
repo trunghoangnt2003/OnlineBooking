@@ -278,14 +278,16 @@
                                     </div>
                                 </c:when>
                                 <c:otherwise>
+                                    <c:if test="${!week.isSlotPassed(week.dayOfMonth,t.id)}">
+                                        <button id="button-schedule-td" style="background: white" class="button-schedule-td"
+                                                data-schedule-id="${week.dayOfMonth}_${t.id}"
+                                                data-today-id="${week.dayOfMonth}"
+                                                data-set-error="${sessionScope.AddSlotError}"
+                                                onclick="setFreeDay()">
+                                            <i class="fa-solid fa-plus fa-flip-vertical fa-lg" style="color: #b3dfd2;"></i>
+                                        </button>
+                                    </c:if>
 
-                                    <button id="button-schedule-td" style="background: white" class="button-schedule-td"
-                                            data-schedule-id="${week.dayOfMonth}_${t.id}"
-                                            data-today-id="${week.dayOfMonth}"
-                                            data-set-error="${sessionScope.AddSlotError}"
-                                            onclick="setFreeDay()">
-                                        <i class="fa-solid fa-plus fa-flip-vertical fa-lg" style="color: #b3dfd2;"></i>
-                                    </button>
                                 </c:otherwise>
 
                             </c:choose>
