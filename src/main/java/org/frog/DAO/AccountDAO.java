@@ -482,4 +482,22 @@ public class AccountDAO {
     }
 
 
+    public void ChangePassword(Account account) {
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "UPDATE [dbo].[Account]\n" +
+                    "   SET [password] = ?\n" +
+                    " WHERE Account.id = ?";
+            PreparedStatement preparedStatement = null;
+            if (connection != null) {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, account.getPassword());
+                preparedStatement.setString(2, account.getId());
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
