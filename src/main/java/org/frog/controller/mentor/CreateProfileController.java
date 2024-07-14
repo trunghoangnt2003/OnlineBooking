@@ -93,9 +93,15 @@ public class CreateProfileController extends AuthenticationServlet {
         mentorCVLog.setPrice(price);
         mentorCVLog.setExperience(exp);
         mentorCVLog.setEducation(edu);
-        mentorDAO.insertMentorCVLog(mentorCVLog, 1);
+        Mentor_CV_LogDAO mentorCVLogDAO = new Mentor_CV_LogDAO();
+        boolean isHaveAccount = mentorCVLogDAO.isHaveAccount(account.getId());
+        if (isHaveAccount) {
+            mentorDAO.updateMentorLog(mentorCVLog, 1);
+        } else {
+            mentorDAO.insertMentorLog(mentorCVLog, 1);
+        }
 
-        resp.sendRedirect("/Frog/mentor/profile?mentorid=" + account.getId());
+        resp.sendRedirect("/Frog/Home");
     }
 
     @Override

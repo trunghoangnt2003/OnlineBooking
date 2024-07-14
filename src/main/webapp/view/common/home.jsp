@@ -68,7 +68,7 @@
     <img src="${pageContext.request.contextPath}/img/home/i1.png" class="active">
     <img src="${pageContext.request.contextPath}/img/home/i2.png">
     <img src="${pageContext.request.contextPath}/img/home/i3.png">
-    <img src="${pageContext.request.contextPath}/img/home/i4.png">
+    <img src="${pageContext.request.contextPath}/img/home/img4.png">
 </section>
 
 <div class="show-top-mentor">

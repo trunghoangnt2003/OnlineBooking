@@ -88,7 +88,6 @@ public class Mentor_CV_LogDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 result = resultSet.getString("account_id");
-                System.out.println("result" + result);
                 return true;
             }
             JDBC.closeConnection(connection);

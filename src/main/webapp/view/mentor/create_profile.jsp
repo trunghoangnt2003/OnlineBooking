@@ -133,7 +133,6 @@
 </div>
 <script>
     function validateForm() {
-        let image = document.getElementById('file-input').value.trim();
         let edu = document.getElementById('edu').value.trim();
         let price = document.getElementById('price').value.trim();
         let exp = document.getElementById('exp').value.trim();
