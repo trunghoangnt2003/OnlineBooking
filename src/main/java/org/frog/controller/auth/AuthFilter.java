@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.frog.DAO.FeatureDAO;
 import org.frog.model.Account;
-import org.frog.model.Feature;
 
 import java.io.IOException;
 
@@ -50,13 +49,12 @@ public class AuthFilter implements Filter {
             boolean result = featureDAO.checkRole(path,account.getRole().getId());
             if(result){
                 chain.doFilter(request, response);
-                return;
             }else{
                 ((HttpServletResponse) response).sendRedirect(url+"/error401");
             }
         } else {
 
-            ((HttpServletResponse) response).sendRedirect(url+"/error401");
+            ((HttpServletResponse) response).sendRedirect(url+"/login");
 
         }
     }

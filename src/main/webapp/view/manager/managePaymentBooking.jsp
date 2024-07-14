@@ -1,4 +1,6 @@
-<%--
+<%@ page import="java.text.NumberFormat" %>
+<%@ page import="java.util.Currency" %>
+<%@ page import="java.util.Locale" %><%--
   Created by IntelliJ IDEA.
   User: ACER
   Date: 6/22/2024
@@ -7,6 +9,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -160,7 +163,9 @@
                             <td>${count}</td>
                             <td>${book.id}</td>
                             <td>${book.date}</td>
-                            <td>${book.amount}</td>
+                            <td>
+                                <fmt:formatNumber value="${book.amount}" type="number" maxFractionDigits="0" />₫
+                            </td>
                             <td><img width="20px"
                                      src="${pageContext.request.contextPath}/${book.level_skills.skill.src_icon}">
                                     ${book.level_skills.skill.name} ${book.level_skills.level.name} </td>

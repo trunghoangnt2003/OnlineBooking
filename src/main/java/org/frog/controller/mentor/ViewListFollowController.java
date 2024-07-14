@@ -29,7 +29,9 @@ public class ViewListFollowController extends AuthenticationServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
         String id = req.getParameter("id");
         MenteeDAO dao = new MenteeDAO();
-        ArrayList<Mentee> mentees = dao.getListMentorBookingMentor(id);
+        ArrayList<Mentee> mentees = dao.getListMenteeBookingMentor(id);
+
+
 
         req.setAttribute("id", id);
         req.setAttribute("mentees", mentees);

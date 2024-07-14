@@ -40,7 +40,7 @@ public abstract class AuthenticationServlet extends HttpServlet {
                 if (userName == null || passWord == null) {
                     return null;
                 } else {
-                    Account test = null;
+                    Account test;
                     AccountDAO accountDAO = new AccountDAO();
                     test = accountDAO.getLogin(userName,passWord);
                     if (test != null) {
@@ -63,7 +63,7 @@ public abstract class AuthenticationServlet extends HttpServlet {
             String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort()
                     + req.getContextPath();
 
-            resp.sendRedirect(url + "/error401");
+            resp.sendRedirect(url + "/login");
         }
     }
 
@@ -79,7 +79,7 @@ public abstract class AuthenticationServlet extends HttpServlet {
             String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort()
                     + req.getContextPath();
 
-            resp.sendRedirect(url + "/error401");
+            resp.sendRedirect(url + "/login");
         }
 
     }

@@ -35,9 +35,11 @@ public class CreateProfileController extends AuthenticationServlet {
         int price = 0;
 
         String[] levelSkills = req.getParameterValues("level_skill");
-        for(String s: levelSkills) {
-            Level_SkillDAO level_skillDAO = new Level_SkillDAO();
-            level_skillDAO.insertLevelSkill(account.getId(), Integer.parseInt(s));
+        if(levelSkills != null) {
+            for(String s: levelSkills) {
+                Level_SkillDAO level_skillDAO = new Level_SkillDAO();
+                level_skillDAO.insertLevelSkill(account.getId(), Integer.parseInt(s));
+            }
         }
 
         MentorDAO mentorDAO = new MentorDAO();
@@ -114,7 +116,10 @@ public class CreateProfileController extends AuthenticationServlet {
             req.setAttribute("levels", levels);
             Level_SkillDAO level_skillDAO = new Level_SkillDAO();
             ArrayList<Level_Skills> level_skills = level_skillDAO.getAllLevel_SkillList();
+            Mentor_CV_LogDAO mentor_cv_logDAO = new Mentor_CV_LogDAO();
+            Mentor_CV_Log mentorLog = mentor_cv_logDAO.getCVLog(account.getId());
 
+            req.setAttribute("mentorLog", mentorLog);
             req.setAttribute("levels", levels);
             req.setAttribute("level_skills", level_skills);
             req.setAttribute("account", account);

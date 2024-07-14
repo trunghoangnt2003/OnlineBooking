@@ -37,6 +37,11 @@
 </head>
 <body>
 <jsp:include page="../common/header.jsp"></jsp:include>
+<c:if test="${requestScope.mentorLog.status.id == 1}">
+    <div class="alert alert-danger text-center" role="alert">
+        <b>Please waiting Manager approve your CV. CV will show more detail after approve</b>
+    </div>
+</c:if>
 <div class="container mt-4">
     <div class="box frame row">
         <div class="form col-md-9">

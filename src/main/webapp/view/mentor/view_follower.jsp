@@ -56,7 +56,7 @@
                     <td>${m.booking.startDate}</td>
                     <td>${m.booking.endDate}</td>
                     <td>${m.booking.totalSlot}</td>
-                    <td><button onclick="viewMenteeProfle('${w.mentee.account.id}')" type="button" class="btn btn-info" data-mdb-ripple-init>Info</button></td>
+                    <td><button onclick="viewMenteeProfle('${m.account.id}')" type="button" class="btn btn-info" data-mdb-ripple-init>Info</button></td>
                 </tr>
 
         </c:forEach>

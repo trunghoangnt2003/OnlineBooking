@@ -97,4 +97,34 @@ public class Mentor_CV_LogDAO {
 
         return false;
     }
+
+    public Mentor_CV_Log getCVLog(String id) {
+        Mentor_CV_Log mentorCvLog = new Mentor_CV_Log();
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "SELECT * FROM [dbo].[Mentor_CV_Logs]\n" +
+                    " WHERE Mentor_CV_Logs.account_id = ?";
+            assert connection != null;
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Account account = new Account();
+                Status status = new Status();
+                account.setId(id);
+                mentorCvLog.setAccount(account);
+                mentorCvLog.setProfileDetail(resultSet.getString("profile_detail"));
+                mentorCvLog.setExperience(resultSet.getString("experience"));
+                mentorCvLog.setEducation(resultSet.getString("education"));
+                mentorCvLog.setPrice(resultSet.getInt("price"));
+                status.setId(resultSet.getInt("status_id"));
+                mentorCvLog.setStatus(status);
+                return mentorCvLog;
+            }
+            JDBC.closeConnection(connection);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
 }

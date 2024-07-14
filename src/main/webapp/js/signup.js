@@ -3,7 +3,7 @@ const form = document.querySelector("form");
 const passwordInput = document.getElementById("password");
 const repasswordInput = document.getElementById("repassword");
 const passToggleBtn = document.getElementById("pass-toggle-btn");
-
+const rePassToggleBtn = document.getElementById("repass-toggle");
 // Function to display error messages
 const showError = (field, errorText) => {
     field.classList.add("error");
@@ -95,7 +95,10 @@ const handleFormData = (e) => {
     // Submitting the form
     form.submit();
 }
-
+rePassToggleBtn.addEventListener('click', () => {
+    rePassToggleBtn.className = repasswordInput.type === "password" ? "fa-solid fa-eye-slash" : "fa-solid fa-eye";
+    repasswordInput.type = repasswordInput.type === "password" ? "text" : "password";
+});
 // Toggling password visibility
 passToggleBtn.addEventListener('click', () => {
     passToggleBtn.className = passwordInput.type === "password" ? "fa-solid fa-eye-slash" : "fa-solid fa-eye";

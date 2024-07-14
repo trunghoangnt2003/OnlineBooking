@@ -204,7 +204,7 @@
     <div class="sidebar">
         <div class="profile">
             <img src="${pageContext.request.contextPath}/${requestScope.account.avatar}" alt="Profile Picture">
-            <h2>Hello, ${requestScope.account.name}</h2>
+            <h2>${requestScope.account.name}</h2>
         </div>
         <div class="balance">
             <h3>Total: ${requestScope.balance}</h3>

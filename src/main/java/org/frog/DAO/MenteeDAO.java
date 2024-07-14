@@ -167,7 +167,7 @@ public class MenteeDAO {
         }
     }
 
-    public ArrayList<Mentee> getListMentorBookingMentor(String id) {
+    public ArrayList<Mentee> getListMenteeBookingMentor(String id) {
         ArrayList<Mentee> mentees = new ArrayList<>();
         try {
             Connection connection = JDBC.getConnection();
@@ -189,6 +189,7 @@ public class MenteeDAO {
                 booking.setEndDate(resultSet.getDate("to_date"));
                 mentee.setBooking(booking);
 
+                account.setId(resultSet.getString("id"));
                 account.setName(resultSet.getString("name"));
                 account.setEmail(resultSet.getString("mail"));
                 account.setAddress(resultSet.getString("address"));

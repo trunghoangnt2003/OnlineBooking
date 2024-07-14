@@ -114,6 +114,10 @@ public class UpdateProfileController extends AuthenticationServlet {
         ArrayList<Level_Skills> level_skills = level_skillDAO.getAllLevel_SkillList();
         ArrayList<Level_Skills> mentorSkill = mentorDAO.getSkillMentor(account.getId());
 
+        Mentor_CV_LogDAO mentor_cv_logDAO = new Mentor_CV_LogDAO();
+        Mentor_CV_Log mentorLog = mentor_cv_logDAO.getCVLog(account.getId());
+
+        req.setAttribute("mentorLog", mentorLog);
         req.setAttribute("mentorSkill", mentorSkill);
         req.setAttribute("levels", levels);
         req.setAttribute("level_skills", level_skills);
