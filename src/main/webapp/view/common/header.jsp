@@ -111,6 +111,17 @@ position: sticky; top:0; z-index: 999">
                             <li class="nav-item">
                                 <a class="nav-link" href="<%=url%>/admin/mentor">Manage</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<%=url%>/Search_Skills">Search Skills</a>
+                            </li>
+                        </c:if>
+                        <c:if test="${sessionScope.account.role.id == 4}">
+                            <li class="nav-item">
+                                <a class="nav-link" href="<%=url%>/admin/mentor">Manage</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<%=url%>/Search_Skills">Search Skills</a>
+                            </li>
                         </c:if>
                     </ul>
                     <!-- Left links -->
