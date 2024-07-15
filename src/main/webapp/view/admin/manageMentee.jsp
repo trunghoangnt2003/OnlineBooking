@@ -55,9 +55,17 @@
         <div class="main-panel">
             <div class="content-wrapper">
                 <form action="mentee" method="get">
-                    <input placeholder="Search by name" style="width: 300px" type="text" name="searchname" />
-                    <button type="submit" style="width: 100px ;background-color: #2985e1; color: white; border-radius: 5px">Search</button>
+                    <div class="input-group rounded">
+                        <input id="search" type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" name="searchname"/>
+                        <span class="input-group-text border-0" id="search-addon" >
+                     <button id="search-link" style="border: none; outline: none" class="search-btn" href="#">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    </span>
+                        <a href="?name=" class="close" style="display: flex;justify-content: center;font-size: 30px; width: 20px; text-decoration: none">&times;</a>
+                    </div>
                 </form>
+
 
                 <div class="table-responsive" style="border: 1px solid black;border-radius: 10px; margin-top: 15px">
                     <table class=" table table-hover"  id="user-table" style="width: 100%; border-radius: 5px">

@@ -111,7 +111,7 @@
                         <div class="row gutters">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="text-right d-flex justify-content-center">
-                                    <button type="button" name="cancel" class="btn btn-secondary button-r" ><a href="profile" style="color: inherit; text-decoration: none;">Cancel</a></button>
+                                    <button type="button" name="cancel" class="btn btn-secondary button-r" ><a href="profile?menteeid=${requestScope.mentee.account.id}" style="color: inherit; text-decoration: none;">Cancel</a></button>
                                     <button type="submit" name="submit" class="btn btn-primary button-l" >Update</button>
                                 </div>
                             </div>

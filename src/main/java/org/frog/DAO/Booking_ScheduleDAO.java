@@ -94,6 +94,14 @@ public class Booking_ScheduleDAO {
         return list;
     }
 
+    public static void main(String[] args) {
+        Booking_ScheduleDAO booking_scheduleDAO = new Booking_ScheduleDAO();
+        ArrayList<BookingSchedule> bookingSchedules = booking_scheduleDAO.getBookingScheduleByMentor("2MO448354");
+        for (BookingSchedule bookingSchedule : bookingSchedules) {
+            System.out.println(bookingSchedule.getBooking().getLevel_skills().getSkill().getSrc_icon());
+        }
+    }
+
     public void makeBooking_Schedule(Booking booking, ArrayList<Integer> scheduleList) {
         try {
             Connection connection = JDBC.getConnection();

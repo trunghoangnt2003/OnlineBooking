@@ -87,11 +87,13 @@ public class UpdateMenteeController extends AuthenticationServlet {
         if (avatar != null) {
             a.setAvatar(avatar);
         }
+
         Mentee mentee = new Mentee(a);
         menteeDAO.updateMentee(mentee);
         account.setAvatar(avatar);
         HttpSession session = req.getSession();
         session.setAttribute("account", account);
-        resp.sendRedirect("profile");
+        resp.sendRedirect("profile?menteeid=" + id);
+
     }
 }
