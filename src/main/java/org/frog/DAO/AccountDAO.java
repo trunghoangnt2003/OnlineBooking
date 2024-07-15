@@ -42,6 +42,36 @@ public class AccountDAO {
         }
         return list;
     }
+    public ArrayList<Account> selectAllManager(int page) {
+        ArrayList<Account> list = new ArrayList<>();
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "select * from Account\n" +
+                    "where role_id = 4\n" +
+                    "order by Account.id\n" +
+                    "OFFSET ? ROWS FETCH NEXT 4 ROWS ONLY";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, (page - 1) * 4);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int role = resultSet.getInt("role_id");
+                Account account = new Account();
+                String name = resultSet.getString("name");
+                account.setId(resultSet.getString("id"));
+                account.setUserName(resultSet.getString("username"));
+                account.setPassword(resultSet.getString("password"));
+                account.setStatus(new Status(resultSet.getInt("status"),""));
+                account.setRole(new Role(role,""));
+                account.setName(name);
+                list.add(account);
+
+            }
+            JDBC.closeConnection(connection);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
 
     public Account getLogin(String userName, String passWord) {
         Account account = null;
@@ -304,6 +334,43 @@ public class AccountDAO {
         }
         return kq;
     }
+    public int insertManager(Account account) {
+        int kq = 0;
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "INSERT INTO [dbo].[Account]\n" +
+                    "           ([id]\n" +
+                    "           ,[name]\n" +
+                    "           ,[username]\n" +
+                    "           ,[password]\n" +
+                    "           ,[status]\n" +
+                    "           ,[role_id]\n" +
+                    "           ,[mail])\n" +
+                    "     VALUES\n" +
+                    "           (?\n" +
+                    "           ,?\n" +
+                    "           ,?\n" +
+                    "           ,?\n" +
+                    "           ,?\n" +
+                    "           ,?\n" +
+                    "           ,?)";
+
+            PreparedStatement preparedStatement = connection.prepareCall(sql);
+            preparedStatement.setString(1,account.getId());
+            preparedStatement.setString(2,account.getName());
+            preparedStatement.setString(3,account.getUserName());
+            preparedStatement.setString(4,account.getPassword());
+            preparedStatement.setInt(5,account.getStatus().getId());
+            preparedStatement.setInt(6,account.getRole().getId());
+            preparedStatement.setString(7,account.getEmail());
+            kq = preparedStatement.executeUpdate();
+
+            JDBC.closeConnection(connection);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return kq;
+    }
 
     public int deleteUser(String id) {
         int result = 0;
@@ -314,6 +381,23 @@ public class AccountDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, id);
             result = preparedStatement.executeUpdate();
+            JDBC.closeConnection(connection);
+        } catch (SQLException ignored) {
+        }
+        return result;
+    }
+    public int totalManager() {
+        int result = 0;
+        try {
+            Connection connection = JDBC.getConnection();
+            String sql = "select count(*) from Account\n" +
+                    "where role_id = 4";
+            assert connection != null;
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                result = resultSet.getInt(1);
+            }
             JDBC.closeConnection(connection);
         } catch (SQLException ignored) {
         }

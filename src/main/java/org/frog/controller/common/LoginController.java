@@ -53,7 +53,6 @@ public class LoginController extends HttpServlet {
             Cookie c_password = new Cookie("passWord", sha1PassWord);
             c_password.setMaxAge(3600 * 24 * 7);
             String remember = req.getParameter("remember");
-            System.out.println(remember);
             if (remember != null) {
                 Cookie c_username_rm = new Cookie("usernameRM", userName);
                 c_username_rm.setMaxAge(3600 * 24 * 7);
@@ -63,7 +62,6 @@ public class LoginController extends HttpServlet {
                 res.addCookie(c_username_rm);
                 res.addCookie(c_password_rm);
             }else {
-                System.out.println("here");
                 Cookie c_username_rm = new Cookie("usernameRM", "");
                 c_username_rm.setMaxAge(-1);
 

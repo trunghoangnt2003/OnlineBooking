@@ -1,4 +1,4 @@
-package org.frog.controller.auth;
+package org.frog.fillter;
 
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
