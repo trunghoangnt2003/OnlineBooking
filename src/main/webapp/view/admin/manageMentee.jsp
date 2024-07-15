@@ -70,6 +70,7 @@
                         <td>Username</td>
                         <td>Total Skills</td>
                         <td>Total Slots</td>
+                        <td>Status</td>
                         </thead>
                         <tbody >
                         <c:set var="count" value="1"/>
@@ -84,6 +85,20 @@
                                 <td>${mentee.account.userName}</td>
                                 <td>${stats.get("TotalSkill")}</td>
                                 <td>${stats.get("TotalSlots")}</td>
+                                <td>
+                                    <div style="display: flex">
+                                        <c:if test="${mentee.account.status.id == 7}">
+                                            <button type="button" class="btn btn-success" style="padding: 5px; margin: 5px" value="${mentee.account.id}">ACTIVE</button>
+                                        </c:if>
+                                        <c:if test="${mentee.account.status.id == 8}">
+                                            <button type="button" class="btn btn-warning" style="padding: 5px;margin: 5px" value="${mentee.account.id}">INACTIVE</button>
+                                        </c:if>
+                                        <c:if test="${mentee.account.status.id == 6}">
+                                            <button type="button" class="btn btn-danger" style="padding: 5px;margin: 5px" value="${mentee.account.id} ">BAN</button>
+                                        </c:if>
+
+                                    </div>
+                                </td>
                             </tr>
                         </c:forEach>
 
@@ -108,6 +123,156 @@
 <script src="${pageContext.request.contextPath}/view/admin/assets/js/settings.js"></script>
 <script src="${pageContext.request.contextPath}/view/admin/assets/js/hoverable-collapse.js"></script>
 <script src="${pageContext.request.contextPath}/view/admin/assets/js/todolist.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    <!-- Custom js for this page-->
+    // Lấy tất cả các nút có class "ban-btn"
+    var banButtons = document.querySelectorAll('.btn-success');
+    var inactiveButtons = document.querySelectorAll('.btn-warning');
+    var unBanButtons = document.querySelectorAll('.btn-danger');
+    // Lặp qua từng nút và thêm sự kiện click
+    banButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            // Lấy giá trị value của nút
+            var userId = this.getAttribute('value');
+
+            swal({
+                title: "Are you sure for BAN?",
+                text: "This will ban the user with ID: " + userId + "!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willBan) => {
+                    if (willBan) {
+                        // Gửi request POST tới Servlet để ban tài khoản
+                        banUser(userId);
+                    } else {
+                        swal("The user is safe for now.");
+                    }
+                });
+        });
+    });
+    unBanButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            // Lấy giá trị value của nút
+            var userId = this.getAttribute('value');
+
+            swal({
+                title: "Are you sure for UNBAN?",
+                text: "This will unban the user with ID: " + userId + "!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willBan) => {
+                    if (willBan) {
+                        // Gửi request POST tới Servlet để ban tài khoản
+                        unbanUser(userId);
+                    } else {
+                        swal("Don't unban account");
+                    }
+                });
+        });
+    });
+    inactiveButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            // Lấy giá trị value của nút
+            var userId = this.getAttribute('value');
+
+            swal({
+                title: "Are you sure for ACTIVE?",
+                text: "This will active the user with ID: " + userId + "!",
+                icon: "success",
+                buttons: true,
+                dangerMode: false,
+            })
+                .then((willBan) => {
+                    if (willBan) {
+                        // Gửi request POST tới Servlet để ban tài khoản
+                        active(userId);
+                    } else {
+                        swal("Don't active account");
+                    }
+                });
+
+        });
+    });
+
+    function banUser(userId) {
+        fetch('../admin/mentor', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'userId=' + encodeURIComponent(userId) + "&action=ban"
+        })
+            .then(response => {
+                if (response.ok) {
+                    swal("User banned successfully!").then(() => {
+                        // Reload the page
+                        location.reload();
+                    });
+                } else {
+                    swal("Failed to ban user. Please try again later.");
+                }
+            })
+            .catch(error => {
+                console.error('Error banning user:', error);
+                swal("An error occurred while banning the user. Please try again later.");
+            });
+    }
+
+    function unbanUser(userId) {
+        // Send POST request to Servlet
+        fetch('../admin/mentor', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'userId=' + encodeURIComponent(userId) + '&action=unban'
+        })
+            .then(response => {
+                if (response.ok) {
+                    swal("User unbanned successfully!").then(() => {
+                        // Reload the page
+                        location.reload();
+                    });
+                } else {
+                    swal("Failed to unban user. Please try again later.");
+                }
+            })
+            .catch(error => {
+                console.error('Error unbanning user:', error);
+                swal("An error occurred while unbanning the user. Please try again later.");
+            });
+    }
+    function active(userId) {
+        // Send POST request to Servlet
+        fetch('../admin/mentor', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'userId=' + encodeURIComponent(userId) + '&action=active'
+        })
+            .then(response => {
+                if (response.ok) {
+                    swal("User active successfully!").then(() => {
+                        // Reload the page
+                        location.reload();
+                    });
+                } else {
+                    swal("Failed to active user. Please try again later.");
+                }
+            })
+            .catch(error => {
+                console.error('Error unbanning user:', error);
+                swal("Failed to active user. Please try again later.");
+            });
+    }
+</script>
 <!-- endinject -->
 <!-- Custom js for this page-->
 <!-- End custom js for this page-->

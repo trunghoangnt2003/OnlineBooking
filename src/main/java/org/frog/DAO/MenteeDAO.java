@@ -3,19 +3,17 @@ package org.frog.DAO;
 import org.frog.model.*;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MenteeDAO {
     public Map<Mentee, Map<String, Integer>> getStaticAllMentee(String nameSearch) {
-        Map<Mentee, Map<String, Integer>> menteeMap = new HashMap<>();
+        Map<Mentee, Map<String, Integer>> menteeMap = new LinkedHashMap<>();
 
         String sql = "SELECT \n" +
                 "    a.id, \n" +
                 "    a.name, \n" +
                 "    a.username, \n" +
+                "    a.status, \n" +
                 "    COUNT(DISTINCT b.level_skill_id) AS TotalSkill, \n" +
                 "    COUNT(DISTINCT Schedule.slot_id) AS TotalSlots\n" +
                 "FROM \n" +
@@ -33,7 +31,7 @@ public class MenteeDAO {
                 "WHERE \n" +
                 "    a.name LIKE ?\n" +
                 "GROUP BY \n" +
-                "    a.id, a.name, a.username\n" +
+                "    a.id, a.name, a.username,a.status\n" +
                 "ORDER BY \n" +
                 "    a.name;";
 
@@ -53,7 +51,7 @@ public class MenteeDAO {
                     account.setId(resultSet.getString("id"));
                     account.setName(resultSet.getString("name"));
                     account.setUserName(resultSet.getString("username"));
-
+                    account.setStatus(new Status(resultSet.getInt("status"),""));
                     Mentee mentee = new Mentee();
                     mentee.setAccount(account);
 
