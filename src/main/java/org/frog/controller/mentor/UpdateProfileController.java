@@ -101,7 +101,7 @@ public class UpdateProfileController extends AuthenticationServlet {
             mentorDAO.updateImage(account);
         }
 
-        resp.sendRedirect("profile?mentorid=" + account.getId());
+        resp.sendRedirect("/Frog/Home");
     }
 
     @Override
