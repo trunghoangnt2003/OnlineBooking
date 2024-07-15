@@ -84,7 +84,7 @@ public class ManageManager extends AuthenticationServlet {
             AccountDAO accountDAO = new AccountDAO();
             if(accountDAO.getAccountByUserName(userName) == null) {
                 System.out.println("OK\n");
-                String password = req.getParameter("123456789");
+                String password = "123456789";
                 String id = createManagerID();
                 Account account1 = new Account();
                 account1.setUserName(userName);
