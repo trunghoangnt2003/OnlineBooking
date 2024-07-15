@@ -11,7 +11,7 @@ public class ScheduleDAO {
         ArrayList<BookingSchedule> list = new ArrayList<>();
         try {
             Connection connection = JDBC.getConnection();
-            String sql = "select Account.name as mentor_name ,Schedule.date, Skill.name, Level.type,Slot.id,Slot.time_start,Slot.time_end,Skill.src_icon,Booking_Schedule.isAtend , Booking_Schedule.status_id from Booking\n" +
+            String sql = "select Account.name as mentor_name ,Schedule.date, Skill.name, Level.type,Slot.id,Slot.time_start,Slot.time_end,Skill.id as skill_id,Skill.src_icon,Booking_Schedule.isAtend , Booking_Schedule.status_id from Booking\n" +
                     "\n" +
                     "                    join Booking_Schedule\n" +
                     "                    on Booking.id = Booking_Schedule.booking_id\n" +
@@ -45,6 +45,7 @@ public class ScheduleDAO {
 
 
                 Skill skill = new Skill();
+                skill.setId(resultSet.getInt("skill_id"));
                 skill.setName(resultSet.getString("name"));
                 skill.setSrc_icon(resultSet.getString("src_icon"));
 
@@ -85,6 +86,14 @@ public class ScheduleDAO {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public static void main(String[] args) {
+        ScheduleDAO scheduleDAO = new ScheduleDAO();
+        ArrayList<BookingSchedule> schedules = scheduleDAO.getAllBookSchedule("ME699388");
+        for (BookingSchedule bookingSchedule : schedules) {
+            System.out.println(bookingSchedule.getBooking().getLevel_skills().getSkill().getSrc_icon());
+        }
     }
 
     public ArrayList<Slot> getSlots(){

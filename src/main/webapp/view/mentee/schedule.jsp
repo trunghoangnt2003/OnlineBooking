@@ -215,33 +215,29 @@
                         <div class="notes-container text-center ">
                             <c:forEach items="${requestScope.bookingSchedules}" var="bs">
                             <c:if test="${ (bs.schedule.slot.id == slot.id) && (bs.schedule.date == date) }">
-                            <c:if test="${bs.status.id == 3}">
-                                <i class="pin"></i>
-                                <blockquote class="notes color-note font-monospace"
-                                            style="background-color: #FAAD12FF ; text-align: start">
-                                    <span style="font-size: 14px">${bs.booking.mentor.account.name}</span>
-                                    <img width="30px" class="mt-2"
-                                         src="${pageContext.request.contextPath}${bs.booking.level_skills.skill.src_icon}">
-                                    <div style="font-size: 16px">
-                                        <span>${bs.booking.level_skills.level.name}</span>
-                                    </div>
-                                    <span style="font-size: 16px"> ${bs.attend ? "Attend" : "Not attend"}</span>
-                                </blockquote>
-                            </c:if>
+                                <c:if test="${bs.status.id == 3}">
+                                    <i class="pin"></i>
+                                    <blockquote class="notes color-note font-monospace" style="background-color: #FAAD12FF; text-align: start">
+                                        <span style="font-size: 14px">${bs.booking.mentor.account.name}</span>
+                                        <img width="30px" class="mt-2" src="${pageContext.request.contextPath}/${bs.booking.level_skills.skill.src_icon}">
+                                        <div style="font-size: 16px">
+                                            <span>${bs.booking.level_skills.level.name}</span>
+                                        </div>
+                                        <span style="font-size: 16px">${bs.attend ? "Attend" : "Not attend"}</span>
+                                    </blockquote>
+                                </c:if>
 
-                            <c:if test="${bs.status.id == 11}">
-                                <i class="pin"></i>
-                                <blockquote class="notes color-note font-monospace"
-                                            style="background-color: #FFF142FF ; text-align: start">
-                                    <span style="font-size: 14px">${bs.booking.mentor.account.name}</span>
-                                    <img width="30px" class="mt-2"
-                                         src="${pageContext.request.contextPath}${bs.booking.level_skills.skill.src_icon}">
-                                    <div style="font-size: 16px">
-                                        <span>${bs.booking.level_skills.level.name}</span>
-                                    </div>
-                                    <span style="font-size: 16px"> ${bs.attend ? "Attend" : "Not attend"}</span>
-                                </blockquote>
-                            </c:if>
+                                <c:if test="${bs.status.id == 11}">
+                                    <i class="pin"></i>
+                                    <blockquote class="notes color-note font-monospace" style="background-color: #FFF142FF; text-align: start">
+                                        <span style="font-size: 14px">${bs.booking.mentor.account.name}</span>
+                                        <img width="30px" class="mt-2" src="${pageContext.request.contextPath}/${bs.booking.level_skills.skill.src_icon}">
+                                        <div style="font-size: 16px">
+                                            <span>${bs.booking.level_skills.level.name}</span>
+                                        </div>
+                                        <span style="font-size: 16px">${bs.attend ? "Attend" : "Not attend"}</span>
+                                    </blockquote>
+                                </c:if>
                         </div>
                         </c:if>
                         </c:forEach>
