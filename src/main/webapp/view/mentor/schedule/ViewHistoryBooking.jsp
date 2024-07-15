@@ -232,12 +232,12 @@
             modal.style.display = "none";
         }
     }
-    const checkbox = document.getElementById('myCheckbox');
-    const buttons = document.querySelectorAll('.btCheck');
-
-    checkbox.addEventListener('change', function () {
-        buttons.forEach(button => button.disabled = !checkbox.checked);
-    });
+    // const checkbox = document.getElementById('myCheckbox');
+    // const buttons = document.querySelectorAll('.btCheck');
+    //
+    // checkbox.addEventListener('change', function () {
+    //     buttons.forEach(button => button.disabled = !checkbox.checked);
+    // });
     const selectStartEndDate = () => {
         var btnOnclick = document.getElementById("selectDate");
         btnOnclick.onclick = function (event) {
