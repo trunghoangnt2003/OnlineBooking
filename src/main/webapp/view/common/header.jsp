@@ -103,6 +103,7 @@ position: sticky; top:0; z-index: 999">
                                 <a class="nav-link" href="<%=url%>/mentor/schedule">Schedule</a>
                             </li>
 
+
                         </c:if>
                         <c:if test="${sessionScope.account.role.id == 3}">
                             <li class="nav-item">
@@ -181,9 +182,6 @@ position: sticky; top:0; z-index: 999">
                                         <c:if test="${sessionScope.account.role.id == 2}">
                                             <a class="dropdown-item" href="<%=url%>/mentor/profile?mentorid=${sessionScope.account.id}">Information</a>
                                         </c:if>
-                                        <c:if test="${sessionScope.account.role.id == 3}">
-                                            <a class="dropdown-item" href="<%=url%>/admin/profile">Information</a>
-                                        </c:if>
                                     </li>
                                     <li>
                                         <c:if test="${sessionScope.account.role.id == 1}">
@@ -192,9 +190,6 @@ position: sticky; top:0; z-index: 999">
                                         <c:if test="${sessionScope.account.role.id == 2}">
                                             <a class="dropdown-item" href="<%=url%>/mentor/update_profile">Settings</a>
                                         </c:if>
-                                        <c:if test="${sessionScope.account.role.id == 3}">
-                                            <a class="dropdown-item" href="<%=url%>/admin/update">Settings</a>
-                                        </c:if>
                                     </li>
                                     <c:if test="${sessionScope.account.role.id == 1}">
                                     <li>
@@ -202,6 +197,9 @@ position: sticky; top:0; z-index: 999">
                                     </li>
                                         <li>
                                             <a class="dropdown-item" href="<%=url%>/wallet/view">Wallet</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="<%=url%>/changePass">Change Password</a>
                                         </li>
                                     </c:if>
                                     <c:if test="${sessionScope.account.role.id == 1}">
@@ -215,6 +213,9 @@ position: sticky; top:0; z-index: 999">
                                         </li>
                                         <li>
                                             <a class="dropdown-item" href="<%=url%>/wallet/view">Wallet</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="<%=url%>/changePass">Change Password</a>
                                         </li>
                                     </c:if>
                                     <li>
