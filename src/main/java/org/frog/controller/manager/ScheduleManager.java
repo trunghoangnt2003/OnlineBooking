@@ -78,10 +78,16 @@ public class ScheduleManager extends AuthenticationServlet {
                     }
                 }
         Mentor_Schedule mentor_schedule = mentor_scheduleDAO.getById(id);
-                if(mentor_schedule.getStart_date() != null ) {
+                if(mentor_schedule.getStart_date() == null ) {
                     mentor_scheduleDAO.updateStartDate(id, startDate);
                 }
-                mentor_scheduleDAO.updateEndDate(id, lastDate);
+                if(mentor_schedule.getEnd_date() == null ) {
+                    mentor_scheduleDAO.updateEndDate(id, lastDate);
+
+                } else if (mentor_schedule.getStart_date().compareTo(lastDate) > 0) {
+                    mentor_scheduleDAO.updateEndDate(id, lastDate);
+
+                }
             }else if(action.equals("reject")) {
                 //reject
                 mentor_scheduleDAO.updateMessage(id, message);

@@ -47,6 +47,12 @@
         <b>Please submit CV for manager check</b>
     </div>
 </c:if>
+
+<c:if test="${requestScope.mentorLog.status.id == 2}">
+    <div class="alert alert-danger text-center" role="alert">
+        <b>Your CV has been rejected. Please update your CV again!</b>
+    </div>
+</c:if>
 <div class="container mt-4">
     <div class="box frame row">
         <div class="form col-md-9">

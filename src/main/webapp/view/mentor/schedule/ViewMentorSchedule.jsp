@@ -68,7 +68,7 @@
 </head>
 <body>
 <jsp:include page="/view/common/header.jsp"></jsp:include>
-<c:if test="${messageSchedule != null}">
+<c:if test="${not empty messageSchedule && messageSchedule != null}">
     <div class="alert alert-warning text-center" role="alert" id="Message">
         <span class="closeMess" onclick="hideMessage()" style="    position: absolute;
     right: 10px ">x</span>
