@@ -7,6 +7,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -78,11 +79,14 @@ public class Week {
                     throw new IllegalArgumentException("Invalid time slot");
             }
 
-            String dateTimeStr = date + " " + time;
+           // String dateTimeStr = date + " " + time;
+            String dateTimeStr = date + " 00:00" ;
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             LocalDateTime dateTime = LocalDateTime.parse(dateTimeStr, formatter);
 
             return dateTime.isBefore(LocalDateTime.now());
+
+
 
         } catch (DateTimeParseException | IllegalArgumentException e) {
             e.printStackTrace();

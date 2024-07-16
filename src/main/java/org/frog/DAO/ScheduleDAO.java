@@ -212,7 +212,7 @@ public class ScheduleDAO {
                 "     VALUES\n" +
                 "           (?\n" +
                 "           ,?\n" +
-                "           ,1\n" +
+                "           ,16\n" +
                 "           ,?)";
         try {
             Connection connection = JDBC.getConnection();
@@ -659,6 +659,36 @@ public class ScheduleDAO {
             e.printStackTrace();
         }
         return null;
+    }
+    public String messageSchedule(String id){
+        String message = "";
+        String sql = " SELECT [message]  FROM [Mentor_Schedule]\n" +
+                "  WHERE mentor_id =? ";
+        PreparedStatement stm = null;
+        try {
+            stm = JDBC.getConnection().prepareStatement(sql);
+            stm.setString(1,id);
+            ResultSet resultSet = stm.executeQuery();
+            if (resultSet.next()){
+                message = resultSet.getString("message");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return message;
+    }
+    public  void deleteMessageSchedule(String id){
+        String sql = "UPDATE [Mentor_Schedule]\n" +
+                "   SET\n" +
+                "      [message] = NULL\n" +
+                "  WHERE mentor_id = ? ";
+        try {
+            PreparedStatement stm = JDBC.getConnection().prepareStatement(sql);
+            stm.setString(1,id);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 

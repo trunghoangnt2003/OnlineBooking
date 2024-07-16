@@ -103,6 +103,24 @@ body{
     text-decoration: none;
     cursor: pointer;
 }
+/*---------------*/
+.closeMess {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.closeMess:hover,
+.closeMess:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 #myBtn ,#confirmBtn2 ,#absentBtn2{
     background-color: #07AD90; /* Green background */
     border: none; /* Remove borders */
@@ -392,7 +410,15 @@ th:first-child{
     transform: rotate(2deg);
 }
 .waiting{
-    background: #aaaaaa;
+    background: #00CDFF;
+    -webkit-transform: rotate(2deg);
+    -moz-transform: rotate(2deg);
+    -o-transform: rotate(2deg);
+    -ms-transform: rotate(2deg);
+    transform: rotate(2deg);
+}
+.saveDraft{
+    background: #999999;
     -webkit-transform: rotate(2deg);
     -moz-transform: rotate(2deg);
     -o-transform: rotate(2deg);

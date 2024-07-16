@@ -16,6 +16,6 @@ public class StatusEnum {
     public static final int PAID = 13;
     public static final int APPROVED = 14;
     public static final int WAITCANCEL = 15;
-
+    public static final int DRAFT = 16;
 
 }

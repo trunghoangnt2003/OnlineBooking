@@ -373,7 +373,7 @@
                                 <li><span
                                         style="font-weight: bold">All lessons are finished,wait ${bookingSlots[0].booking.mentee.account.name} confirms...</span>
                                 </li>
-                                <input type="button" class="btn" id="btn" value="Booking Done"
+                                <input type="button" class="btn" id="btn" value="Finish"
                                        data-id="${bookingSlots[0].booking.mentee.account.id}"
                                        data-booking-id="${bookingSlots[0].booking.id}" onclick="sendMail()">
 

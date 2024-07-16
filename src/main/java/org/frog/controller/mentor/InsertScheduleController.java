@@ -57,7 +57,7 @@ public class InsertScheduleController extends AuthenticationServlet {
                         scheduleDAO.reMarkDayFreeByMentor(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]),StatusEnum.ACCEPTED);
                     }
                     else{
-                        scheduleDAO.reMarkDayFreeByMentor(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]),StatusEnum.PROCESSING);
+                        scheduleDAO.reMarkDayFreeByMentor(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]),StatusEnum.DRAFT);
                     }
                 }else{
                     scheduleDAO.insertDayFreeByMentor(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]));
