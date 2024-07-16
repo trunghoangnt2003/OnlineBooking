@@ -43,8 +43,6 @@ public class ScheduleManager extends AuthenticationServlet {
     }
 
     private void fetchPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
-
-
         BufferedReader reader = req.getReader();
         StringBuilder jsonBuffer = new StringBuilder();
         String line;
@@ -78,7 +76,7 @@ public class ScheduleManager extends AuthenticationServlet {
             }else if(action.equals("reject")) {
                 //reject
                 for (Schedule schedule : schedulesLogs) {
-                    scheduleDAO.updateLogsById(schedule.getId(), StatusEnum.CANCEL);
+                    scheduleDAO.updateLogsById(schedule.getId(), StatusEnum.DRAFT);
                 }
             }
         } else if (type.equals("remove")) {
@@ -100,13 +98,9 @@ public class ScheduleManager extends AuthenticationServlet {
                 for (Schedule schedule : schedulesLogs) {
                     scheduleDAO.updateLogsById(schedule.getId(), StatusEnum.ACCEPTED);
                 }
-
             }
         }
-
-
         resp.sendRedirect("manageSchedule");
-
     }
 
     @Override
@@ -121,7 +115,6 @@ public class ScheduleManager extends AuthenticationServlet {
         ScheduleDAO scheduleDAO = new ScheduleDAO();
         Mentor_ScheduleDAO mentor_scheduleDAO = new Mentor_ScheduleDAO();
 
-
         int page = 1;
         if (page_raw != null) {
             if (!page_raw.isEmpty()) page = Integer.parseInt(page_raw);
@@ -132,7 +125,6 @@ public class ScheduleManager extends AuthenticationServlet {
         if (total % 5 != 0) {
             end_page++;
         }
-
 
         Date toDay = new Date();
         java.sql.Date from = null;
@@ -154,12 +146,13 @@ public class ScheduleManager extends AuthenticationServlet {
         Map<Mentor_Schedule, Map<String, Integer>>  mentorSchedule = mentorDAO.getProcessingSchedule(page,mentorName);
         ArrayList<Slot> slots = slotDAO.selectAll();
         ArrayList<Schedule> schedules = scheduleDAO.getScheduleLogsByMentor(mentorId, from, to);
-        //ArrayList<Schedule> allSchedule = scheduleDAO.getAllScheduleLogsByMentor(mentorId);
+        ArrayList<Schedule> allSchedule = scheduleDAO.getAllScheduleLogsByMentor(mentorId);
         Mentor_Schedule mentor_schedule = mentor_scheduleDAO.getByMentor(mentorId);
 
 
+
         req.setAttribute("mentor_schedule", mentor_schedule);
-        //req.setAttribute("allSchedule", allSchedule);
+        req.setAttribute("allSchedule", allSchedule);
         req.setAttribute("mentorId", mentorId);
         req.setAttribute("name", name);
         req.setAttribute("schedules", schedules);
