@@ -82,22 +82,23 @@
             <div class="col-md-5 card info">
                 <div class="form-group">
                     <label for="edu">Education:</label>
-                    <input type="text" id="edu" name="edu" class="form-control" value="${requestScope.mentor.education}" required>
+                    <input type="text" id="edu" name="edu" class="form-control" value="${requestScope.mentorLog.education}" required>
                 </div>
                 <div class="form-group">
                     <label for="exp">Experience:</label>
-                    <input type="text" id="exp" name="exp" class="form-control" value="${requestScope.mentor.experience}" required>
+                    <input type="text" id="exp" name="exp" class="form-control" value="${requestScope.mentorLog.experience}" required>
                 </div>
                 <div class="form-group">
                     <label for="exp">Price:</label>
-                    <input type="text" id="price" name="price" class="form-control" value="${requestScope.mentor.price}" required>
+                    <input type="text" id="price" name="price" class="form-control" value="${requestScope.mentorLog.price}" required>
                 </div>
                 <div class="form-group detail">
                     <label for="detail">Profile Detail:</label>
-                    <textarea id="detail" name="detail" class="form-control" rows="8" placeholder="Detail about yourself" required>${requestScope.mentor.profileDetail}</textarea>
+                    <textarea id="detail" name="detail" class="form-control" rows="8" placeholder="Detail about yourself" required>${requestScope.mentorLog.profileDetail}</textarea>
                 </div>
             </div>
         </div>
+
         <div class="card skill">
             <div class="row">
                 <c:forEach items="${requestScope.levels}" var="level">
@@ -120,7 +121,8 @@
             </div>
         </div>
         <div class="form-group btn-save">
-            <button type="submit" class="btn btn-success" data-mdb-ripple-init>Save</button>
+            <button name="action" value="save" style="margin-right: 20px" type="submit" class="btn btn-info" data-mdb-ripple-init>Save</button>
+            <button name="action" value="submit" style="margin-left: 20px" type="submit" class="btn btn-success" data-mdb-ripple-init>Submit</button>
         </div>
     </form>
 </div>

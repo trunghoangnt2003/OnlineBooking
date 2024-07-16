@@ -46,7 +46,7 @@
         .banner {
             position: relative;
             width: 100%;
-            height: 800px;
+            height: 850px;
             margin: 10px 30px 20px 0;
             justify-content: center;
             box-shadow: 4px 6px 8px rgba(0, 0, 0, 0.6);

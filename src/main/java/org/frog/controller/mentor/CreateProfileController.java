@@ -34,15 +34,18 @@ public class CreateProfileController extends AuthenticationServlet {
         String detail = req.getParameter("detail");
         int price = 0;
 
+        MentorDAO mentorDAO = new MentorDAO();
+
         String[] levelSkills = req.getParameterValues("level_skill");
         if(levelSkills != null) {
+            mentorDAO.deleteSkillMentor(account.getId());
             for(String s: levelSkills) {
                 Level_SkillDAO level_skillDAO = new Level_SkillDAO();
                 level_skillDAO.insertLevelSkill(account.getId(), Integer.parseInt(s));
             }
         }
 
-        MentorDAO mentorDAO = new MentorDAO();
+
         Mentor mentor = new Mentor();
 
         if(raw_price != null) {
@@ -97,10 +100,19 @@ public class CreateProfileController extends AuthenticationServlet {
         mentorCVLog.setEducation(edu);
         Mentor_CV_LogDAO mentorCVLogDAO = new Mentor_CV_LogDAO();
         boolean isHaveAccount = mentorCVLogDAO.isHaveAccount(account.getId());
-        if (isHaveAccount) {
-            mentorDAO.updateMentorLog(mentorCVLog, 1);
-        } else {
-            mentorDAO.insertMentorLog(mentorCVLog, 1);
+        String action = req.getParameter("action");
+        if(action.equals("save")) {
+            if (isHaveAccount) {
+                mentorDAO.updateMentorLog(mentorCVLog, 16);
+            } else {
+                mentorDAO.insertMentorLog(mentorCVLog, 16);
+            }
+        }else if(action.equals("submit")) {
+            if (isHaveAccount) {
+                mentorDAO.updateMentorLog(mentorCVLog, 1);
+            } else {
+                mentorDAO.insertMentorLog(mentorCVLog, 1);
+            }
         }
 
         resp.sendRedirect("/Frog/Home");
@@ -118,8 +130,11 @@ public class CreateProfileController extends AuthenticationServlet {
             ArrayList<Level_Skills> level_skills = level_skillDAO.getAllLevel_SkillList();
             Mentor_CV_LogDAO mentor_cv_logDAO = new Mentor_CV_LogDAO();
             Mentor_CV_Log mentorLog = mentor_cv_logDAO.getCVLog(account.getId());
+            MentorDAO mentorDAO = new MentorDAO();
+            ArrayList<Level_Skills> mentorSkill = mentorDAO.getSkillMentor(account.getId());
 
             req.setAttribute("mentorLog", mentorLog);
+            req.setAttribute("mentorSkill", mentorSkill);
             req.setAttribute("levels", levels);
             req.setAttribute("level_skills", level_skills);
             req.setAttribute("account", account);

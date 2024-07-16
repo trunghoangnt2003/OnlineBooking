@@ -80,10 +80,19 @@ public class UpdateProfileController extends AuthenticationServlet {
         mentorCVLog.setPrice(Integer.parseInt(raw_price));
         mentorCVLog.setAccount(account);
         boolean isHaveAccount = mentor_cv_logDAO.isHaveAccount(account.getId());
-        if (isHaveAccount) {
-            mentorDAO.updateMentorLog(mentorCVLog, 1);
-        } else {
-            mentorDAO.insertMentorLog(mentorCVLog, 1);
+        String action = req.getParameter("action");
+        if(action.equals("save")) {
+            if (isHaveAccount) {
+                mentorDAO.updateMentorLog(mentorCVLog, 16);
+            } else {
+                mentorDAO.insertMentorLog(mentorCVLog, 16);
+            }
+        }else if(action.equals("submit")) {
+            if (isHaveAccount) {
+                mentorDAO.updateMentorLog(mentorCVLog, 1);
+            } else {
+                mentorDAO.insertMentorLog(mentorCVLog, 1);
+            }
         }
 
         String[] levelSkills = req.getParameterValues("level_skill");
