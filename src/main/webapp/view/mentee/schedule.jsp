@@ -26,28 +26,7 @@
             margin: 10px 40px;
         }
 
-        .info-container {
-            width: 80%;
-            margin: 20px 40px;
-            border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 5px 7px 2px rgba(0, 0, 0, 0.05);
-        }
 
-
-        .category {
-            height: 50px;
-        }
-
-        .category_name {
-            box-shadow: 0 5px 7px 2px rgba(0, 0, 0, 0.2);
-            border-radius: 10px;;
-            background: #07AD90;
-            color: white;
-            font-size: 20px;
-            padding: 10px;
-            text-align: center;
-        }
 
         .schedule {
             width: 100%;
@@ -135,17 +114,23 @@
         }
 
 
-
-        .checkbox__input:checked + .checkbox__icon .tick {
-            stroke-dashoffset: 0;
+        /* Note Styling */
+        .notess {
+            display: flex;
+            margin: 20px;
+            font-size: 16px;
         }
 
-
-        .checkbox__icon .tick {
-            stroke-dasharray: 20px;
-            stroke-dashoffset: 20px;
-            transition: stroke-dashoffset .2s ease-out;
+        .note p {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
         }
+
+        .note p i {
+            margin-right: 10px;
+        }
+
 
         .back{
             margin-top: 20px;
@@ -178,8 +163,13 @@
     <div class="d-flex main">
         <div class="schedule">
             <div>
-                <h2 style="text-align: center; color: #07AD90;">Schedule</h2>
+                <h1 style="text-align: center; color: #07AD90;">Schedule</h1>
+                <div class="notess">
+                    <div><i class="fa-solid fa-square" style="color: #FFF142FF;"></i> is a session not start</div>
+                    <div><i class="fa-solid fa-square" style="color: #FAAD12FF; margin-left: 20px"></i> is attended or not attended</div>
+                </div>
             </div>
+
             <table>
                 <thead>
                 <tr>
