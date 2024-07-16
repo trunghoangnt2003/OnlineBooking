@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%--
   Created by IntelliJ IDEA.
   User: kttan
@@ -207,7 +208,10 @@
             <h2>${requestScope.account.name}</h2>
         </div>
         <div class="balance">
-            <h3>Total: ${requestScope.balance}</h3>
+            <h3 style="color: #07AD90; font-weight: bold">
+                Available <fmt:formatNumber value="${requestScope.wallet.balance - requestScope.wallet.hold}" type="number" maxFractionDigits="0" />₫
+            </h3>
+            <p style="margin-bottom: 0">Total: ${requestScope.balance}</p>
             <p>Hold: ${requestScope.hold}</p>
             <c:if test="${requestScope.role == 1}">
                 <button>Withdraw</button>
@@ -262,7 +266,9 @@
                                 <span><i class="fa-solid fa-money-bill-trend-up"></i></span>
                             </c:if>
 
-                            <span>${t.amount} VND</span>
+                            <span>
+                                <fmt:formatNumber value="${t.amount}" type="number" maxFractionDigits="0" />₫
+                            </span>
                         </td>
                         <c:if test="${requestScope.role == 2}">
                             <td>
