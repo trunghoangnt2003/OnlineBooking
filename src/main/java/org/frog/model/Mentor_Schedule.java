@@ -7,7 +7,7 @@ public class Mentor_Schedule {
     private Mentor mentor;
     private Date start_date;
     private Date end_date;
-
+    private String message;
     public int getId() {
         return id;
     }
@@ -38,5 +38,13 @@ public class Mentor_Schedule {
 
     public void setEnd_date(Date end_date) {
         this.end_date = end_date;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

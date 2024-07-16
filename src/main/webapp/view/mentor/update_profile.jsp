@@ -25,7 +25,12 @@
 <jsp:include page="../common/header.jsp"></jsp:include>
 <c:if test="${requestScope.mentorLog.status.id == 1}">
     <div class="alert alert-danger text-center" role="alert">
-        <b>Please waiting Manager approve your CV. CV will show more detail after approve</b>
+        <b>Please waiting Manager approve your CV. CV will show more detail after approve!</b>
+    </div>
+</c:if>
+<c:if test="${requestScope.mentorLog.status.id == 2}">
+    <div class="alert alert-danger text-center" role="alert">
+        <b>Your CV has been rejected. Please update your CV again!</b>
     </div>
 </c:if>
 

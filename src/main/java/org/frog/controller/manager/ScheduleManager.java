@@ -57,6 +57,7 @@ public class ScheduleManager extends AuthenticationServlet {
         String MentorSchedule = json.get("mentorSchedule").getAsString();
         String action = json.get("action").getAsString();
         String type = json.get("type").getAsString();
+        String message = json.get("message").getAsString();
         int id = Integer.parseInt(MentorSchedule);
 
         if(type.equals("new")){
@@ -64,6 +65,7 @@ public class ScheduleManager extends AuthenticationServlet {
             if(action.equals("accept")) {
                 //accept
                 Date lastDate = schedulesLogs.get(0).getDate();
+                Date startDate = schedulesLogs.get(0).getDate();
                 for (Schedule schedule : schedulesLogs) {
                     scheduleDAO.insert(schedule);
                     scheduleDAO.updateLogsById(schedule.getId(), StatusEnum.ACCEPTED);
@@ -71,10 +73,18 @@ public class ScheduleManager extends AuthenticationServlet {
                     if(sdate.compareTo(lastDate) > 0) {
                         lastDate = schedule.getDate();
                     }
+                    if (sdate.compareTo(startDate) < 0) {
+                        startDate = schedule.getDate();
+                    }
+                }
+        Mentor_Schedule mentor_schedule = mentor_scheduleDAO.getById(id);
+                if(mentor_schedule.getStart_date() != null ) {
+                    mentor_scheduleDAO.updateStartDate(id, startDate);
                 }
                 mentor_scheduleDAO.updateEndDate(id, lastDate);
             }else if(action.equals("reject")) {
                 //reject
+                mentor_scheduleDAO.updateMessage(id, message);
                 for (Schedule schedule : schedulesLogs) {
                     scheduleDAO.updateLogsById(schedule.getId(), StatusEnum.DRAFT);
                 }

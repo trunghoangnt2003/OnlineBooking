@@ -410,7 +410,7 @@
 <div class="nenmodal" id="nenmodal-1">
     <div class="nenmodal2"></div>
     <div class="ndmodal">
-            <div class="closemodal"><button onclick="momodal()">X</button></div>
+            <div class="closemodal"><button onclick="schedulePopup()">X</button></div>
             <div class="titlemodal mb-2">Request Schedule</div>
         <form action="manageSchedule" method="Post" id="frm">
             <div style="height: 400px; overflow-y: auto ">
@@ -422,6 +422,19 @@
                </c:forEach>
             </div>
         </form>
+    </div>
+</div>
+
+<div class="nenmodal" id="modal_message">
+    <div class="nenmodal2"></div>
+    <div class="ndmodal">
+        <div class="closemodal"><button onclick="messagePopup()">X</button></div>
+        <div class="titlemodal mb-2">Message for Reject</div>
+        <div class="mt-5">
+            <textarea id="message" name="message" rows="6" cols="45" placeholder="Enter your message"></textarea>
+        </div>
+        <button  class="btn-reject w-auto mx-2" onclick="handleSlot(${requestScope.mentor_schedule.id},'reject','new')" style="margin-top: 10px">Reject</button>
+
     </div>
 </div>
 
@@ -529,10 +542,10 @@
                         <div class="d-flex " style="margin: 20px 65px" >
                             <c:if test="${requestScope.mentor_schedule != null}">
                                 <span class="d-flex align-items-end" style="font-size: 1.5rem; width: 200px">${requestScope.name} #${requestScope.mentor_schedule.id}</span>
-                                <button  id="closeButton" class="btn-view w-auto mx-2" onclick="momodal()" style="margin-top: 10px">View All</button>
+                                <button  id="closeButton" class="btn-view w-auto mx-2" onclick="schedulePopup()" style="margin-top: 10px">View All</button>
                                 <button  class="btn-accept w-auto mx-2" onclick="handleSlot(${requestScope.mentor_schedule.id},'accept','new')" style="margin-top: 10px"  >Accept new slot</button>
                                 <button  class="btn-accept w-auto mx-2" onclick="handleSlot(${requestScope.mentor_schedule.id},'accept','remove')" style="margin-top: 10px"  >Accept remove slot</button>
-                                <button  class="btn-reject w-auto mx-2" onclick="handleSlot(${requestScope.mentor_schedule.id},'reject','new')" style="margin-top: 10px"  >Reject new slot</button>
+                                <button  class="btn-reject w-auto mx-2" onclick="messagePopup()" style="margin-top: 10px"  >Reject new slot</button>
                                 <button  class="btn-reject w-auto mx-2" onclick="handleSlot(${requestScope.mentor_schedule.id},'reject','remove')" style="margin-top: 10px"  >Reject remove slot</button>
                             </c:if>
                         </div>
@@ -568,7 +581,7 @@
                                         <c:forEach items="${requestScope.week}" var="date">
                                             <td class="table-data" >
                                                 <c:forEach items="${requestScope.schedules}" var="s">
-                                                    <c:if test="${ (s.slot.id == slot.id) && (s.date == date) }">
+                                                    <c:if test="${ (s.slot.id == slot.id) && (s.date == date) and s.status.id != 16 }">
                                                         <div class="notes-container text-center ">
                                                             <i class="pin"></i>
                                                             <c:if test="${s.status.id == 1}">
@@ -660,7 +673,7 @@
 
 
      var isOpen = false;
-    function momodal() {
+    function schedulePopup() {
         if(isOpen == false){
             document.getElementById("nenmodal-1").classList.toggle("active");
             isOpen = true;
@@ -668,6 +681,18 @@
          else{
             document.getElementById("nenmodal-1").classList.toggle("active");
            isOpen = false;
+        }
+    }
+
+    var isOpenMessage = false;
+    function messagePopup() {
+        if(isOpenMessage == false){
+            document.getElementById("modal_message").classList.toggle("active");
+            isOpenMessage = true;
+        }
+        else{
+            document.getElementById("modal_message").classList.toggle("active");
+            isOpenMessage = false;
         }
     }
     //
@@ -707,12 +732,19 @@
     }
 
     function  handleSlot(id,action,type){
+        var message = "";
+        if(type == "new" && action == "reject"){
+            message = document.getElementById("message").value;
+        }
         fetch("manageSchedule", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({mentorSchedule: id,action:action,type:type}),
+            body: JSON.stringify({mentorSchedule: id,
+                                action:action,
+                                type:type,
+                                message:message}),
         }).then( response => {
             if(response.ok) {
                 location.reload();
