@@ -42,6 +42,10 @@
         .cv {
             margin-top: 3vh;
         }
+
+        .right h5 {
+            word-wrap: break-word;
+        }
     </style>
 </head>
 <body>
@@ -127,10 +131,15 @@
                                                         <hr>
                                                         <div>
                                                             <label>About Me:</label>
-                                                            <h5>${m.profileDetail}</h5>
+                                                            <p class="text-wrap">${m.profileDetail}</p>
                                                         </div>
                                                         <hr>
-                                                        <h5>My Skills</h5>
+                                                        <div>
+                                                            <label>Price:</label>
+                                                            <h5>${m.price} đ/hour</h5>
+                                                        </div>
+                                                        <hr>
+                                                        <h5>Skills</h5>
                                                         <div class="skills-container">
                                                             <c:forEach items="${m.level_skills}" var="s">
                                                                 <div class="skill-item">

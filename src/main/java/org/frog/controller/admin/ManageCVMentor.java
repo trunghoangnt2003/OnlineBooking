@@ -13,7 +13,10 @@ import org.frog.model.Level_Skills;
 import org.frog.model.Mentor_CV_Log;
 
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Locale;
 
 @WebServlet("/admin/manageCV")
 public class ManageCVMentor extends AuthenticationServlet {
@@ -39,7 +42,7 @@ public class ManageCVMentor extends AuthenticationServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
         MentorDAO mentorDAO = new MentorDAO();
         ArrayList<Mentor_CV_Log> mentors = mentorDAO.getAllMentor();
-        System.out.println("mentor size: " + mentors.size());
+
         Level_SkillDAO level_skillDAO = new Level_SkillDAO();
         for (Mentor_CV_Log mentor : mentors) {
             ArrayList<Level_Skills> level_skills = level_skillDAO.getLevel_SkillByMentorId(mentor.getAccount().getId());
@@ -63,6 +66,7 @@ public class ManageCVMentor extends AuthenticationServlet {
 //        req.setAttribute("end_page",end_page);
 //        req.setAttribute("list",list_mentor);
 //        req.setAttribute("page",page);
+
         req.setAttribute("totalMentor", mentors.size());
         req.setAttribute("mentors", mentors);
         req.setAttribute("account", account);

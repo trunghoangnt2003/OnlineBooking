@@ -665,10 +665,11 @@ public class MentorDAO {
         try {
             Connection connection = JDBC.getConnection();
             String sql = "select A.name, A.id, A.username, A.mail, A.avatar,\n" +
-                    "                    A.dob, A.gender, A.phone, A.address,\n" +
-                    "                    ML.profile_detail, ML.education, ML.experience, ML.price, S.id as status_id, S.type\n" +
-                    "                    from Account A join Mentor_CV_Logs ML on A.id = ML.account_id\n" +
-                    "\t\t\t\t\t\t\t\tjoin Status S on S.id = ML.status_id";
+                    "                                     A.dob, A.gender, A.phone, A.address,\n" +
+                    "                                     ML.profile_detail, ML.education, ML.experience, ML.price, S.id as status_id, S.type\n" +
+                    "                                      from Account A join Mentor_CV_Logs ML on A.id = ML.account_id\n" +
+                    "                    join Status S on S.id = ML.status_id\n" +
+                    "\t\t\t\t\twhere status_id = 1 or status_id = 14";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
 
