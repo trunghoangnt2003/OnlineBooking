@@ -223,7 +223,7 @@
         .btn-red {
             display: inline-block;
             padding: 10px 20px;
-            font-size: 16px;
+            font-size: 14px;
             color: rgba(255, 0, 0, 0.3); /* Light red color */
             background-color: transparent;
             border: 2px solid rgba(255, 0, 0, 0.5); /* Red border */
@@ -270,11 +270,29 @@
         /*.btn-accept-lg:hover{*/
         /*    background-color: #35b835; !* Darker blue on hover *!*/
         /*}*/
+        .btn-view{
+            display: inline-block;
+            padding: 7px 15px;
+            font-size: 14px;
+            font-weight: bold;
+            width: 100px;
+            color: #ffffff; /* White text color */
+            background-color: rgb(250, 235, 58); /* Blue background color */
+            border: none; /* No border */
+            border-radius: 20px; /* Rounded edges */
+            box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            cursor: pointer;
+            outline: none;
+        }
+        .btn-view:hover{
+            background-color: rgb(243, 221, 35); /* Darker blue on hover */
+        }
 
         .btn-accept{
             display: inline-block;
             padding: 7px 15px;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
             width: 100px;
             color: #07AD90; /* White text color */
@@ -286,14 +304,14 @@
             cursor: pointer;
             outline: none;
         }
-
         .btn-accept:hover{
             background-color: rgb(155, 234, 203); /* Darker blue on hover */
         }
+
         .btn-reject{
             display: inline-block;
             padding: 7px 15px;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
             width: 100px;
             color: #ffffff; /* White text color */
@@ -389,35 +407,36 @@
     </style>
 </head>
 <body>
-<%--<div class="nenmodal" id="nenmodal-1">--%>
-<%--    <div class="nenmodal2"></div>--%>
-<%--    <div class="ndmodal">--%>
+<div class="nenmodal" id="nenmodal-1">
+    <div class="nenmodal2"></div>
+    <div class="ndmodal">
+            <div class="closemodal"><button onclick="schedulePopup()">X</button></div>
+            <div class="titlemodal mb-2">Request Schedule</div>
+        <form action="manageSchedule" method="Post" id="frm">
+            <div style="height: 400px; overflow-y: auto ">
+               <c:forEach items="${requestScope.allSchedule}" var="s">
+                       <div class="schedule-slot">
+                           <%--<input type="checkbox" class="schedule-checkbox"  name="schedule" value="${s.id}"/>--%>
+                               Slot ${s.slot.id} ( ${s.slot.start_at}-${s.slot.end_at} ) on ${s.date}
+                       </div>
+               </c:forEach>
+            </div>
+        </form>
+    </div>
+</div>
 
-<%--            <div class="closemodal"><button onclick="momodal()">X</button></div>--%>
-<%--            <div class="titlemodal mb-2">Request Schedule</div>--%>
-<%--        <form action="manageSchedule" method="Post" id="frm">--%>
-<%--            <div style="height: 400px; overflow-y: auto ">--%>
-<%--               <c:forEach items="${requestScope.allSchedule}" var="s">--%>
-<%--                       <div class="schedule-slot">--%>
-<%--                           <input type="checkbox" class="schedule-checkbox"  name="schedule" value="${s.id}"/> Slot ${s.slot.id} ( ${s.slot.start_at}-${s.slot.end_at} ) on ${s.date}--%>
-<%--                       </div>--%>
+<div class="nenmodal" id="modal_message">
+    <div class="nenmodal2"></div>
+    <div class="ndmodal">
+        <div class="closemodal"><button onclick="messagePopup()">X</button></div>
+        <div class="titlemodal mb-2">Message for Reject</div>
+        <div class="mt-5">
+            <textarea id="message" name="message" rows="6" cols="45" placeholder="Enter your message"></textarea>
+        </div>
+        <button  class="btn-reject w-auto mx-2" onclick="handleSlot(${requestScope.mentor_schedule.id},'reject','new')" style="margin-top: 10px">Reject</button>
 
-<%--               </c:forEach>--%>
-<%--            </div>--%>
-<%--            <div>--%>
-<%--                <label>--%>
-<%--                    <input type="checkbox" id="selectAll"   />--%>
-<%--                    Select All--%>
-<%--                </label>--%>
-<%--            </div>--%>
-<%--            <div class="m-3">--%>
-
-
-<%--                <button onclick="handleAccepted()" type="button" class="btn-accept-lg" style="" >Accept</button>--%>
-<%--            </div>--%>
-<%--        </form>--%>
-<%--    </div>--%>
-<%--</div>--%>
+    </div>
+</div>
 
 <div class="container-scroller">
     <!-- partial:partials/_navbar.jsp -->
@@ -520,18 +539,16 @@
                         </div>
 
                     <div class="">
-                        <div class="d-flex justify-content-center" style="margin: 20px 65px" >
+                        <div class="d-flex " style="margin: 20px 65px" >
                             <c:if test="${requestScope.mentor_schedule != null}">
-                                <span class="d-flex align-items-end" style="font-size: 1.5rem; width: 280px">${requestScope.name} #${requestScope.mentor_schedule.id}</span>
-                                <%--                                <button id="closeButton" class="btn-write" onclick="momodal()">View All</button>--%>
+                                <span class="d-flex align-items-end" style="font-size: 1.5rem; width: 200px">${requestScope.name} #${requestScope.mentor_schedule.id}</span>
+                                <button  id="closeButton" class="btn-view w-auto mx-2" onclick="schedulePopup()" style="margin-top: 10px">View All</button>
                                 <button  class="btn-accept w-auto mx-2" onclick="handleSlot(${requestScope.mentor_schedule.id},'accept','new')" style="margin-top: 10px"  >Accept new slot</button>
                                 <button  class="btn-accept w-auto mx-2" onclick="handleSlot(${requestScope.mentor_schedule.id},'accept','remove')" style="margin-top: 10px"  >Accept remove slot</button>
-                                <button  class="btn-reject w-auto mx-2" onclick="handleSlot(${requestScope.mentor_schedule.id},'reject','new')" style="margin-top: 10px"  >Reject new slot</button>
+                                <button  class="btn-reject w-auto mx-2" onclick="messagePopup()" style="margin-top: 10px"  >Reject new slot</button>
                                 <button  class="btn-reject w-auto mx-2" onclick="handleSlot(${requestScope.mentor_schedule.id},'reject','remove')" style="margin-top: 10px"  >Reject remove slot</button>
-
                             </c:if>
                         </div>
-
                         <div class="d-flex justify-content-center " style="width: 100%">
                             <table class="time-table">
                                 <thead class="time-table-head">
@@ -553,7 +570,6 @@
                                     <th class="table-head">Saturday</th>
                                     <th class="table-head" >Sunday</th>
                                 </tr>
-
                                 </thead>
                                 <tbody class="time-table-body" style="border: 1px #07AD90 solid">
                                 <c:forEach items="${requestScope.slots}" var="slot">
@@ -565,7 +581,7 @@
                                         <c:forEach items="${requestScope.week}" var="date">
                                             <td class="table-data" >
                                                 <c:forEach items="${requestScope.schedules}" var="s">
-                                                    <c:if test="${ (s.slot.id == slot.id) && (s.date == date) }">
+                                                    <c:if test="${ (s.slot.id == slot.id) && (s.date == date) and s.status.id != 16 }">
                                                         <div class="notes-container text-center ">
                                                             <i class="pin"></i>
                                                             <c:if test="${s.status.id == 1}">
@@ -656,18 +672,29 @@
     // }
 
 
-    // var isOpen = false;
-    // function momodal() {
-    //     if(isOpen == false){
-    //         document.getElementById("nenmodal-1").classList.toggle("active");
-    //         isOpen = true;
-    //     }
-    //     else{
-    //         document.getElementById("nenmodal-1").classList.toggle("active");
-    //         isOpen = false;
-    //     }
-    //
-    // }
+     var isOpen = false;
+    function schedulePopup() {
+        if(isOpen == false){
+            document.getElementById("nenmodal-1").classList.toggle("active");
+            isOpen = true;
+         }
+         else{
+            document.getElementById("nenmodal-1").classList.toggle("active");
+           isOpen = false;
+        }
+    }
+
+    var isOpenMessage = false;
+    function messagePopup() {
+        if(isOpenMessage == false){
+            document.getElementById("modal_message").classList.toggle("active");
+            isOpenMessage = true;
+        }
+        else{
+            document.getElementById("modal_message").classList.toggle("active");
+            isOpenMessage = false;
+        }
+    }
     //
     // document.getElementById('selectAll').addEventListener('change', function() {
     //     var checkboxes = document.querySelectorAll('.schedule-checkbox');
@@ -705,12 +732,19 @@
     }
 
     function  handleSlot(id,action,type){
+        var message = "";
+        if(type == "new" && action == "reject"){
+            message = document.getElementById("message").value;
+        }
         fetch("manageSchedule", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({mentorSchedule: id,action:action,type:type}),
+            body: JSON.stringify({mentorSchedule: id,
+                                action:action,
+                                type:type,
+                                message:message}),
         }).then( response => {
             if(response.ok) {
                 location.reload();

@@ -42,6 +42,11 @@
         <b>Please waiting Manager approve your CV. CV will show more detail after approve</b>
     </div>
 </c:if>
+<c:if test="${requestScope.mentorLog.status.id == 16}">
+    <div class="alert alert-danger text-center" role="alert">
+        <b>Please submit CV for manager check</b>
+    </div>
+</c:if>
 <div class="container mt-4">
     <div class="box frame row">
         <div class="form col-md-9">
@@ -96,32 +101,37 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="edu" class="form-label">Education:</label>
-                            <input type="text" class="form-control" id="edu" name="edu" placeholder="Enter your education" required>
+                            <input type="text" class="form-control" id="edu" name="edu" value="${requestScope.mentorLog.education}" placeholder="Enter your education" required>
                         </div>
                         <div class="mb-3">
                             <label for="price" class="form-label">Price per hour:</label>
-                            <input type="number" class="form-control" id="price" name="price" placeholder="Enter price per hour ($)" required>
+                            <input type="number" class="form-control" id="price" name="price" value="${requestScope.mentorLog.price}" placeholder="Enter price per hour ($)" required>
                         </div>
                         <div class="mb-3">
                             <label for="exp" class="form-label">Experience:</label>
-                            <input type="text" class="form-control" id="exp" name="exp" placeholder="Number of years of experience" required>
+                            <input type="text" class="form-control" id="exp" name="exp" value="${requestScope.mentorLog.experience}" placeholder="Number of years of experience" required>
                         </div>
                         <div class="mb-3">
                             <label for="detail" class="form-label">Profile Detail:</label>
-                            <textarea class="form-control box-detail" id="detail" name="detail" rows="8" placeholder="Detail about yourself" required></textarea>
+                            <textarea class="form-control box-detail" id="detail" name="detail" rows="8" placeholder="Detail about yourself" required>${requestScope.mentorLog.profileDetail}</textarea>
                         </div>
 
                     </div>
                     <div class="skill">
                         <div class="row">
-                            <c:forEach items="${requestScope.levels}" var="l">
+                            <c:forEach items="${requestScope.levels}" var="level">
                                 <div class="col-md-4">
-                                    <div>${l.name}</div>
-                                    <c:forEach items="${requestScope.level_skills}" var="ls">
-                                        <c:if test="${ls.level.name == l.name}">
-                                            <label>
-                                                <input type="checkbox" value="${ls.id}" name="level_skill">${ls.skill.name}
-                                            </label>
+                                    <div class="skill-name">${level.name}</div>
+                                    <c:forEach items="${requestScope.level_skills}" var="levelSkill">
+                                        <c:if test="${levelSkill.level.name == level.name}">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="skill-${levelSkill.id}" name="level_skill" value="${levelSkill.id}"
+                                                        <c:forEach items="${requestScope.mentorSkill}" var="mentorSkill">
+                                                            <c:if test="${mentorSkill.id == levelSkill.id}">checked</c:if>
+                                                        </c:forEach>
+                                                />
+                                                <label class="form-check-label" for="skill-${levelSkill.id}">${levelSkill.skill.name}</label>
+                                            </div>
                                         </c:if>
                                     </c:forEach>
                                 </div>
@@ -130,7 +140,8 @@
                     </div>
                 </div>
                 <div class="button">
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button name="action" value="save" style="margin-right: 20px" type="submit" class="btn btn-info" data-mdb-ripple-init>Save</button>
+                    <button name="action" value="submit" style="margin-left: 20px" type="submit" class="btn btn-success" data-mdb-ripple-init>Submit</button>
                 </div>
             </form>
         </div>

@@ -43,8 +43,6 @@ public class ScheduleManager extends AuthenticationServlet {
     }
 
     private void fetchPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
-
-
         BufferedReader reader = req.getReader();
         StringBuilder jsonBuffer = new StringBuilder();
         String line;
@@ -59,6 +57,7 @@ public class ScheduleManager extends AuthenticationServlet {
         String MentorSchedule = json.get("mentorSchedule").getAsString();
         String action = json.get("action").getAsString();
         String type = json.get("type").getAsString();
+        String message = json.get("message").getAsString();
         int id = Integer.parseInt(MentorSchedule);
 
         if(type.equals("new")){
@@ -66,6 +65,7 @@ public class ScheduleManager extends AuthenticationServlet {
             if(action.equals("accept")) {
                 //accept
                 Date lastDate = schedulesLogs.get(0).getDate();
+                Date startDate = schedulesLogs.get(0).getDate();
                 for (Schedule schedule : schedulesLogs) {
                     scheduleDAO.insert(schedule);
                     scheduleDAO.updateLogsById(schedule.getId(), StatusEnum.ACCEPTED);
@@ -73,12 +73,20 @@ public class ScheduleManager extends AuthenticationServlet {
                     if(sdate.compareTo(lastDate) > 0) {
                         lastDate = schedule.getDate();
                     }
+                    if (sdate.compareTo(startDate) < 0) {
+                        startDate = schedule.getDate();
+                    }
+                }
+        Mentor_Schedule mentor_schedule = mentor_scheduleDAO.getById(id);
+                if(mentor_schedule.getStart_date() != null ) {
+                    mentor_scheduleDAO.updateStartDate(id, startDate);
                 }
                 mentor_scheduleDAO.updateEndDate(id, lastDate);
             }else if(action.equals("reject")) {
                 //reject
+                mentor_scheduleDAO.updateMessage(id, message);
                 for (Schedule schedule : schedulesLogs) {
-                    scheduleDAO.updateLogsById(schedule.getId(), StatusEnum.CANCEL);
+                    scheduleDAO.updateLogsById(schedule.getId(), StatusEnum.DRAFT);
                 }
             }
         } else if (type.equals("remove")) {
@@ -100,13 +108,9 @@ public class ScheduleManager extends AuthenticationServlet {
                 for (Schedule schedule : schedulesLogs) {
                     scheduleDAO.updateLogsById(schedule.getId(), StatusEnum.ACCEPTED);
                 }
-
             }
         }
-
-
         resp.sendRedirect("manageSchedule");
-
     }
 
     @Override
@@ -121,7 +125,6 @@ public class ScheduleManager extends AuthenticationServlet {
         ScheduleDAO scheduleDAO = new ScheduleDAO();
         Mentor_ScheduleDAO mentor_scheduleDAO = new Mentor_ScheduleDAO();
 
-
         int page = 1;
         if (page_raw != null) {
             if (!page_raw.isEmpty()) page = Integer.parseInt(page_raw);
@@ -132,7 +135,6 @@ public class ScheduleManager extends AuthenticationServlet {
         if (total % 5 != 0) {
             end_page++;
         }
-
 
         Date toDay = new Date();
         java.sql.Date from = null;
@@ -154,12 +156,13 @@ public class ScheduleManager extends AuthenticationServlet {
         Map<Mentor_Schedule, Map<String, Integer>>  mentorSchedule = mentorDAO.getProcessingSchedule(page,mentorName);
         ArrayList<Slot> slots = slotDAO.selectAll();
         ArrayList<Schedule> schedules = scheduleDAO.getScheduleLogsByMentor(mentorId, from, to);
-        //ArrayList<Schedule> allSchedule = scheduleDAO.getAllScheduleLogsByMentor(mentorId);
+        ArrayList<Schedule> allSchedule = scheduleDAO.getAllScheduleLogsByMentor(mentorId);
         Mentor_Schedule mentor_schedule = mentor_scheduleDAO.getByMentor(mentorId);
 
 
+
         req.setAttribute("mentor_schedule", mentor_schedule);
-        //req.setAttribute("allSchedule", allSchedule);
+        req.setAttribute("allSchedule", allSchedule);
         req.setAttribute("mentorId", mentorId);
         req.setAttribute("name", name);
         req.setAttribute("schedules", schedules);
