@@ -38,11 +38,13 @@ public class DeleteScheduleController extends AuthenticationServlet {
 //                    if(scheduleDAO.isSlotAccepted(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]))){
 //                        scheduleDAO.deleteSlotAccepted(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]));
 //                    }
-                    if(scheduleDAO.checkProcessStatusScheduleLogs(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]))==StatusEnum.PROCESSING){
+                    if(scheduleDAO.checkProcessStatusScheduleLogs(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]))==StatusEnum.DRAFT){
                         scheduleDAO.deleteDayFreeByMentor(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]), StatusEnum.CANCEL);
                     }
-                    else{
+                    else if(scheduleDAO.checkProcessStatusScheduleLogs(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]))==StatusEnum.ACCEPTED){
                         scheduleDAO.deleteDayFreeByMentor(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]),StatusEnum.WAITCANCEL);
+                    }else {
+                        scheduleDAO.deleteDayFreeByMentor(mentor_schedule.getId(), DateTimeHelper.convertStringToDateByDay(infoSlotID[0]), Integer.parseInt(infoSlotID[1]),StatusEnum.CANCEL);
                     }
                 }
                 else{

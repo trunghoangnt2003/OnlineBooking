@@ -48,11 +48,33 @@
         .right-side{
             width: 83%;
         }
+        .closeMess {
+            position: absolute;
+            right: 10px;
+            top: 0;
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
 
+        .closeMess:hover,
+        .closeMess:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 <jsp:include page="/view/common/header.jsp"></jsp:include>
+<c:if test="${not empty messageSchedule && messageSchedule != null}">
+    <div class="alert alert-warning text-center" role="alert" id="Message">
+        <span class="closeMess" onclick="hideMessage()" style="    position: absolute;
+    right: 10px ">x</span>
+        <b>Message : ${messageSchedule}</b>
+    </div>
+</c:if>
 <div class="body">
     <div class="left-side">
         <div >
@@ -73,6 +95,9 @@
 
         <button id="myBtn" onclick="openSetTime()" style="background-color: cornflowerblue">Quick Set</button>
         <br/>
+        <p style="color:#07AD90; font-weight: bold ; margin-top: 20px" >Total Draft: ${countTotal}</p>
+        <button id="myBtn" style="background-color: orange ; padding: 15px 57px" onclick="submitSchedule()">Submit</button>
+
         <!-- Nút mở modal mới -->
         <c:if test="${param.viewID != null}">
             <div>
@@ -236,6 +261,10 @@
                                         <c:set var="countCheck" value="${count = 1}"></c:set>
 
                                     </c:if>
+                                    <c:if test="${(sche.status.id == 16 ) }">
+                                        <c:set var="countCheck" value="${count = 4}"></c:set>
+
+                                    </c:if>
                                 </c:if>
                             </c:forEach>
                             <c:choose>
@@ -266,13 +295,27 @@
                                 <c:when test="${countCheck == 1 }">
                                     <div class="notes-container">
                                         <i class="pin"></i>
-                                        <blockquote class="notes waiting">
+                                        <blockquote class="notes waiting" style="background: #f8ce0b">
                                             <button id="button-schedule-td2" class="button-schedule-td3"
                                                     data-schedule-id="${week.dayOfMonth}_${t.id}"
                                                     data-today-id="${week.dayOfMonth}"
                                                     style=" background: transparent;padding: 30px 10px; "
                                                     onclick="deleteFreeDay()">
                                                 Waiting Approve...
+                                            </button>
+                                        </blockquote>
+                                    </div>
+                                </c:when>
+                                <c:when test="${countCheck == 4 }">
+                                    <div class="notes-container">
+                                        <i class="pin"></i>
+                                        <blockquote class="notes saveDraft" style="background: #9d9d9d">
+                                            <button id="button-schedule-td4" class="button-schedule-td3"
+                                                    data-schedule-id="${week.dayOfMonth}_${t.id}"
+                                                    data-today-id="${week.dayOfMonth}"
+                                                    style=" background: transparent;padding: 30px 25px;border: none "
+                                                    onclick="deleteFreeDay()">
+                                                Draft
                                             </button>
                                         </blockquote>
                                     </div>
@@ -306,11 +349,34 @@
 
 
 
-
 </div>
 
 <script>
+    function hideMessage() {
+        var messageDiv = document.getElementById('Message');
+        messageDiv.style.display = 'none';
+    }
+    function submitSchedule(){
+        fetch("edit", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({option: "ok"}),
+        }).then( response => {
+            if(response.ok) {
+                location.reload();
+            } else {
+                throw new Error('Network response was not ok.');
+            }
 
+        }).catch(
+            error => {
+                console.error('There has been a problem with your fetch operation:', error);
+            }
+        )
+        window.location.reload();
+    }
     function updateURL() {
         var todayElement = document.getElementById('today');
         var selectedDate = todayElement.value;

@@ -1,21 +1,23 @@
 package org.frog.controller.mentor;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.frog.DAO.Booking_ScheduleDAO;
-import org.frog.DAO.MentorDAO;
-import org.frog.DAO.Mentor_ScheduleDAO;
-import org.frog.DAO.ScheduleDAO;
+import org.frog.DAO.*;
 import org.frog.controller.auth.AuthenticationServlet;
 import org.frog.model.*;
 import org.frog.utility.DateTimeHelper;
+import org.frog.utility.StatusEnum;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @WebServlet("/mentor/schedule/edit")
 public class ViewScheduleController extends AuthenticationServlet {
@@ -23,9 +25,37 @@ public class ViewScheduleController extends AuthenticationServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
 
+        fetchPost(req,resp,account);
 
     }
 
+    private void fetchPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+
+        BufferedReader reader = req.getReader();
+        StringBuilder jsonBuffer = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            jsonBuffer.append(line);
+        }
+        Gson gson = new Gson();
+        JsonObject json = gson.fromJson(jsonBuffer.toString(), JsonObject.class);
+
+        String slotId = json.get("option").getAsString();
+        ScheduleDAO scheduleDAO = new ScheduleDAO();
+        Mentor_ScheduleDAO mentor_scheduleDao = new Mentor_ScheduleDAO();
+        Mentor_Schedule mentor_schedule = mentor_scheduleDao.getByMentor(account.getId());
+        ArrayList<Schedule> schedules = new ArrayList<>();
+        ArrayList<Schedule> schedulesFilter = new ArrayList<>();
+
+        schedules = scheduleDAO.getScheduleLogsByMentorSet(account.getId());
+        schedulesFilter = schedules.stream()
+                .filter(s -> s.getStatus().getId() == 16)
+                .collect(Collectors.toCollection(ArrayList::new));
+        for (Schedule s : schedulesFilter) {
+            scheduleDAO.updateLogsById(s.getId(), StatusEnum.PROCESSING);
+        }
+
+    }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
         try {
@@ -73,7 +103,12 @@ public class ViewScheduleController extends AuthenticationServlet {
                    bs.updateStatusScheduleLogs(idCheckSlotBooked,9);
                }
             }
-
+            int countTotal = (int )schedules.stream().filter(s -> s.getStatus().getId() == 16).count();
+            String message = scheduleDAO.messageSchedule(account.getId());
+            if(message != null){
+                req.setAttribute("messageSchedule", message);
+                scheduleDAO.deleteMessageSchedule(account.getId());
+            }
             req.setAttribute("today", day);
             req.setAttribute("BookingSlots", BookingSlots);
             req.setAttribute("bookings", bookings);
@@ -81,6 +116,8 @@ public class ViewScheduleController extends AuthenticationServlet {
             req.setAttribute("count", 1);
             req.setAttribute("mentorID", account.getId());
             req.setAttribute("schedules", schedules);
+            req.setAttribute("countTotal", countTotal);
+
             req.getRequestDispatcher("/view/mentor/schedule/ViewMentorSchedule.jsp").forward(req, resp);
 
 
