@@ -11,8 +11,8 @@ import java.util.Properties;
 
 public class Email {
 
-    final String username = "trungnt260303@gmail.com";
-    final String password = "byoq kpms przk spep";
+    final String username = "*";
+    final String password = "*";
 
     public  void sendEmail(String titile,String string, String email) {
         Properties prop = new Properties();
