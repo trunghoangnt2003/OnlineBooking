@@ -375,14 +375,15 @@ public class BookingDAO {
                     "    [Level] ON Level_Skill.level_id = [Level].id  \n" +
                     "JOIN Status s ON Booking.status_id = s.id\n" +
                     "WHERE \n" +
-                    "    (Booking.status_id = ? OR Booking.status_id = ?) \n" +
+                    "    (Booking.status_id = ? OR Booking.status_id = ? OR Booking.status_id = ?) \n" +
                     "    AND Booking.mentee_id = ?\n" +
                     "ORDER BY \n" +
                     "    create_date DESC;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, StatusEnum.DONE);
             preparedStatement.setInt(2, StatusEnum.ACCEPTED);
-            preparedStatement.setString(3, mentee_id);
+            preparedStatement.setInt(3, StatusEnum.PAID);
+            preparedStatement.setString(4, mentee_id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {

@@ -351,12 +351,13 @@ public class MentorDAO {
                     "From Mentor m JOIN Account a ON m.account_id = a.id\n" +
                     "Where m.account_id in (SELEct Distinct b.mentor_id \n" +
                     "From Booking b\n" +
-                    "Where b.status_id = ? \n" +
+                    "Where (b.status_id = ? or b.mentee_id = ?) ) \n" +
                     "and b.mentee_id = ? \n" +
                     ")";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, StatusEnum.DONE);
-            preparedStatement.setString(2, mentee_id);
+            preparedStatement.setInt(2, StatusEnum.PAID);
+            preparedStatement.setString(3, mentee_id);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Mentor mentor = new Mentor();
