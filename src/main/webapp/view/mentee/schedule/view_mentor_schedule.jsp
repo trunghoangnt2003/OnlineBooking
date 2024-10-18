@@ -34,19 +34,15 @@
         }
 
         .wallet{
-            width: 20%;
             margin: 20px 0;
-            border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 5px 7px 2px rgba(0, 0, 0, 0.05);
         }
 
         .wallet-top {
-            color: #07AD90;
-            text-align: center;
+            color: rgb(43, 57, 64);
+            align-items: center;
             display: flex;
-            justify-content: center;
-            margin-bottom: 1rem;
+            /*justify-content: center;
+            margin-bottom: 1rem;*/
             cursor: pointer;
         }
         .wallet-top i {
@@ -54,7 +50,7 @@
             margin-right: 0.5rem;
         }
         .wallet-top:hover {
-            color: #04e8bf;
+            color: #00B074;
         }
 
 
@@ -72,13 +68,13 @@
         }
 
         .schedule {
-            width: 85%;
+            width: 76%;
         }
 
         .booking {
             margin-top: 45px;
-            width: 15%;
-            position: relative;
+            width: 20%;
+            /*position: relative;*/
             justify-content: center;
         }
 
@@ -112,61 +108,25 @@
             z-index: 1;
         }
 
-        .pin {
-            background-color: #aaa;
-            display: block;
-            height: 15px;
-            width: 2px;
-            position: absolute;
-            left: 50%;
-            top: -5px;
-            z-index: 1;
-        }
-
-        .pin:after {
-            background-color: yellowgreen;
-            background-image: radial-gradient(25% 25%, circle, hsla(0, 0%, 100%, .3), hsla(0, 0%, 0%, .3));
-            border-radius: 50%;
-            box-shadow: inset 0 0 0 1px hsla(0, 0%, 0%, .1), inset 3px 3px 3px hsla(0, 0%, 100%, .2), inset -3px -3px 3px hsla(0, 0%, 0%, .2), 18px 8px 3px hsla(0, 0%, 0%, .15);
-            content: '';
-            height: 12px;
-            left: -5px;
-            position: absolute;
-            top: -10px;
-            width: 12px;
-        }
-
-        .pin:before {
-            background-color: hsla(0, 0%, 0%, 0.1);
-            box-shadow: 0 0 .25em hsla(0, 0%, 0%, .1);
-            content: '';
-            height: 15px;
-            width: 2px;
-            left: 0;
-            position: absolute;
-            top: 0;
-            transform: rotate(57.5deg);
-            transform-origin: 50% 100%;
-        }
-
         table{
             border: 2px #07AD90 solid;
 
         }
 
         thead tr th {
-            border-left: 1px #07AD90 solid;
+            border-left: 2px #00714b solid;
             text-align: center;
-
+            background: #00B074;
+            color: white;
         }
         thead{
-            border-bottom: 2px #07AD90 solid;
+            border-bottom: 2px #00714b solid;
         }
 
         tbody tr, td {
-            border: 1px #07AD90 solid;
+            border: 2px #00714b dashed;
             width: 122px;
-            height: 122px;
+            height: 100px;
         }
 
         .footer-booking{
@@ -181,8 +141,8 @@
         }
         .btn-book {
             bottom: 0;
-            width: 100%;
-
+           /* width: 100%;*/
+            height: fit-content;
             display: flex;
             justify-content: center;
         }
@@ -271,16 +231,63 @@
             font-family: 'Roboto', sans-serif;
             color: #333;
         }
+
+        input[type="date"] {
+            background-color: #f0f8ff; /* Light background color */
+            border: 2px solid #00714b; /* Blue border */
+            border-radius: 5px; /* Rounded corners */
+            padding: 5px; /* Spacing inside the input */
+            font-size: 14px; /* Font size */
+            color: #333; /* Text color */
+            outline: none; /* Remove outline on focus */
+            transition: border-color 0.3s ease; /* Smooth transition */
+        }
+
+        /* Change border color when the input is focused */
+        input[type="date"]:focus {
+            border-color: #07ba80; /* Darker blue on focus */
+        }
+
+        /* Style the input on hover */
+        input[type="date"]:hover {
+            border-color: #07ba80; /* Lighter blue on hover */
+        }
+
+        .page-header {
+            background: linear-gradient(rgba(43, 57, 64, .5), rgba(43, 57, 64, .5)), url('${pageContext.request.contextPath}/img/carousel-1.jpg') center center no-repeat;
+             background-size: cover;
+        }
     </style>
 </head>
 
-<body>
 <jsp:include page="../../common/header.jsp"></jsp:include>
 <form action="booking-schedule" method="GET" id="frm">
-    <div style="margin: 20px 0 40px 40px;">
-        <jsp:include page="../../common/backBtn.jsp"></jsp:include>
+   <%-- <div class="d-flex justify-content-between">
+        <div style="margin: 20px 0 40px 40px;">
+            <jsp:include page="../../common/backBtn.jsp"></jsp:include>
+        </div>
+    </div>--%>
+    <div>
+        <c:set var="level_skill" value="${requestScope.level_skills}"></c:set>
+        <input type="text" hidden="hidden" name="mentorId" value="${requestScope.mentor.account.id}"/>
+        <input type="text" hidden="hidden" name="skill" value="${level_skill.skill.name}"/>
+        <input type="text" hidden="hidden" name="level" value="${level_skill.level.name}">
+        <div class="container-xxl py-5 bg-dark page-header mb-1">
+            <div class="container my-5 pt-5 pb-4">
+                <div class="d-flex">
+                    <img style="width: 45px; height: 45px" src="${pageContext.request.contextPath}/${level_skill.skill.src_icon}">
+                    &nbsp;&nbsp;
+                    <span style="color: #05c681; text-align: end;" class="fa-2x fw-bold">${level_skill.skill.name} for ${level_skill.level.name} </span>
+                </div>
+                <div>
+                    <span class="fs-4" style="color: #cac7c7"> Mentor: ${requestScope.mentor.account.name}</span>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="d-flex justify-content-between" style="margin: 0 40px" >
+   <%-- <div class="d-flex justify-content-between" style="margin: 0 40px" >
+
+
         <div class="info-container">
             <c:set var="level_skill" value="${requestScope.level_skills}"></c:set>
             <input type="text" hidden="hidden" name="mentorId" value="${requestScope.mentor.account.id}"/>
@@ -297,10 +304,6 @@
             </div>
             <div  class="d-flex justify-content-between mt-3">
                 <span class="fs-4"> Mentor: ${requestScope.mentor.account.name}</span>
-                <span class="fs-5">
-                    <fmt:formatNumber value="${requestScope.mentor.price}" type="number" maxFractionDigits="0" />₫/per slot
-                </span>
-
             </div>
         </div>
         <div class="wallet">
@@ -317,11 +320,95 @@
             <input id="available" type="text" hidden="hidden" name="available" value="${requestScope.wallet.balance-requestScope.wallet.hold}"/>
 
         </div>
-    </div>
-    <div class="d-flex main">
+    </div>--%>
+    <div class="d-flex main justify-content-between">
+
+        <div class="booking">
+            <div class="wallet d-flex">
+                <div class="wallet-top" onclick="waletHandle()">
+                    <i class="fa-solid fa-wallet fa-2x"></i>
+                    <%--<h3>Wallet</h3>--%>
+                </div>
+                <div class="fa-2x">
+                    <fmt:formatNumber value="${requestScope.wallet.balance-requestScope.wallet.hold}" type="number" maxFractionDigits="0" />₫
+                </div>
+               <%-- <h6>Total:
+                    <fmt:formatNumber value="${requestScope.wallet.balance}" type="number" maxFractionDigits="0" />₫
+                </h6>
+                <h6>Available:
+                    <fmt:formatNumber value="${requestScope.wallet.balance-requestScope.wallet.hold}" type="number" maxFractionDigits="0" />₫
+                </h6>--%>
+                <input id="available" type="text" hidden="hidden" name="available" value="${requestScope.wallet.balance-requestScope.wallet.hold}"/>
+
+            </div>
+            <h4 style="text-align: center; color: rgb(43, 57, 64)">Your Booking</h4>
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="amount text-start">
+                    <input id="price" type="number" value="${requestScope.mentor.price}" hidden="hidden"/>
+                    <h6 id="number_booking"></h6>
+                    <h6 id="amount" ></h6>
+                </div>
+                <div class="btn-book">
+                    <button type="button" class="btn btn-outline-success"  onclick="bookHandle()"
+                            data-mdb-ripple-init data-mdb-ripple-color="dark">Book</button>
+                </div>
+            </div>
+
+            <hr style="margin: 10px 0; border: 2px #00714b solid; opacity: 100%"/>
+            <c:if test="${requestScope.bookingConflict.size() gt 0}">
+
+                <div style="text-align: center">
+                    <ul class="booking-list-conflict">
+                        <c:forEach items="${requestScope.bookingConflict}" var="bcf">
+                            <input type="text" hidden="hidden" name="booking-conflict" value="${bcf.schedule.id}_${bcf.schedule.slot.id}_${bcf.schedule.date}"/>
+                            <li class="booking-item" style="font-size: 14px; background-color: #2b3940">Slot ${bcf.schedule.slot.id} / Date: ${bcf.schedule.date}</li>
+                        </c:forEach>
+
+                    </ul>
+                    <i style="font-size: 10px; color: #FF6347">< Your bookings above have conflict! ></i>
+                    <i style="font-size: 10px; color: #FF6347">< ${requestScope.slotNotExist} slots not exist ></i>
+                    <hr style="margin: 5px 0; color: #FF6347; opacity: 80%; border: none;">
+                </div>
+            </c:if>
+            <c:if test="${slotNotExist > 0 && requestScope.bookingConflict.size() le 0}">
+                <div style="text-align: center">  <i style="font-size: 10px; color: #FF6347" >< ${requestScope.slotNotExist} slots not exist ></i></div>
+                <hr style="margin: 5px 0; color: #FF6347; opacity: 80%; border: none;">
+            </c:if>
+            <div id="bookingList1">
+                <c:forEach items="${requestScope.bookingList}" var="booking">
+                    <input type="text" hidden="hidden"
+                           value="${booking.schedule.id}_${booking.schedule.slot.id}_${booking.schedule.date}" />
+                </c:forEach>
+            </div>
+            <ul id="bookingList" class="booking-list">
+
+            </ul>
+            <%--<div class="footer-booking"> --%>
+            <div class="mt-3">
+                <div>
+                    <textarea id="notes" name="message" placeholder="write your sort message" rows="4"  style="width: 100%"></textarea>
+                </div>
+                <%-- <div class="amount">
+                     <input id="price" type="number" value="${requestScope.mentor.price}" hidden="hidden"/>
+                     <h5 id="number_booking"></h5>
+                     <h5 id="amount" ></h5>
+
+                 </div>
+                 <div class="btn-book">
+                     <button type="button" class="btn btn-outline-success"  onclick="bookHandle()"
+                             data-mdb-ripple-init data-mdb-ripple-color="dark">Book</button>
+                 </div>--%>
+            </div>
+
+        </div>
         <div class="schedule">
             <div>
-                <h1 style="text-align: center; color: #07AD90;">Schedule</h1>
+                <h1 style="text-align: center; color: rgb(43, 57, 64);">Time Table</h1>
+            </div>
+            <div class="d-flex justify-content-end" style="width: 988px">
+                 <span class="fs-5">
+                    <fmt:formatNumber value="${requestScope.mentor.price}" type="number" maxFractionDigits="0" />₫/per slot
+                </span>
             </div>
             <table>
                 <thead>
@@ -334,7 +421,7 @@
                     </c:forEach>
                 </tr>
                 <tr>
-                    <th>Slot</th>
+                    <th></th>
                     <th>Monday</th>
                     <th>Tuesday</th>
                     <th>Wednesday</th>
@@ -345,43 +432,47 @@
                 </tr>
 
                 </thead>
-                <tbody style="border: 1px #07AD90 solid">
+                <tbody style="border: 2px #00714b solid">
                 <c:forEach items="${requestScope.slots}" var="slot">
                     <tr>
-                        <td class="text-center">
-                            <h6>Slot ${slot.id}</h6>
-                                ${slot.start_at}-${slot.end_at}
+                        <td class="text-center" style="background: #00B074; color: white">
+                            <h5>Slot ${slot.id}</h5>
+                                <%--${slot.start_at}-${slot.end_at}--%>
                         </td>
                         <c:forEach items="${requestScope.week}" var="date">
                             <td >
+                                <div class="w-100 h-100">
+
+
                                 <c:forEach items="${requestScope.bookingSchedules}" var="bs">
                                     <c:if test="${ (bs.schedule.slot.id == slot.id) && (bs.schedule.date == date) }">
-                                        <div class="notes-container text-center ">
-                                            <i class="pin"></i>
+                                        <div class="">
                                             <%--Free And Proccessing                                      --%>
                                             <c:if test="${bs.status.id == 0}">
                                                 <c:set var="time_start_at" value="${bs.schedule.date}T${slot.start_at}:00" />
                                                 <fmt:formatDate var="now" value="${requestScope.now }" pattern="yyyy-MM-dd'T'HH:mm:ss"/>
                                                 <%--Check if the time is in the future                                     --%>
                                                 <c:if test="${time_start_at > now}">
-                                                    <blockquote class="notes color-note font-monospace" style="background-color: #32cd32; text-align: center">
-                                                        <div class="text-center fw-bold fs-4  ">
-                                                            <span > Free</span>
+                                                    <div>
+                                                        <div class="d-flex justify-content-end">
+                                                            <input type="checkbox" class="checkbox__input mb-2"
+                                                                    <c:forEach items="${requestScope.bookingList}" var="booking">
+                                                                        ${booking.schedule.id == bs.schedule.id ? 'checked' : ''}
+                                                                    </c:forEach>
+                                                                   onchange="handleCheckboxChange(this, ${bs.schedule.id}, ${slot.id}, '${date}','${slot.end_at}')"
+                                                            />
+                                                            <svg class="checkbox__icon mb-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
+                                                                <rect width="22" height="22" x=".5" y=".5" fill="#FFF" stroke="#006F94" rx="3" />
+                                                                <path class="tick" stroke="#6EA340" fill="none" stroke-linecap="round" stroke-width="4" d="M4 10l5 5 9-9" />
+                                                            </svg>
                                                         </div>
-                                                        <div class="mt-1" style="font-size: 14px">
-                                                            <span>book here </span>
+
+                                                        <div style="background-color: #32cd32; font-size: 14px" >
+                                                            Free ${slot.start_at}-${slot.end_at}
                                                         </div>
-                                                        <input type="checkbox" class="checkbox__input"
-                                                                <c:forEach items="${requestScope.bookingList}" var="booking">
-                                                                    ${booking.schedule.id == bs.schedule.id ? 'checked' : ''}
-                                                                </c:forEach>
-                                                               onchange="handleCheckboxChange(this, ${bs.schedule.id}, ${slot.id}, '${date}','${slot.end_at}')"
-                                                        />
-                                                        <svg class="checkbox__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
-                                                            <rect width="21" height="21" x=".5" y=".5" fill="#FFF" stroke="#006F94" rx="3" />
-                                                            <path class="tick" stroke="#6EA340" fill="none" stroke-linecap="round" stroke-width="4" d="M4 10l5 5 9-9" />
-                                                        </svg>
-                                                    </blockquote>
+
+                                                    </div>
+
                                                 </c:if>
                                                 <%--Check if the time is in the past                                      --%>
                                                 <c:if test="${time_start_at <= now}">
@@ -392,16 +483,6 @@
                                                         <div class="mt-3" style="font-size: 14px">
                                                             <span>out date </span>
                                                         </div>
-                                                      <%--  <input type="checkbox" class="checkbox__input"
-                                                                <c:forEach items="${requestScope.bookingList}" var="booking">
-                                                                    ${booking.schedule.id == bs.schedule.id ? 'checked' : ''}
-                                                                </c:forEach>
-                                                               onchange="handleCheckboxChange(this, ${bs.schedule.id}, ${slot.id}, '${date}','${slot.end_at}')"
-                                                        />--%>
-                                                       <%-- <svg class="checkbox__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
-                                                            <rect width="21" height="21" x=".5" y=".5" fill="#FFF" stroke="#006F94" rx="3" />
-                                                            <path class="tick" stroke="#6EA340" fill="none" stroke-linecap="round" stroke-width="4" d="M4 10l5 5 9-9" />
-                                                        </svg>--%>
                                                     </blockquote>
                                                 </c:if>
 
@@ -412,37 +493,50 @@
                                                 <c:if test="${bs.booking.mentee.account.id.equals(requestScope.mentee_id)}">
                                                     <%--Processing                                           --%>
                                                     <c:if test="${bs.status.id == 1}">
-
-                                                        <blockquote class="notes color-note font-monospace" style="background-color: #F4E0B9">
-
-                                                            <div class="text-center fw-bold">
-                                                                <span>Your Book</span>
+                                                        <div>
+                                                            <div class="d-flex justify-content-end">
+                                                                <img width="23px" class="mb-2"  src="${pageContext.request.contextPath}/${bs.booking.level_skills.skill.src_icon}">
                                                             </div>
-                                                            <img width="20px" class="mt-2"  src="${pageContext.request.contextPath}/${bs.booking.level_skills.skill.src_icon}">
-                                                            <div style="font-size: 14px">
+                                                            <div style="background-color: #F4E0B9; font-size: 14px; margin-bottom: 4px">
+                                                                    ${slot.start_at}-${slot.end_at}
+                                                            </div>
+                                                            <div style="background-color: #F4E0B9">
                                                                 <span>${bs.booking.level_skills.level.name}</span>
                                                                 <span style="font-size: 10px">Processing...</span>
                                                             </div>
-                                                        </blockquote>
+                                                        </div>
                                                     </c:if>
                                                     <%--Accepted                                           --%>
                                                     <c:if test="${bs.status.id == 11}">
-                                                        <blockquote class="notes color-note font-monospace" style="background-color: #fff142">
-
-                                                            <div class="text-center fw-bold">
-                                                                <span>Your Book</span>
+                                                        <div>
+                                                            <div class="d-flex justify-content-end">
+                                                                <img width="23px" class="mb-2"  src="${pageContext.request.contextPath}/${bs.booking.level_skills.skill.src_icon}">
                                                             </div>
-                                                            <img width="20px" class="mt-2"  src="${pageContext.request.contextPath}/${bs.booking.level_skills.skill.src_icon}">
-                                                            <div style="font-size: 14px">
+                                                            <div style="background-color: #fff142; font-size: 14px; margin-bottom: 4px">
+                                                                    ${slot.start_at}-${slot.end_at}
+                                                            </div>
+                                                            <div style="background-color: #fff142">
                                                                 <span>${bs.booking.level_skills.level.name}</span>
-
+                                                                <br/>
                                                                 <span style="font-size: 10px">Accepted</span>
                                                             </div>
-                                                        </blockquote>
+                                                        </div>
                                                     </c:if>
                                                     <%--Done                                           --%>
                                                     <c:if test="${bs.status.id == 3}">
-                                                        <blockquote class="notes color-note font-monospace" style="background-color: #faad12">
+                                                        <div>
+                                                            <div class="d-flex justify-content-end">
+                                                                <img width="23px" class="mb-2"  src="${pageContext.request.contextPath}/${bs.booking.level_skills.skill.src_icon}">
+                                                            </div>
+                                                            <div style="background-color: #faad12; font-size: 14px; margin-bottom: 4px">
+                                                                    ${slot.start_at}-${slot.end_at}
+                                                            </div>
+                                                            <div style="background-color: #faad12">
+                                                                <span>${bs.booking.level_skills.level.name}</span>
+                                                                <span style="font-size: 10px">Done</span>
+                                                            </div>
+                                                        </div>
+                                                      <%--  <blockquote class="notes color-note font-monospace" style="background-color: #faad12">
 
                                                             <div class="text-center fw-bold">
                                                                 <span>Your Book</span>
@@ -452,25 +546,34 @@
                                                                 <span>${bs.booking.level_skills.level.name}</span>
                                                                 <span style="font-size: 10px">Done</span>
                                                             </div>
-                                                        </blockquote>
+                                                        </blockquote>--%>
                                                     </c:if>
                                                 </c:if>
                                                 <%--Not My book                                           --%>
                                                 <c:if test="${bs.booking.mentee.account.id ne requestScope.mentee_id}">
                                                     <%--Done or Accepted                                           --%>
                                                     <c:if test="${bs.status.id != 1}">
-                                                        <blockquote class="notes color-note font-monospace" style="background-color: #FF6347">
+                                                        <div>
+                                                            <div class="d-flex justify-content-end">
+                                                                <img width="23px" class="mb-2"  src="${pageContext.request.contextPath}/${bs.booking.level_skills.skill.src_icon}">
+                                                            </div>
+                                                            <div style="background-color: #FF6347; font-size: 14px; margin-bottom: 4px">
+                                                                Busy ${slot.start_at}-${slot.end_at}
+                                                            </div>
+                                                        </div>
+                                                       <%-- <blockquote class="notes color-note font-monospace" style="background-color: #FF6347">
                                                             <div class="text-center fw-bold fs-5">
                                                                 <span >Busy </span>
                                                             </div>
                                                             <div class="text-center mt-2" style="font-size: 12px">
                                                                 <span> Booking are not possible</span>
                                                             </div>
-                                                        </blockquote>
+                                                        </blockquote>--%>
                                                     </c:if>
 
                                                     <%--Processing Can book                                           --%>
                                                     <c:if test="${bs.status.id == 1}">
+
                                                         <blockquote class="notes color-note font-monospace" style="background-color: #32cd32; text-align: center">
                                                             <div class="text-center fw-bold fs-4  ">
                                                                 <span > Free</span>
@@ -495,13 +598,14 @@
                                         </div>
                                     </c:if>
                                 </c:forEach>
+                                </div>
                             </td>
                         </c:forEach>
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
-            <div class="d-flex justify-content-between mt-4" style="width: 70%" >
+          <%--  <div class="d-flex justify-content-between mt-4" style="width: 70%" >
                 <div class="d-flex">
                     <div class="notetip" style="background-color: #FF6347FF;" ></div> <span class="text-danger ms-2">Busy</span>
                 </div>
@@ -521,58 +625,10 @@
                     <div class="notetip" style="background-color: #989797FF " ></div> <span class="ms-2" style="color: #989797FF">Free but out date</span>
                 </div>
 
-            </div>
+            </div>--%>
         </div>
 
-        <div class="booking">
 
-                <h4 style="text-align: center; color: #07AD90">Your Booking</h4>
-                <hr style="margin: 10px 0; border: 1px #1BB295 solid; opacity: 100%"/>
-                <c:if test="${requestScope.bookingConflict.size() gt 0}">
-
-                    <div style="text-align: center">
-                        <ul class="booking-list-conflict">
-                            <c:forEach items="${requestScope.bookingConflict}" var="bcf">
-                                <input type="text" hidden="hidden" name="booking-conflict" value="${bcf.schedule.id}_${bcf.schedule.slot.id}_${bcf.schedule.date}"/>
-                                <li class="booking-item" style="font-size: 14px; background-color: #FF6347">${bcf.schedule.date} - Slot: ${bcf.schedule.slot.id}</li>
-                            </c:forEach>
-
-                        </ul>
-                        <i style="font-size: 10px; color: #FF6347">< Your bookings above have conflict! ></i>
-                        <i style="font-size: 10px; color: #FF6347">< ${requestScope.slotNotExist} slots not exist ></i>
-                        <hr style="margin: 5px 0; color: #FF6347; opacity: 80%; border: none;">
-                    </div>
-                </c:if>
-            <c:if test="${slotNotExist > 0 && requestScope.bookingConflict.size() le 0}">
-                <div style="text-align: center">  <i style="font-size: 10px; color: #FF6347" >< ${requestScope.slotNotExist} slots not exist ></i></div>
-                <hr style="margin: 5px 0; color: #FF6347; opacity: 80%; border: none;">
-            </c:if>
-                <div id="bookingList1">
-                    <c:forEach items="${requestScope.bookingList}" var="booking">
-                        <input type="text" hidden="hidden"
-                               value="${booking.schedule.id}_${booking.schedule.slot.id}_${booking.schedule.date}" />
-                    </c:forEach>
-                </div>
-                <ul id="bookingList" class="booking-list">
-
-                </ul>
-                <div class="footer-booking">
-                    <div>
-                        <textarea id="notes" name="message" placeholder="write your sort message" rows="6" ></textarea>
-                    </div>
-                    <div class="amount">
-                        <input id="price" type="number" value="${requestScope.mentor.price}" hidden="hidden"/>
-                        <h5 id="number_booking"></h5>
-                        <h5 id="amount" ></h5>
-
-                    </div>
-                    <div class="btn-book">
-                        <button type="button" class="btn btn-outline-success"  onclick="bookHandle()"
-                                data-mdb-ripple-init data-mdb-ripple-color="dark">Book</button>
-                    </div>
-                </div>
-
-        </div>
     </div>
 </form>
 <script>
@@ -658,11 +714,11 @@
 
 
 
-        numbook.innerHTML = 'Number of booking: ' + number_booking;
+        numbook.innerHTML = 'Slots: ' + number_booking;
         var totalAmount = number_booking * price;
         var formattedAmount = totalAmount.toLocaleString('en-US', { maximumFractionDigits: 0 });
 
-        amount.innerHTML =  'Total amount: ' + formattedAmount + '₫';
+        amount.innerHTML =  'Total : ' + formattedAmount + '₫';
         const total_amount = document.createElement('input');
         total_amount.type = 'text';
         total_amount.name = 'total_amount';
