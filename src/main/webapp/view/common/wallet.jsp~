@@ -213,14 +213,14 @@
             </h3>
             <p style="margin-bottom: 0">Total: ${requestScope.balance}</p>
             <p>Hold: ${requestScope.hold}</p>
-<%--            <c:if test="${requestScope.role == 1}">--%>
-<%--                <button>Withdraw</button>--%>
-<%--                <button onclick="payment()" class="btn2">Deposit</button>--%>
-<%--            </c:if>--%>
-<%--            <c:if test="${requestScope.role == 2}">--%>
-<%--                <button>Withdraw</button>--%>
-<%--                <button class="btn2">Deposit</button>--%>
-<%--            </c:if>--%>
+            <c:if test="${requestScope.role == 1}">
+                <button>Withdraw</button>
+                <button onclick="payment()" class="btn2">Deposit</button>
+            </c:if>
+            <c:if test="${requestScope.role == 2}">
+                <button>Withdraw</button>
+                <button class="btn2">Deposit</button>
+            </c:if>
         </div>
         <div class="help">
             <p>Need Help?</p>
