@@ -140,7 +140,7 @@ position: sticky; top:0; z-index: 999">
                     <c:if test="${sessionScope.account!=null}">
                         <div class="d-flex align-items-center">
                             <div>
-                                <span style="color: whitesmoke; padding-right: 10px"> ${sessionScope.account.userName}</span>
+                                <span style="color: whitesmoke"> ${sessionScope.account.userName}</span>
                             </div>
                             <!-- Avatar -->
                             <div class="dropdown">

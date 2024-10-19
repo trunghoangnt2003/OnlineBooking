@@ -270,14 +270,11 @@
                                     </div>
                                 </c:when>
                                 <c:when test="${countCheck == 3 }">
-                                    <div class="d-flex justify-content-end">
-                                        <img width="23px" class="mb-2" src="${pageContext.request.contextPath}/${avatarSkill}">
-                                    </div>
                                     <div style="background-color: #f3f3ad; font-size: 14px; margin-bottom: 4px" >
                                         Request ${t.start_at}- ${t.end_at}
                                     </div>
                                     <div style="background-color: #f3f3ad; font-size: 14px" >
-                                       Please confirm denied
+                                       Please confirm/\denied
                                     </div>
                                 </c:when>
                             </c:choose>

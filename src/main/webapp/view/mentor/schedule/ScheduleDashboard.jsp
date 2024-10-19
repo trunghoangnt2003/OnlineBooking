@@ -274,7 +274,7 @@
                                         Request ${t.start_at}- ${t.end_at}
                                     </div>
                                     <div style="background-color: #f3f3ad; font-size: 14px" >
-                                       Please confirm denied
+                                       Please confirm/denied
                                     </div>
                                 </c:when>
                             </c:choose>
