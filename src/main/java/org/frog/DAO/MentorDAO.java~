@@ -863,7 +863,8 @@ public class MentorDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Booking booking = new Booking();
-
+                booking.setId(resultSet.getInt("id"));
+                booking.setName(resultSet.getString("name"));
                 list.add(booking);
             }
         } catch (SQLException e) {

@@ -463,7 +463,7 @@
     }
 
     function changeToSearchSkill(skill) {
-        window.location.href = 'Search_Skills?skill=' + encodeURIComponent(skill);
+        window.location.href = 'Search_Skills?skill=java' +
     }
 
     function showContent(type) {
