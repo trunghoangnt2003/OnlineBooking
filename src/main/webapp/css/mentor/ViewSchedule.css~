@@ -265,7 +265,11 @@ label {
     border-radius: 5px;
     padding: 30px 60px;
 }
-
+#button-schedule-td2{
+    border: none;
+    border-radius: 5px;
+    padding: 30px 40px;
+}
 /*css cho bang*/
 table{
     /*border: 2px #07AD90 solid;*/

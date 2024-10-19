@@ -28,6 +28,10 @@
         background: #FFFFFF;
     }
 
+    .content {
+        margin: 30px 30px;
+
+    }
     /*.X {*/
     /*    margin-top: 25px;*/
     /*    padding: 1% 2%;*/
@@ -111,35 +115,13 @@
     /*        width: 100%;*/
     /*    }*/
     /*}*/
-    .custom-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
 
-    .custom-table th {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 5px 5px;
-    }
-    .custom-table td {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 2px 5px;
-        height: 100%;
-    }
-    .custom-table th {
-        background-color: #f2f2f2;
-    }
-    .custom-table .narrow-column {
-        width: 1%;
-        padding: 0 40px;
-    }
 </style>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mentor/ManageSchedule.css">
 
 <body>
 <jsp:include page="/view/common/header.jsp"></jsp:include>
-<div class="container">
+<div class="content">
     <c:if test="${param.id == null}">
         <div style="margin: 25px 10px  20px 50px ">
             <a href="${pageContext.request.contextPath}/mentor/schedule" style="text-decoration: none">
@@ -160,7 +142,7 @@
     </c:if>
     <c:if test="${param.id != null}">
         <div class="row" style="margin-top: 25px;">
-            <div class="col-4 ">
+            <div style="width: 16%">
                 <h3 style="text-decoration: none;color: #07ad90;">Manage Request</h3>
                 <div class="list-group" id="list-tab" role="tablist" style="width: 220px">
                     <a class="list-group-item list-group-item-action <c:if test="${param.action == 1}">list-group-item-success</c:if>"
@@ -176,18 +158,22 @@
                         Detail</a>
                 </div>
             </div>
-            <div class="col-8">
+            <div style="width: 82%;">
                 <c:if test="${param.action == 1}">
                     <div style="display: inline">
-                        <div><h3 style="text-decoration: none;color: #07ad90;">Table</h3></div>
-                        <div><input type="date" class="styled-date" name="today" id="today" value="${today}"
-                                    data-viewID="${param.viewID}" style="width: 20%"
-                                    onchange="updateURL()"></div>
+                        <h1 style="color: rgb(43, 57, 64)" class="text-center">Time Table</h1>
+
                     </div>
                     <table>
                         <thead>
                         <tr>
-                            <th></th>
+                            <th>
+                                <div>
+                                    <input type="date" class="styled-date" name="today" id="today" value="${today}"
+                                            data-viewID="${param.viewID}"
+                                            onchange="updateURL()">
+                                </div>
+                            </th>
                             <c:forEach items="${weeks}" var="week">
                                 <th>${week.dayOfWeek}<br/>
                                         ${week.dayOfMonth}
@@ -198,10 +184,11 @@
                         <tbody>
                         <c:forEach items="${slots}" var="t">
                             <tr>
-                                <td>
-                                    <div style="display: flex; text-align: center">Slot ${t.id}<br/>
-                                            ${t.start_at} - ${t.end_at}
-                                    </div>
+                                <td class="text-center" style="background: #00B074; color: white">
+                                        <%--<div style="display: flex; text-align: center">Slot${t.id}<br/>
+                                                ${t.start_at}- ${t.end_at}
+                                        </div>--%>
+                                    <h5>Slot ${t.id}</h5>
                                 </td>
 
                                 <c:forEach items="${weeks}" var="week">
@@ -243,7 +230,16 @@
                                             </c:if>
                                         </c:forEach>
                                         <c:if test="${countCheck == 1}">
-                                            <div class="notes-container">
+                                            <div>
+                                                <div class="d-flex justify-content-end">
+                                                    <img width="23px" class="mb-2" src="${pageContext.request.contextPath}/${avatarSkill}">
+                                                        ${nameType}
+                                                </div>
+                                                <div style="background-color: #FAAD12FF; font-size: 14px; margin-bottom: 4px">
+                                                    Accepted  ${t.start_at}- ${t.end_at}
+                                                </div>
+                                            </div>
+                                           <%-- <div class="notes-container">
                                                 <i class="pin"></i>
                                                 <blockquote class="notes red">
                                                     <img width="30px"
@@ -253,26 +249,25 @@
 
                                                 </blockquote>
 
-                                            </div>
+                                            </div>--%>
                                         </c:if>
                                         <c:if test="${countCheck == 2}">
-                                            <div class="notes-container">
-                                                <i class="pin"></i>
-                                                <blockquote class="notes red">
-                                                    <img width="30px"
-                                                         src="${pageContext.request.contextPath}/${avatarSkill}"
-                                                         style="margin-bottom: 10px;"/>
+                                            <div>
+                                                <div class="d-flex justify-content-end">
+                                                    <img width="23px" class="mb-2" src="${pageContext.request.contextPath}/${avatarSkill}">
                                                         ${nameType}
+                                                </div>
+                                                <div style="background-color: #FAAD12FF; font-size: 14px; margin-bottom: 4px">
+                                                    Accepted  ${t.start_at}- ${t.end_at}
+                                                </div>
+                                                <div style="background-color: #FAAD12FF; font-size: 14px; margin-bottom: 4px">
                                                     <c:if test="${present.equals('present') && icon}">
-                                                        <i class="fa-solid fa-frog fa-xl"
-                                                           style="color: #02b23c; margin-top: -25px; margin-left: 40px"></i>
+                                                       Present
                                                     </c:if>
                                                     <c:if test="${present.equals('absent') && icon}">
-                                                        <i class="fa-solid fa-face-sad-tear fa-xl"
-                                                           style="color: #f25452; margin-top: -25px; margin-left: 40px"></i>
+                                                        Absent
                                                     </c:if>
-                                                </blockquote>
-
+                                                </div>
                                             </div>
                                         </c:if>
                                     </td>
