@@ -123,43 +123,27 @@
                         </div>
 
                     </div>
-                    <div class="card skill p-4" style="background-color: #f8f9fa; border-radius: 8px;">
+                    <div class="skill">
                         <div class="row">
-                            <!-- Loop through levels -->
                             <c:forEach items="${requestScope.levels}" var="level">
-                                <div class="col-md-4 mb-4">
-                                    <!-- Summary & Details for each level -->
-                                    <details>
-                                        <!-- Summary for the level name -->
-                                        <summary style="font-size: 1.2em; font-weight: bold; color: #00B074; margin-bottom: 10px;">
-                                                ${level.name} (Click to expand)
-                                        </summary>
-
-                                        <!-- Skills for this level -->
-                                        <div class="skills-list" style="margin-top: 10px;">
-                                            <c:forEach items="${requestScope.level_skills}" var="levelSkill">
-                                                <c:if test="${levelSkill.level.name == level.name}">
-                                                    <div class="form-check" style="margin-bottom: 8px;">
-                                                        <!-- Skill Checkbox -->
-                                                        <input class="form-check-input" type="checkbox" id="skill-${levelSkill.id}" name="level_skill" value="${levelSkill.id}"
-                                                                <c:forEach items="${requestScope.mentorSkill}" var="mentorSkill">
-                                                                    <c:if test="${mentorSkill.id == levelSkill.id}">checked</c:if>
-                                                                </c:forEach>
-                                                        />
-                                                        <!-- Skill Label -->
-                                                        <label class="form-check-label" for="skill-${levelSkill.id}" style="font-size: 1em; color: #333;">
-                                                                ${levelSkill.skill.name}
-                                                        </label>
-                                                    </div>
-                                                </c:if>
-                                            </c:forEach>
-                                        </div>
-                                    </details>
+                                <div class="col-md-4">
+                                    <div class="skill-name">${level.name}</div>
+                                    <c:forEach items="${requestScope.level_skills}" var="levelSkill">
+                                        <c:if test="${levelSkill.level.name == level.name}">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="skill-${levelSkill.id}" name="level_skill" value="${levelSkill.id}"
+                                                        <c:forEach items="${requestScope.mentorSkill}" var="mentorSkill">
+                                                            <c:if test="${mentorSkill.id == levelSkill.id}">checked</c:if>
+                                                        </c:forEach>
+                                                />
+                                                <label class="form-check-label" for="skill-${levelSkill.id}">${levelSkill.skill.name}</label>
+                                            </div>
+                                        </c:if>
+                                    </c:forEach>
                                 </div>
                             </c:forEach>
                         </div>
                     </div>
-
                 </div>
                 <div class="button">
                     <button name="action" value="save" style="margin-right: 20px" type="submit" class="btn btn-info" data-mdb-ripple-init>Save</button>

@@ -109,33 +109,54 @@
                 <!-- Loop through levels -->
                 <c:forEach items="${requestScope.levels}" var="level">
                     <div class="col-md-4 mb-4">
-                        <!-- Summary & Details for each level -->
-                        <details>
-                            <!-- Summary for the level name -->
-                            <summary style="font-size: 1.2em; font-weight: bold; color: #00B074; margin-bottom: 10px;">
-                                    ${level.name} (Click to expand)
-                            </summary>
+                        <!-- Level Name -->
+                        <div class="level-header" style="font-size: 1.2em; font-weight: bold; color: #00B074; margin-bottom: 10px;">
+                                ${level.name}
+                        </div>
 
-                            <!-- Skills for this level -->
-                            <div class="skills-list" style="margin-top: 10px;">
-                                <c:forEach items="${requestScope.level_skills}" var="levelSkill">
-                                    <c:if test="${levelSkill.level.name == level.name}">
-                                        <div class="form-check" style="margin-bottom: 8px;">
-                                            <!-- Skill Checkbox -->
-                                            <input class="form-check-input" type="checkbox" id="skill-${levelSkill.id}" name="level_skill" value="${levelSkill.id}"
-                                                    <c:forEach items="${requestScope.mentorSkill}" var="mentorSkill">
-                                                        <c:if test="${mentorSkill.id == levelSkill.id}">checked</c:if>
-                                                    </c:forEach>
-                                            />
-                                            <!-- Skill Label -->
-                                            <label class="form-check-label" for="skill-${levelSkill.id}" style="font-size: 1em; color: #333;">
-                                                    ${levelSkill.skill.name}
-                                            </label>
-                                        </div>
-                                    </c:if>
-                                </c:forEach>
-                            </div>
-                        </details>
+                        <!-- Collapsible button to expand/collapse skills -->
+                        <button class="btn btn-sm btn-link text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${level.name}" aria-expanded="false" aria-controls="collapse-${level.name}">
+                            Show all skills
+                        </button>
+
+                        <!-- Loop through level skills for this level (only a summary initially visible) -->
+                        <div id="collapse-${level.name}" class="collapse">
+                            <c:forEach items="${requestScope.level_skills}" var="levelSkill" begin="0" end="2">
+                                <c:if test="${levelSkill.level.name == level.name}">
+                                    <div class="form-check" style="margin-bottom: 8px;">
+                                        <!-- Skill Checkbox -->
+                                        <input class="form-check-input" type="checkbox" id="skill-${levelSkill.id}" name="level_skill" value="${levelSkill.id}"
+                                                <c:forEach items="${requestScope.mentorSkill}" var="mentorSkill">
+                                                    <c:if test="${mentorSkill.id == levelSkill.id}">checked</c:if>
+                                                </c:forEach>
+                                        />
+                                        <!-- Skill Label -->
+                                        <label class="form-check-label" for="skill-${levelSkill.id}" style="font-size: 1em; color: #333;">
+                                                ${levelSkill.skill.name}
+                                        </label>
+                                    </div>
+                                </c:if>
+                            </c:forEach>
+                        </div>
+
+                        <!-- Show the summary skills (3 skills by default) -->
+                        <div class="summary-skills">
+                            <c:forEach items="${requestScope.level_skills}" var="levelSkill" begin="0" end="2">
+                                <c:if test="${levelSkill.level.name == level.name}">
+                                    <div class="form-check" style="margin-bottom: 8px;">
+                                        <input class="form-check-input" type="checkbox" id="skill-${levelSkill.id}" name="level_skill" value="${levelSkill.id}"
+                                                <c:forEach items="${requestScope.mentorSkill}" var="mentorSkill">
+                                                    <c:if test="${mentorSkill.id == levelSkill.id}">checked</c:if>
+                                                </c:forEach>
+                                        />
+                                        <label class="form-check-label" for="skill-${levelSkill.id}" style="font-size: 1em; color: #333;">
+                                                ${levelSkill.skill.name}
+                                        </label>
+                                    </div>
+                                </c:if>
+                            </c:forEach>
+                        </div>
+
                     </div>
                 </c:forEach>
             </div>
