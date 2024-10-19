@@ -18,20 +18,19 @@
 }
 
 .search-container{
-    display: flex;
+    /*display: flex;
     justify-content: center;
-    margin-bottom: 50px;
+    margin-bottom: 50px;*/
 }
 
 .search-box {
-    width: 500px;
+   /* width: 500px;*/
     height: 40px;
-    position: relative;
-    overflow: hidden;
+   /* position: relative;
+    overflow: hidden;*/
     transition: all 0.5s ease;
     border-radius: 15px;
     background-color: #e5fff9;
-    margin-top: 50px;
 }
 
 
@@ -76,7 +75,7 @@
 }
 
 .info{
-    width: 65%;
+    width: 69%;
     padding: 20px;
 
     border-radius: 10px;
@@ -85,7 +84,7 @@
 }
 
 .info hr{
-    color: #07ad90;
+    color: rgb(43, 57, 64);
 }
 
 

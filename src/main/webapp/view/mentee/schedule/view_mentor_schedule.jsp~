@@ -380,13 +380,13 @@
             </ul>
             <c:if test="${requestScope.bookingConflict.size() gt 0}">
                 <i style="font-size: 10px; color: #FF6347">< Your bookings above have conflict! ></i>
-            <%--    <i style="font-size: 10px; color: #FF6347">< ${requestScope.slotNotExist} slots not exist ></i>--%>
+                <i style="font-size: 10px; color: #FF6347">< ${requestScope.slotNotExist} slots not exist ></i>
                 <hr style="margin: 5px 0; color: #FF6347; opacity: 80%; border: none;">
                 <div style="text-align: center">
                     <ul class="booking-list-conflict">
                         <c:forEach items="${requestScope.bookingConflict}" var="bcf">
                             <input type="text" hidden="hidden" name="booking-conflict" value="${bcf.schedule.id}_${bcf.schedule.slot.id}_${bcf.schedule.date}"/>
-                            <li class="booking-item" style="font-size: 14px; background-color: #FF6347">Slot ${bcf.schedule.slot.id} / Date: ${bcf.schedule.date}</li>
+                            <li class="booking-item" style="font-size: 14px; background-color: #2b3940">Slot ${bcf.schedule.slot.id} / Date: ${bcf.schedule.date}</li>
                         </c:forEach>
 
                     </ul>
