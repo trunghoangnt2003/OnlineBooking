@@ -270,11 +270,11 @@
                                     </div>
                                 </c:when>
                                 <c:when test="${countCheck == 3 }">
-                                    <div style="background-color: #32cd32; font-size: 14px" >
-                                        Waiting... ${t.start_at}- ${t.end_at}
+                                    <div style="background-color: #f3f3ad; font-size: 14px; margin-bottom: 4px" >
+                                        Request ${t.start_at}- ${t.end_at}
                                     </div>
-                                    <div style="background-color: #32cd32; font-size: 14px" >
-                                       Wait for admin accept
+                                    <div style="background-color: #f3f3ad; font-size: 14px" >
+                                       Please confirm denied
                                     </div>
                                 </c:when>
                             </c:choose>

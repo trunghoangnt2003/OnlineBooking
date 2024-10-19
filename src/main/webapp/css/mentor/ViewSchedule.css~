@@ -263,7 +263,7 @@ label {
 #button-schedule-td{
     border: none;
     border-radius: 5px;
-    margin: auto;
+    padding: 30px 60px;
 }
 #button-schedule-td2{
     border: none;
