@@ -49,8 +49,8 @@
             <input type="file" name="photo" id="file-input" onchange="previewImage();"/>
         </div>
         <div class="row">
-            <div class="col-md-5 card info">
-                <div class="body-info" style="color: #00B074; font-weight: bolder">
+            <div class="col-md-5 card info" style="border-radius: 8px; border: 2px solid #00B074">
+                <div class="body-info" style="color: #00B074; font-weight: bolder; ">
                     <div class="form-group">
                         <label for="email">Email:</label>
                         <input type="text" id="email" class="form-control" value="${requestScope.mentor.account.email}" disabled>
@@ -84,7 +84,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-5 card info" style="color: #00B074; font-weight: bolder">
+            <div class="col-md-5 card info" style="color: #00B074; font-weight: bolder; border-radius: 8px; border: 2px solid #00B074">
                 <div class="form-group" >
                     <label for="edu">Education:</label>
                     <input type="text" id="edu" name="edu" class="form-control" value="${requestScope.mentorLog.education}" required>
@@ -104,7 +104,7 @@
             </div>
         </div>
 
-        <div class="card skill p-4" style="background-color: #f8f9fa; border-radius: 8px;">
+        <div class="card skill p-4" style="background-color: #f8f9fa; border-radius: 8px; border: 2px solid #00B074">
             <div class="row">
                 <!-- Loop through levels -->
                 <c:forEach items="${requestScope.levels}" var="level">
@@ -142,7 +142,7 @@
         </div>
 
         <div class="form-group btn-save">
-            <button name="action" value="save" style="margin-right: 20px" type="submit" class="btn btn-info" data-mdb-ripple-init>Save</button>
+            <button name="action" value="save" style="margin-right: 20px" type="submit" class="btn btn-warning" data-mdb-ripple-init>Save</button>
             <button name="action" value="submit" style="margin-left: 20px" type="submit" class="btn btn-success" data-mdb-ripple-init>Submit</button>
         </div>
     </form>
