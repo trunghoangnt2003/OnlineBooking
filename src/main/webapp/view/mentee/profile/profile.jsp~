@@ -65,7 +65,7 @@
                                      style="width: 200px;height: 200px; z-index: 1">
 
                                 <c:if test="${requestScope.acc_id == requestScope.url_id}">
-                                    <button type="button" onclick="window.location.href='update';" class="btn btn-info" data-mdb-ripple-init>Update Profile</button>
+                                    <button type="button" onclick="window.location.href='update';" class="btn btn-info" data-mdb-ripple-init>Info</button>
                                 </c:if>
                             </div>
                             <div class="ms-3" style="margin-top: 130px;">

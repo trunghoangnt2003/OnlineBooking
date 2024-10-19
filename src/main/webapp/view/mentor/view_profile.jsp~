@@ -28,7 +28,7 @@
         .my-account {
             position: relative;
             z-index: 1;
-            background-color: white;
+            background-color: #1CE2FF;
             padding: 20px;
             border-radius: 10px;
             margin-top: -150px;
