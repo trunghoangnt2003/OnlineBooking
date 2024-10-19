@@ -306,9 +306,21 @@
                                              Free ${t.start_at}- ${t.end_at}
                                          </div>
                                      </div>
+                                    <%--<div class="notes-container" onclick="">
+                                        <i class="pin"></i>
+                                        <blockquote class="notes green">
+                                            <button id="button-schedule-td3" class="button-schedule-td3"
+                                                    data-schedule-id="${week.dayOfMonth}_${t.id}"
+                                                    data-today-id="${week.dayOfMonth}"
+                                                    style=" background: transparent;padding: 40px 20px; "
+                                                    onclick="deleteFreeDay()">
+                                                Approved
+                                            </button>
+                                        </blockquote>
+                                    </div>--%>
                                 </c:when>
                                 <c:when test="${countCheck == 1 }">
-<%--                                    <div class="notes-container">
+                                    <div class="notes-container">
                                         <i class="pin"></i>
                                         <blockquote class="notes waiting" style="background: #f8ce0b">
                                             <button id="button-schedule-td2" class="button-schedule-td3"
@@ -319,18 +331,6 @@
                                                 Waiting Approve...
                                             </button>
                                         </blockquote>
-                                    </div>--%>
-                                    <div id="button-schedule-td2" class="button-schedule-td3"
-                                         data-schedule-id="${week.dayOfMonth}_${t.id}"
-                                         data-today-id="${week.dayOfMonth}"
-                                         onclick="deleteFreeDay()">
-                                        <div style="background-color: #f8ce0b; font-size: 14px; margin-bottom: 3px" >
-                                            ${t.start_at}- ${t.end_at}
-                                        </div>
-                                        <div style="background-color: #f8ce0b; font-size: 14px" >
-                                            Waiting Approve...
-                                        </div>
-
                                     </div>
                                 </c:when>
                                 <c:when test="${countCheck == 4 }">

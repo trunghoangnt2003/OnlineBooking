@@ -37,13 +37,13 @@
     <style>
         .body {
             display: flex;
-            margin: 30px 30px;
+            margin: 60px 60px;
             justify-content: space-between;
 
         }
 
         .left-side {
-            width: 15%;
+            width: 16%;
             margin-top: 10px;
         }
 
@@ -68,7 +68,7 @@
 
         tbody tr, td {
             border: 2px #00714b dashed;
-            width: 150px;
+            width: 122px;
             height: 100px;
         }
 
@@ -223,7 +223,7 @@
                                             <img width="23px" class="mb-2" src="${pageContext.request.contextPath}/${avatarSkill}">
                                         </div>
                                         <div style="background-color: #FAAD12FF; font-size: 14px; margin-bottom: 4px">
-                                              Accepted  ${t.start_at}- ${t.end_at}
+                                                ${t.start_at}- ${t.end_at}
                                         </div>
                                         <div style="background-color: #FAAD12FF">
                                             <span>${nameType}</span>
