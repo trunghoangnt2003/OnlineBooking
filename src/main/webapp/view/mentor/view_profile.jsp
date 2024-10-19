@@ -308,9 +308,6 @@
                             <c:when test="${requestScope.isAuthor}">
                                 <button onclick="goToUpdate()" type="button" class="btn btn-info" data-mdb-ripple-init>Update Profile</button>
                             </c:when>
-                            <c:otherwise>
-                                <button type="button" class="btn btn-warning" data-mdb-ripple-init>Message</button>
-                            </c:otherwise>
                         </c:choose>
                         <button onclick="showCV()" type="button" class="btn btn-success" data-mdb-ripple-init>View CV</button>
                     </div>
