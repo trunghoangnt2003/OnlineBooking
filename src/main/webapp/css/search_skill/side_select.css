@@ -8,7 +8,7 @@
     padding: 16px;
     border-radius: 8px;
     box-shadow: 0 0 20px rgba(0,0,0,0.05);
-    background-color: #fff;
+    background-color: rgb(43, 57, 64);
 }
 .level-container hr{
     color: #07ad90;
@@ -19,9 +19,13 @@
 .list-level{
     max-width: 320px;
     border-radius: 8px;
-    margin: 0 auto 0;
+    /*margin: 0 auto 0;*/
     background-color: #fff;
-    padding-left: 0;
+    /*padding-left: 0;*/
+    position: relative;
+    margin-top: 15px;
+    padding: 16px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.05);
     /*box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);*/
 }
 
@@ -50,8 +54,9 @@
     justify-content: space-between;
     padding: 0 16px;
     border-radius: 8px;
-    cursor: pointer;
-    background-color: #fff;
+    /*cursor: pointer;*/
+    color: white;
+    background-color: rgb(43, 57, 64);
     box-shadow: 0 0 20px rgba(0,0,0,0.05);
 }
 
@@ -85,7 +90,7 @@
     padding: 16px;
     background-color: #fff;
     box-shadow: 0 0 20px rgba(0,0,0,0.05);
-    display: none;
+   /* display: none;*/
 }
 
 .select-btn.open ~ .list-items{

@@ -24,9 +24,6 @@ public class SearchSkillsController extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String skill = request.getParameter("skill");
-        if (skill == null) {
-            skill = "";
-        }
         String[] levels = request.getParameterValues("level");
 
         SkillsDAO skillsDAO = new SkillsDAO();

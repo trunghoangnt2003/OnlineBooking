@@ -151,7 +151,7 @@
                                          </div>
                                         <div style="width: 73%">
                                             <div class="skill-title">
-                                                <span style="color: rgb(43, 57, 64)" > ${level_skill.skill.name} for ${level_skill.level.name}</span>
+                                                <span  > ${level_skill.skill.name} for ${level_skill.level.name}</span>
                                             </div>
                                             <div >
                                                 <span style="opacity: 80%">${level_skill.description} </span>
