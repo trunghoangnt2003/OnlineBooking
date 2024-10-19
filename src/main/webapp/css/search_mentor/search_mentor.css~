@@ -218,4 +218,7 @@
     padding: 10px;
 }
 
+.mentor-item-search div {
+    padding: 10px;
+}
 /*content*/
